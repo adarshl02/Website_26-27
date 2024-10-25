@@ -66,7 +66,7 @@ const getEvents = async (req, res) => {
 
 const registerEvents = async (req, res) => {
   try {
-    const { event_id } = req.params;
+    const { event_id } = req.query;
     const { team_name, team_members, name, email, phone } = req.body;
 
     if (!event_id) {
