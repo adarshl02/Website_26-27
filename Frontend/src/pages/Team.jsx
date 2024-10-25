@@ -4,7 +4,7 @@ import { TeamCard } from '../components/general/TeamCard'
 export default function Team() {
 
   const teamBatch2026 = [
-    { name: "Adarsh Landge", post: "Web Head" },
+    { name: "Adarsh Landge", post: "Web Head", },
     { name: "Animesh Bhawsar", post: "Joint Secretary" },
     { name: "Riya Chaturvedi", post: "Joint Secretary" },
     { name: "Pranav Makwana", post: "Treasurer" },

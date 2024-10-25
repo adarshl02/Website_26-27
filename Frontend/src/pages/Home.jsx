@@ -5,7 +5,8 @@ import AnimationIcon from "@mui/icons-material/Animation";
 import { Button } from "@mui/material";
 import { AnimatedTooltip } from "../components/accertinityui/animated-tooltip";
 import { motion } from "framer-motion";
-import { ImagesSlider } from "../components/accertinityui/image-slider";
+import { ImagesSlider } from './../components/accertinityui/image-slider';
+
 
 
 const people = [
@@ -58,11 +59,12 @@ export default function Home({ latestRef }) {
   return (
     <div className="bg-slate-100">
      
-      <ImagesSlider className="h-[40rem]" images={images}>
+     <div className="bg-slate-900" >
+      <ImagesSlider className="h-[50rem]" images={images}>
       <motion.div
         initial={{
           opacity: 0,
-          y: -80,
+          y: -50,
         }}
         animate={{
           opacity: 1,
@@ -71,9 +73,9 @@ export default function Home({ latestRef }) {
         transition={{
           duration: 0.6,
         }}
-        className="z-50 flex flex-col justify-center items-center"
+        className="z-50 flex flex-col "
       >
-        <motion.p className="font-bold text-xl md:text-6xl text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 py-4">
+        <motion.p className="font-bold text-xl md:text-6xl text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-500 py-4">
           Pratibimb <br /> The Reflection of Art
         </motion.p>
         <button className="px-4 py-2 backdrop-blur-sm border bg-emerald-300/10 border-emerald-500/20 text-white mx-auto text-center rounded-full relative mt-4">
@@ -82,12 +84,12 @@ export default function Home({ latestRef }) {
         </button>
       </motion.div>
     </ImagesSlider>
-
+    </div>
     <div  ref={latestRef} className="font-bold text-7xl m-10 bg-gradient-to-r from-blue-400 to-purple-950 bg-clip-text text-transparent">
   Latest of Pratibimb
 </div>
 
-<div  ref={latestRef} className="font-bold text-7xl m-10 bg-gradient-to-r from-blue-400 to-purple-950 bg-clip-text text-transparent">
+<div  className="font-bold text-7xl m-10 bg-gradient-to-r from-blue-400 to-purple-950 bg-clip-text text-transparent">
   About Us
 </div>
 
