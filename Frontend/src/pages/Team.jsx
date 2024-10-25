@@ -58,15 +58,30 @@ export default function Team() {
       image:
         "https://res.cloudinary.com/dhy548whh/image/upload/v1729850581/zg19txqbirs5wulbmion.jpg",
     },
-    { name: "Anuj Maheshram", post: "Public Relation Officer" },
+    {
+      name: "Anuj Maheshram",
+      post: "Public Relation Officer",
+      image:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1729870824/fpnftmlo8zjc2qglevzg.png",
+    },
     {
       name: "Mrudul Mehta",
       post: "Sponsorship Head",
       image:
         "https://res.cloudinary.com/dhy548whh/image/upload/v1729851120/tpbplhsmhnmffafrcglu.jpg",
     },
-    { name: "Devansh Porwal", post: "Resource Manager" },
-    { name: "Utkarsh Sahu", post: "Resource Manager" },
+    {
+      name: "Devansh Porwal",
+      post: "Resource Manager",
+      image:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1729871076/i0fcwt2guhaievhrjw1u.png",
+    },
+    {
+      name: "Utkarsh Sahu",
+      post: "Resource Manager",
+      image:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1729871024/rtq87irpjrisbccw1w2c.jpg",
+    },
   ];
 
   const teamBatch2027 = [
@@ -196,7 +211,12 @@ export default function Team() {
       image:
         "https://res.cloudinary.com/dhy548whh/image/upload/v1729851596/oxhjarcykstjtacrhwbm.jpg",
     },
-    { name: "Vaidansh Suryavanshi", post: "Coordinator" },
+    {
+      name: "Vaidansh Suryavanshi",
+      post: "Coordinator",
+      image:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1729870896/t5jjndnyarz8i38zepz3.png",
+    },
     {
       name: "Vibhuti Baldva",
       post: "Coordinator",
