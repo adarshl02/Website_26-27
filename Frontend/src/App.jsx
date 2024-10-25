@@ -16,10 +16,21 @@ import Footer from './components/general/Footer';
 
 function App() {
   const latestRef = useRef(null);
+  const feedbackRef = useRef(null);
 
   const scrollToLatest = () => {
     if (latestRef.current) {
-      latestRef.current.scrollIntoView({ behavior: "smooth" });
+      const yOffset = -80; // Adjust this value according to your navbar's height
+      const yPosition = latestRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: yPosition, behavior: "smooth" });
+    }
+  };
+
+  const scrollToFeedback = () => {
+    if (feedbackRef.current) {
+      const yOffset = -80; // Adjust this value according to your navbar's height
+      const yPosition = feedbackRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: yPosition, behavior: "smooth" });
     }
   };
 
@@ -30,8 +41,8 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="/" element={
               <>
-                <NavbarDemo scrollToLatest={scrollToLatest} />
-                <Home latestRef={latestRef} />
+               <NavbarDemo scrollToLatest={scrollToLatest} scrollToFeedback={scrollToFeedback} />
+               <Home latestRef={latestRef} feedbackRef={feedbackRef} />
                 <Footer />
               </>
             } />

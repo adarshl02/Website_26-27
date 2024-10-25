@@ -1,4 +1,5 @@
 import { PlaceholdersAndVanishInput } from '../accertinityui/placeholders-and-vanish-input';
+import { toast } from 'react-toastify';
 
 export function PlaceholdersAndVanishInputDemo() {
   const placeholders = [
@@ -16,12 +17,12 @@ export function PlaceholdersAndVanishInputDemo() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log("submitted");
+    toast.success("Thanks for your feedback");
   };
 
   return (
-    <div className="h-[40rem] flex flex-col justify-center items-center px-4">
-      <h2 className="mb-10 sm:mb-12 text-xl text-center sm:text-5xl text-slate-800">
+    <div className="m-10 flex flex-col justify-center items-center px-4">
+      <h2 className="mb-10 sm:mb-12 text-3xl text-center sm:text-5xl text-slate-800">
        Give your Valuable Feedback!
       </h2>
       <PlaceholdersAndVanishInput
