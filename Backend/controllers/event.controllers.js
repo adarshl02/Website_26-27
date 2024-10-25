@@ -14,21 +14,13 @@ const razorpay = new Razorpay({
 const getEvents = async (req, res) => {
   try {
     const { status } = req.query;
-
+    
     //console.log("Fetching events with status:", status); // Log the incoming status
     const events = await db("events")
       .select("*")
       .where("status", status)
       .orderBy("start_date", "desc");
     //console.log("Fetched events:", events); // Log the fetched events
-
-    let query = db("events").select("*");
-
-    if (status) {
-      query = query.where("status", status);
-    }
-
-    // const events = await query;
 
     if (events.length === 0) {
       return res
@@ -66,7 +58,7 @@ const getEvents = async (req, res) => {
 
 const registerEvents = async (req, res) => {
   try {
-    const { event_id } = req.params;
+    const { event_id } = req.query;
     const { team_name, team_members, name, email, phone } = req.body;
 
     if (!event_id) {
@@ -140,7 +132,7 @@ const registerEvents = async (req, res) => {
 
     return res.status(200).send({
       response: {
-        data: { insertion,amount },
+        data: { insertion,amount},
         title: "Booking Successful",
         message: "Booking Successful for the event",
       },

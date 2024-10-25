@@ -14,6 +14,7 @@ app.use(express.json());
 
 app.use("/api",eventsRouter);
 app.use("/api",authRouter);
+
 app.use("/api",userRouter);
 
 

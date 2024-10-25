@@ -13,5 +13,13 @@
     display: none; /* Chrome, Safari, and Opera */
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body{
+    background-color:azure;
+  }
+
 
 

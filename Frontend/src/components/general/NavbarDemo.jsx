@@ -27,18 +27,25 @@ const navItems = [
   { name: "Team", path: "/team" },
   { name: "Sponsors", path: "/sponsors" },
   { name: "Events", path: "/events" },
-  { name: "Contact Us", path: "/contact-us" },
+  { name: "About Us", path: "/contact-us" },
+  { name: "Trending", path: "/#latest" },
+  { name: "Feedback", path: "/#latest" },
 ];
 
-export function NavbarDemo() {
+export function NavbarDemo({ scrollToLatest, scrollToFeedback }) {
+  const navigate = useNavigate();
   return (
     <div className="relative w-full flex  justify-center ">
-      <Navbar className="top-2" />
+      <Navbar
+        className="top-2"
+        scrollToLatest={scrollToLatest}
+        scrollToFeedback={scrollToFeedback}
+      />
     </div>
   );
 }
 
-function Navbar({ className }) {
+function Navbar({ className, scrollToLatest, scrollToFeedback }) {
   const [active, setActive] = useState(null);
   const { currentUser } = useSelector((state) => state.user);
   const [open, setOpen] = useState(false);
@@ -48,7 +55,6 @@ function Navbar({ className }) {
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
-    
   };
 
   const handleLogout = async () => {
@@ -88,17 +94,21 @@ function Navbar({ className }) {
     >
       {/* Top User Profile Section */}
       <Box sx={{ padding: "16px", textAlign: "center" }}>
-       { currentUser.avatar && 
-        <Avatar
-          src={currentUser.avatar} // User avatar
-          alt={currentUser.name}
-          sx={{ width: 48, height: 48, margin: "auto" }}
-        />}
+        {currentUser.avatar && (
+          <Avatar
+            src={currentUser.avatar} // User avatar
+            alt={currentUser.name}
+            sx={{ width: 48, height: 48, margin: "auto" }}
+          />
+        )}
         <div className="text-black mt-2">{currentUser.name}</div>
         <div className="text-gray-600 text-sm mb-4">{currentUser.email}</div>
         <List>
           <ListItem disablePadding>
-            <ListItemButton className="hover:bg-blue-600 rounded-lg transition duration-200 ease-in-out">
+            <ListItemButton
+              className="hover:bg-blue-600 rounded-lg transition duration-200 ease-in-out"
+              onClick={() => navigate("/profile")}
+            >
               <ListItemIcon sx={{ color: "#333" }}>
                 <AccountCircleIcon />
               </ListItemIcon>
@@ -149,7 +159,17 @@ function Navbar({ className }) {
           <Link
             to={item.path}
             key={idx}
-            className="relative text-white cursor-pointer"
+            className="relative text-white cursor-pointer font-bold"
+            onClick={(e) => {
+              // Add scroll functionality for "Trending" and "Feedback"
+              if (item.name === "Trending") {
+                e.preventDefault(); // Prevent default link behavior
+                scrollToLatest(); // Call the scroll function for "Trending"
+              } else if (item.name === "Feedback") {
+                e.preventDefault(); // Prevent default link behavior
+                scrollToFeedback(); // Call the scroll function for "Feedback"
+              }
+            }}
           >
             <motion.div
               initial={{ opacity: 0.8, y: 0 }}
@@ -173,18 +193,18 @@ function Navbar({ className }) {
       </div>
 
       {/* Profile Avatar */}
-      
-        <Avatar
-          src={currentUser.avatar} // User avatar
-          alt={currentUser.name}
-          className="rounded-full h-10 w-10 object-cover cursor-pointer border-gray-300"
-          onClick={toggleDrawer(true)}
-        />
 
-        {/* Drawer */}
-        <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
-          {DrawerList}
-        </Drawer>
+      <Avatar
+        src={currentUser.avatar} // User avatar
+        alt={currentUser.name}
+        className="rounded-full h-10 w-10 object-cover cursor-pointer border-gray-300"
+        onClick={toggleDrawer(true)}
+      />
+
+      {/* Drawer */}
+      <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
+        {DrawerList}
+      </Drawer>
     </div>
   );
 }

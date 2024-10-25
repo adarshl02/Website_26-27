@@ -7,8 +7,8 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-300 text-gray-800 py-10 px-6">
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
+    <footer className="bg-gray-300 text-gray-800 py-10 px-6 mt-5">
+      <div className="container mx-auto grid grid-cols-2 md:grid-cols-4 gap-10">
         {/* Left Section: Logo and Address */}
         <div className="space-y-4">
           <img src="/PratibimbLogo2.png" alt="Pratibimb Logo" className="w-40" />
