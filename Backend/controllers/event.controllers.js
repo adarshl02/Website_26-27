@@ -98,7 +98,7 @@ const registerEvents = async (req, res) => {
     const qrCodeData = `Event Ticket for ${name}\nEvent ID: ${event_id}\nTeam: ${team_name}\nMembers: ${team_members}`;
     await QRCode.toFile("./qr_code.png", qrCodeData);
 
-    const amount = 500 * 100;
+    const amount = 10 * 100;
 
     const options = {
       amount: amount,
@@ -140,7 +140,7 @@ const registerEvents = async (req, res) => {
 
     return res.status(200).send({
       response: {
-        data: { insertion,amount,order_id },
+        data: { insertion,amount },
         title: "Booking Successful",
         message: "Booking Successful for the event",
       },
