@@ -1,3 +1,4 @@
+import React, { useRef } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
@@ -14,30 +15,32 @@ import { NavbarDemo } from './components/general/NavbarDemo';
 import Footer from './components/general/Footer';
 
 function App() {
+  const latestRef = useRef(null);
+
+  const scrollToLatest = () => {
+    if (latestRef.current) {
+      latestRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <>
       <BrowserRouter>
-      
         <Routes>
           <Route element={<PrivateRoute />}>
-          
-            <Route path="/" element={ <><NavbarDemo/><Home /><Footer/></>} />
+            <Route path="/" element={
+              <>
+                <NavbarDemo scrollToLatest={scrollToLatest} />
+                <Home latestRef={latestRef} />
+                <Footer />
+              </>
+            } />
             <Route path="/profile" element={<><NavbarDemo/><Profile /><Footer/></>} />
-            <Route path="/events" element={<><NavbarDemo/><Events/><Footer/></>}/>
-            <Route path="/team" element={<><NavbarDemo/><Team/><Footer/></>}/>
-            <Route path="/sponsors" element={<><NavbarDemo/><Sponsors/><Footer/></>}/>
+            <Route path="/events" element={<><NavbarDemo/><Events/><Footer/></>} />
+            <Route path="/team" element={<><NavbarDemo/><Team/><Footer/></>} />
+            <Route path="/sponsors" element={<><NavbarDemo/><Sponsors/><Footer/></>} />
           </Route>
-
-          <Route
-            path="/sign-up"
-            element={
-              <ProtectedRoute>
-                <SignUp />
-              </ProtectedRoute>
-            }
-          />
-
-          
+          <Route path="/sign-up" element={<ProtectedRoute><SignUp /></ProtectedRoute>} />
           <Route path="/test" element={<ThreeDCardDemo />} />
         </Routes>
       </BrowserRouter>

@@ -132,7 +132,7 @@ const Event = () => {
   };
 
   return (
-    <div className="p-6 mt-16">
+    <div className="p-6 mt-10">
       <h2 className="text-7xl font-bold mb-4 text-center">Events</h2>
 
       {/* Radio Button Group */}

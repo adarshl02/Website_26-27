@@ -27,18 +27,20 @@ const navItems = [
   { name: "Team", path: "/team" },
   { name: "Sponsors", path: "/sponsors" },
   { name: "Events", path: "/events" },
-  { name: "Contact Us", path: "/contact-us" },
+  { name: "About Us", path: "/contact-us" },
+  { name: "Trending", path: "/#latest" },
+  { name: "Feedback", path: "/#latest" },
 ];
 
-export function NavbarDemo() {
+export function NavbarDemo({ scrollToLatest }) {
   return (
     <div className="relative w-full flex  justify-center ">
-      <Navbar className="top-2" />
+      <Navbar className="top-2" scrollToLatest={scrollToLatest} />
     </div>
   );
 }
 
-function Navbar({ className }) {
+function Navbar({ className,scrollToLatest  }) {
   const [active, setActive] = useState(null);
   const { currentUser } = useSelector((state) => state.user);
   const [open, setOpen] = useState(false);
@@ -146,11 +148,15 @@ function Navbar({ className }) {
       {/* Navigation Links with Hover Effects */}
       <div className="hidden sm:flex space-x-6">
         {navItems.map((item, idx) => (
-          <Link
-            to={item.path}
-            key={idx}
-            className="relative text-white cursor-pointer font-bold"
-          >
+           <Link
+           to={item.path}
+           key={idx}
+           className="relative text-white cursor-pointer font-bold"
+           onClick={item.name === "Trending" ? (e) => {
+             e.preventDefault(); // Prevent default link behavior
+             scrollToLatest(); // Call the scroll function
+           } : null} // Add the scroll function only for "Trending"
+         >
             <motion.div
               initial={{ opacity: 0.8, y: 0 }}
               whileHover={{

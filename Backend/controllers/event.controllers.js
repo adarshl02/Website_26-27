@@ -14,21 +14,13 @@ const razorpay = new Razorpay({
 const getEvents = async (req, res) => {
   try {
     const { status } = req.query;
-
+    
     //console.log("Fetching events with status:", status); // Log the incoming status
     const events = await db("events")
       .select("*")
       .where("status", status)
       .orderBy("start_date", "desc");
     //console.log("Fetched events:", events); // Log the fetched events
-
-    let query = db("events").select("*");
-
-    if (status) {
-      query = query.where("status", status);
-    }
-
-    // const events = await query;
 
     if (events.length === 0) {
       return res

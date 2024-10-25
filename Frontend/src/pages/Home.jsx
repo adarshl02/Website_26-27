@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { PlaceholdersAndVanishInputDemo } from "../components/general/PlaceholdersAndVanishInputDemo";
 import { CoolMode } from "../components/magicui/cool-mode";
 import AnimationIcon from "@mui/icons-material/Animation";
@@ -37,20 +37,6 @@ const people = [
     image:
       "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGF2YXRhcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
   },
-  {
-    id: 5,
-    name: "Tyler Durden",
-    designation: "Soap Developer",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3540&q=80",
-  },
-  {
-    id: 6,
-    name: "Dora",
-    designation: "The Explorer",
-    image:
-      "https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3534&q=80",
-  },
 ];
 
 const images = [
@@ -66,7 +52,9 @@ const images = [
 
 
 
-export default function Home() {
+export default function Home({ latestRef }) {
+
+
   return (
     <div className="bg-slate-100">
      
@@ -95,9 +83,14 @@ export default function Home() {
       </motion.div>
     </ImagesSlider>
 
-    <div className="font-bold text-7xl m-10 bg-gradient-to-r from-blue-400 to-purple-950 bg-clip-text text-transparent">
+    <div  ref={latestRef} className="font-bold text-7xl m-10 bg-gradient-to-r from-blue-400 to-purple-950 bg-clip-text text-transparent">
   Latest of Pratibimb
 </div>
+
+<div  ref={latestRef} className="font-bold text-7xl m-10 bg-gradient-to-r from-blue-400 to-purple-950 bg-clip-text text-transparent">
+  About Us
+</div>
+
 
 
       <PlaceholdersAndVanishInputDemo />
