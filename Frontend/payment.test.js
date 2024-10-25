@@ -12,7 +12,7 @@ const EventBooking = () => {
     e.preventDefault();
     
     try {
-      const response = await axios.post(`http://localhost:5000/register-events/1`, {
+      const response = await axios.post(`http://localhost:3000/register-events/1`, {
         team_name: teamName,
         team_members: teamMembers,
         name,
@@ -60,7 +60,7 @@ const EventBooking = () => {
   const verifyPayment = async (response) => {
     try {
       const verificationResponse = await axios.post(
-        "http://localhost:5000/verify-payment",
+        "http://localhost:3000/verify-payment",
         {
           razorpay_order_id: response.razorpay_order_id,
           razorpay_payment_id: response.razorpay_payment_id,
