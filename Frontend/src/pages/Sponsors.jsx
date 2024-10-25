@@ -1,39 +1,9 @@
 import * as React from 'react';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
-
-function srcset(image, size, rows = 1, cols = 1) {
-  return {
-    src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
-    srcSet: `${image}?w=${size * cols}&h=${
-      size * rows
-    }&fit=crop&auto=format&dpr=2 2x`,
-  };
-}
-
-export default function Sponsors() {
-  return (
-
-    <div className='mt-16 p-6' >
-       <h2 className="text-7xl font-bold mb-9 text-center">Our Past Sponsors</h2>
-    <ImageList
-      variant="quilted"
-      cols={4} // Adjust column number as needed
-      rowHeight={200} // Adjust row height as needed
-    >
-      {itemData.map((item) => (
-        <ImageListItem key={item.img} cols={item.cols || 1} rows={item.rows || 1}>
-          <img
-            {...srcset(item.img, 200, item.rows, item.cols)} // Adjust based on row height
-            alt="" // No title
-            loading="lazy"
-          />
-        </ImageListItem>
-      ))}
-    </ImageList>
-    </div>
-  );
-}
+import Skeleton from '@mui/material/Skeleton';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useLocation } from 'react-router-dom';
 
 const itemData = [
   { img: 'https://res.cloudinary.com/dhy548whh/image/upload/v1729853314/qp4hbpnczrphhzzpgyeu.png' },
@@ -51,3 +21,62 @@ const itemData = [
   { img: 'https://res.cloudinary.com/dhy548whh/image/upload/v1729853202/dzv84dz27tqrgkpryprh.png' },
   { img: 'https://res.cloudinary.com/dhy548whh/image/upload/v1729853196/fbherulhg8iel8mxfoyn.png' },
 ];
+
+
+  export default function Sponsors() {
+    const location = useLocation();
+    const isSmallScreen = useMediaQuery('(max-width:600px)');
+    const columns = isSmallScreen ? 2 : 4;
+  
+    // Initialize loading states from sessionStorage or default to true
+    const initialLoadingStates = JSON.parse(sessionStorage.getItem('loadingStates')) || new Array(itemData.length).fill(true);
+    const [loadingStates, setLoadingStates] = React.useState(initialLoadingStates);
+  
+    // Save loading states in sessionStorage whenever they update
+    React.useEffect(() => {
+      sessionStorage.setItem('loadingStates', JSON.stringify(loadingStates));
+    }, [loadingStates]);
+  
+    // Reset loading states when navigating back to /sponsors
+    React.useEffect(() => {
+      if (location.pathname === '/sponsors') {
+        setLoadingStates(new Array(itemData.length).fill(true));
+        sessionStorage.removeItem('loadingStates'); // Clear on re-visit
+      }
+    }, [location.pathname]);
+  
+    // Update loading state for a specific image index when it loads
+    const handleImageLoad = (index) => {
+      setLoadingStates((prevStates) =>
+        prevStates.map((state, i) => (i === index ? false : state))
+      );
+    };
+  
+    return (
+      <div key={location.pathname} className="mt-16 p-6">
+        <h2 className="text-7xl font-bold mb-9 text-center">Our Past Sponsors</h2>
+        <ImageList variant="masonry" cols={columns} rowHeight={200} gap={8}>
+          {itemData.map((item, index) => (
+            <ImageListItem key={item.img}>
+              {loadingStates[index] ? (
+                <Skeleton
+                  variant="rectangular"
+                  width="100%"
+                  height={200}
+                  sx={{ borderRadius: 2 }}
+                />
+              ) : null}
+              <img
+                src={`${item.img}?w=200&h=200&fit=crop&auto=format`}
+                srcSet={`${item.img}?w=200&h=200&fit=crop&auto=format&dpr=2 2x`}
+                alt=""
+                loading="lazy"
+                onLoad={() => handleImageLoad(index)} // Trigger handleImageLoad on load
+                style={{ display: loadingStates[index] ? 'none' : 'block' }} // Hide image until loaded
+              />
+            </ImageListItem>
+          ))}
+        </ImageList>
+      </div>
+    );
+  }

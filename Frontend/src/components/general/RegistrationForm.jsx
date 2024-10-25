@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Remember to import the toast CSS
+import axios from 'axios';
 
 const RegistrationForm = ({ event_id }) => {
   const [formData, setFormData] = useState({
@@ -17,6 +18,20 @@ const RegistrationForm = ({ event_id }) => {
     setFormData({
       ...formData,
       [e.target.id]: e.target.value,
+    });
+  };
+
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
     });
   };
 
@@ -41,6 +56,10 @@ const RegistrationForm = ({ event_id }) => {
 
       if (res.status === 200) {
         toast.success("Registration successful! Check Your Mail");
+        const resp = await res.json();
+        const { amount, insertion } = resp.response.data;
+        const { order_id } = insertion[0];
+         handlePayment(order_id,amount);
       } else if (res.status === 400) {
         toast.error("There was an issue with your submission.");
       } else {
@@ -51,6 +70,60 @@ const RegistrationForm = ({ event_id }) => {
       toast.error("Network error. Please try again later.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handlePayment = async(order_id, amount) => {
+    const isRazorpayLoaded = await loadRazorpayScript();
+    if (!isRazorpayLoaded) {
+      toast.error("Razorpay SDK failed to load. Please check your internet connection.");
+      return;
+    }
+    const options = {
+      key: "rzp_test_skSiom6K8tMSxT", // Replace with your Razorpay key
+      amount: amount, // in paise
+      currency: "INR",
+      order_id: order_id, // from backend
+      name: "Event Booking",
+      description: "Payment for event booking",
+      handler: function (response) {
+        verifyPayment(response);
+      },
+      prefill: {
+        name: formData.name,
+        email: currentUser.email,
+        contact: formData.phone,
+      },
+      theme: {
+        color: "#F37254",
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  };
+
+  const verifyPayment = async (response) => {
+    try {
+      const verificationResponse = await axios.post(
+        "/api/payment/verify",
+        {
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_signature: response.razorpay_signature,
+        }
+      );
+      console.log(verificationResponse);
+      
+
+      if (verificationResponse.status === 200) {
+        toast.success("Payment successful and verified!");
+      } else {
+        toast.error("Payment verification failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Payment verification error:", error);
+      toast.error("Error verifying payment. Please try again.");
     }
   };
 
@@ -78,7 +151,10 @@ const RegistrationForm = ({ event_id }) => {
           </div>
 
           <div className="mb-4">
-            <label className="block text-slate-300 text-sm mb-2" htmlFor="phone">
+            <label
+              className="block text-slate-300 text-sm mb-2"
+              htmlFor="phone"
+            >
               Phone Number for Group joining
             </label>
             <input
@@ -93,7 +169,10 @@ const RegistrationForm = ({ event_id }) => {
           </div>
 
           <div className="mb-4">
-            <label className="block text-slate-300 text-sm mb-2" htmlFor="teamName">
+            <label
+              className="block text-slate-300 text-sm mb-2"
+              htmlFor="teamName"
+            >
               Team Name
             </label>
             <input
@@ -108,7 +187,10 @@ const RegistrationForm = ({ event_id }) => {
           </div>
 
           <div className="mb-4">
-            <label className="block text-slate-300 text-sm mb-2" htmlFor="teamMembers">
+            <label
+              className="block text-slate-300 text-sm mb-2"
+              htmlFor="teamMembers"
+            >
               Number of Team Members
             </label>
             <input

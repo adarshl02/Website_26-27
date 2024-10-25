@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Card from '../components/general/Card';
 import { useDispatch, useSelector } from 'react-redux';
-import HashLoader from "react-spinners/HashLoader";
 import {
   deleteEvents,
   ongoingFailure,
@@ -20,13 +19,13 @@ import {
   upcomingSuccess,
   upcomingFailure,
 } from '../redux/events/eventsSlice';
+import { Skeleton, Stack } from '@mui/material';
 
 const Event = () => {
   const [selectedOption, setSelectedOption] = useState('Ongoing event');
 
   const dispatch = useDispatch();
-  const { ongoing, past, flagship, minipratibimb, upcoming ,loading} = useSelector((state) => state.events);
-
+  const { ongoing, past, flagship, minipratibimb, upcoming, loading } = useSelector((state) => state.events);
 
   // Fetch ongoing events on component mount
   useEffect(() => {
@@ -55,7 +54,7 @@ const Event = () => {
     };
 
     fetchOngoingEvent();
-  }, []);
+  }, [dispatch]);
 
   // Function to fetch event data based on the selected option
   const fetchEventData = async (eventType) => {
@@ -100,8 +99,6 @@ const Event = () => {
           "Content-Type": "application/json",
         },
       });
-      console.log("called api");
-      
 
       if (res.ok) {
         const response = await res.json();
@@ -163,12 +160,18 @@ const Event = () => {
           </div>
         ))}
       </div>
-        <hr/>
-      
-        
-        {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <HashLoader color="#3ab5ac" />
+
+      <hr/>
+
+      {loading ? (
+        <div className="flex gap-10 justify-center mt-5 flex-wrap">
+          {[...Array(3)].map((_, index) => (
+            <Stack key={index} >
+              <Skeleton variant="circular" width={50} height={50} />
+              <Skeleton variant="text" sx={{ fontSize: '1.5rem', width: '80%' }} />
+              <Skeleton variant="rounded" width={384} height={200} />
+            </Stack>
+          ))}
         </div>
       ) : (
         <div className="flex gap-10 mt-5 justify-start flex-wrap">
@@ -189,8 +192,6 @@ const Event = () => {
           ))}
         </div>
       )}
-
-
     </div>
   );
 };
