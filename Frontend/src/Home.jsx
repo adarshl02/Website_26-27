@@ -14,7 +14,7 @@ function Home() {
   };
 
   const handleGoogleAuth = () => {
-    window.location.href = 'http://localhost:5000/auth/google';
+    window.location.href = 'https://website-26-27-1.onrender.com/auth/google';
   };
 
   return (

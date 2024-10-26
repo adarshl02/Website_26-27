@@ -168,6 +168,8 @@ const paymentVerification = async (req, res) => {
       await db("attendees")
         .where({ order_id: razorpay_order_id })
         .update({ payment_status: "APPROVED" });
+        await sendEmail(email, name, "./qr_code.png");
+
 
       res.status(200).json({
         message: "Payment verified successfully",

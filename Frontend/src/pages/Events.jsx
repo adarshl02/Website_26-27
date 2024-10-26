@@ -33,7 +33,7 @@ const Event = () => {
       dispatch(ongoingStart());
       dispatch(deleteEvents());
       try {
-        const res = await fetch("/api/get/events?status=ONGOING", {
+        const res = await fetch("https://website-26-27-2.onrender.com/api/get/events?status=ONGOING", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

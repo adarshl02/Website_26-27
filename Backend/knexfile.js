@@ -1,34 +1,21 @@
-// Update with your config settings.
+// knexfile.js
+const fs = require("fs");
+const path = require("path");
 
-/**
- * @type { Object.<string, import("knex").Knex.Config> }
- */
 module.exports = {
   development: {
     client: "pg",
-    connection:
-      "postgresql://pratibimb_owner:oh5OWqASc4jf@ep-damp-cell-a5jiw3ur.us-east-2.aws.neon.tech/pratibimb?sslmode=require",
-    migrations: {
-      directory: "./migrations",
-    },
-    seeds: {
-      directory: "./seeds",
-    },
-  },
-
-  production: {
-    client: "postgresql",
     connection: {
-      database: "my_db",
-      user: "username",
-      password: "password",
+      connectionString:
+        "postgres://avnadmin:AVNS_W7_pUDaFaXe0881gZX9@pg-10d412e9-eklavyasinghparihar-c8f8.c.aivencloud.com:24973/defaultdb?sslmode=require",
+      ssl: {
+        rejectUnauthorized: true,
+        ca: fs
+          .readFileSync(path.join("C:/Users/Eklavya Singh/Desktop/ca.pem"))
+          .toString(),
+      },
     },
-    pool: {
-      min: 2,
-      max: 10,
-    },
-    migrations: {
-      tableName: "knex_migrations",
-    },
+    migrations: { directory: "./migrations" },
+    seeds: { directory: "./seeds" },
   },
 };
