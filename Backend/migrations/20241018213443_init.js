@@ -1,6 +1,6 @@
 // migrations/20240101010101_create_users_table.js (the timestamp will vary)
 
-export async function up(knex) {
+exports.up = function (knex) {
   return knex.schema.createTable("users", (table) => {
     table.increments("id").primary(); // Primary key
     table.string("name").notNullable();
@@ -18,6 +18,6 @@ export async function up(knex) {
   });
 }
 
-export async function down(knex) {
+exports.down = function (knex) {
   return knex.schema.dropTableIfExists("users"); // Drop users table if it exists
 }
