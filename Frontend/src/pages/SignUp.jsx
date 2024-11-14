@@ -28,7 +28,7 @@ export default function SignUp() {
         const auth = getAuth(app);
         const result = await signInWithPopup(auth, provider); 
 
-        const res = await fetch("/api/auth/google", {
+        const res = await fetch("https://pratibimb-backend.onrender.com/api/auth/google", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -76,7 +76,7 @@ export default function SignUp() {
       const auth = getAuth(app);
       const result = await signInWithPopup(auth, provider);
 
-      const res = await fetch("https://website-26-27-2.onrender.com/api/auth/google", {
+      const res = await fetch("https://website-26-27-2.onrender.comhttps://pratibimb-backend.onrender.com/api/auth/google", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
