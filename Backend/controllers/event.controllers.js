@@ -75,6 +75,8 @@ const registerEvents = async (req, res) => {
           errorHandler(404, "Not Found", "Event not found in the database")
         );
     }
+    console.log(eventExists);
+    
 
     if (!team_name || !team_members || !name || !email || !phone) {
       return res
@@ -128,7 +130,7 @@ const registerEvents = async (req, res) => {
           errorHandler(400, "Error Occurred", "Error while making booking")
         );
     }
-    await sendEmail(email, name, "./qr_code.png");
+    await sendEmail(email, name,team_name,"./qr_code.png");
 
     return res.status(200).send({
       response: {
