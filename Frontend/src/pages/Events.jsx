@@ -133,7 +133,7 @@ const Event = () => {
       <h2 className="text-7xl font-bold mb-4 text-center">Events</h2>
 
       {/* Radio Button Group */}
-      <div className="flex w-full justify-center space-x-8 mb-4">
+      <div className="flex w-full justify-center space-x-2 md:space-x-8 mb-4">
         {['Ongoing event', 'Past event', 'Flagship Event', 'Mini Pratibimb', 'Upcoming event'].map((option) => (
           <div key={option}>
             <input
