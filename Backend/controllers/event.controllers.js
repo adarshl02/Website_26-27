@@ -76,6 +76,12 @@ const registerEvents = async (req, res) => {
         );
     }
     console.log(eventExists);
+    const { event_name, start_date, location: event_location } = eventExists;
+    const event_date = new Date(start_date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
     
 
     if (!team_name || !team_members || !name || !email || !phone) {
@@ -130,7 +136,7 @@ const registerEvents = async (req, res) => {
           errorHandler(400, "Error Occurred", "Error while making booking")
         );
     }
-    await sendEmail(email, name,team_name,"./qr_code.png");
+    await sendEmail(email,name,team_name,event_date,event_name,event_location,"./qr_code.png");
 
     return res.status(200).send({
       response: {
