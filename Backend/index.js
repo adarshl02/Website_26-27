@@ -9,10 +9,21 @@ dotenv.config();
 
 const app = express();
 
+const allowedOrigins = [
+  'https://website-26-27-ten.vercel.app',
+  'https://www.adarshlandge.xyz' 
+];
+
 app.use(cors({
-  origin: 'https://website-26-27-ten.vercel.app',  // Allow your frontend domain
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Allow the appropriate HTTP methods
-  credentials: true,  // If you're sending cookies or other credentials
+  origin: (origin, callback) => {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) { 
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
 }));
 
 app.use(express.json());
