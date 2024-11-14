@@ -161,7 +161,7 @@ const RegistrationForm = ({ event_id }) => {
               type="tel"
               id="phone"
               value={formData.phone}
-              className="w-full px-4 py-2 bg-gray-300 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 bg-gray-300  rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Your Phone Number"
               onChange={handleChange}
               required
@@ -197,7 +197,7 @@ const RegistrationForm = ({ event_id }) => {
               type="number"
               id="teamMembers"
               value={formData.teamMembers}
-              className="w-full px-4 py-2 bg-gray-300 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 bg-gray-300  rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Number"
               onChange={handleChange}
               required
