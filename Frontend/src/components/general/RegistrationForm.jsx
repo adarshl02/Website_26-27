@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Remember to import the toast CSS
-import axios from 'axios';
+import axios from "axios";
 
 const RegistrationForm = ({ event_id }) => {
   const [formData, setFormData] = useState({
@@ -55,11 +55,11 @@ const RegistrationForm = ({ event_id }) => {
       });
 
       if (res.status === 200) {
-        toast.success("Registration successful! Check Your Mail");
+        toast.success("Redirecting to Payment Page");
         const resp = await res.json();
         const { amount, insertion } = resp.response.data;
         const { order_id } = insertion[0];
-         handlePayment(order_id,amount);
+        handlePayment(order_id, amount);
       } else if (res.status === 400) {
         toast.error("There was an issue with your submission.");
       } else {
@@ -73,10 +73,12 @@ const RegistrationForm = ({ event_id }) => {
     }
   };
 
-  const handlePayment = async(order_id, amount) => {
+  const handlePayment = async (order_id, amount) => {
     const isRazorpayLoaded = await loadRazorpayScript();
     if (!isRazorpayLoaded) {
-      toast.error("Razorpay SDK failed to load. Please check your internet connection.");
+      toast.error(
+        "Razorpay SDK failed to load. Please check your internet connection."
+      );
       return;
     }
     const options = {
@@ -105,19 +107,16 @@ const RegistrationForm = ({ event_id }) => {
 
   const verifyPayment = async (response) => {
     try {
-      const verificationResponse = await axios.post(
-        "/api/payment/verify",
-        {
-          razorpay_order_id: response.razorpay_order_id,
-          razorpay_payment_id: response.razorpay_payment_id,
-          razorpay_signature: response.razorpay_signature,
-        }
-      );
+      const verificationResponse = await axios.post("/api/payment/verify", {
+        razorpay_order_id: response.razorpay_order_id,
+        razorpay_payment_id: response.razorpay_payment_id,
+        razorpay_signature: response.razorpay_signature,
+      });
       console.log(verificationResponse);
-      
 
       if (verificationResponse.status === 200) {
         toast.success("Payment successful and verified!");
+        toast.success("Check Your Inbox");
       } else {
         toast.error("Payment verification failed. Please try again.");
       }
@@ -151,10 +150,7 @@ const RegistrationForm = ({ event_id }) => {
           </div>
 
           <div className="mb-4">
-            <label
-              className="block text-sm mb-2"
-              htmlFor="phone"
-            >
+            <label className="block text-sm mb-2" htmlFor="phone">
               Phone Number for Group joining
             </label>
             <input
@@ -169,10 +165,7 @@ const RegistrationForm = ({ event_id }) => {
           </div>
 
           <div className="mb-4">
-            <label
-              className="block text-sm mb-2"
-              htmlFor="teamName"
-            >
+            <label className="block text-sm mb-2" htmlFor="teamName">
               Team Name
             </label>
             <input
@@ -187,10 +180,7 @@ const RegistrationForm = ({ event_id }) => {
           </div>
 
           <div className="mb-4">
-            <label
-              className="block text-sm mb-2"
-              htmlFor="teamMembers"
-            >
+            <label className="block text-sm mb-2" htmlFor="teamMembers">
               Number of Team Members
             </label>
             <input
