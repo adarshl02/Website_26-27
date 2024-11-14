@@ -129,21 +129,21 @@ const RegistrationForm = ({ event_id }) => {
 
   return (
     <div className="min-h-screen flex items-center justify-center z-50">
-      <div className="bg-violet-500 p-8 rounded-lg shadow-md max-w-md w-full">
-        <h2 className="text-2xl font-bold text-white mb-4">
+      <div className="bg-slate-100 text-slate-800 p-8 rounded-lg shadow-md max-w-md w-full">
+        <h2 className="text-2xl font-bold  mb-4">
           Please fill in your details to continue
         </h2>
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-slate-300 text-sm mb-2" htmlFor="name">
+            <label className="block text-sm mb-2" htmlFor="name">
               Team Lead Name
             </label>
             <input
               type="text"
               id="name"
               value={formData.name}
-              className="w-full px-4 py-2 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 bg-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Your Name"
               onChange={handleChange}
               required
@@ -152,7 +152,7 @@ const RegistrationForm = ({ event_id }) => {
 
           <div className="mb-4">
             <label
-              className="block text-slate-300 text-sm mb-2"
+              className="block text-sm mb-2"
               htmlFor="phone"
             >
               Phone Number for Group joining
@@ -161,7 +161,7 @@ const RegistrationForm = ({ event_id }) => {
               type="tel"
               id="phone"
               value={formData.phone}
-              className="w-full px-4 py-2 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 bg-gray-300 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Your Phone Number"
               onChange={handleChange}
               required
@@ -170,7 +170,7 @@ const RegistrationForm = ({ event_id }) => {
 
           <div className="mb-4">
             <label
-              className="block text-slate-300 text-sm mb-2"
+              className="block text-sm mb-2"
               htmlFor="teamName"
             >
               Team Name
@@ -179,7 +179,7 @@ const RegistrationForm = ({ event_id }) => {
               type="text"
               id="teamName"
               value={formData.teamName}
-              className="w-full px-4 py-2 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 bg-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Team Name"
               onChange={handleChange}
               required
@@ -188,7 +188,7 @@ const RegistrationForm = ({ event_id }) => {
 
           <div className="mb-4">
             <label
-              className="block text-slate-300 text-sm mb-2"
+              className="block text-sm mb-2"
               htmlFor="teamMembers"
             >
               Number of Team Members
@@ -197,7 +197,7 @@ const RegistrationForm = ({ event_id }) => {
               type="number"
               id="teamMembers"
               value={formData.teamMembers}
-              className="w-full px-4 py-2 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 bg-gray-300 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Number"
               onChange={handleChange}
               required
@@ -207,7 +207,7 @@ const RegistrationForm = ({ event_id }) => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-yellow-500 uppercase font-bold text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition duration-300 flex items-center justify-center"
+            className="w-full bg-purple-700 uppercase font-bold text-white py-2 px-4 rounded-md hover:bg-purple-500 transition duration-300 flex items-center justify-center"
           >
             {loading ? (
               <span className="flex items-center">

@@ -51,6 +51,7 @@ function App() {
             <Route path="/team" element={<><NavbarDemo/><Team/><Footer/></>} />
             <Route path="/sponsors" element={<><NavbarDemo/><Sponsors/><Footer/></>} />
           </Route>
+          
           <Route path="/sign-up" element={<ProtectedRoute><SignUp /></ProtectedRoute>} />
           <Route path="/test" element={<ThreeDCardDemo />} />
         </Routes>
