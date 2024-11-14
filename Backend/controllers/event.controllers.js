@@ -137,6 +137,7 @@ const registerEvents = async (req, res) => {
         );
     }
     await sendEmail(email,name,team_name,event_date,event_name,event_location,"./qr_code.png");
+    
 
     return res.status(200).send({
       response: {
@@ -158,6 +159,8 @@ const registerEvents = async (req, res) => {
       );
   }
 };
+
+
 
 const paymentVerification = async (req, res) => {
   try {
