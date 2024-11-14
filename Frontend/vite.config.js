@@ -6,7 +6,7 @@ export default defineConfig({
   server : {
     proxy : {
       '/api':{
-        target : 'https://pratibimb-backend.onrender.com',
+        target : '/api',
         secure : false,
       },
     },

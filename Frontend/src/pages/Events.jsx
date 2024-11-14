@@ -33,7 +33,7 @@ const Event = () => {
       dispatch(ongoingStart());
       dispatch(deleteEvents());
       try {
-        const res = await fetch("https://website-26-27-2.onrender.comhttps://pratibimb-backend.onrender.com/api/get/events?status=ONGOING", {
+        const res = await fetch("/api/get/events?status=ONGOING", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -65,25 +65,25 @@ const Event = () => {
         startAction = pastStart;
         successAction = pastSuccess;
         failureAction = pastFailure;
-        url = "https://pratibimb-backend.onrender.com/api/get/events?status=PAST";
+        url = "/api/get/events?status=PAST";
         break;
       case 'Flagship Event':
         startAction = flagshipStart;
         successAction = flagshipSuccess;
         failureAction = flagshipFailure;
-        url = "https://pratibimb-backend.onrender.com/api/get/events?status=FLAGSHIP";
+        url = "/api/get/events?status=FLAGSHIP";
         break;
       case 'Mini Pratibimb':
         startAction = minipratibimbStart;
         successAction = minipratibimbSuccess;
         failureAction = minipratibimbFailure;
-        url = "https://pratibimb-backend.onrender.com/api/get/events?status=MINI_PRATIBIMB";
+        url = "/api/get/events?status=MINI_PRATIBIMB";
         break;
       case 'Upcoming event':
         startAction = upcomingStart;
         successAction = upcomingSuccess;
         failureAction = upcomingFailure;
-        url = "https://pratibimb-backend.onrender.com/api/get/events?status=UPCOMING";
+        url = "/api/get/events?status=UPCOMING";
         break;
       default:
         return;
