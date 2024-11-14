@@ -14,9 +14,13 @@ router.post("/auth/google", async (req, res,next) => {
     const existingUser = await db("users").where({ email }).first();
 
     if (existingUser) {
-      const token = jwt.sign({ id: existingUser.id }, "asdfghjkl");
+      const token = jwt.sign({ id: existingUser.id },process.env.JWT_SECRET);
       const { enrollment: enro, ...rest } = existingUser; 
-      res.cookie('access_token', token, { httpOnly: true }); 
+      res.cookie('access_token', token, { 
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production', // Only use secure cookies in production
+        sameSite: 'Strict' 
+      });
       return res.status(200).json(rest); 
     } else {
 
