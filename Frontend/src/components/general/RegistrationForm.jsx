@@ -40,7 +40,7 @@ const RegistrationForm = ({ event_id }) => {
     setLoading(true);
 
     try {
-      const res = await fetch(`https://pratibimb-backend.onrender.com/api/register?event_id=${event_id}`, {
+      const res = await fetch(`/api/register?event_id=${event_id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -106,7 +106,7 @@ const RegistrationForm = ({ event_id }) => {
   const verifyPayment = async (response) => {
     try {
       const verificationResponse = await axios.post(
-        "https://pratibimb-backend.onrender.com/api/payment/verify",
+        "/api/payment/verify",
         {
           razorpay_order_id: response.razorpay_order_id,
           razorpay_payment_id: response.razorpay_payment_id,
