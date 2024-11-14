@@ -26,12 +26,7 @@ export default function SignUp() {
         setErr("");
         const provider = new GoogleAuthProvider();
         const auth = getAuth(app);
-        const result = await signInWithPopup(auth, provider);
-        console.log(result.user.displayName);
-        console.log(result.user.email);
-        console.log(result.user.photoURL);
-        console.log(formData.enrollment);
-        
+        const result = await signInWithPopup(auth, provider); 
 
         const res = await fetch("/api/auth/google", {
           method: "POST",
@@ -47,6 +42,9 @@ export default function SignUp() {
         });
 
         const data = await res.json();
+        console.log(data);
+        
+
         if (data.statusCode == 500) {
           toast.error(data.message);
           signInFailure(data);
