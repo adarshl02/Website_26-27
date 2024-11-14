@@ -33,7 +33,6 @@ const sendEmail = async (
       .replace("{{event_name}}", event_name)
       .replace("{{event_date}}", event_date)
       .replace("{{event_location}}", event_location)
-      .replace("{{event_url}}", "https://www.adarshlandge.xyz"); // Correct URL for the event page
 
     const mailOptions = {
       from: "your_email@gmail.com",
