@@ -27,7 +27,10 @@ export default function SignUp() {
         const provider = new GoogleAuthProvider();
         const auth = getAuth(app);
         const result = await signInWithPopup(auth, provider);
-        console.log(result);
+        console.log(result.user.displayName);
+        console.log(result.user.email);
+        console.log(result.user.photoURL);
+        console.log(formData.enrollment);
         
 
         const res = await fetch("/api/auth/google", {
