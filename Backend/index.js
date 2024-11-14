@@ -9,7 +9,10 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://website-26-27-ten.vercel.app/', // replace with your frontend URL
+}));
+
 app.use(express.json());
 
 app.use("/api",eventsRouter);
