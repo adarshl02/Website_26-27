@@ -14,7 +14,7 @@ const razorpay = new Razorpay({
 const getEvents = async (req, res) => {
   try {
     const { status } = req.query;
-    
+
     //console.log("Fetching events with status:", status); // Log the incoming status
     const events = await db("events")
       .select("*")
@@ -75,14 +75,12 @@ const registerEvents = async (req, res) => {
           errorHandler(404, "Not Found", "Event not found in the database")
         );
     }
-    console.log(eventExists);
     const { event_name, start_date, location: event_location } = eventExists;
     const event_date = new Date(start_date).toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",
     });
-    
 
     if (!team_name || !team_members || !name || !email || !phone) {
       return res
@@ -107,7 +105,7 @@ const registerEvents = async (req, res) => {
     };
     const order = await razorpay.orders.create(options);
     console.log(order, "-------------------->");
-    let order_id = order.id
+    let order_id = order.id;
     if (!order) {
       return res
         .status(500)
@@ -136,12 +134,10 @@ const registerEvents = async (req, res) => {
           errorHandler(400, "Error Occurred", "Error while making booking")
         );
     }
-    await sendEmail(email,name,team_name,event_date,event_name,event_location,"./qr_code.png");
-    
 
     return res.status(200).send({
       response: {
-        data: { insertion,amount},
+        data: { insertion, amount },
         title: "Booking Successful",
         message: "Booking Successful for the event",
       },
@@ -160,8 +156,6 @@ const registerEvents = async (req, res) => {
   }
 };
 
-
-
 const paymentVerification = async (req, res) => {
   try {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
@@ -173,14 +167,31 @@ const paymentVerification = async (req, res) => {
       .update(razorpay_order_id + "|" + razorpay_payment_id)
       .digest("hex");
 
-    console.log(hash);
+    let exist = await db("attendees")
+      .select(team_name, attendee_email, attendee_name, event_id)
+      .where({
+        order_id: razorpay_order_id,
+        payment_status: "PENDING",
+      });
+    let eventExist = await db("events")
+      .select(event_date, event_name, event_location)
+      .where({
+        event_id,
+      });
 
     if (hash === razorpay_signature) {
       await db("attendees")
         .where({ order_id: razorpay_order_id })
         .update({ payment_status: "APPROVED" });
-        await sendEmail(email, name, "./qr_code.png");
-
+      await sendEmail(
+        exist.attendee_email,
+        exist.attendee_name,
+        exist.team_name,
+        eventExist.event_date,
+        eventExist.event_name,
+        eventExist.event_location,
+        "./qr_code.png"
+      );
 
       res.status(200).json({
         message: "Payment verified successfully",
