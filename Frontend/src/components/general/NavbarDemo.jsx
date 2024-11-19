@@ -27,9 +27,9 @@ const navItems = [
   { name: "Team", path: "/team", icon: <PeopleIcon /> },
   { name: "Sponsors", path: "/sponsors", icon: <MonetizationOnIcon /> },
   { name: "Events", path: "/events", icon: <EventIcon /> },
-  { name: "About Us", path: "/contact-us", icon: <InfoIcon /> },
   { name: "Trending", path: "/#latest", icon: <TrendingUpIcon /> },
   { name: "Feedback", path: "/#latest", icon: <FeedbackIcon /> },
+  { name: "About Us", path: "/contact-us", icon: <InfoIcon /> }
 ];
 
 export function NavbarDemo({ scrollToLatest, scrollToFeedback }) {
@@ -54,7 +54,7 @@ function Navbar({ className, scrollToLatest, scrollToFeedback }) {
 
   const handleLogout = async () => {
     dispatch(signOutStart());
-    
+
     const res = await fetch("/api/auth/signout");
     const data = await res.json();
 
