@@ -4,7 +4,7 @@ exports.up = function (knex) {
   return knex.schema.createTable("users", (table) => {
     table.increments("id").primary(); // Primary key
     table.string("name").notNullable();
-    table.string("email").notNullable();
+    table.string("email").notNullable().unique();
     table
       .string("avatar")
       .defaultTo(
@@ -16,8 +16,8 @@ exports.up = function (knex) {
     table.boolean("is_member").defaultTo(false);
     table.timestamps(true, true); // Created at and updated at timestamps
   });
-}
+};
 
 exports.down = function (knex) {
   return knex.schema.dropTableIfExists("users"); // Drop users table if it exists
-}
+};

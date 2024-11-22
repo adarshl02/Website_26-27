@@ -181,7 +181,6 @@ const paymentVerification = async (req, res) => {
       return res.status(400).json({ message: "Payment verification failed" });
     }
 
-    // Update payment status and generate QR code
     await db("attendees")
       .where({ order_id: razorpay_order_id })
       .update({ payment_status: "APPROVED" });
