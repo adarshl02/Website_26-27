@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Remember to import the toast CSS
 import axios from 'axios';
+import { registerEvent } from "../../service/api";
 
 const RegistrationForm = ({ event_id }) => {
   const [formData, setFormData] = useState({
@@ -38,29 +39,24 @@ const RegistrationForm = ({ event_id }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+  
     try {
-      const res = await fetch(`https://pratibimb-backend.onrender.com/api/register?event_id=${event_id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          team_name: formData.teamName,
-          team_members: formData.teamMembers,
-          name: formData.name,
-          email: currentUser.email,
-          phone: formData.phone,
-        }),
+      // Call the API function
+      const response = await registerEvent({
+        event_id,
+        team_name: formData.teamName,
+        team_members: formData.teamMembers,
+        name: formData.name,
+        email: currentUser.email,
+        phone: formData.phone,
       });
-
-      if (res.status === 200) {
+  
+      if (response.status === 200) {
         toast.success("Registration successful! Check Your Mail");
-        const resp = await res.json();
-        const { amount, insertion } = resp.response.data;
+        const { amount, insertion } = response.data.response.data;
         const { order_id } = insertion[0];
-         handlePayment(order_id,amount);
-      } else if (res.status === 400) {
+        handlePayment(order_id, amount);
+      } else if (response.status === 400) {
         toast.error("There was an issue with your submission.");
       } else {
         toast.error("An unexpected error occurred. Please try again.");
@@ -72,6 +68,7 @@ const RegistrationForm = ({ event_id }) => {
       setLoading(false);
     }
   };
+  
 
   const handlePayment = async(order_id, amount) => {
     const isRazorpayLoaded = await loadRazorpayScript();

@@ -11,7 +11,8 @@ const app = express();
 
 const allowedOrigins = [
   'https://website-26-27-ten.vercel.app',
-  'https://www.adarshlandge.xyz' 
+  'https://www.adarshlandge.xyz',
+  'http://localhost:5173'
 ];
 
 app.use(cors({

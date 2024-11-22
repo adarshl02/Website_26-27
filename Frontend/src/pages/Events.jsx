@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import Card from '../components/general/Card';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import Card from "../components/general/Card";
+import { useDispatch, useSelector } from "react-redux";
 import {
   deleteEvents,
   ongoingFailure,
@@ -18,14 +18,17 @@ import {
   upcomingStart,
   upcomingSuccess,
   upcomingFailure,
-} from '../redux/events/eventsSlice';
-import { Skeleton, Stack } from '@mui/material';
+} from "../redux/events/eventsSlice";
+import { Skeleton, Stack } from "@mui/material";
+import { fetchEventsByStatus } from "../service/api";
 
 const Event = () => {
-  const [selectedOption, setSelectedOption] = useState('Ongoing event');
+  const [selectedOption, setSelectedOption] = useState("Ongoing event");
 
   const dispatch = useDispatch();
-  const { ongoing, past, flagship, minipratibimb, upcoming, loading } = useSelector((state) => state.events);
+  const { ongoing, past, flagship, minipratibimb, upcoming, loading } = useSelector(
+    (state) => state.events
+  );
 
   // Fetch ongoing events on component mount
   useEffect(() => {
@@ -33,23 +36,11 @@ const Event = () => {
       dispatch(ongoingStart());
       dispatch(deleteEvents());
       try {
-        const res = await fetch("https://pratibimb-backend.onrender.com/api/get/events?status=ONGOING", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (res.ok) {
-          const response = await res.json();
-          dispatch(ongoingSuccess(response.response.data)); // Store ongoing events in Redux
-        } else {
-          const errorResponse = await res.json();
-          dispatch(ongoingFailure(errorResponse));
-        }
+        const response = await fetchEventsByStatus("ONGOING");
+        dispatch(ongoingSuccess(response.response.data)); // Store ongoing events in Redux
       } catch (error) {
         dispatch(ongoingFailure(error));
-        console.log("Network error:", error);
+        console.log("Error fetching ongoing events:", error);
       }
     };
 
@@ -58,58 +49,45 @@ const Event = () => {
 
   // Function to fetch event data based on the selected option
   const fetchEventData = async (eventType) => {
-    let startAction, successAction, failureAction, url;
+    let startAction, successAction, failureAction, status;
 
     switch (eventType) {
-      case 'Past event':
+      case "Past event":
         startAction = pastStart;
         successAction = pastSuccess;
         failureAction = pastFailure;
-        url = "https://pratibimb-backend.onrender.com/api/get/events?status=PAST";
+        status = "PAST";
         break;
-      case 'Flagship Event':
+      case "Flagship Event":
         startAction = flagshipStart;
         successAction = flagshipSuccess;
         failureAction = flagshipFailure;
-        url = "https://pratibimb-backend.onrender.com/api/get/events?status=FLAGSHIP";
+        status = "FLAGSHIP";
         break;
-      case 'Mini Pratibimb':
+      case "Mini Pratibimb":
         startAction = minipratibimbStart;
         successAction = minipratibimbSuccess;
         failureAction = minipratibimbFailure;
-        url = "https://pratibimb-backend.onrender.com/api/get/events?status=MINI_PRATIBIMB";
+        status = "MINI_PRATIBIMB";
         break;
-      case 'Upcoming event':
+      case "Upcoming event":
         startAction = upcomingStart;
         successAction = upcomingSuccess;
         failureAction = upcomingFailure;
-        url = "https://pratibimb-backend.onrender.com/api/get/events?status=UPCOMING";
+        status = "UPCOMING";
         break;
       default:
         return;
     }
 
-    // Dispatch start action
     dispatch(startAction());
 
     try {
-      const res = await fetch(url, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (res.ok) {
-        const response = await res.json();
-        dispatch(successAction(response.response.data)); // Store data in Redux
-      } else {
-        const errorResponse = await res.json();
-        dispatch(failureAction(errorResponse));
-      }
+      const response = await fetchEventsByStatus(status);
+      dispatch(successAction(response.response.data)); // Store data in Redux
     } catch (error) {
       dispatch(failureAction(error));
-      console.log("Network error:", error);
+      console.log(`Error fetching ${eventType.toLowerCase()}:`, error);
     }
   };
 
@@ -119,10 +97,10 @@ const Event = () => {
 
     // Check if the data for the selected option is already in Redux
     if (
-      (newOption === 'Past event' && !past) ||
-      (newOption === 'Flagship Event' && !flagship) ||
-      (newOption === 'Mini Pratibimb' && !minipratibimb) ||
-      (newOption === 'Upcoming event' && !upcoming)
+      (newOption === "Past event" && !past) ||
+      (newOption === "Flagship Event" && !flagship) ||
+      (newOption === "Mini Pratibimb" && !minipratibimb) ||
+      (newOption === "Upcoming event" && !upcoming)
     ) {
       fetchEventData(newOption);
     }
@@ -134,62 +112,64 @@ const Event = () => {
 
       {/* Radio Button Group */}
       <div className="flex w-full justify-center space-x-2 md:space-x-8 mb-4">
-        {['Ongoing event', 'Past event', 'Flagship Event', 'Mini Pratibimb', 'Upcoming event'].map((option) => (
-          <div key={option}>
-            <input
-              type="radio"
-              className="btn-check hidden"
-              name="eventOptions"
-              id={option}
-              value={option}
-              autoComplete="off"
-              checked={selectedOption === option}
-              onChange={handleOptionChange}
-            />
-            <label
-              className={`btn font-medium text-sm cursor-pointer px-4 py-2 rounded-lg flex items-center transition duration-200 ${
-                selectedOption === option
-                  ? 'bg-blue-500 text-white border border-blue-500' // Solid bg for selected
-                  : 'btn-outline-success text-blue-500 border border-blue-500 hover:text-white hover:bg-blue-500'
-              }`}
-              htmlFor={option}
-            >
-              <i className="fa-solid fa-circle-plus mr-1"></i>
-              {option}
-            </label>
-          </div>
-        ))}
+        {["Ongoing event", "Past event", "Flagship Event", "Mini Pratibimb", "Upcoming event"].map(
+          (option) => (
+            <div key={option}>
+              <input
+                type="radio"
+                className="btn-check hidden"
+                name="eventOptions"
+                id={option}
+                value={option}
+                autoComplete="off"
+                checked={selectedOption === option}
+                onChange={handleOptionChange}
+              />
+              <label
+                className={`btn font-medium text-sm cursor-pointer px-4 py-2 rounded-lg flex items-center transition duration-200 ${
+                  selectedOption === option
+                    ? "bg-blue-500 text-white border border-blue-500" // Solid bg for selected
+                    : "btn-outline-success text-blue-500 border border-blue-500 hover:text-white hover:bg-blue-500"
+                }`}
+                htmlFor={option}
+              >
+                <i className="fa-solid fa-circle-plus mr-1"></i>
+                {option}
+              </label>
+            </div>
+          )
+        )}
       </div>
 
-      <hr/>
+      <hr />
 
       {loading ? (
         <div className="flex gap-10 justify-center mt-5 flex-wrap">
           {[...Array(3)].map((_, index) => (
-            <Stack key={index} >
+            <Stack key={index}>
               <Skeleton variant="circular" width={50} height={50} />
-              <Skeleton variant="text" sx={{ fontSize: '1.5rem', width: '80%' }} />
+              <Skeleton variant="text" sx={{ fontSize: "1.5rem", width: "80%" }} />
               <Skeleton variant="rounded" width={384} height={200} />
             </Stack>
           ))}
         </div>
       ) : (
         <div className="flex gap-10 mt-5 justify-start flex-wrap">
-          {selectedOption === 'Ongoing event' && ongoing && ongoing.map(event => (
-            <Card key={event.event_id} event={event} />
-          ))}
-          {selectedOption === 'Past event' && past && past.map(event => (
-            <Card key={event.event_id} event={event} />
-          ))}
-          {selectedOption === 'Flagship Event' && flagship && flagship.map(event => (
-            <Card key={event.event_id} event={event} />
-          ))}
-          {selectedOption === 'Mini Pratibimb' && minipratibimb && minipratibimb.map(event => (
-            <Card key={event.event_id} event={event} />
-          ))}
-          {selectedOption === 'Upcoming event' && upcoming && upcoming.map(event => (
-            <Card key={event.event_id} event={event} />
-          ))}
+          {selectedOption === "Ongoing event" &&
+            ongoing &&
+            ongoing.map((event) => <Card key={event.event_id} event={event} />)}
+          {selectedOption === "Past event" &&
+            past &&
+            past.map((event) => <Card key={event.event_id} event={event} />)}
+          {selectedOption === "Flagship Event" &&
+            flagship &&
+            flagship.map((event) => <Card key={event.event_id} event={event} />)}
+          {selectedOption === "Mini Pratibimb" &&
+            minipratibimb &&
+            minipratibimb.map((event) => <Card key={event.event_id} event={event} />)}
+          {selectedOption === "Upcoming event" &&
+            upcoming &&
+            upcoming.map((event) => <Card key={event.event_id} event={event} />)}
         </div>
       )}
     </div>
