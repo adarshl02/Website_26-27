@@ -5,7 +5,6 @@ const URL = import.meta.env.VITE_URL;
 export const authenticateGoogleLogin = async (data) => {
   try {
     const response = await axios.post(`${URL}/api/auth/google`, data);
-    console.log(response);
     
     return response;
   } catch (error) {
@@ -17,7 +16,7 @@ export const authenticateGoogleLogin = async (data) => {
 export const logoutUser = async () => {
     try {
       const response = await axios.get(`${URL}/api/auth/signout`); 
-      console.log(response);
+
       return response;
     } catch (error) {
       console.error("Error in Logout API:", error);
