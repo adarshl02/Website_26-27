@@ -14,7 +14,7 @@ const razorpay = new Razorpay({
 const getEvents = async (req, res) => {
   try {
     const { status } = req.query;
-    
+
     //console.log("Fetching events with status:", status); // Log the incoming status
     const events = await db("events")
       .select("*")
@@ -75,14 +75,12 @@ const registerEvents = async (req, res) => {
           errorHandler(404, "Not Found", "Event not found in the database")
         );
     }
-    console.log(eventExists);
     const { event_name, start_date, location: event_location } = eventExists;
     const event_date = new Date(start_date).toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",
     });
-    
 
     if (!team_name || !team_members || !name || !email || !phone) {
       return res
@@ -95,8 +93,6 @@ const registerEvents = async (req, res) => {
           )
         );
     }
-    const qrCodeData = `Event Ticket for ${name}\nEvent ID: ${event_id}\nTeam: ${team_name}\nMembers: ${team_members}`;
-    await QRCode.toFile("./qr_code.png", qrCodeData);
 
     const amount = 10 * 100;
 
@@ -106,8 +102,6 @@ const registerEvents = async (req, res) => {
       receipt: `receipt_order_${Date.now()}`,
     };
     const order = await razorpay.orders.create(options);
-    console.log(order, "-------------------->");
-    let order_id = order.id
     if (!order) {
       return res
         .status(500)
@@ -136,12 +130,10 @@ const registerEvents = async (req, res) => {
           errorHandler(400, "Error Occurred", "Error while making booking")
         );
     }
-    await sendEmail(email,name,team_name,event_date,event_name,event_location,"./qr_code.png");
-    
 
     return res.status(200).send({
       response: {
-        data: { insertion,amount},
+        data: { insertion, amount },
         title: "Booking Successful",
         message: "Booking Successful for the event",
       },
@@ -160,36 +152,58 @@ const registerEvents = async (req, res) => {
   }
 };
 
-
-
 const paymentVerification = async (req, res) => {
   try {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
       req.body;
-
     const secret = "5fDFjPzybzKSNMvFGByuGbmN";
     const hash = crypto
       .createHmac("sha256", secret)
       .update(razorpay_order_id + "|" + razorpay_payment_id)
       .digest("hex");
 
-    console.log(hash);
+    // Fetch attendee and event details
+    const attendee = await db("attendees")
+      .select("attendee_email", "attendee_name","team_name","event_id")
+      .where({
+        order_id: razorpay_order_id,
+        payment_status: "PENDING",
+      })
+      .first();
+      console.log(attendee)
 
-    if (hash === razorpay_signature) {
-      await db("attendees")
-        .where({ order_id: razorpay_order_id })
-        .update({ payment_status: "APPROVED" });
-        await sendEmail(email, name, "./qr_code.png");
+    const event = await db("events")
+      .select("event_name", "start_date", "location")
+      .where({ event_id: attendee.event_id })
+      .first();
 
-
-      res.status(200).json({
-        message: "Payment verified successfully",
-        razorpay_payment_id,
-        razorpay_order_id,
-      });
-    } else {
-      res.status(400).json({ message: "Payment verification failed" });
+    if (hash !== razorpay_signature) {
+      return res.status(400).json({ message: "Payment verification failed" });
     }
+
+    // Update payment status and generate QR code
+    await db("attendees")
+      .where({ order_id: razorpay_order_id })
+      .update({ payment_status: "APPROVED" });
+
+    const qrCodeData = `Event Ticket`;
+    await QRCode.toFile("./qr_code.png", qrCodeData);
+
+    await sendEmail(
+      attendee.attendee_email,
+      attendee.attendee_name,
+      attendee.team_name,
+      event.start_date,
+      event.event_name,
+      event.location,
+      "./qr_code.png"
+    );
+
+    res.status(200).json({
+      message: "Payment verified successfully",
+      razorpay_payment_id,
+      razorpay_order_id,
+    });
   } catch (error) {
     console.error("Payment verification error:", error);
     res.status(500).json({ message: "Internal Server Error", error });

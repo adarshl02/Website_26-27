@@ -70,10 +70,12 @@ const RegistrationForm = ({ event_id }) => {
   };
   
 
-  const handlePayment = async(order_id, amount) => {
+  const handlePayment = async (order_id, amount) => {
     const isRazorpayLoaded = await loadRazorpayScript();
     if (!isRazorpayLoaded) {
-      toast.error("Razorpay SDK failed to load. Please check your internet connection.");
+      toast.error(
+        "Razorpay SDK failed to load. Please check your internet connection."
+      );
       return;
     }
     const options = {
@@ -102,19 +104,16 @@ const RegistrationForm = ({ event_id }) => {
 
   const verifyPayment = async (response) => {
     try {
-      const verificationResponse = await axios.post(
-        "https://pratibimb-backend.onrender.com/api/payment/verify",
-        {
-          razorpay_order_id: response.razorpay_order_id,
-          razorpay_payment_id: response.razorpay_payment_id,
-          razorpay_signature: response.razorpay_signature,
-        }
-      );
+      const verificationResponse = await axios.post("/api/payment/verify", {
+        razorpay_order_id: response.razorpay_order_id,
+        razorpay_payment_id: response.razorpay_payment_id,
+        razorpay_signature: response.razorpay_signature,
+      });
       console.log(verificationResponse);
-      
 
       if (verificationResponse.status === 200) {
         toast.success("Payment successful and verified!");
+        toast.success("Check Your Inbox");
       } else {
         toast.error("Payment verification failed. Please try again.");
       }
@@ -148,17 +147,14 @@ const RegistrationForm = ({ event_id }) => {
           </div>
 
           <div className="mb-4">
-            <label
-              className="block text-sm mb-2"
-              htmlFor="phone"
-            >
+            <label className="block text-sm mb-2" htmlFor="phone">
               Phone Number for Group joining
             </label>
             <input
               type="tel"
               id="phone"
               value={formData.phone}
-              className="w-full px-4 py-2 bg-gray-300  rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 bg-gray-300 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Your Phone Number"
               onChange={handleChange}
               required
@@ -166,10 +162,7 @@ const RegistrationForm = ({ event_id }) => {
           </div>
 
           <div className="mb-4">
-            <label
-              className="block text-sm mb-2"
-              htmlFor="teamName"
-            >
+            <label className="block text-sm mb-2" htmlFor="teamName">
               Team Name
             </label>
             <input
@@ -184,17 +177,14 @@ const RegistrationForm = ({ event_id }) => {
           </div>
 
           <div className="mb-4">
-            <label
-              className="block text-sm mb-2"
-              htmlFor="teamMembers"
-            >
+            <label className="block text-sm mb-2" htmlFor="teamMembers">
               Number of Team Members
             </label>
             <input
               type="number"
               id="teamMembers"
               value={formData.teamMembers}
-              className="w-full px-4 py-2 bg-gray-300  rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 bg-gray-300 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Number"
               onChange={handleChange}
               required
