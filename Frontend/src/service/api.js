@@ -23,17 +23,6 @@ export const logoutUser = async () => {
       return error.response; 
     }
   };
-
-  export const registerEvent = async (data) => {
-    try {
-      const { event_id, ...payload } = data;
-      const response = await axios.post(`${URL}/api/register?event_id=${event_id}`, payload);
-      return response;
-    } catch (error) {
-      console.error("Error in Event Registration API:", error);
-      return error.response;
-    }
-  };
   
   export const fetchEventsByStatus = async (status) => {
     try {
@@ -47,3 +36,24 @@ export const logoutUser = async () => {
       throw error.response?.data || error;
     }
   }; 
+
+  export const registerEvent = async (data) => {
+    try {
+      const { event_id, ...payload } = data;
+      const response = await axios.post(`${URL}/api/register?event_id=${event_id}`, payload);
+      return response;
+    } catch (error) {
+      console.error("Error in Event Registration API:", error);
+      return error.response;
+    }
+  }; 
+
+  export const verifyPayment = async (data) => {
+    try {
+      const response = await axios.post(`${URL}/api/payment/verify`, data);
+      return response;
+    } catch (error) {
+      console.error("Error in Payment Verification API:", error);
+      return error.response;
+    }
+  };  

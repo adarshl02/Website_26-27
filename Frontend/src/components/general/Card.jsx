@@ -1,7 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import Backdrop from "@mui/material/Backdrop";
-import Button from "@mui/material/Button";
-import CircularProgress from "@mui/material/CircularProgress";
 import RegistrationForm from "./RegistrationForm";
 
 const Card = ({ event }) => {
@@ -23,7 +21,7 @@ const Card = ({ event }) => {
     month: "long",
     day: "numeric",
   });
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleClose = () => {
     setOpen(false);
   };
@@ -83,7 +81,7 @@ const Card = ({ event }) => {
               onClick={handleClose}
             >
                <div onClick={(e) => e.stopPropagation()}>
-                  <RegistrationForm event_id={event_id} />
+                  <RegistrationForm event_id={event_id} setOpen={setOpen}/>
                  </div>
             </Backdrop>
           </>

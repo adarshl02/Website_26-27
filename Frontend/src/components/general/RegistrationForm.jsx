@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Remember to import the toast CSS
-import axios from 'axios';
-import { registerEvent } from "../../service/api";
+import "react-toastify/dist/ReactToastify.css";
+import { CircularProgress } from "@mui/material";
+import { registerEvent, verifyPayment } from "../../service/api";
 
-const RegistrationForm = ({ event_id }) => {
+const RegistrationForm = ({ event_id , setOpen }) => {
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
     teamName: "",
     teamMembers: "",
   });
+
   const { currentUser } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
 
@@ -22,72 +23,64 @@ const RegistrationForm = ({ event_id }) => {
     });
   };
 
-  const loadRazorpayScript = () => {
-    return new Promise((resolve) => {
-      const script = document.createElement("script");
-      script.src = "https://checkout.razorpay.com/v1/checkout.js";
-      script.onload = () => {
-        resolve(true);
-      };
-      script.onerror = () => {
-        resolve(false);
-      };
-      document.body.appendChild(script);
-    });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-  
+
     try {
-      // Call the API function
-      const response = await registerEvent({
+      const payload = {
         event_id,
         team_name: formData.teamName,
         team_members: formData.teamMembers,
         name: formData.name,
         email: currentUser.email,
         phone: formData.phone,
-      });
-  
-      if (response.status === 200) {
-        toast.success("Registration successful! Check Your Mail");
+      };
+
+      const response = await registerEvent(payload);
+
+      if (response?.status === 200) {
+        toast.success("Redirecting to Payment Page");
+        setOpen(false);
         const { amount, insertion } = response.data.response.data;
         const { order_id } = insertion[0];
         handlePayment(order_id, amount);
-      } else if (response.status === 400) {
-        toast.error("There was an issue with your submission.");
       } else {
-        toast.error("An unexpected error occurred. Please try again.");
+        toast.error(response?.data?.message || "Unexpected error occurred.");
       }
     } catch (error) {
-      console.error(error);
+      console.error("Error in event registration:", error);
       toast.error("Network error. Please try again later.");
     } finally {
       setLoading(false);
     }
   };
-  
+
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
 
   const handlePayment = async (order_id, amount) => {
     const isRazorpayLoaded = await loadRazorpayScript();
     if (!isRazorpayLoaded) {
-      toast.error(
-        "Razorpay SDK failed to load. Please check your internet connection."
-      );
+      toast.error("Razorpay SDK failed to load. Please check your connection.");
       return;
     }
+
     const options = {
       key: "rzp_test_skSiom6K8tMSxT", // Replace with your Razorpay key
-      amount: amount, // in paise
+      amount,
       currency: "INR",
-      order_id: order_id, // from backend
+      order_id,
       name: "Event Booking",
       description: "Payment for event booking",
-      handler: function (response) {
-        verifyPayment(response);
-      },
+      handler: (response) => verifyPaymentHandler(response),
       prefill: {
         name: formData.name,
         email: currentUser.email,
@@ -102,18 +95,24 @@ const RegistrationForm = ({ event_id }) => {
     rzp.open();
   };
 
-  const verifyPayment = async (response) => {
+  const verifyPaymentHandler = async (response) => {
     try {
-      const verificationResponse = await axios.post("/api/payment/verify", {
+      const verificationResponse = await verifyPayment({
         razorpay_order_id: response.razorpay_order_id,
         razorpay_payment_id: response.razorpay_payment_id,
         razorpay_signature: response.razorpay_signature,
       });
-      console.log(verificationResponse);
 
-      if (verificationResponse.status === 200) {
+      if (verificationResponse?.status === 200) {
+        setFormData({
+          name: "",
+          phone: "",
+          teamName: "",
+          teamMembers: "",
+        });
         toast.success("Payment successful and verified!");
-        toast.success("Check Your Inbox");
+        toast.success("Check Your Mail");
+        // Update the order status to "paid" in the database
       } else {
         toast.error("Payment verification failed. Please try again.");
       }
@@ -124,9 +123,9 @@ const RegistrationForm = ({ event_id }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center z-50">
+    <div className="m-4 flex items-center justify-center">
       <div className="bg-slate-100 text-slate-800 p-8 rounded-lg shadow-md max-w-md w-full">
-        <h2 className="text-2xl font-bold  mb-4">
+        <h2 className="text-2xl font-bold mb-4">
           Please fill in your details to continue
         </h2>
 
@@ -154,7 +153,7 @@ const RegistrationForm = ({ event_id }) => {
               type="tel"
               id="phone"
               value={formData.phone}
-              className="w-full px-4 py-2 bg-gray-300 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 bg-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Your Phone Number"
               onChange={handleChange}
               required
@@ -184,7 +183,7 @@ const RegistrationForm = ({ event_id }) => {
               type="number"
               id="teamMembers"
               value={formData.teamMembers}
-              className="w-full px-4 py-2 bg-gray-300 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 bg-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Number"
               onChange={handleChange}
               required
@@ -193,35 +192,13 @@ const RegistrationForm = ({ event_id }) => {
 
           <button
             type="submit"
+            className="col-span-full font-bold w-full bg-gradient-to-r from-blue-500 to-purple-950 text-white p-2 rounded hover:bg-slate-600 transition"
             disabled={loading}
-            className="w-full bg-purple-700 uppercase font-bold text-white py-2 px-4 rounded-md hover:bg-purple-500 transition duration-300 flex items-center justify-center"
           >
             {loading ? (
-              <span className="flex items-center">
-                <svg
-                  className="animate-spin h-5 w-5 text-white mr-2"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8v8h8a8 8 0 01-8 8v-8H4z"
-                  ></path>
-                </svg>
-                Processing...
-              </span>
+              <CircularProgress size={24} color="inherit" />
             ) : (
-              "Go to Payment →"
+              "GO TO PAYMENT →"
             )}
           </button>
         </form>

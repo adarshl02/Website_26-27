@@ -15,9 +15,6 @@ import {
   minipratibimbStart,
   minipratibimbSuccess,
   minipratibimbFailure,
-  upcomingStart,
-  upcomingSuccess,
-  upcomingFailure,
 } from "../redux/events/eventsSlice";
 import { Skeleton, Stack } from "@mui/material";
 import { fetchEventsByStatus } from "../service/api";
@@ -26,7 +23,7 @@ const Event = () => {
   const [selectedOption, setSelectedOption] = useState("Ongoing event");
 
   const dispatch = useDispatch();
-  const { ongoing, past, flagship, minipratibimb, upcoming, loading } = useSelector(
+  const { ongoing, past, flagship, minipratibimb, loading } = useSelector(
     (state) => state.events
   );
 
@@ -70,12 +67,6 @@ const Event = () => {
         failureAction = minipratibimbFailure;
         status = "MINI_PRATIBIMB";
         break;
-      case "Upcoming event":
-        startAction = upcomingStart;
-        successAction = upcomingSuccess;
-        failureAction = upcomingFailure;
-        status = "UPCOMING";
-        break;
       default:
         return;
     }
@@ -99,8 +90,7 @@ const Event = () => {
     if (
       (newOption === "Past event" && !past) ||
       (newOption === "Flagship Event" && !flagship) ||
-      (newOption === "Mini Pratibimb" && !minipratibimb) ||
-      (newOption === "Upcoming event" && !upcoming)
+      (newOption === "Mini Pratibimb" && !minipratibimb)
     ) {
       fetchEventData(newOption);
     }
@@ -112,7 +102,7 @@ const Event = () => {
 
       {/* Radio Button Group */}
       <div className="flex w-full justify-center space-x-2 md:space-x-8 mb-4">
-        {["Ongoing event", "Past event", "Flagship Event", "Mini Pratibimb", "Upcoming event"].map(
+        {["Ongoing event", "Past event", "Flagship Event", "Mini Pratibimb"].map(
           (option) => (
             <div key={option}>
               <input
@@ -167,9 +157,6 @@ const Event = () => {
           {selectedOption === "Mini Pratibimb" &&
             minipratibimb &&
             minipratibimb.map((event) => <Card key={event.event_id} event={event} />)}
-          {selectedOption === "Upcoming event" &&
-            upcoming &&
-            upcoming.map((event) => <Card key={event.event_id} event={event} />)}
         </div>
       )}
     </div>
