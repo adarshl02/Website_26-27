@@ -18,7 +18,6 @@ export const logoutUser = async () => {
     try {
       const response = await axios.get(`${URL}/api/auth/signout`); 
       console.log(response);
-      
       return response;
     } catch (error) {
       console.error("Error in Logout API:", error);
