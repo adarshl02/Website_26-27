@@ -69,6 +69,7 @@ export default function SignUp() {
   const handleGoogleLogin = async () => {
     try {
       const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: 'select_account' });
       const auth = getAuth(app);
       const result = await signInWithPopup(auth, provider);
   
@@ -148,7 +149,7 @@ export default function SignUp() {
                       id="enrollment"
                       name="enrollment"
                       onChange={handleEnrollmentChange}
-                      className="mt-1 w-full px-4 py-2 ring ring-blue-200  text-white   rounded-lg  text-base focus:ring focus:ring-blue-400 focus:outline-none"
+                      className="mt-1 w-full px-4 py-2 ring ring-blue-200  text-slate-800   rounded-lg  text-base focus:ring focus:ring-blue-400 focus:outline-none"
                       placeholder="0801XXXXXXXX"
                     />
                   </div>
