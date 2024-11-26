@@ -12,6 +12,7 @@ const app = express();
 app.use(cors({
   origin: 'https://website-26-27-ten.vercel.app',  // Allow your frontend domain
   origin: 'http://localhost:5173',  // Allow your frontend domain
+  origin : 'https://www.adarshlandge.xyz',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Allow the appropriate HTTP methods
   credentials: true,  // If you're sending cookies or other credentials
 }));
