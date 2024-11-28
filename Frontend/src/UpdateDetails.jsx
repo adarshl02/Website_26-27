@@ -5,16 +5,7 @@ function UpdateDetails() {
   const [enrollmentNumber, setEnrollmentNumber] = useState('');
   const [batch, setBatch] = useState('');
 
-  useEffect(() => {
-    // Fetch the user to check if they are authenticated
-    axios.get('http://localhost:5000/user', { withCredentials: true })
-      .then(response => {
-        // If authenticated, show form to update enrollment number and batch
-      })
-      .catch(() => {
-        window.location.href = '/';
-      });
-  }, []);
+ 
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -10,6 +10,7 @@ import { app } from "../firebase";
 import { CardBody, CardContainer } from "../components/accertinityui/3d-card";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import { toast } from "react-toastify";
+import { authenticateGoogleLogin } from "../service/api";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({});
@@ -22,43 +23,38 @@ export default function SignUp() {
     try {
       if (!formData.enrollment || formData.enrollment.length !== 12) {
         setErr("Enrollment number should be of size 12");
-      } else {
-        setErr("");
-        const provider = new GoogleAuthProvider();
-        const auth = getAuth(app);
-        const result = await signInWithPopup(auth, provider); 
-
-        const res = await fetch("https://pratibimb-backend.onrender.com/api/auth/google", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: result.user.displayName,
-            email: result.user.email,
-            avatar: result.user.photoURL,
-            enrollment: formData.enrollment,
-          }),
-        });
-
-        const data = await res.json();
-        console.log(data);
-        
-
-        if (data.statusCode == 500) {
-          toast.error(data.message);
-          signInFailure(data);
-          return;
-        }
-        dispatch(signInSuccess(data));
-        navigate("/");
-        toast.success("You're Successfully Signed Up");
+        return;
       }
+  
+      setErr("");
+      const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: 'select_account' });
+      const auth = getAuth(app);
+      const result = await signInWithPopup(auth, provider);
+  
+      // Call the existing API function
+      const response = await authenticateGoogleLogin({
+        name: result.user.displayName,
+        email: result.user.email,
+        avatar: result.user.photoURL,
+        enrollment: formData.enrollment,
+      });
+  
+      if (response.status === 500) {
+        toast.error(response.data.message);
+        dispatch(signInFailure(response.data));
+        return;
+      }
+  
+      dispatch(signInSuccess(response.data));
+      navigate("/");
+      toast.success("You're Successfully Signed Up");
     } catch (error) {
-      toast.error("Could not signup with google");
-      console.log("could not signup with google", error);
+      toast.error("Could not sign up with Google");
+      console.error("Could not sign up with Google", error);
     }
   };
+  
 
   const handleEnrollmentChange = (e) => {
     setFormData({
@@ -73,37 +69,34 @@ export default function SignUp() {
   const handleGoogleLogin = async () => {
     try {
       const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: 'select_account' });
       const auth = getAuth(app);
       const result = await signInWithPopup(auth, provider);
-
-      const res = await fetch("https://pratibimb-backend.onrender.com/api/auth/google", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: result.user.email, enrollment: false }),
+      console.log(result);
+      
+      const response = await authenticateGoogleLogin({
+        email: result.user.email,
+        enrollment: false,
       });
 
-      const data = await res.json();
-      console.log(data);
-      
-      if (data.errors && data.errors.status == 404) {
-        toast.error(data.errors.detail);
-        signInFailure(data.errors);
+  
+      if (response.status === 404) {
+        toast.error(response.data.errors.detail);
+        dispatch(signInFailure(response.data.errors));
         return;
       }
-
-      dispatch(signInSuccess(data));
+  
+      dispatch(signInSuccess(response.data));
       navigate("/");
       toast.success("You're Successfully Signed In");
     } catch (error) {
-      console.log("could not signup with google", error);
+      console.log("Could not sign up with Google", error);
     }
   };
 
   return (
     <div
-      className="flex items-center justify-center min-h-screen bg-fixed bg-cover bg-center p-4 bg-opacity-50"
+      className="flex items-center justify-center min-h-screen bg-fixed bg-cover bg-center  bg-opacity-50"
       style={{
         backgroundImage: "url('./LandingPageBg.png')",
         backgroundSize: "cover",
@@ -157,7 +150,7 @@ export default function SignUp() {
                       id="enrollment"
                       name="enrollment"
                       onChange={handleEnrollmentChange}
-                      className="mt-1 w-full px-4 py-2 bg-gray-600  text-white   rounded-lg  text-base focus:ring focus:ring-blue-400 focus:outline-none"
+                      className="mt-1 w-full px-4 py-2 ring ring-blue-200  text-slate-800   rounded-lg  text-base focus:ring focus:ring-blue-400 focus:outline-none"
                       placeholder="0801XXXXXXXX"
                     />
                   </div>

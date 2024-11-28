@@ -21,7 +21,12 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import { getAuth, signOut } from "firebase/auth";
 import { toast } from "react-toastify";
-import { signOutFailure, signOutStart, signOutSuccess } from "../../redux/user/userSlice.js";
+import {
+  signOutFailure,
+  signOutStart,
+  signOutSuccess,
+} from "../../redux/user/userSlice.js";
+import { logoutUser } from "../../service/api.js";
 
 const navItems = [
   { name: "Team", path: "/team", icon: <PeopleIcon /> },
@@ -35,7 +40,11 @@ const navItems = [
 export function NavbarDemo({ scrollToLatest, scrollToFeedback }) {
   return (
     <div className="relative w-full flex justify-center">
-      <Navbar className="top-2" scrollToLatest={scrollToLatest} scrollToFeedback={scrollToFeedback} />
+      <Navbar
+        className="top-2"
+        scrollToLatest={scrollToLatest}
+        scrollToFeedback={scrollToFeedback}
+      />
     </div>
   );
 }
@@ -53,24 +62,28 @@ function Navbar({ className, scrollToLatest, scrollToFeedback }) {
   };
 
   const handleLogout = async () => {
-    dispatch(signOutStart());
-    const res = await fetch("https://pratibimb-backend.onrender.com/api/auth/signout");
-    const data = await res.json();
-    
-    
-    if (res.status!==200) {
-      dispatch(signOutFailure(data.message));
-      return;
+    try {
+      dispatch(signOutStart());
+
+      const response = await logoutUser(); // Call the API function
+      if (response.status !== 200) {
+        dispatch(signOutFailure(response.data.message));
+        return;
+      }
+
+      signOut(auth)
+        .then(() => {
+          toast.success("You're Signed Out!");
+          dispatch(signOutSuccess());
+          navigate("/sign-up");
+        })
+        .catch((error) => {
+          dispatch(signOutFailure(error.message));
+        });
+    } catch (error) {
+      dispatch(signOutFailure(error.message));
+      console.error("Logout error:", error);
     }
-    signOut(auth)
-      .then(() => {
-        toast.success("You're Signed Out!");
-        dispatch(signOutSuccess());
-        navigate("/sign-up");
-      })
-      .catch((error) => {
-        dispatch(signOutFailure(error.message));
-      });
   };
 
   const DrawerList = (
@@ -89,44 +102,51 @@ function Navbar({ className, scrollToLatest, scrollToFeedback }) {
     >
       <Box sx={{ padding: "16px", textAlign: "center" }}>
         {currentUser.avatar && (
-          <Avatar src={currentUser.avatar} alt={currentUser.name} sx={{ width: 48, height: 48, margin: "auto" }} />
+          <Avatar
+            src={currentUser.avatar}
+            alt={currentUser.name}
+            sx={{ width: 48, height: 48, margin: "auto" }}
+          />
         )}
         <div className="text-black mt-2">{currentUser.name}</div>
         <div className="text-gray-600 text-sm mb-4">{currentUser.email}</div>
         <List>
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate("/profile")} className="hover:bg-blue-600 rounded-lg">
-              <ListItemIcon >
+            <ListItemButton
+              onClick={() => navigate("/profile")}
+              className="hover:bg-blue-600 rounded-lg"
+            >
+              <ListItemIcon>
                 <AccountCircleIcon />
               </ListItemIcon>
               <ListItemText primary="Your profile" />
             </ListItemButton>
           </ListItem>
-            {/* Navigation Links - Mobile Only */}
+          {/* Navigation Links - Mobile Only */}
           {isMobile && (
-          <List>
-            {navItems.map((item, idx) => (
-              <ListItem key={idx} disablePadding>
-                <ListItemButton
-                  onClick={(e) => {
-                    if (item.name === "Trending") {
-                      e.preventDefault();
-                      scrollToLatest();
-                    } else if (item.name === "Feedback") {
-                      e.preventDefault();
-                      scrollToFeedback();
-                    } else {
-                      navigate(item.path);
-                    }
-                  }}
-                >
-                  <ListItemIcon>{item.icon}</ListItemIcon>
-                  <ListItemText primary={item.name} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        )}
+            <List>
+              {navItems.map((item, idx) => (
+                <ListItem key={idx} disablePadding>
+                  <ListItemButton
+                    onClick={(e) => {
+                      if (item.name === "Trending") {
+                        e.preventDefault();
+                        scrollToLatest();
+                      } else if (item.name === "Feedback") {
+                        e.preventDefault();
+                        scrollToFeedback();
+                      } else {
+                        navigate(item.path);
+                      }
+                    }}
+                  >
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    <ListItemText primary={item.name} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          )}
 
           <ListItem disablePadding>
             <ListItemButton
@@ -145,16 +165,18 @@ function Navbar({ className, scrollToLatest, scrollToFeedback }) {
             </ListItemButton>
           </ListItem>
         </List>
-      
-       
       </Box>
     </Box>
   );
 
   return (
-    <div className="flex items-center justify-between fixed top-3 left-3 right-3 max-w-4xl mx-auto space-x-5 bg-slate-600 text-slate-100 px-6 py-3 rounded-full shadow-lg z-50">
+    <div className="flex items-center justify-between fixed top-3 left-3 right-3 max-w-4xl mx-auto space-x-5 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 text-slate-100 px-6 py-2 rounded-full shadow-lg z-50">
       <Link to="/">
-        <img src="./PratibimbLogo2.png" alt="Pratibimb Logo" className="h-10 w-auto" />
+        <img
+          src="./PratibimbLogo2.png"
+          alt="Pratibimb Logo"
+          className="h-10 w-auto"
+        />
       </Link>
       {!isMobile && (
         <div className="hidden sm:flex space-x-6">
@@ -178,12 +200,14 @@ function Navbar({ className, scrollToLatest, scrollToFeedback }) {
           ))}
         </div>
       )}
-      <Avatar
-        src={currentUser.avatar}
-        alt={currentUser.name}
-        className="rounded-full h-10 w-10 object-cover cursor-pointer border-gray-300"
-        onClick={toggleDrawer(true)}
-      />
+      <div>
+        <Avatar
+          src={currentUser.avatar}
+          alt={currentUser.name}
+          className="rounded-full h-10 w-10 object-cover cursor-pointer border-gray-300"
+          onClick={toggleDrawer(true)}
+        />
+      </div>
       <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
         {DrawerList}
       </Drawer>

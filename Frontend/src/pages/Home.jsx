@@ -102,7 +102,7 @@ export default function Home({ latestRef, feedbackRef }) {
       <div className="fixed bottom-4 right-4">
         <CoolMode>
           <Button>
-            Spread the Art
+            Spread Art
             <AnimationIcon />
           </Button>
         </CoolMode>

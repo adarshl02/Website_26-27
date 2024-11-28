@@ -245,11 +245,11 @@ export default function Team() {
 
   return (
     <>
-      <div className=" text-start font-bold text-8xl mt-20 m-2 bg-gradient-to-r from-blue-600 to-teal-300 bg-clip-text text-transparent ">
+      <div className=" text-center font-bold text-4xl md:text-8xl mt-20 m-2 bg-gradient-to-r from-blue-600 to-teal-300 bg-clip-text text-transparent ">
         Batch 2026
       </div>
 
-      <div className="flex justify-center gap-12 flex-wrap">
+      <div className="flex justify-center gap-6 md:gap-12 flex-wrap">
         {teamBatch2026.map((member, index) => (
           <TeamCard key={index} name={member.name} post={member.post} image={member.image} />
         ))}
@@ -259,7 +259,7 @@ export default function Team() {
         Batch 2027
       </div>
 
-      <div className="flex justify-center gap-12 flex-wrap">
+      <div className="flex justify-center gap-6 md:gap-12 flex-wrap">
         {teamBatch2027.map((member, index) => (
           <TeamCard key={index} name={member.name} post={member.post} image={member.image}/>
         ))}

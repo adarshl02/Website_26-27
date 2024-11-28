@@ -1,9 +1,7 @@
-import React from 'react';
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { SponsorImageCard } from "../components/general/SponsorImageCard";
 
-const itemData = [
+
+const sponsorImages = [
   { img: 'https://res.cloudinary.com/dhy548whh/image/upload/v1729853314/qp4hbpnczrphhzzpgyeu.png' },
   { img: 'https://res.cloudinary.com/dhy548whh/image/upload/v1729853309/zixb1aqkle053isqkjs5.png' },
   { img: 'https://res.cloudinary.com/dhy548whh/image/upload/v1729853288/nltjuttqvufeol3xx2eb.png' },
@@ -21,25 +19,18 @@ const itemData = [
 ];
 
 export default function Sponsors() {
-  const isSmallScreen = useMediaQuery('(max-width:600px)');
-  const columns = isSmallScreen ? 2 : 4;
-
+ 
   return (
-    <div className="mt-16 p-6">
-      <h2 className="text-7xl font-bold mb-9 text-center">Our Past Sponsors</h2>
-      <ImageList variant="masonry" cols={columns} rowHeight={200} gap={8}>
-        {itemData.map((item) => (
-          <ImageListItem key={item.img}>
-            <img
-              src={`${item.img}?w=200&h=200&fit=crop&auto=format`}
-              srcSet={`${item.img}?w=200&h=200&fit=crop&auto=format&dpr=2 2x`}
-              alt="Sponsor"
-              loading="lazy"
-              style={{ borderRadius: 8 }}
-            />
-          </ImageListItem>
+   <>
+     <div className=" text-center font-bold text-4xl md:text-8xl mt-20 m-2 bg-gradient-to-r from-blue-600 to-teal-300 bg-clip-text text-transparent ">
+       Our Sponsors
+      </div>
+
+      <div className="flex justify-center gap-6 md:gap-12 flex-wrap">
+        {sponsorImages.map((member, index) => (
+          <SponsorImageCard key={index} image={member.img} />
         ))}
-      </ImageList>
-    </div>
+      </div>
+   </>
   );
 }

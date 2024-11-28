@@ -60,7 +60,7 @@ const registerEvents = async (req, res) => {
   try {
     const { event_id } = req.query;
     const { team_name, team_members, name, email, phone } = req.body;
-
+   
     if (!event_id) {
       return res
         .status(400)
@@ -186,14 +186,19 @@ const paymentVerification = async (req, res) => {
       .where({ order_id: razorpay_order_id })
       .update({ payment_status: "APPROVED" });
 
-    const qrCodeData = `Event Ticket`;
+    const qrCodeData = `Payment was successful for the event : ${event.event_name}`;
     await QRCode.toFile("./qr_code.png", qrCodeData);
 
+    const event_date = new Date(event.start_date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
     await sendEmail(
       attendee.attendee_email,
       attendee.attendee_name,
       attendee.team_name,
-      event.start_date,
+      event_date,
       event.event_name,
       event.location,
       "./qr_code.png"
