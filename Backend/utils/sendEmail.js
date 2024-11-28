@@ -32,7 +32,7 @@ const sendEmail = async (
       .replace("{{team_name}}", team_name)
       .replace("{{event_name}}", event_name)
       .replace("{{event_date}}", event_date)
-      .replace("{{event_location}}", event_location)
+      .replace("{{event_location}}", event_location);
 
     const mailOptions = {
       from: "your_email@gmail.com",
@@ -55,4 +55,20 @@ const sendEmail = async (
   }
 };
 
-module.exports = sendEmail;
+const sendEmailForVolunteering = async (email, name) => {
+  try {
+    const mailOptions = {
+      from: "your_email@gmail.com",
+      to: email,
+      subject: "Your Event Ticket",
+      text: `Thanks ${name} For Applying To Become a Volunteer our team will reach out to you soon`,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully for volunteers!");
+  } catch (error) {
+    console.error("Error sending email for volunteers:", error);
+  }
+};
+
+module.exports = { sendEmail, sendEmailForVolunteering };
