@@ -6,13 +6,13 @@ module.exports = {
   development: {
     client: "pg",
     connection: {
-      user: "avnadmin",
-      password: "AVNS_W7_pUDaFaXe0881gZX9",
-      host: "pg-10d412e9-eklavyasinghparihar-c8f8.c.aivencloud.com",
-      port: 24973,
-      database: "defaultdb",
+      user: process.env.USER,
+      password: process.env.PASSWORD,
+      host: process.env.HOST,
+      port: process.env.PORT,
+      database: process.env.DATABASE,
       ssl: {
-        rejectUnauthorized: true,
+        rejectUnauthorized: process.env.REJECTUNAUTHORIZED,
         ca: `-----BEGIN CERTIFICATE-----
 MIIEQTCCAqmgAwIBAgIUGEQ9/3gw2gFbPTByLNIU7F2heW0wDQYJKoZIhvcNAQEM
 BQAwOjE4MDYGA1UEAwwvYmI1ZmNiMzAtNWUyYS00ZDkyLTgzMjEtNDQ0MzRjNjY5
