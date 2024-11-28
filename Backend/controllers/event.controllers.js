@@ -3,7 +3,7 @@ const db = require("../db/index.js");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const { errorHandler } = require("../utils/errorHandler");
-const sendEmail = require("../utils/sendEmail");
+const { sendEmail } = require("../utils/emailFunctions.js");
 require("dotenv").config();
 
 const razorpay = new Razorpay({
@@ -162,9 +162,8 @@ const paymentVerification = async (req, res) => {
       .update(razorpay_order_id + "|" + razorpay_payment_id)
       .digest("hex");
 
-    // Fetch attendee and event details
     const attendee = await db("attendees")
-      .select("attendee_email", "attendee_name","team_name","event_id")
+      .select("attendee_email", "attendee_name","team_name","event_id","team_members")
       .where({
         order_id: razorpay_order_id,
         payment_status: "PENDING",
@@ -185,7 +184,7 @@ const paymentVerification = async (req, res) => {
       .where({ order_id: razorpay_order_id })
       .update({ payment_status: "APPROVED" });
 
-    const qrCodeData = `Event Ticket`;
+    const qrCodeData = `Event Ticket for ${attendee.attendee_name} with ${attendee.team_members} members`;
     await QRCode.toFile("./qr_code.png", qrCodeData);
 
     await sendEmail(

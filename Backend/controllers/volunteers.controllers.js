@@ -1,5 +1,5 @@
 const db = require("../db/index.js");
-const { sendEmailForVolunteering } = require("../utils/sendEmail.js");
+const { sendEmailForVolunteering } = require("../utils/emailFunctions.js");
 const errorHandler = require("../utils/errorHandler.js");
 
 const applyForVolunteering = async (req, res) => {
