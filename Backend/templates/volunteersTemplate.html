@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        color: #333333;
+      }
+
+      .email-container {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 20px;
+        background: linear-gradient(135deg, #ffffff, #e9f7ff); /* Gradient applied */
+        border-radius: 15px;
+        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+        color: #333333;
+      }
+
+      .logo {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .logo img {
+        max-width: 150px;
+        border-radius: 8px;
+      }
+
+      .divider {
+        border-top: 2px solid #cccccc;
+        margin: 20px 0;
+      }
+
+      .title {
+        text-align: center;
+        font-size: 24px;
+        margin: 10px 0;
+        font-weight: bold;
+        color: #555555;
+      }
+
+      .greeting,
+      .message,
+      .closing {
+        font-size: 16px;
+        margin: 15px 0;
+        line-height: 1.6;
+      }
+
+      .summary {
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 20px;
+        color: #000000;
+      }
+
+      .details {
+        list-style-type: none;
+        padding: 0;
+        font-size: 16px;
+        margin: 10px 0;
+      }
+
+      .details li {
+        margin: 8px 0;
+      }
+
+      .signature {
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 20px;
+      }
+
+      .footer {
+        text-align: center;
+        margin-top: 30px;
+        font-size: 12px;
+        color: #666666;
+      }
+
+      .footer a {
+        text-decoration: none;
+        color: #333333;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <!-- Logo Section -->
+      <div class="logo">
+        <img src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1733249718/k5adyreqoelqg1molfoi.png" alt="Club Logo" />
+      </div>
+      <div class="divider"></div>
+
+      <!-- Main Content -->
+      <h2 class="title">Thank You for Volunteering!</h2>
+      <p class="greeting">Hi {{name}},</p>
+      <p class="message">
+        We have received your application for volunteering in our activities.
+        We're thrilled to have someone as talented as you join us in making a
+        difference!
+      </p>
+      <p class="summary">Here’s a quick summary of your application:</p>
+      <ul class="details">
+        <li><b>Name:</b> {{name}}</li>
+        <li><b>Email:</b> {{email}}</li>
+        <li><b>Phone:</b> {{phone}}</li>
+        <li><b>Domain:</b> {{domain}}</li>
+        <li><b>Branch:</b> {{branch}}</li>
+        <li><b>Batch:</b> {{batch}}</li>
+      </ul>
+      <p class="closing">
+        Our team will review your application and get back to you soon with
+        more details about your involvement. If you have any questions or
+        updates, feel free to reply to this email.
+      </p>
+      <p class="signature">Best regards,<br />The <b>Pratibimb</b> Team</p>
+
+      <!-- Footer Section -->
+      <div class="footer">
+        <p>© 2024 Pratibimb. All rights reserved.</p>
+        <p>
+          For inquiries, contact us at
+          <a href="mailto:support@pratibimb.com">support@pratibimb.com</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

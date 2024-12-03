@@ -55,17 +55,36 @@ const sendEmail = async (
   }
 };
 
-const sendEmailForVolunteering = async (email, name) => {
+const sendEmailForVolunteering = async (
+  email,
+  name,
+  phone,
+  domain,
+  branch,
+  batch
+) => {
   try {
-    const mailOptions = {
-      from: "your_email@gmail.com",
-      to: email,
-      subject: "Your Event Ticket",
-      text: `Thanks ${name} For Applying To Become a Volunteer our team will reach out to you soon`,
-    };
+    let templatePath = path.join(
+      __dirname,
+      "../templates/volunteersTemplate.html"
+    );
+    let emailTemplate = fs.readFileSync(templatePath, "utf-8");
+    emailTemplate = emailTemplate
+      .replace("{{name}}", name)
+      .replace("{{email}}", email)
+      .replace("{{phone}}", phone)
+      .replace("{{domain}}", domain)
+      .replace("{{branch}}", branch)
+      .replace("{{batch}}", batch);
 
-    await transporter.sendMail(mailOptions);
-    console.log("Email sent successfully for volunteers!");
+    await transporter.sendMail({
+      from: '"Volunteering Team" <your-email@example.com>',
+      to: email,
+      subject: "Thank You for Volunteering!",
+      html: emailTemplate,
+    });
+
+    console.log("Email sent to:", email);
   } catch (error) {
     console.error("Error sending email for volunteers:", error);
   }

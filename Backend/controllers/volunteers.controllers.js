@@ -4,7 +4,7 @@ const errorHandler = require("../utils/errorHandler.js");
 
 const applyForVolunteering = async (req, res) => {
   try {
-    const { name, phone, email, branch, batch, domain } = req.body;
+    let { name, phone, email, branch, batch, domain } = req.body;
 
     if (!email) {
       return res
@@ -44,7 +44,7 @@ const applyForVolunteering = async (req, res) => {
       domain,
     };
     let insertion = await db("volunteers").insert(data).returning("*");
-    sendEmailForVolunteering(email, name);
+    sendEmailForVolunteering(email, name, phone, domain, branch, batch);
     if (insertion) {
       return res.status(200).send({
         response: {
