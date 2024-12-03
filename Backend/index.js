@@ -9,13 +9,21 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors({
-  origin: 'https://website-26-27-ten.vercel.app',  // Allow your frontend domain
-  origin: 'http://localhost:5173',  // Allow your frontend domain
-  origin : 'https://www.adarshlandge.xyz',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Allow the appropriate HTTP methods
-  credentials: true,  // If you're sending cookies or other credentials
-}));
+const allowedOrigins = [
+  'https://website-26-27-ten.vercel.app',
+  'https://www.adarshlandge.xyz',
+];
+
+if (process.env.NODE_ENV === 'development') {
+  app.use(cors());
+} else {
+  app.use(cors({
+    origin: allowedOrigins,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+  }));
+}
+
 
 app.use(express.json());
 
