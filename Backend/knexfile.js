@@ -10,7 +10,7 @@ module.exports = {
       user: process.env.USER,
       password: process.env.PASSWORD,
       host: process.env.HOST,
-      port: process.env.PORT,
+      port:24973,
       database: process.env.DATABASE,
       ssl: {
         rejectUnauthorized: process.env.REJECTUNAUTHORIZED,
