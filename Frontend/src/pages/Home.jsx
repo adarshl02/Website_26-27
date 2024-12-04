@@ -54,7 +54,6 @@ const images = [
 ];
 
 export default function Home({ latestRef, feedbackRef }) {
-
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
@@ -85,9 +84,14 @@ export default function Home({ latestRef, feedbackRef }) {
             <motion.p className="font-bold text-4xl md:text-6xl text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-500 py-4">
               Pratibimb <br /> The Reflection of Art
             </motion.p>
-            <button className="px-4 py-2 backdrop-blur-sm border bg-emerald-300/10 border-emerald-500/20 text-white mx-auto text-center rounded-full relative mt-4">
+            <button
+              className="px-4 py-2 backdrop-blur-sm border bg-emerald-300/10 border-emerald-500/20 text-white mx-auto text-center rounded-full relative mt-4"
+              onClick={() =>
+                window.open("https://linktr.ee/clubpratibimb.gs", "_blank")
+              }
+            >
               <span>Connect with Us →</span>
-              <div className="absolute inset-x-0  h-px -bottom-px bg-gradient-to-r w-3/4 mx-auto from-transparent via-emerald-500 to-transparent" />
+              <div className="absolute inset-x-0 h-px -bottom-px bg-gradient-to-r w-3/4 mx-auto from-transparent via-emerald-500 to-transparent" />
             </button>
           </motion.div>
         </ImagesSlider>
@@ -103,9 +107,7 @@ export default function Home({ latestRef, feedbackRef }) {
         About Us
       </div>
       <div ref={feedbackRef}>
-        
-          <PlaceholdersAndVanishInputDemo />
-        
+        <PlaceholdersAndVanishInputDemo />
       </div>
 
       <div className="font-bold text-4xl text-center mb-8">Made with love</div>
