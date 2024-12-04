@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #333333;
+        margin: 0;
+        padding: 0;
+        color: #f4f4f4;
+      }
+
+      .email-container {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color: #2a2a2a;
+        border-radius: 15px;
+        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+        color: #f4f4f4;
+      }
+
+      .logo {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .logo img {
+        max-width: 150px;
+        border-radius: 8px;
+      }
+
+      .divider {
+        border-top: 2px solid #444444;
+        margin: 20px 0;
+      }
+
+      .title {
+        text-align: center;
+        font-size: 26px;
+        margin: 10px 0;
+        font-weight: bold;
+        color: #e0e0e0;
+      }
+
+      .overview-card {
+        margin: 20px 0;
+        padding: 20px;
+        background: linear-gradient(45deg, #003366, #336699, #66aaff);
+
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+        font-size: 16px;
+        color: #f4f4f4;
+      }
+
+      .overview-card h3 {
+        margin-bottom: 10px;
+        font-size: 18px;
+        color: #f4f4f4;
+        text-align: center;
+      }
+
+      .overview-details {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .overview-details li {
+        margin: 5px 0;
+        line-height: 1.5;
+      }
+
+      .footer {
+        text-align: center;
+        margin-top: 30px;
+        font-size: 12px;
+        color: #aaaaaa;
+      }
+
+      .footer a {
+        text-decoration: none;
+        color: #f4f4f4;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <!-- Logo Section -->
+      <div class="logo">
+        <img src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1733249718/k5adyreqoelqg1molfoi.png" alt="Club Logo" />
+      </div>
+      <div class="divider"></div>
+
+      <!-- Title -->
+      <h2 class="title">Thank You for Volunteering with Pratibimb!</h2>
+
+      <!-- Introduction -->
+      <p style="font-size: 14px; text-align: center; color: #e0e0e0;">
+        We are excited to have you as a volunteer! Your involvement will play a crucial role in making our upcoming events a success.
+      </p>
+
+      <!-- Overview Card -->
+      <div class="overview-card">
+        <h3>Volunteer Overview</h3>
+        <ul class="overview-details">
+          <li><b>Name:</b> {{name}}</li>
+          <li><b>Domain:</b> {{domain}}</li>
+          <li><b>Batch:</b> {{batch}}</li>
+          <li><b>Branch:</b> {{branch}}</li>
+        </ul>
+      </div>
+
+      <!-- Footer Section -->
+      <div class="footer">
+        <p>Thank you for your time and dedication!</p>
+        <p>© 2024 Pratibimb. All rights reserved.</p>
+        <p>
+          For any inquiries, feel free to contact us at
+          <a href="mail to:support@pratibimb.com">support@pratibimb.com</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

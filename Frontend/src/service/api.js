@@ -48,6 +48,17 @@ export const logoutUser = async () => {
     }
   }; 
 
+  export const registerVolunteer = async (data) => {
+    try {
+
+      const response = await axios.post(`${URL}/api/register/volunteer`, data);
+      return response;
+    } catch (error) {
+      console.error("Error in Event Registration API:", error);
+      return error.response;
+    }
+  }; 
+
   export const verifyPayment = async (data) => {
     try {
       const response = await axios.post(`${URL}/api/payment/verify`, data);

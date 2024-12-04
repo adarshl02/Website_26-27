@@ -192,7 +192,7 @@ const RegistrationForm = ({ event_id , setOpen }) => {
 
           <button
             type="submit"
-            className="col-span-full font-bold w-full bg-gradient-to-r from-blue-500 to-purple-950 text-white p-2 rounded hover:bg-slate-600 transition"
+            className="w-full font-bold bg-gradient-to-r from-indigo-600 to-blue-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-500 transition"
             disabled={loading}
           >
             {loading ? (

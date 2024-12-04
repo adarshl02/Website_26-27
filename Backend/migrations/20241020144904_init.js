@@ -3,26 +3,21 @@
  * @returns { Promise<void> }
  */
 exports.up = function (knex) {
-    return knex.schema.createTable("volunteers", (table) => {
-        table.increments("volunteer_id").primary();
-        table.string('email').notNullable()
-        table.string('phone').notNullable()
-        table.string("enrollment").notNullable().unique();
-        table.string('branch').notNullable()
-        table.integer('batch').notNullable()
+  return knex.schema.createTable("volunteers", (table) => {
+    table.increments("volunteer_id").primary();
+    table.string("name");
+    table.string("email")
+    table.string("phone")
+    table.string("domain");
+    table.string("branch");
+    table.string("batch");
+  });
+};
 
-    })
-  
-      
-    
-  };
-  
-  /**
-   * @param { import("knex").Knex } knex
-   * @returns { Promise<void> }
-   */
-  exports.down = function (knex) {
-    return knex.schema.dropTable('volunteers')
-      
-  };
-  
+/**
+ * @param { import("knex").Knex } knex
+ * @returns { Promise<void> }
+ */
+exports.down = function (knex) {
+  return knex.schema.dropTable("volunteers");
+};

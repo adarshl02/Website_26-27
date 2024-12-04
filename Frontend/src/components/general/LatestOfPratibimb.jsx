@@ -1,18 +1,25 @@
-import React from 'react';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 
-const LatestOfPratibimb = () => {
+
+const LatestOfPratibimb = ({handleOpen}) => {
+
+
+
   return (
     <div className="bg-slate-700 rounded-md  p-8 flex justify-center">
       {/* Main Container */}
       <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-3 gap-6 text-white">
-
-        <div className='flex flex-col ' >
-            <span className='text-3xl md:text-5xl' >Latest of </span>
-            <span className='text-4xl md:text-6xl mb-6' >Pratibimb</span>
-            <div className='text-sm' > Explore the latest adventure in art, culture, and creativity. From vibrant exhibitions to inspiring showcases, 
-    Pratibimb continues to be a beacon of innovation. Dive into the world of artistic reflections and witness 
-    the merging of tradition with modern aesthetics.</div>
-            
+        <div className="flex flex-col">
+          <span className="text-3xl md:text-5xl">Latest of </span>
+          <span className="text-4xl md:text-6xl mb-6">Pratibimb</span>
+          <div className="text-sm">
+            Explore the latest adventure in art, culture, and creativity. From
+            vibrant exhibitions to inspiring showcases, Pratibimb continues to
+            be a beacon of innovation. Dive into the world of artistic
+            reflections and witness the merging of tradition with modern
+            aesthetics.
+          </div>
         </div>
 
         {/* Card 1 */}
@@ -22,8 +29,19 @@ const LatestOfPratibimb = () => {
             alt="Mystic Mode"
             className="w-40 h-40 object-cover rounded-md mb-4"
           />
-          <div className="text-xl font-bold mb-2">Calling Volunteers from <br/> Batch 2028</div>
-          <div className="text-gray-400 text-sm">Be a part of biggest Art event. Tentative Date : Dec,2024 </div>
+
+          <div className="text-xl font-bold mb-2">Calling Volunteers</div>
+          <div className="text-gray-400 text-sm mb-4">
+            Be a part of the biggest Art event. Tentative Date: Dec, 2024
+            <br /> <br />
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              onClick={handleOpen}
+              className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-2 px-4 rounded-full shadow-lg font-bold transition duration-300 hover:opacity-90 hover:shadow-2xl"
+            >
+              Register Here
+            </motion.button>
+          </div>
         </div>
 
         {/* Card 2 */}
@@ -33,8 +51,14 @@ const LatestOfPratibimb = () => {
             alt="Customise Settings"
             className="w-40 h-40 object-cover rounded-md mb-4"
           />
-          <h3 className="text-xl font-bold mb-2">Conducted Sepia <br/>"A Whirl of Visuals"</h3>
-          <p className="text-gray-400 text-sm">Tweak various elements of your images like color and lighting to make them stand out.</p>
+          <h3 className="text-xl font-bold mb-2">
+            Conducted Sepia <br />
+            "A Whirl of Visuals"
+          </h3>
+          <p className="text-gray-400 text-sm">
+            Tweak various elements of your images like color and lighting to
+            make them stand out.
+          </p>
         </div>
       </div>
     </div>

@@ -19,6 +19,13 @@ export default {
           },
         },
       },
+      fontFamily: {
+        sans: ['Roboto', 'sans-serif'], // Default sans-serif
+        poppins: ['Poppins', 'sans-serif'],
+        serif: ['Merriweather', 'serif'],
+        display: ['Oswald', 'sans-serif'],
+        handwriting: ['Dancing Script', 'cursive'],
+      },
     },
   },
   plugins: [],

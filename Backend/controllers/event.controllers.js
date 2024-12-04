@@ -3,7 +3,8 @@ const db = require("../db/index.js");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const { errorHandler } = require("../utils/errorHandler");
-const sendEmail = require("../utils/sendEmail");
+const { sendEmail } = require("../utils/emailFunctions.js");
+
 require("dotenv").config();
 
 const razorpay = new Razorpay({

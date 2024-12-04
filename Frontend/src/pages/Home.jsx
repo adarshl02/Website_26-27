@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { PlaceholdersAndVanishInputDemo } from "../components/general/PlaceholdersAndVanishInputDemo";
 import { CoolMode } from "../components/magicui/cool-mode";
 import AnimationIcon from "@mui/icons-material/Animation";
@@ -7,6 +7,9 @@ import { AnimatedTooltip } from "../components/accertinityui/animated-tooltip";
 import { motion } from "framer-motion";
 import { ImagesSlider } from "./../components/accertinityui/image-slider";
 import LatestOfPratibimb from "../components/general/LatestOfPratibimb";
+
+import { Backdrop } from "@mui/material";
+import VolunteerForm from "../components/general/VolunteerForm";
 
 const people = [
   {
@@ -51,6 +54,16 @@ const images = [
 ];
 
 export default function Home({ latestRef, feedbackRef }) {
+
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
   return (
     <div>
       <div className="bg-slate-900">
@@ -83,7 +96,7 @@ export default function Home({ latestRef, feedbackRef }) {
         ref={latestRef}
         className="font-bold text-7xl m-10 bg-gradient-to-r from-blue-400 to-purple-950 bg-clip-text text-transparent"
       >
-        <LatestOfPratibimb />
+        <LatestOfPratibimb handleOpen={handleOpen} />
       </div>
 
       <div className="font-bold text-7xl m-10 bg-gradient-to-r from-blue-400 to-purple-950 bg-clip-text text-transparent">
@@ -107,6 +120,19 @@ export default function Home({ latestRef, feedbackRef }) {
           </Button>
         </CoolMode>
       </div>
+
+      <Backdrop
+        sx={(theme) => ({
+          color: "#fff",
+          zIndex: theme.zIndex.drawer + 1,
+        })}
+        open={open}
+        onClick={handleClose}
+      >
+        <div onClick={(e) => e.stopPropagation()}>
+          <VolunteerForm setOpen={setOpen} />
+        </div>
+      </Backdrop>
     </div>
   );
 }
