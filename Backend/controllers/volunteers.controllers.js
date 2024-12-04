@@ -1,6 +1,6 @@
 const db = require("../db/index.js");
 const { sendEmailForVolunteering } = require("../utils/emailFunctions.js");
-const errorHandler = require("../utils/errorHandler.js");
+const { errorHandler } = require("../utils/errorHandler.js");
 
 const applyForVolunteering = async (req, res) => {
   try {
@@ -38,6 +38,7 @@ const applyForVolunteering = async (req, res) => {
     }
     let data = {
       name,
+      email,
       phone,
       branch,
       batch,

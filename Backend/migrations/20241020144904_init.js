@@ -10,15 +10,7 @@ exports.up = function (knex) {
   
 
     table.string("phone")
-    table
-      .enum("domain", [
-        "Photography",
-        "Arts",
-        "Web Development",
-        "Content Creation",
-        "Event Management",
-        "Graphics Designer",
-      ])
+    table.string('domain')
       
     table.string("branch")
     table.integer("batch")
