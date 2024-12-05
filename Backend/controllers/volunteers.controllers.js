@@ -45,6 +45,7 @@ const applyForVolunteering = async (req, res) => {
     //     .status(400)
     //     .send(errorHandler(400, "Email Exists", "This Email Already Exists"));
     // }
+    // initial push
     
     let data = {
       name,
