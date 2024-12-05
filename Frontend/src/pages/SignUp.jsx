@@ -206,7 +206,7 @@ export default function SignUp() {
                   className="cursor-pointer mt-3 flex items-center justify-center text-blue-600 hover:text-blue-700 transition duration-200"
                   onClick={() => setAdminAuthenticate(true)}
                 >
-                  Admin Login
+                  Admin login
                   <ArrowCircleRightIcon className="ml-2" />
                 </div>
               </div>
