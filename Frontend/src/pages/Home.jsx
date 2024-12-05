@@ -10,6 +10,7 @@ import LatestOfPratibimb from "../components/general/LatestOfPratibimb";
 
 import { Backdrop } from "@mui/material";
 import VolunteerForm from "../components/general/VolunteerForm";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const people = [
   {
@@ -53,7 +54,7 @@ const images = [
   "https://res.cloudinary.com/dhy548whh/image/upload/f_auto,q_auto/v1729783496/nd5lefydm7boxosreni0.jpg",
 ];
 
-export default function Home({ latestRef, feedbackRef }) {
+export default function Home({carouselRef, latestRef, feedbackRef,aboutUsRef,scrollToLatest}) {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
@@ -65,7 +66,7 @@ export default function Home({ latestRef, feedbackRef }) {
 
   return (
     <div>
-      <div className="bg-slate-900">
+      <div ref={carouselRef} className="bg-slate-900">
         <ImagesSlider className="h-[45rem]" images={images}>
           <motion.div
             initial={{
@@ -86,11 +87,9 @@ export default function Home({ latestRef, feedbackRef }) {
             </motion.p>
             <button
               className="px-4 py-2 backdrop-blur-sm border bg-emerald-300/10 border-emerald-500/20 text-white mx-auto text-center rounded-full relative mt-4"
-              onClick={() =>
-                window.open("https://linktr.ee/clubpratibimb.gs", "_blank")
-              }
+              onClick={scrollToLatest}
             >
-              <span>Connect with Us →</span>
+              <span>Featuring <ArrowForwardIcon /></span>
               <div className="absolute inset-x-0 h-px -bottom-px bg-gradient-to-r w-3/4 mx-auto from-transparent via-emerald-500 to-transparent" />
             </button>
           </motion.div>
@@ -103,7 +102,7 @@ export default function Home({ latestRef, feedbackRef }) {
         <LatestOfPratibimb handleOpen={handleOpen} />
       </div>
 
-      <div className="font-bold text-7xl m-10 bg-gradient-to-r from-blue-400 to-purple-950 bg-clip-text text-transparent">
+      <div ref={aboutUsRef} className="font-bold text-7xl m-10 bg-gradient-to-r from-blue-400 to-purple-950 bg-clip-text text-transparent">
         About Us
       </div>
       <div ref={feedbackRef}>

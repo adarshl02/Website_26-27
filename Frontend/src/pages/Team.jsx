@@ -51,7 +51,9 @@ export default function Team() {
       image:
         "https://res.cloudinary.com/dhy548whh/image/upload/v1729850889/fgkt9xdoe4to0sfjaey6.jpg",
     },
-    { name: "Vivek Gaharwar", post: "Photography Head" },
+    { name: "Vivek Gaharwar", post: "Photography Head",
+      image:
+      "https://res.cloudinary.com/dhy548whh/image/upload/v1733399200/jtdmsezle9mbi1kc5u1z.png", },
     {
       name: "Himanshi Mandloi",
       post: "Information Manager",
@@ -75,12 +77,6 @@ export default function Team() {
       post: "Resource Manager",
       image:
         "https://res.cloudinary.com/dhy548whh/image/upload/v1729871076/i0fcwt2guhaievhrjw1u.png",
-    },
-    {
-      name: "Utkarsh Sahu",
-      post: "Resource Manager",
-      image:
-        "https://res.cloudinary.com/dhy548whh/image/upload/v1729871024/rtq87irpjrisbccw1w2c.jpg",
     },
   ];
 

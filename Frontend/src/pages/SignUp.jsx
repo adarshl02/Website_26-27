@@ -114,8 +114,8 @@ export default function SignUp() {
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-black opacity-40"></div>
       <CardContainer className="inter-var z-10">
-        <CardBody className=" text-black shadow-lg relative group/card  border-white/[0.1] w-full sm:w-[30rem] h-auto rounded-xl p-6">
-          <div className="bg-slate-50 p-8 rounded-lg  w-full text-black text-sm">
+        <CardBody className="text-black shadow-lg relative group/card  border-white/[0.1] w-full sm:w-[30rem] h-auto rounded-xl p-6">
+          <div className="bg-slate-50 p-5 md:p-8 rounded-lg  w-full text-black text-sm">
             <img
               src="/PratibimbLogo3.png"
               alt="Logo"
@@ -135,16 +135,16 @@ export default function SignUp() {
                       className="block text-left font-medium"
                     >
                       Enrollment Number
-                      <span>
+                      
                         <Tooltip
                           title="Pratibimb will not disclose your identity to anyone"
                           placement="right"
                         >
                           <IconButton>
-                            <HelpIcon className="text-slate-800" />
+                            <HelpIcon className="text-slate-800"  fontSize="small"/>
                           </IconButton>
                         </Tooltip>
-                      </span>
+                    
                     </label>
                     <input
                       type="text"
@@ -188,11 +188,11 @@ export default function SignUp() {
                     <div className="w-full border-t border-gray-700"></div>
                   </div>
                   <div className="relative flex justify-center">
-                    <span className="bg-white px-2 text-gray-600 ">OR</span>
+                    <span className="bg-slate-50 px-2 text-gray-600 ">OR</span>
                   </div>
                 </div>
 
-                <div className="text-center">
+                <div className="text-center text-sm">
                   Already Have an Account? Login with{" "}
                   <span
                     onClick={handleGoogleLogin}
