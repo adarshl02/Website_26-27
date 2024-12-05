@@ -9,7 +9,7 @@ export default function Profile() {
   return (
     <div className="flex flex-col items-center mt-20 text-lg px-4 sm:px-6 ">
       <div className="text-center mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-4">My Pratibimb Card</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold mb-4">My Profile</h1>
       </div>
 
       {/* Profile Section */}
