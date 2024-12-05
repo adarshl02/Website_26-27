@@ -67,14 +67,10 @@ const VolunteerForm = ({ setOpen }) => {
     setLoading(true);
 
     try {
-      console.log(formData);
-      // Uncomment to send data to server
-      // const response = await axios.post("/api/register/volunteer", formData);
-      // setSuccess(response.data.response.message);
       const response = await registerVolunteer(formData);
       console.log(response);
 
-      if(response.status===200){
+      if(response.status >= 200 && response.status < 300){
         toast.success("Registered successfully");
         toast.success("Check your mail");
       }

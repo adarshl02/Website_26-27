@@ -195,6 +195,7 @@ const paymentVerification = async (req, res) => {
       month: "long",
       day: "numeric",
     });
+    
     await sendEmail(
       attendee.attendee_email,
       attendee.attendee_name,

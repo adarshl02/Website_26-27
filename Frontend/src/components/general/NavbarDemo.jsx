@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
+import ListItemText from "@mui/material/ListItemText";  
 import Avatar from "@mui/material/Avatar";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
@@ -17,8 +17,8 @@ import PeopleIcon from "@mui/icons-material/People";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import EventIcon from "@mui/icons-material/Event";
 import InfoIcon from "@mui/icons-material/Info";
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import FeedbackIcon from "@mui/icons-material/Feedback";
+import HomeIcon from '@mui/icons-material/Home';
 import { getAuth, signOut } from "firebase/auth";
 import { toast } from "react-toastify";
 import {
@@ -29,33 +29,33 @@ import {
 import { logoutUser } from "../../service/api.js";
 
 const navItems = [
+  { name: "Home", path: "/", icon: <HomeIcon /> },
   { name: "Team", path: "/team", icon: <PeopleIcon /> },
-  { name: "Sponsors", path: "/sponsors", icon: <MonetizationOnIcon /> },
-  { name: "Events", path: "/events", icon: <EventIcon /> },
-  { name: "About Us", path: "/contact-us", icon: <InfoIcon /> },
-  { name: "Trending", path: "/#latest", icon: <TrendingUpIcon /> },
-  { name: "Feedback", path: "/#latest", icon: <FeedbackIcon /> },
+  // { name: "Sponsors", path: "/sponsors", icon: <MonetizationOnIcon /> },
+  { name: "Archive", path: "/events", icon: <EventIcon /> },
 ];
 
-export function NavbarDemo({ scrollToLatest, scrollToFeedback }) {
+export function NavbarDemo({ scrollToCarousel,scrollToFeedback, scrollToAboutUs }) {
   return (
     <div className="relative w-full flex justify-center">
       <Navbar
         className="top-2"
-        scrollToLatest={scrollToLatest}
         scrollToFeedback={scrollToFeedback}
+        scrollToAboutUs={scrollToAboutUs}
+        scrollToCarousel={scrollToCarousel}
       />
     </div>
   );
 }
 
-function Navbar({ className, scrollToLatest, scrollToFeedback }) {
+function Navbar({ className, scrollToCarousel,scrollToFeedback, scrollToAboutUs }) {
   const { currentUser } = useSelector((state) => state.user);
   const [open, setOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width:600px)");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const auth = getAuth();
+  const location = useLocation();
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
@@ -114,7 +114,6 @@ function Navbar({ className, scrollToLatest, scrollToFeedback }) {
           <ListItem disablePadding>
             <ListItemButton
               onClick={() => navigate("/profile")}
-              className="hover:bg-blue-600 rounded-lg"
             >
               <ListItemIcon>
                 <AccountCircleIcon />
@@ -129,15 +128,7 @@ function Navbar({ className, scrollToLatest, scrollToFeedback }) {
                 <ListItem key={idx} disablePadding>
                   <ListItemButton
                     onClick={(e) => {
-                      if (item.name === "Trending") {
-                        e.preventDefault();
-                        scrollToLatest();
-                      } else if (item.name === "Feedback") {
-                        e.preventDefault();
-                        scrollToFeedback();
-                      } else {
-                        navigate(item.path);
-                      }
+                      navigate(item.path);
                     }}
                   >
                     <ListItemIcon>{item.icon}</ListItemIcon>
@@ -145,6 +136,36 @@ function Navbar({ className, scrollToLatest, scrollToFeedback }) {
                   </ListItemButton>
                 </ListItem>
               ))}
+              {(location.pathname === "/" || location.pathname === "") && (
+                <>
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      onClick={(e) => {
+                        e.preventDefault();
+                        scrollToAboutUs();
+                      }}
+                    >
+                      <ListItemIcon>
+                        <InfoIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="About Us" />
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      onClick={(e) => {
+                        e.preventDefault();
+                        scrollToFeedback();
+                      }}
+                    >
+                      <ListItemIcon>
+                        <FeedbackIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Feedback" />
+                    </ListItemButton>
+                  </ListItem>
+                </>
+              )}
             </List>
           )}
 
@@ -171,13 +192,12 @@ function Navbar({ className, scrollToLatest, scrollToFeedback }) {
 
   return (
     <div className="flex items-center justify-between fixed top-3 left-3 right-3 max-w-4xl mx-auto space-x-5 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 text-slate-100 px-6 py-2 rounded-full shadow-lg z-50">
-      <Link to="/">
         <img
           src="./PratibimbLogo2.png"
           alt="Pratibimb Logo"
           className="h-10 w-auto"
+          onClick={scrollToCarousel}
         />
-      </Link>
       {!isMobile && (
         <div className="hidden sm:flex space-x-6">
           {navItems.map((item, idx) => (
@@ -185,19 +205,34 @@ function Navbar({ className, scrollToLatest, scrollToFeedback }) {
               to={item.path}
               key={idx}
               className="relative text-white cursor-pointer font-bold"
-              onClick={(e) => {
-                if (item.name === "Trending") {
-                  e.preventDefault();
-                  scrollToLatest();
-                } else if (item.name === "Feedback") {
-                  e.preventDefault();
-                  scrollToFeedback();
-                }
-              }}
             >
               {item.name}
             </Link>
           ))}
+          {(location.pathname === "/" || location.pathname === "") && (
+            <>
+              <Link
+                to="#"
+                className="relative text-white cursor-pointer font-bold"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToAboutUs();
+                }}
+              >
+                About Us
+              </Link>
+              <Link
+                to="#"
+                className="relative text-white cursor-pointer font-bold"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToFeedback();
+                }}
+              >
+                Feedback
+              </Link>
+            </>
+          )}
         </div>
       )}
       <div>
@@ -214,3 +249,5 @@ function Navbar({ className, scrollToLatest, scrollToFeedback }) {
     </div>
   );
 }
+
+export default Navbar;

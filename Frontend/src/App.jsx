@@ -17,6 +17,8 @@ import Footer from "./components/general/Footer";
 function App() {
   const latestRef = useRef(null);
   const feedbackRef = useRef(null);
+  const aboutUsRef = useRef(null);
+  const carouselRef = useRef(null);
 
   const scrollToLatest = () => {
     if (latestRef.current) {
@@ -39,6 +41,26 @@ function App() {
       window.scrollTo({ top: yPosition, behavior: "smooth" });
     }
   };
+  const scrollToAboutUs = () => {
+    if (aboutUsRef.current) {
+      const yOffset = -80; // Adjust this value according to your navbar's height
+      const yPosition =
+      aboutUsRef.current.getBoundingClientRect().top +
+        window.pageYOffset +
+        yOffset;
+      window.scrollTo({ top: yPosition, behavior: "smooth" });
+    }
+  };
+  const scrollToCarousel = () => {
+    if (carouselRef.current) {
+      const yOffset = -80; // Adjust this value according to your navbar's height
+      const yPosition =
+      carouselRef.current.getBoundingClientRect().top +
+        window.pageYOffset +
+        yOffset;
+      window.scrollTo({ top: yPosition, behavior: "smooth" });
+    }
+  };
 
   return (
     <>
@@ -50,10 +72,11 @@ function App() {
               element={
                 <>
                   <NavbarDemo
-                    scrollToLatest={scrollToLatest}
                     scrollToFeedback={scrollToFeedback}
+                    scrollToAboutUs={scrollToAboutUs}
+                    scrollToCarousel={scrollToCarousel}
                   />
-                  <Home latestRef={latestRef} feedbackRef={feedbackRef} />
+                  <Home carouselRef={carouselRef} latestRef={latestRef} feedbackRef={feedbackRef} aboutUsRef={aboutUsRef} scrollToLatest={scrollToLatest} />
                   <Footer />
                 </>
               }
