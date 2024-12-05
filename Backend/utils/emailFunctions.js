@@ -6,7 +6,7 @@ require("dotenv").config();
 const transporter = nodemailer.createTransport({
   service: "gmail", // Use your email service
   auth: {
-    user: "eklavyasinghparihar7875@gmail.com",
+    user: "clubpratibimb.sgsits@gmail.com",
     pass: process.env.NODEMAILER_PASSWORD,
   },
 });
@@ -78,7 +78,7 @@ const sendEmailForVolunteering = async (
       .replace("{{batch}}", batch);
 
     await transporter.sendMail({
-      from: '"Volunteering Team" <your-email@example.com>',
+      from: '"Club Pratibimb" <your-email@example.com>',
       to: email,
       subject: "Thank You for Volunteering!",
       html: emailTemplate,
