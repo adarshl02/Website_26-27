@@ -155,47 +155,46 @@ const registerEvents = async (req, res) => {
 
 const paymentVerification = async (req, res) => {
   try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
-      req.body;
-    const secret = "5fDFjPzybzKSNMvFGByuGbmN";
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+    const secret = process.env.RAZORPAY_KEY_SECRET; 
     const hash = crypto
-      .createHmac("sha256", secret)
-      .update(razorpay_order_id + "|" + razorpay_payment_id)
-      .digest("hex");
+      .createHmac('sha256', secret)
+      .update(razorpay_order_id + '|' + razorpay_payment_id)
+      .digest('hex');
 
     // Fetch attendee and event details
-    const attendee = await db("attendees")
-      .select("attendee_email", "attendee_name","team_name","event_id")
+    const attendee = await db('attendees')
+      .select('attendee_email', 'attendee_name', 'team_name', 'event_id')
       .where({
         order_id: razorpay_order_id,
-        payment_status: "PENDING",
+        payment_status: 'PENDING',
       })
       .first();
-      console.log(attendee)
+    console.log(attendee);
 
-    const event = await db("events")
-      .select("event_name", "start_date", "location")
+    const event = await db('events')
+      .select('event_name', 'start_date', 'location')
       .where({ event_id: attendee.event_id })
       .first();
 
     if (hash !== razorpay_signature) {
-      return res.status(400).json({ message: "Payment verification failed" });
+      return res.status(400).json({ message: 'Payment verification failed' });
     }
 
-    // Update payment status and generate QR code
-    await db("attendees")
+    // Update payment status
+    await db('attendees')
       .where({ order_id: razorpay_order_id })
-      .update({ payment_status: "APPROVED" });
+      .update({ payment_status: 'APPROVED' });
 
     const qrCodeData = `Payment was successful for the event : ${event.event_name}`;
-    await QRCode.toFile("./qr_code.png", qrCodeData);
+    const qrCodeBuffer = await QRCode.toBuffer(qrCodeData);
 
-    const event_date = new Date(event.start_date).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
+    const event_date = new Date(event.start_date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
     });
-    
+
     await sendEmail(
       attendee.attendee_email,
       attendee.attendee_name,
@@ -203,17 +202,17 @@ const paymentVerification = async (req, res) => {
       event_date,
       event.event_name,
       event.location,
-      "./qr_code.png"
+      qrCodeBuffer
     );
 
     res.status(200).json({
-      message: "Payment verified successfully",
+      message: 'Payment verified successfully',
       razorpay_payment_id,
       razorpay_order_id,
     });
   } catch (error) {
-    console.error("Payment verification error:", error);
-    res.status(500).json({ message: "Internal Server Error", error });
+    console.error('Payment verification error:', error);
+    res.status(500).json({ message: 'Internal Server Error', error });
   }
 };
 

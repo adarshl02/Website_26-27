@@ -28,6 +28,13 @@ if (process.env.NODE_ENV === 'development'){
 
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.status(404).send({ message: "Not Found" });
+});
+
+// Handle favicon.ico requests
+app.get('/favicon.ico', (req, res) => res.status(204).end());
+
 app.use("/api",eventsRouter);
 app.use("/api",authRouter);
 app.use("/api",userRouter);

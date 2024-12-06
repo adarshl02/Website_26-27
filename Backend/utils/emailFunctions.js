@@ -18,7 +18,7 @@ const sendEmail = async (
   event_date,
   event_name,
   event_location,
-  qrCodeFilePath
+  qrCodeBuffer
 ) => {
   try {
     const templatePath = path.join(
@@ -42,7 +42,7 @@ const sendEmail = async (
       attachments: [
         {
           filename: "qr_code.png",
-          path: qrCodeFilePath,
+          content: qrCodeBuffer,
           cid: "qrCodeImage",
         },
       ],
