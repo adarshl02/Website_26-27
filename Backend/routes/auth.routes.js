@@ -14,9 +14,7 @@ router.post("/auth/google", async (req, res,next) => {
   
     const existingUser = await db("users").where({ email }).first();
     console.log(existingUser);
-    console.log("hi");
-    
-    
+     
     if (existingUser) {
       const token = jwt.sign({ id: existingUser.id },process.env.JWT_SECRET);
       const { enrollment: enro, ...rest } = existingUser; 
