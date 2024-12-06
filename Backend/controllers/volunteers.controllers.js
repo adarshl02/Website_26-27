@@ -57,7 +57,17 @@ const applyForVolunteering = async (req, res) => {
     };
    
     let insertion = await db("volunteers").insert(data).returning("*");
-    sendEmailForVolunteering(email, name, phone, domain, branch, batch);
+
+
+
+    try {
+      await sendEmailForVolunteering(email, name, phone, domain, branch, batch);
+    } catch (emailError) {
+      console.error("Error sending email:", emailError);
+      return res.status(500).send(errorHandler(500, "Internal Server Error", "Error sending email"));
+    }
+
+
     if (insertion) {
       return res.status(200).send({
         response: {
