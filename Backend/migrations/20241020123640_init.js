@@ -11,6 +11,8 @@ exports.up = function(knex) {
         table.string('location');
         table.enum('status', ['PAST', 'ONGOING', 'UPCOMING']).notNullable(); // Fixed typo from 'UPCOMIG' to 'UPCOMING'
         table.integer('ticket_price').notNullable();
+        table.string('event_teaser')
+        table.string('event_aftermovie')
         table.string('event_logo');
         table.string('event_poster');
         table.timestamps(true, true);

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #2c3e50, #34495e);
+        color: #ffffff;
+      }
+      .email-container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #1a1a1a;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        text-align: center;
+        padding-bottom: 20px;
+      }
+      .header img {
+        width: 100px;
+        height: auto;
+      }
+      .header h1 {
+        margin: 10px 0;
+        font-size: 24px;
+        color: #f39c12;
+      }
+      .content {
+        line-height: 1.6;
+        color: #ecf0f1;
+      }
+      .content p {
+        margin: 10px 0;
+      }
+      .footer {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+        color: #7f8c8d;
+      }
+      .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        margin-top: 20px;
+        background-color: #f39c12;
+        color: #1a1a1a;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+      }
+      .btn:hover {
+        background-color: #e67e22;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <div class="header">
+        <img
+          src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1733249718/k5adyreqoelqg1molfoi.png"
+          alt="Pratibimb Logo"
+        />
+        <h1>Welcome to Pratibimb!</h1>
+      </div>
+      <div class="content">
+        <p><b>Dear {{name}}</b>,</p>
+        <p>
+          Thank you for registering with Pratibimb! We are pleased to have you
+          as part of our community.
+        </p>
+        <p>
+          As a registered individual, you will receive timely updates on our
+          upcoming events, workshops, and all the exciting opportunities we have
+          in store via emails. No junk mails guaranteed!
+        </p>
+        <p>
+          Becoming a member of Pratibimb gives you access to exclusive benefits,
+          including priority registration for events and special offers. You are
+          free to unsubscribe at any time, but we hope you choose to stay and
+          make the most of everything Pratibimb has to offer.
+        </p>
+        <p>We look forward to keeping you informed and engaged!</p>
+        <a href="www.adarshlandge.xyz" class="btn">Explore Events</a>
+      </div>
+      <div class="footer">
+        <p>Pratibimb: Fine Arts & Photography Club, SGSITS</p>
+      </div>
+    </div>
+  </body>
+</html>

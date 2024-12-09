@@ -89,5 +89,26 @@ const sendEmailForVolunteering = async (
     console.error("Error sending email for volunteers:", error);
   }
 };
+const sendWelcomeEmail = async (email, name) => {
+  try {
+    let templatePath = path.join(
+      __dirname,
+      "../templates/welcomeTemplate.html"
+    );
+    let emailTemplate = fs.readFileSync(templatePath, "utf-8");
+    emailTemplate = emailTemplate.replace("{{name}}", name);
 
-module.exports = { sendEmail, sendEmailForVolunteering };
+    await transporter.sendMail({
+      from: '"Club Pratibimb" <your-email@example.com>',
+      to: email,
+      subject: "Pratibimb Welcomes You",
+      html: emailTemplate,
+    });
+
+    console.log("Email sent to:", email);
+  } catch (error) {
+    console.error("Error sending welcome email:", error);
+  }
+};
+
+module.exports = { sendEmail, sendEmailForVolunteering, sendWelcomeEmail };
