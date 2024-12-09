@@ -121,6 +121,16 @@ function App() {
                 </>
               }
             />
+            <Route
+              path="/test"
+              element={
+                <>
+                  <NavbarDemo />
+                  <ThreeDCardDemo />
+                  <Footer />
+                </>
+              }
+            />
           </Route>
 
           <Route
@@ -131,7 +141,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/test" element={<ThreeDCardDemo />} />
         </Routes>
       </BrowserRouter>
       <ToastContainer
