@@ -46,7 +46,7 @@ const applyForVolunteering = async (req, res) => {
     //     .send(errorHandler(400, "Email Exists", "This Email Already Exists"));
     // }
     // initial push
-    
+
     let data = {
       name,
       email,
@@ -55,18 +55,10 @@ const applyForVolunteering = async (req, res) => {
       batch,
       domain,
     };
-   
+
     let insertion = await db("volunteers").insert(data).returning("*");
 
-
-
-    try {
-      await sendEmailForVolunteering(email, name, phone, domain, branch, batch);
-    } catch (emailError) {
-      console.error("Error sending email:", emailError);
-      return res.status(500).send(errorHandler(500, "Internal Server Error", "Error sending email"));
-    }
-
+    sendEmailForVolunteering(email, name, phone, domain, branch, batch);
 
     if (insertion) {
       return res.status(200).send({
