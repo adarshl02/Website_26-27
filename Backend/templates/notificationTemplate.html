@@ -17,6 +17,8 @@
         padding: 0;
         width: 100%;
         font-family: Arial, sans-serif;
+        background-color: #121212;
+        color: #ffffff;
       }
       table {
         border-collapse: collapse !important;
@@ -26,8 +28,35 @@
         outline: none;
         text-decoration: none;
         display: block;
+        max-width: 100%;
+        height: auto;
       }
-      /* Responsive */
+      h2 {
+        margin: 0;
+        font-size: 24px;
+        color: #ffffff;
+      }
+      p {
+        margin: 5px 0;
+        font-size: 16px;
+        line-height: 1.5;
+        color: #cccccc;
+      }
+      a {
+        text-decoration: none;
+        color: #007bff;
+      }
+      .footer {
+        text-align: center;
+        font-size: 12px;
+        color: #aaaaaa;
+        margin-top: 20px;
+      }
+      .footer a {
+        color: #007bff;
+        text-decoration: none;
+      }
+      /* Responsive Design */
       @media screen and (max-width: 600px) {
         .email-container {
           width: 100% !important;
@@ -35,12 +64,12 @@
       }
     </style>
   </head>
-  <body style="background-color: #f4f4f4; margin: 0; padding: 0">
+  <body>
     <center>
       <table border="0" cellpadding="0" cellspacing="0" width="100%">
-        <!-- Email Container -->
+        <!-- Main Email Container -->
         <tr>
-          <td align="center" style="padding: 20px 0">
+          <td align="center" style="padding: 10px 0">
             <table
               border="0"
               cellpadding="0"
@@ -48,68 +77,112 @@
               width="600"
               class="email-container"
               style="
-                background-color: #ffffff;
+                background: linear-gradient(135deg, #232526, #414345);
                 padding: 20px;
                 border-radius: 8px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
               "
             >
-              <!-- Image Section -->
+              <!-- Logo Section -->
               <tr>
-                <td align="center" style="padding: 20px">
+                <td align="center" style="padding: 10px 0">
                   <img
-                    src="https://res.cloudinary.com/dhy548whh/image/upload/v1729877412/mtwje6wydjzwgmxwzwub.jpg"
-                    alt="Notification Image"
-                    width="300"
-                    style="max-width: 100%; height: auto; border-radius: 5px"
+                    src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1733825280/uqfmoxybdavba23awyjg.png"
+                    alt="Club Logo"
+                    width="150"
+                    style="margin-top: 20px;"
+                  />
+                  <hr
+                    style="
+                      width: 80%;
+                      opacity: 0.5;
+                      border: none;
+                      border-top: 1px solid #cccccc;
+                      margin: 20px auto;
+                    "
                   />
                 </td>
               </tr>
-              <!-- Message Section -->
+              <!-- Poster Section -->
               <tr>
-                <td
-                  align="center"
-                  style="
-                    padding: 20px;
-                    color: #333333;
-                    font-size: 16px;
-                    line-height: 24px;
-                  "
-                >
-                  <h2 style="margin: 0; font-size: 24px; color: #333">
-                    SEPIA : A Whirl Of Visuals
-                  </h2>
-                  <p style="margin: 10px 0 0">
-                    Artistic Photography Workshop And Competition
+                <td align="center" style="padding: 10px 0">
+                  <img
+                    src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1733823867/xs6tm2k1kjusx74myczx.jpg"
+                    alt="Event Poster"
+                    width="300"
+                    style="border-radius: 8px; margin-bottom: 20px;"
+                  />
+                </td>
+              </tr>
+              <!-- Content Section -->
+              <tr>
+                <td align="center" style="padding: 10px 20px; text-align: left">
+                  <h2 style="text-align: center">Greetings from Club Pratibimb!</h2>
+                  <p>
+                    We hope you enjoyed <b><em>Sepia: The Whirl of Visuals</em></b> and are
+                    up for more creative adventures with us.
                   </p>
+                  <p>
+                   <b> Club Pratibimb is the official Fine Arts and Photography Club of
+                    SGSITS, Indore</b>, where imagination breaks its limits and ideas come
+                    to life. We're on the lookout for passionate volunteers from the
+                    batch of 2028 to bring our next grand event to function.
+                  </p>
+                  <p><strong>Open Roles:</strong></p>
+                  <ul style="padding-left: 20px; color: #cccccc">
+                    <li>Artists</li>
+                    <li>Content Writers</li>
+                    <li>Event Managers</li>
+                    <li>Graphic Designers</li>
+                    <li>Photographers</li>
+                    <li>Video Editors</li>
+                    <li>Web Developers</li>
+                  </ul>
+                  <p>
+                    This is your chance to be part of something bigger — to shape,
+                    create, and leave your mark on our legacy.
+                  </p>
+                 <b><p>Deadline: 12th December 2024</p></b>
                 </td>
               </tr>
               <!-- Button Section -->
               <tr>
                 <td align="center" style="padding: 20px">
                   <a
-                    href="https://www.adarshlandge.xyz"
-                    style="
-                      background-color: #007bff;
-                      color: #ffffff;
-                      padding: 12px 24px;
-                      text-decoration: none;
-                      border-radius: 4px;
-                      font-size: 16px;
-                    "
-                    >Take Action</a
-                  >
+                  href="https://forms.gle/NTRGp7LJN3fmuPKz6"
+                  style="
+                    background-color: #4682B4; /* Steel blue for good contrast with gray */
+                    color: #ffffff; /* White text for readability */
+                    padding: 12px 24px;
+                    text-decoration: none;
+                    border-radius: 4px;
+                    font-size: 16px;
+                    font-weight: bold;
+                  "
+                  >Register Now</a>
+                
+                  
+                </td>
+              </tr>
+              <!-- Footer Section -->
+              <tr>
+                <td class="footer" style="padding: 20px">
+                  <p>
+                    For queries, reach out to us via:<br />
+                    Email:
+                    <a href="mailto:clubpratibimb.sgsits@gmail.com"
+                      >clubpratibimb.sgsits@gmail.com</a
+                    ><br />
+                    Instagram:
+                    <a href="https://bit.ly/3Mu4CN2">bit.ly/3Mu4CN2</a><br />
+                    Call/Text: 883830466 / 8878806294
+                  </p>
                 </td>
               </tr>
             </table>
           </td>
         </tr>
       </table>
-      <p>
-        For any inquiries, feel free to contact us at
-        <a href="mailto:clubpratibimb.sgsitspratibimb.sgsits@gmail.com"
-          >clubpratibimb.sgsits@gmail.com</a
-        >
-      </p>
     </center>
   </body>
 </html>
