@@ -80,7 +80,7 @@ const sendEmailForVolunteering = async (
     await transporter.sendMail({
       from: '"Club Pratibimb" <your-email@example.com>',
       to: email,
-      subject: "Thank You for Volunteering!",
+      subject: "Thank You For Filling Volunteering Form!",
       html: emailTemplate,
     });
 
