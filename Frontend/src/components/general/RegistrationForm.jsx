@@ -26,7 +26,7 @@ const RegistrationForm = ({ event_id , setOpen }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+  
     try {
       const payload = {
         event_id,
@@ -36,17 +36,17 @@ const RegistrationForm = ({ event_id , setOpen }) => {
         email: currentUser.email,
         phone: formData.phone,
       };
-
+  
       const response = await registerEvent(payload);
-
-      if (response?.status === 200) {
+  
+      if (response.success) {
         toast.success("Redirecting to Payment Page");
         setOpen(false);
         const { amount, insertion } = response.data.response.data;
         const { order_id } = insertion[0];
         handlePayment(order_id, amount);
       } else {
-        toast.error(response?.data?.message || "Unexpected error occurred.");
+        toast.error(response.message);
       }
     } catch (error) {
       console.error("Error in event registration:", error);
@@ -102,8 +102,8 @@ const RegistrationForm = ({ event_id , setOpen }) => {
         razorpay_payment_id: response.razorpay_payment_id,
         razorpay_signature: response.razorpay_signature,
       });
-
-      if (verificationResponse?.status === 200) {
+  
+      if (verificationResponse.success) {
         setFormData({
           name: "",
           phone: "",
@@ -114,7 +114,7 @@ const RegistrationForm = ({ event_id , setOpen }) => {
         toast.success("Check Your Mail");
         // Update the order status to "paid" in the database
       } else {
-        toast.error("Payment verification failed. Please try again.");
+        toast.error(verificationResponse.message || "Payment verification failed. Please try again.");
       }
     } catch (error) {
       console.error("Payment verification error:", error);

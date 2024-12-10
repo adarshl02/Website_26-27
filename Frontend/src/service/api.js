@@ -2,25 +2,27 @@ import axios from 'axios';
 
 const URL = import.meta.env.VITE_URL; 
 
+const handleApiError = (error, apiName) => {
+  const errorMsg = error.response?.data?.message || error.message || 'An unexpected error occurred';
+  console.log(`Error in ${apiName}:`, errorMsg);
+  return { success: false, message: errorMsg, status: error.response?.status };
+};
+
 export const authenticateGoogleLogin = async (data) => {
   try {
     const response = await axios.post(`${URL}/api/auth/google`, data);
-    
-    return response;
+    return { success: true, data: response.data };
   } catch (error) {
-    console.error("Error in Google Login API:", error);
-    return error.response; 
+    return handleApiError(error, 'Google Login API');
   }
 };
 
 export const logoutUser = async () => {
     try {
       const response = await axios.get(`${URL}/api/auth/signout`); 
-
-      return response;
+      return { success: true, data: response.data };
     } catch (error) {
-      console.error("Error in Logout API:", error);
-      return error.response; 
+      return handleApiError(error, 'Logout API'); 
     }
   };
   
@@ -31,20 +33,19 @@ export const logoutUser = async () => {
           "Content-Type": "application/json",
         },
       });
-      return response.data;
+      return { success: true, data: response.data };
     } catch (error) {
-      throw error.response?.data || error;
+      return handleApiError(error, 'Fetch Events by Status API');
     }
-  }; 
+  };
 
   export const registerEvent = async (data) => {
     try {
       const { event_id, ...payload } = data;
       const response = await axios.post(`${URL}/api/register?event_id=${event_id}`, payload);
-      return response;
+      return { success: true, data: response.data };
     } catch (error) {
-      console.error("Error in Event Registration API:", error);
-      return error.response;
+      return handleApiError(error, 'Event Registration API');
     }
   }; 
 
@@ -52,19 +53,17 @@ export const logoutUser = async () => {
     try {
 
       const response = await axios.post(`${URL}/api/register/volunteer`, data);
-      return response;
+      return { success: true, data: response.data };
     } catch (error) {
-      console.error("Error in Event Registration API:", error);
-      return error.response;
+      return handleApiError(error, 'Volunteer Registration API');
     }
   }; 
 
   export const verifyPayment = async (data) => {
     try {
       const response = await axios.post(`${URL}/api/payment/verify`, data);
-      return response;
+      return { success: true, data: response.data };
     } catch (error) {
-      console.error("Error in Payment Verification API:", error);
-      return error.response;
+      return handleApiError(error, 'Payment Verification API');
     }
   };  

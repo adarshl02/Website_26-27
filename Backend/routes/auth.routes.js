@@ -55,7 +55,7 @@ router.post("/auth/google", async (req, res, next) => {
 
       const [insertedUser] = await db("users").insert(newUser).returning("*");
 
-      if (insertedUser) {
+      if (insertedUser) { 
         sendWelcomeEmail(email, name);
       }
 

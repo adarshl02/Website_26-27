@@ -30,24 +30,30 @@ const Event = () => {
   // Fetch ongoing events on component mount
   useEffect(() => {
     const fetchOngoingEvent = async () => {
-      dispatch(ongoingStart());
+      dispatch(pastStart());
       dispatch(deleteEvents());
       try {
-        const response = await fetchEventsByStatus("ONGOING");
-        dispatch(ongoingSuccess(response.response.data)); // Store ongoing events in Redux
+        const response = await fetchEventsByStatus("PAST");
+        if (response.success) {
+          dispatch(pastSuccess(response.data)); // Store ongoing events in Redux
+        } else {
+          dispatch(pastFailure(response.message));
+          console.log("Error fetching ongoing events:", response.message);
+        }
       } catch (error) {
-        dispatch(ongoingFailure(error));
-        console.log("Error fetching ongoing events:", error);
+        dispatch(pastFailure(error.message));
+        console.log("Error fetching ongoing events:", error.message);
       }
     };
 
     fetchOngoingEvent();
   }, [dispatch]);
 
-  // Function to fetch event data based on the selected option
-  const fetchEventData = async (eventType) => {
-    let startAction, successAction, failureAction, status;
 
+  // Function to fetch event data based on the selected option
+  const fetchEventData = async (eventType, dispatch) => {
+    let startAction, successAction, failureAction, status;
+  
     switch (eventType) {
       case "Past event":
         startAction = pastStart;
@@ -70,15 +76,20 @@ const Event = () => {
       default:
         return;
     }
-
+  
     dispatch(startAction());
-
+  
     try {
       const response = await fetchEventsByStatus(status);
-      dispatch(successAction(response.response.data)); // Store data in Redux
-    } catch (error){
-      dispatch(failureAction(error));
-      console.log(`Error fetching ${eventType.toLowerCase()}:`, error);
+      if (response.success) {
+        dispatch(successAction(response.data)); // Store data in Redux
+      } else {
+        dispatch(failureAction(response.message));
+        console.log(`Error fetching ${eventType.toLowerCase()}:`, response.message);
+      }
+    } catch (error) {
+      dispatch(failureAction(error.message));
+      console.log(`Error fetching ${eventType.toLowerCase()}:`, error.message);
     }
   };
 

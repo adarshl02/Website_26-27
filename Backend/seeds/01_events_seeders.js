@@ -55,7 +55,7 @@ exports.seed = async function (knex) {
       start_date: "2024-07-15 12:00:00",
       location: "SGSITS,Indore",
       status: "PAST",
-      ticket_price: 50,
+      ticket_price: 100,
       event_teaser:"https://youtu.be/G3LcD564KLY?si=DWfphGdzA5ZzyBMx",
       event_aftermovie:"https://youtu.be/ucem4JGCIk0?si=AVKxYAeS4pVD_Mqe",
       event_logo: "https://res.cloudinary.com/dhy548whh/image/upload/v1733767725/irgncmnchscaawu4otrh.png",
