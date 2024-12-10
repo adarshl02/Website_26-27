@@ -12,7 +12,7 @@ const app = express();
 
 const allowedOrigins = [
   'https://website-26-27-ten.vercel.app',
-  'https://www.adarshlandge.xyz',
+  'https://www.clubpratibimb.com',
 ];
 
 if (process.env.NODE_ENV === 'development'){
