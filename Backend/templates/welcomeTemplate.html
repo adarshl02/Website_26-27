@@ -19,14 +19,13 @@
       }
       .header {
         text-align: center;
-        padding-bottom: 20px;
+        padding-bottom: 5px;
       }
       .header img {
         width: 100px;
         height: auto;
       }
       .header h1 {
-        margin: 10px 0;
         font-size: 24px;
         color: #f39c12;
       }
@@ -43,8 +42,17 @@
         font-size: 14px;
         color: #7f8c8d;
       }
+      .footer a {
+        color: #f39c12;
+        text-decoration: none;
+        margin: 0 10px;
+      }
+      .footer a:hover {
+        opacity: 0.8;
+      }
       .btn {
         display: inline-block;
+        
         padding: 10px 20px;
         margin-top: 20px;
         background-color: #f39c12;
@@ -65,9 +73,18 @@
       .unsubscribe a {
         color: #f39c12;
         text-decoration: none;
+        margin: 0;
       }
       .unsubscribe a:hover {
         text-decoration: underline;
+      }
+      .social-icons {
+        margin-top: 20px;
+      }
+      .social-icons img {
+        width: 30px;
+        margin: 0 10px;
+        vertical-align: middle;
       }
     </style>
   </head>
@@ -81,39 +98,36 @@
         <h1>Welcome to Pratibimb!</h1>
       </div>
       <div class="content">
-        <p><b>Dear {{name}}</b>,</p>
-        <p>
-          Thank you for registering with Pratibimb! We are thrilled to have you
-          as part of our community.
-        </p>
-        <p>
-          As a registered member, you will receive updates on upcoming events,
-          workshops, and opportunities directly to your inbox. No spam—just the
-          best of what Pratibimb has to offer!
-        </p>
-        <p>
-          Being a part of Pratibimb provides exclusive benefits, including priority
-          event registrations and special offers. If you no longer wish to receive
-          these updates, you can unsubscribe anytime.
-        </p>
-        <p>We look forward to keeping you engaged and informed!</p>
-        <a href="www.adarshlandge.xyz" class="btn">Explore Events</a>
+        <p><b>Dear {{name}},</b></p>
+        <p>Thank you for joining Pratibimb! We're excited to have you as part of our community. Our website offers a range of amazing features to help you stay connected with us:</p>
+        <ul>
+          <li><b>Comprehensive Platform:</b>&nbsp; <span style="opacity: 0.8;" >Find everything about Pratibimb, from events to resources, all in one place.</span> </li>
+          <li><b>Instant Certificates:</b> &nbsp;<span style="opacity: 0.8;"  >Receive on-the-go certificates for your participation in any Pratibimb event or activity.</span> </li>
+          <li><b>Exclusive Membership Perks:</b>&nbsp;<span style="opacity: 0.8;" >If you've claimed membership, enjoy full registration cost discounts for upcoming events.</span>  </li>
+        </ul>
+        <p>We hope you make the most of all the exciting opportunities ahead. Stay tuned for more updates!</p>
+        <a href="https://www.clubpratibimb.com" class="btn">Explore Events</a>
       </div>
       <div class="footer">
         <p>Pratibimb: Fine Arts & Photography Club, SGSITS</p>
-        <p>
-          For any inquiries, contact us at
-          <a href="mailto:clubpratibimb.sgsits@gmail.com"
-            >clubpratibimb.sgsits@gmail.com</a
-          >
-        </p>
+        <p>For any inquiries, contact us at <a href="mailto:clubpratibimb.sgsits@gmail.com">clubpratibimb.sgsits@gmail.com</a></p>
         <p>Address: SGSITS, Indore, MP, India</p>
-      </div>
-      <div class="unsubscribe">
-        <p>
-          If you wish to stop receiving emails from us, you can
-          <a href="www.adarshlandge.xyz/unsubscribe">unsubscribe here</a>.
-        </p>
+        
+        <!-- Social Media Icons -->
+        <div class="social-icons">
+          <a href="https://bit.ly/3Mu4CN2" target="_blank">
+            <img src="https://res.cloudinary.com/dhy548whh/image/upload/v1733923563/tpuqqhg73ccx2cbs6ccq.png" alt="Instagram" />
+          </a>
+          <a href="https://chat.whatsapp.com/Lo2YDqUGt9vDgxhtjQqe43" target="_blank">
+            <img src="https://res.cloudinary.com/dhy548whh/image/upload/v1733924392/wkes107z9zx08debjfa3.png" alt="WhatsApp" />
+          </a>
+          <a href="https://youtube.com/@pratibimb_sgsits?si=BLxqIAt6U6Sxn-l3" target="_blank">
+            <img src="https://res.cloudinary.com/dhy548whh/image/upload/v1733923562/ph251e5rkfoteorw38ug.png" alt="YouTube" />
+          </a>
+        </div>
+        <div class="unsubscribe">
+          <p>If you wish to unsubscribe from our mailing list, please click <a href="{{unsubscribe_link}}">here</a>.</p>
+        </div>
       </div>
     </div>
   </body>

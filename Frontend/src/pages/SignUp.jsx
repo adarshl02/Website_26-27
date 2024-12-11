@@ -16,7 +16,7 @@ import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import { toast } from "react-toastify";
 import { authenticateGoogleLogin } from "../service/api";
 
-export default function SignUp() {
+export default function SignUp({setBackdropOpen}) {
   const { loading } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({});
   const [err, setErr] = useState("");
@@ -26,19 +26,26 @@ export default function SignUp() {
 
   const handleGoogleSignUp = async () => {
     try {
+      // Validate enrollment number
       if (!formData.enrollment || formData.enrollment.length !== 12) {
         setErr("Enrollment number should be of size 12");
         return;
       }
 
       setErr("");
+      
+      // Configure Google provider
       const provider = new GoogleAuthProvider();
       provider.setCustomParameters({ prompt: "select_account" });
+
+      // Initialize Firebase authentication
       const auth = getAuth(app);
       const result = await signInWithPopup(auth, provider);
 
-      // Call the existing API function
+      // Dispatch sign-in start action
       dispatch(signInStart());
+
+      // Call the authenticateGoogleLogin API function
       const response = await authenticateGoogleLogin({
         name: result.user.displayName,
         email: result.user.email,
@@ -46,14 +53,16 @@ export default function SignUp() {
         enrollment: formData.enrollment,
       });
 
-      if (response.status >= 200 && response.status < 300) {
+      // Handle the API response
+      if (response.success) {
         dispatch(signInSuccess(response.data));
         navigate("/");
+        setBackdropOpen(true);
         toast.success("You're Successfully Signed Up");
-        return;
+      } else {
+        toast.error(response.message);
+        dispatch(signInFailure(response.message));
       }
-      toast.error(response.data.message);
-      dispatch(signInFailure(response.data));
     } catch (error) {
       toast.error("Could not sign up with Google");
       console.error("Could not sign up with Google", error);
@@ -70,31 +79,34 @@ export default function SignUp() {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    try {
-      const provider = new GoogleAuthProvider();
-      provider.setCustomParameters({ prompt: "select_account" });
-      const auth = getAuth(app);
-      const result = await signInWithPopup(auth, provider);
-      console.log(result);
+const handleGoogleLogin = async () => {
+  try {
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: "select_account" });
+    const auth = getAuth(app);
+    const result = await signInWithPopup(auth, provider);
+    
 
-      const response = await authenticateGoogleLogin({
-        email: result.user.email,
-        enrollment: false,
-      });
+    const response = await authenticateGoogleLogin({
+      email: result.user.email,
+      enrollment: false,
+    });
 
-      if (response.status >= 200 && response.status < 300) {
-        dispatch(signInSuccess(response.data));
-        navigate("/");
-        toast.success("You're Successfully Signed In");
-        return;
-      }
-      toast.error(response.data.errors.detail);
+    if (response.success) {
+      dispatch(signInSuccess(response.data));
+      navigate("/");
+    
+      toast.success("You're Successfully Logged In");
+    } else {
+      toast.error(response.message || "Failed to sign in with Google");
       dispatch(signInFailure());
-    } catch (error) {
-      console.log("Could not sign up with Google", error);
     }
-  };
+  } catch (error) {
+    console.error("Could not sign up with Google", error);
+    toast.error("Could not sign up with Google. Please try again later.");
+    dispatch(signInFailure());
+  }
+};
 
   return (
     <div

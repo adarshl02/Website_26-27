@@ -58,13 +58,11 @@ exports.seed = async function (knex) {
       start_date: "2024-02-03 12:00:00",
       location: "SGSITS,Indore",
       status: "PAST",
-      ticket_price: 600,
-      event_teaser: "https://youtu.be/G3LcD564KLY?si=DWfphGdzA5ZzyBMx",
-      event_aftermovie: "https://youtu.be/ucem4JGCIk0?si=AVKxYAeS4pVD_Mqe",
-      event_logo:
-        "https://res.cloudinary.com/dhy548whh/image/upload/v1733767725/irgncmnchscaawu4otrh.png",
-      event_poster:
-        "https://res.cloudinary.com/dhy548whh/image/upload/v1733767739/o4r5q4deccmkurcubktm.jpg",
+      ticket_price: 100,
+      event_teaser:"https://youtu.be/G3LcD564KLY?si=DWfphGdzA5ZzyBMx",
+      event_aftermovie:"https://youtu.be/ucem4JGCIk0?si=AVKxYAeS4pVD_Mqe",
+      event_logo: "https://res.cloudinary.com/dhy548whh/image/upload/v1733767725/irgncmnchscaawu4otrh.png",
+      event_poster: "https://res.cloudinary.com/dhy548whh/image/upload/v1733767739/o4r5q4deccmkurcubktm.jpg",
       created_at: knex.fn.now(),
       updated_at: knex.fn.now(),
       // record_logo = "https://res.cloudinary.com/dgc7xsrcx/image/upload/v1733930857/hsyx3jpvrfeorjqfmiv9.png"

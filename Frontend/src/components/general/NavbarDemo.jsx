@@ -63,25 +63,30 @@ function Navbar({ className, scrollToCarousel,scrollToFeedback, scrollToAboutUs 
 
   const handleLogout = async () => {
     try {
+      // Start sign out process
       dispatch(signOutStart());
 
-      const response = await logoutUser(); // Call the API function
-      if (response.status !== 200) {
-        dispatch(signOutFailure(response.data.message));
+      // Call the logout API function
+      const response = await logoutUser();
+
+      // Check if the API call was successful
+      if (!response.success) {
+        dispatch(signOutFailure(response.message));
+        toast.error(response.message);
         return;
       }
 
-      signOut(auth)
-        .then(() => {
-          toast.success("You're Signed Out!");
-          dispatch(signOutSuccess());
-          navigate("/sign-up");
-        })
-        .catch((error) => {
-          dispatch(signOutFailure(error.message));
-        });
+      // Sign out from Firebase authentication
+      await signOut(auth);
+
+      // On successful sign out, dispatch success action, show toast, and navigate
+      toast.success("You're Signed Out!");
+      dispatch(signOutSuccess());
+      navigate("/sign-up");
     } catch (error) {
+      // Handle any errors during the sign out process
       dispatch(signOutFailure(error.message));
+      toast.error("Logout error: " + error.message);
       console.error("Logout error:", error);
     }
   };
