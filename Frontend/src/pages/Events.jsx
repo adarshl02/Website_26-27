@@ -11,11 +11,10 @@ export default function Events() {
   };
 
   return (
-    <div className="p-6 mt-10">
-      <h2 className="text-5xl md:text-7xl font-bold mb-4 text-center">Archives</h2>
-
+    <div className="">
+    
       {/* Radio Button Group */}
-      <div className="flex w-full flex-wrap justify-center space-x-2 md:space-x-8 mb-4">
+      <div className="pt-28 flex w-full flex-wrap justify-center space-x-2 md:space-x-8 mb-4">
         {["Past Events", "Record Events", "Mini Pratibimb"].map((option) => (
           <div key={option}>
             <input
@@ -33,8 +32,8 @@ export default function Events() {
                 selectedOption === option
                   ? selectedOption === "Record Events"
                     ? "bg-gold text-black border border-gold"
-                    : "bg-[#4682B4] text-white border border-[#4682B4]"
-                  : "bg-white text-[#4682B4] border border-[#4682B4] hover:text-white hover:bg-[#4682B4]"
+                    : "bg-slate-950 text-white border border-[#4682B4]"
+                  : "bg-white text-[#4682B4] border border-[#4682B4] hover:text-white hover:bg-slate-950"
               }`}
               htmlFor={option}
             >
@@ -44,7 +43,7 @@ export default function Events() {
         ))}
       </div>
 
-      <div className="w-4/5 opacity-90 border-t border-gray-400 my-5 mx-auto"></div>
+      {/* <div className="w-4/5 opacity-90 border-t border-gray-400 my-5 mx-auto"></div> */}
 
       <div className="mt-5">
         {selectedOption === "Past Events" && <PastEvents />}
