@@ -4,12 +4,18 @@ const path = require("path");
 require("dotenv").config();
 
 const transporter = nodemailer.createTransport({
-  service: "gmail", 
+  host: 'smtp.office365.com', // Microsoft 365 SMTP server
+  port: 587, // TLS port
+  secure: false, // Use TLS (true for 465, false for other ports)
   auth: {
-    user: "clubpratibimb.sgsits@gmail.com",
-    pass: "pgydxscrcdrljxdc",
+    user: 'team@clubpratibimb.com', // Your Microsoft 365 email address
+    pass: process.env.NODEMAILER_PASSWORD, // Your app password stored in an environment variable
   },
+  tls: {
+    ciphers: 'SSLv3'
+  }
 });
+
 
 
 const sendEventNotificationEmail = async (recipientEmail) => {

@@ -1,12 +1,18 @@
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-    service: "gmail", // Use your own email service
-    auth: {
-      user: "clubpratibimb.sgsits@gmail.com",
-      pass: process.env.NODEMAILER_PASSWORD,
-    },
-  });
+  host: 'smtp.office365.com', // Microsoft 365 SMTP server
+  port: 587, // TLS port
+  secure: false, // Use TLS (true for 465, false for other ports)
+  auth: {
+    user: 'team@clubpratibimb.com', // Your Microsoft 365 email address
+    pass: process.env.NODEMAILER_PASSWORD, // Your app password stored in an environment variable
+  },
+  tls: {
+    ciphers: 'SSLv3'
+  }
+});
+
 
 const emailArray = [
   "email1@example.com",
