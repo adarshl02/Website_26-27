@@ -26,6 +26,10 @@ export default {
         display: ['Oswald', 'sans-serif'],
         handwriting: ['Dancing Script', 'cursive'],
       },
+      colors: {
+        gold: '#ffd700',
+        azure: '#f0ffff', 
+      },
     },
   },
   plugins: [],

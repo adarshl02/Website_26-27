@@ -51,6 +51,7 @@ exports.seed = async function (knex) {
     },
     {
       event_name: "STREETSCAPE",
+      
       description: "A celebration of street food and gourmet food trucks.",
       start_date: "2024-07-15 12:00:00",
       location: "SGSITS,Indore",
