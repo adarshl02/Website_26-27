@@ -56,7 +56,11 @@ router.post("/auth/google", async (req, res, next) => {
       const [insertedUser] = await db("users").insert(newUser).returning("*");
 
       if (insertedUser) { 
-        sendWelcomeEmail(email, name);
+        try {
+          await sendWelcomeEmail(email, name);  // Await the email sending
+        } catch (error) {
+          console.error("Error sending welcome email:", error);  // Log error in Vercel logs
+        }
       }
 
       const token = jwt.sign({ id: insertedUser.id }, "asdfghjkl");
@@ -67,9 +71,11 @@ router.post("/auth/google", async (req, res, next) => {
         .json(rest);
     }
   } catch (error) {
+    console.error("Error during Google Auth:", error);  // Log general errors for debugging
     next(error);
   }
 });
+
 
 router.get("/auth/signout", (req, res, next) => {
   try {
