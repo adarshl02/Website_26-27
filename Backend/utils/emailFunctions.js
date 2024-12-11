@@ -4,11 +4,16 @@ const path = require("path");
 require("dotenv").config();
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: 'smtp.office365.com', // Microsoft 365 SMTP server
+  port: 587, // TLS port
+  secure: false, // Use TLS (true for 465, false for other ports)
   auth: {
-    user: "clubpratibimb.sgsits@gmail.com",
-    pass: process.env.NODEMAILER_PASSWORD,
+    user: 'team@clubpratibimb.com', // Your Microsoft 365 email address
+    pass: process.env.NODEMAILER_PASSWORD, // Your app password stored in an environment variable
   },
+  tls: {
+    ciphers: 'SSLv3'
+  }
 });
 
 const sendEmail = async (
@@ -78,7 +83,7 @@ const sendEmailForVolunteering = async (
       .replace("{{batch}}", batch);
 
     await transporter.sendMail({
-      from: '"Club Pratibimb" <your-email@example.com>',
+      from: '"Club Pratibimb" <team@clubpratibimb.com>',
       to: email,
       subject: "Thank You For Filling Volunteering Form!",
       html: emailTemplate,
@@ -99,7 +104,7 @@ const sendWelcomeEmail = async (email, name) => {
     emailTemplate = emailTemplate.replace("{{name}}", name);
 
     await transporter.sendMail({
-      from: '"Club Pratibimb" <your-email@example.com>',
+      from: '"Club Pratibimb" <team@clubpratibimb.com>',
       to: email,
       subject: "Pratibimb Welcomes You",
       html: emailTemplate,

@@ -192,7 +192,7 @@ function App() {
         fontFamily: "'Roboto', sans-serif", // Clean and modern font
       }}
     >
-      We encourage you to explore your <b>mailbox</b>  and <b>profile section</b> . Every activity on the website is reflected here.
+      We encourage you to explore your <b>mailbox</b> and <b>profile section</b> of website. Every activity on the website is reflected here.
     </Typography>
     <Typography
       variant="body1"
@@ -204,7 +204,7 @@ function App() {
         marginTop: "1rem",
       }}
     >
-      "Happy Siting"
+      "Happy Clicking"
     </Typography>
     <Typography
       variant="body1"
