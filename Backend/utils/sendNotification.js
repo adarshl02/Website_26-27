@@ -42,6 +42,11 @@ const sendNotificationsToAllUsers = async (userEmails, eventDetails) => {
 };
 
 const userEmails = [
+  "parthkalra15june05@gmail.com",
+  "eklavyasinghparihar7875@gmail.com",
+  "priyanshiratnani@gmail.com",
+  "harshgharewal624@gmail.com",
+  "goldenkadabra955@gmail.com",
   "chaitanyagupta326@gmail.com",
   "atharvasharma603@gmail.com",
   "millivermasg@gmail.com",
@@ -54,6 +59,7 @@ const userEmails = [
   "ananya6805@gmail.com",
   "harshvardhansikarwar14@gmail.com",
   "kashishpahwa618@gmail.com",
+  "jainarpita346@gmail.com",
   "kinjaljainkj446@gmail.com",
   "hp07jy@gmail.com",
   "dhairyaagrawal1612@gmail.com",
