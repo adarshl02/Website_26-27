@@ -6,7 +6,7 @@ exports.up = function(knex) {
     return knex.schema.createTable('events', (table) => {
         table.increments('event_id').primary();
         table.string('event_name').notNullable();
-        table.string('description').notNullable();
+        table.text('description').notNullable();
         table.dateTime('start_date').notNullable();
         table.string('location');
         table.enum('status', ['PAST', 'ONGOING', 'UPCOMING']).notNullable(); // Fixed typo from 'UPCOMIG' to 'UPCOMING'
