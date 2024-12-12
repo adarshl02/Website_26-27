@@ -21,7 +21,7 @@ const emailArray = [
 ];
 
 const mailOptions = {
-  from: "team@clubpratibimb.com",
+  from: '"Club Pratibimb" <team@clubpratibimb.com>',
   subject: "Test Email",
   text: "This is a test email sent to multiple recipients.",
 };

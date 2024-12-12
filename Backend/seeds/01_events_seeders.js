@@ -17,8 +17,10 @@ exports.seed = async function (knex) {
       ticket_price: 200,
       event_teaser: "https://youtu.be/G3LcD564KLY?si=DWfphGdzA5ZzyBMx",
       event_aftermovie: null,
-      event_logo: "tech_expo_logo.png",
-      event_poster: "tech_expo_poster.jpg",
+      event_logo:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1734028288/p226bs61jpgbt6yic4pe.png",
+      event_poster:
+        "https://drive.google.com/file/d/1_bPFVi05iESgJ0U_NZ7W9uPAbPar5yXQ/view?usp=sharing",
       created_at: knex.fn.now(),
       updated_at: knex.fn.now(),
     },
@@ -39,14 +41,15 @@ exports.seed = async function (knex) {
     },
     {
       event_name: "PIXSHALA",
-      description: "Pixshala: Enhance the Aesthetics was a two-day photography workshop held on October 14th and 15th, 2022, aimed at inspiring and educating aspiring photographers. On the first day, participants attended an insightful seminar on professional camera operation, gaining valuable knowledge on how to capture stunning images. The second day was filled with excitement as attendees showcased their newfound skills in a thrilling photography competition. With 200-300 participants, the event offered both learning and creative opportunities, leaving everyone with a deeper appreciation for the art of photography. It was a perfect blend of education, practice, and competition in the world of visual storytelling.",
+      description:
+        "Pixshala: Enhance the Aesthetics was a two-day photography workshop held on October 14th and 15th, 2022, aimed at inspiring and educating aspiring photographers. On the first day, participants attended an insightful seminar on professional camera operation, gaining valuable knowledge on how to capture stunning images. The second day was filled with excitement as attendees showcased their newfound skills in a thrilling photography competition. With 200-300 participants, the event offered both learning and creative opportunities, leaving everyone with a deeper appreciation for the art of photography. It was a perfect blend of education, practice, and competition in the world of visual storytelling.",
       start_date: "2024-10-14 18:00:00",
       location: "SGSITS,Indore",
       status: "PAST",
       ticket_price: 100,
       event_teaser: "https://youtu.be/r2Y7fTpt7ys?si=KqjHvsSf1uRKl-WX",
       event_aftermovie: "https://youtu.be/qmpTfj__q_I?si=7hvTXoDq46xVmRgm",
-      event_logo: "pitch_night_logo.png",
+      event_logo: "https://res.cloudinary.com/dhy548whh/image/upload/v1734029243/ljrkccmc4pfmsk16tcvh.png",
       event_poster: "pitch_night_poster.jpg",
       created_at: knex.fn.now(),
       updated_at: knex.fn.now(),
@@ -59,10 +62,12 @@ exports.seed = async function (knex) {
       location: "SGSITS,Indore",
       status: "PAST",
       ticket_price: 100,
-      event_teaser:"https://youtu.be/G3LcD564KLY?si=DWfphGdzA5ZzyBMx",
-      event_aftermovie:"https://youtu.be/ucem4JGCIk0?si=AVKxYAeS4pVD_Mqe",
-      event_logo: "https://res.cloudinary.com/dhy548whh/image/upload/v1733767725/irgncmnchscaawu4otrh.png",
-      event_poster: "https://res.cloudinary.com/dhy548whh/image/upload/v1733767739/o4r5q4deccmkurcubktm.jpg",
+      event_teaser: "https://youtu.be/G3LcD564KLY?si=DWfphGdzA5ZzyBMx",
+      event_aftermovie: "https://youtu.be/ucem4JGCIk0?si=AVKxYAeS4pVD_Mqe",
+      event_logo:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1733767725/irgncmnchscaawu4otrh.png",
+      event_poster:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1733767739/o4r5q4deccmkurcubktm.jpg",
       created_at: knex.fn.now(),
       updated_at: knex.fn.now(),
       // record_logo = "https://res.cloudinary.com/dgc7xsrcx/image/upload/v1733930857/hsyx3jpvrfeorjqfmiv9.png"
@@ -87,13 +92,13 @@ exports.seed = async function (knex) {
       event_name: "GRAFFATHON 2.0",
       description:
         "Graffathon: Back to Rituals was a captivating 30-hour wall painting marathon held on Director’s Office Road, SGSITS, on March 11th and 12th, 2012. With 500 to 1000 eager participants, the event transformed ordinary walls into vibrant, living murals. Themes ranging from urban art to innovative concepts for social causes and technology brought the walls to life, each brushstroke telling a story. As the two-day event unfolded, the air was filled with a magical energy, where creativity flowed freely, and the ordinary became extraordinary—a true celebration of imagination and purpose",
-      start_date: "2012-02-02 10:00:00",
+      start_date: "2019-02-02 10:00:00",
       location: "SGSITS,Indore",
       status: "PAST",
       ticket_price: 500,
       event_teaser: "https://youtu.be/O_sanO7AQFo?si=rI--nve9L6kHtjLC",
       event_aftermovie: "https://youtu.be/Z3XTYr_6yec?si=r-HwmrzO9RdXrUiP",
-      event_logo: "fashion_week_logo.png",
+      event_logo: "https://res.cloudinary.com/dhy548whh/image/upload/v1734029472/ofetbrqkmcgflmjik2aq.png",
       event_poster: "fashion_week_poster.jpg",
       created_at: knex.fn.now(),
       updated_at: knex.fn.now(),
