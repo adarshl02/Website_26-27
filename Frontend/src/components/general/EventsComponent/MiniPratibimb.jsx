@@ -23,7 +23,7 @@ export default function MiniPratibimb() {
        Choitram School
       </div>
       <div className="text-center text-neutral-900 text-lg opacity-70 py-6 ">
-        Successfully conducted Photography Workshop 
+        Successfully conducted Photography Workshop in Choitram School
       </div>
     </div>
   )
