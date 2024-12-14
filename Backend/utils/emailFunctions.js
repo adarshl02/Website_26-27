@@ -48,7 +48,7 @@ const sendEmail = async (
       .replace("{{event_location}}", event_location);
 
     const mailOptions = {
-      from: "your_email@gmail.com",
+      from:'"Club Pratibimb" <team@clubpratibimb.com>',
       to: email,
       subject: "Your Event Ticket",
       html: emailContent,

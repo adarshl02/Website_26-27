@@ -3,79 +3,68 @@
   <head>
     <style>
       body {
-        font-family: Arial, sans-serif;
+        font-family: "Georgia", serif;
         margin: 0;
         padding: 0;
-        background: linear-gradient(135deg, #2c3e50, #34495e);
-        color: #ffffff;
+        background: #1e1e1e;
+        color: #f4f4f4;
       }
       .email-container {
         max-width: 600px;
-        margin: 20px auto;
+        margin: 40px auto;
         padding: 20px;
-        background-color: #1a1a1a;
+        background-color: #b88c9e;
+        border: 1px solid #8f6d7a;
         border-radius: 8px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       }
       .header {
         text-align: center;
-        padding-bottom: 5px;
+        padding: 10px 0;
       }
       .header img {
-        width: 100px;
+        width: 80px;
         height: auto;
+        margin-bottom: 10px;
       }
       .header h1 {
-        font-size: 24px;
-        color: #f39c12;
+        font-size: 22px;
+        color: #4f2439;
+        margin: 0;
       }
       .content {
-        line-height: 1.6;
-        color: #ecf0f1;
+        line-height: 1.8;
+        font-size: 16px;
+        color: #4f2439;
+        padding: 20px 0;
       }
       .content p {
         margin: 10px 0;
       }
-      .footer {
-        text-align: center;
-        margin-top: 20px;
-        font-size: 14px;
-        color: #7f8c8d;
-      }
-      .footer a {
-        color: #f39c12;
-        text-decoration: none;
-        margin: 0 10px;
-      }
-      .footer a:hover {
-        opacity: 0.8;
-      }
       .btn {
         display: inline-block;
-        
-        padding: 10px 20px;
+        padding: 12px 20px;
         margin-top: 20px;
-        background-color: #f39c12;
-        color: #1a1a1a;
+        background-color: #4f2439;
+        color: #ffffff;
         text-decoration: none;
         border-radius: 5px;
         font-weight: bold;
       }
       .btn:hover {
-        background-color: #e67e22;
+        background-color: #3b1c2d;
       }
-      .unsubscribe {
-        margin-top: 20px;
+      .footer {
         text-align: center;
-        font-size: 12px;
-        color: #7f8c8d;
+        margin-top: 20px;
+        font-size: 14px;
+        color: #333333;
       }
-      .unsubscribe a {
-        color: #f39c12;
+      .footer a {
+        color: #4f2439;
         text-decoration: none;
-        margin: 0;
       }
-      .unsubscribe a:hover {
+      .footer a:hover {
         text-decoration: underline;
       }
       .social-icons {
@@ -83,7 +72,7 @@
       }
       .social-icons img {
         width: 30px;
-        margin: 0 10px;
+        margin: 0 8px;
         vertical-align: middle;
       }
     </style>
@@ -95,39 +84,57 @@
           src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1733249718/k5adyreqoelqg1molfoi.png"
           alt="Pratibimb Logo"
         />
-        <h1>Welcome to Pratibimb!</h1>
       </div>
       <div class="content">
-        <p><b>Dear {{name}},</b></p>
-        <p>Thank you for joining Pratibimb! We're excited to have you as part of our community. Our website offers a range of amazing features to help you stay connected with us:</p>
-        <ul>
-          <li><b>Comprehensive Platform:</b>&nbsp; <span style="opacity: 0.8;" >Find everything about Pratibimb, from events to resources, all in one place.</span> </li>
-          <li><b>Instant Certificates:</b> &nbsp;<span style="opacity: 0.8;"  >Receive on-the-go certificates for your participation in any Pratibimb event or activity.</span> </li>
-          <li><b>Exclusive Membership Perks:</b>&nbsp;<span style="opacity: 0.8;" >If you've claimed membership, enjoy full registration cost discounts for upcoming events.</span>  </li>
-        </ul>
-        <p>We hope you make the most of all the exciting opportunities ahead. Stay tuned for more updates!</p>
-        <a href="https://www.clubpratibimb.com" class="btn">Explore Events</a>
+        <p><b>Hi {{name}},</b></p>
+        <p>
+          Thank you for joining the Pratibimb Community! We are excited to have
+          you with us as we celebrate creativity and passion for fine arts and
+          photography.
+        </p>
+        <p>
+          As a member, you gain access to exclusive resources, event
+          invitations, and the opportunity to showcase your talent.
+        </p>
+        <p>
+          Don’t miss out on our upcoming events. Click below to explore more and
+          stay inspired:
+        </p>
+        <a href="https://www.clubpratibimb.com" class="btn">Discover Events</a>
       </div>
       <div class="footer">
-        <p>Pratibimb: Fine Arts & Photography Club, SGSITS</p>
-        <p>For any inquiries, contact us at <a href="mailto:clubpratibimb.sgsits@gmail.com">clubpratibimb.sgsits@gmail.com</a></p>
-        <p>Address: SGSITS, Indore, MP, India</p>
-        
-        <!-- Social Media Icons -->
+        <p>Stay connected with us:</p>
         <div class="social-icons">
-          <a href="https://bit.ly/3Mu4CN2" target="_blank">
-            <img src="https://res.cloudinary.com/dhy548whh/image/upload/v1733923563/tpuqqhg73ccx2cbs6ccq.png" alt="Instagram" />
-          </a>
-          <a href="https://chat.whatsapp.com/Lo2YDqUGt9vDgxhtjQqe43" target="_blank">
-            <img src="https://res.cloudinary.com/dhy548whh/image/upload/v1733924392/wkes107z9zx08debjfa3.png" alt="WhatsApp" />
-          </a>
-          <a href="https://youtube.com/@pratibimb_sgsits?si=BLxqIAt6U6Sxn-l3" target="_blank">
-            <img src="https://res.cloudinary.com/dhy548whh/image/upload/v1733923562/ph251e5rkfoteorw38ug.png" alt="YouTube" />
-          </a>
+          <a href="https://bit.ly/3Mu4CN2" target="_blank"
+            ><img
+              src="https://res.cloudinary.com/dhy548whh/image/upload/v1733923563/tpuqqhg73ccx2cbs6ccq.png"
+              alt="Instagram"
+          /></a>
+          <a
+            href="https://chat.whatsapp.com/Lo2YDqUGt9vDgxhtjQqe43"
+            target="_blank"
+            ><img
+              src="https://res.cloudinary.com/dhy548whh/image/upload/v1733924392/wkes107z9zx08debjfa3.png"
+              alt="WhatsApp"
+          /></a>
+          <a
+            href="https://youtube.com/@pratibimb_sgsits?si=BLxqIAt6U6Sxn-l3"
+            target="_blank"
+            ><img
+              src="https://res.cloudinary.com/dhy548whh/image/upload/v1733923562/ph251e5rkfoteorw38ug.png"
+              alt="YouTube"
+          /></a>
         </div>
-        <div class="unsubscribe">
-          <p>If you wish to unsubscribe from our mailing list, please click <a href="{{unsubscribe_link}}">here</a>.</p>
-        </div>
+        <p>
+          Have questions? Email us at
+          <a href="mailto:clubpratibimb.sgsits@gmail.com"
+            >clubpratibimb.sgsits@gmail.com</a
+          >
+        </p>
+        <p>
+          If you wish to unsubscribe from our emails, click
+          <a href="{{unsubscribe_link}}">here</a>.
+        </p>
       </div>
     </div>
   </body>

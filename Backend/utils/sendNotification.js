@@ -3,36 +3,30 @@ const fs = require("fs");
 const path = require("path");
 require("dotenv").config();
 
-const transporter = nodemailer.createTransport({
-  host: 'smtp.office365.com', // Microsoft 365 SMTP server
-  port: 587, // TLS port
-  secure: false, // Use TLS (true for 465, false for other ports)
+let transporter = nodemailer.createTransport({
+  service: "gmail", // or your email service, e.g., 'outlook', 'yahoo'
   auth: {
-    user: 'team@clubpratibimb.com', // Your Microsoft 365 email address
-    pass: process.env.NODEMAILER_PASSWORD, // Your app password stored in an environment variable
+    user: "teampratibimb.sgsits@gmail.com", // your email address
+    pass: "dmwklilobtttgksu", // your email password (or app-specific password)
   },
-  tls: {
-    ciphers: 'SSLv3'
-  }
 });
 
-
-
 const sendEventNotificationEmail = async (recipientEmail) => {
-  const templatePath = path.join(__dirname, "../templates/notificationTemplate.html");
+  const templatePath = path.join(
+    __dirname,
+    "../templates/welcomeTemplate.html"
+  );
   const emailTemplate = fs.readFileSync(templatePath, "utf-8");
 
-  
   const mailOptions = {
-    from: "clubpratibimb.sgsits@gmail.com", 
+    from: '"Club Pratibimb" <team@clubpratibimb.com>',
     to: recipientEmail,
-    subject: "Calling Volunteers For Batch 2028",
+    subject: "Welcome Message",
     html: emailTemplate,
   };
 
   return transporter.sendMail(mailOptions);
 };
-
 
 const sendNotificationsToAllUsers = async (userEmails, eventDetails) => {
   try {
@@ -46,74 +40,24 @@ const sendNotificationsToAllUsers = async (userEmails, eventDetails) => {
     console.error("Error while sending notifications:", error);
   }
 };
-
-const userEmails = [
-  "parthkalra15june05@gmail.com",
+let userEmails = [
+  "eklavyasinghparihar@gmail.com",
   "eklavyasinghparihar7875@gmail.com",
-  "priyanshiratnani@gmail.com",
-  "harshgharewal624@gmail.com",
-  "goldenkadabra955@gmail.com",
-  "chaitanyagupta326@gmail.com",
-  "atharvasharma603@gmail.com",
-  "millivermasg@gmail.com",
-  "mishra.tanishq20@gmail.com",
-  "suryanshsinghchawlags@gmail.com",
-  "puvaeshole2312@gmail.com",
-  "naikarchisha06@gmail.com",
-  "preshasamdani1706@gmail.com",
-  "raseshgupta22@gmail.com",
-  "ananya6805@gmail.com",
-  "harshvardhansikarwar14@gmail.com",
-  "kashishpahwa618@gmail.com",
-  "jainarpita346@gmail.com",
-  "kinjaljainkj446@gmail.com",
-  "hp07jy@gmail.com",
-  "dhairyaagrawal1612@gmail.com",
-  "jainshresth758@gmail.com",
-  "rishabh.mandge1506@gmail.com",
-  "gupta05mansi@gmail.com",
-  "lakshyjain682@gmail.com",
-  "siddharthbhadauria7777@gmail.com",
-  "stutishukla765@gmail.com",
-  "harshsachdev2006@gmail.com",
-  "vermashalini354@gmail.com",
-  "prakrati004@gmail.com",
-  "krishnabadgujar163@gmail.com",
-  "jatinsisodhiya6505@gmail.com",
-  "parulneware@gmail.com",
-  "ansh.prakhar2006gupta@gmail.com",
-  "prince989324@gmail.com",
-  "kuhoo.malviya@gmail.com",
-  "sfcssatyamsinghal@gmail.com",
-  "drishyabarfa@gmail.com",
-  "abhineetpatidar@gmail.com",
-  "2006shriya@gmail.com",
-  "mariyamk.121673@gmail.com",
-  "rajchouhanoffcial@gmail.com",
-  "samarthalexander2017@gmail.com",
-  "tanisharoshan2004@gmail.com",
-  "dittmc12@gmail.com",
-  "prateek09k@gmail.com",
-  "surbhijhs.2202@gmail.com",
-  "avaniagrawal004@gmail.com",
-  "amankushwaha010805@gmail.com",
-  "techy1shiva@gmail.com",
-  "mishraprakhar946@gmail.com",
-  "anuragmishra1769@gmail.com",
-  "shyamji29nov@gmail.com",
-  "rudrakshpanchore007@gmail.com",
-  "ananyaayushman@gmail.com",
-  "vaibhavpandey067@gmail.com",
-  "agraawalpalak602@gmail.com",
-  "kakanibrinda23062006@gmail.com",
-  "abhaydhimanh3@gmail.com",
-  "radheshsolanki1127@gmail.com",
-  "kmlkbhandare2005@gmail.com",
-  "mradulsomani2006@gmail.com",
-  "gauri.s.v.surange@gmail.com",
-  "niveshjain109@gmail.com",
-  "prashantchourasiya2007@gmail.com",
-  "sarthakbilare2005@gmail.com"
+  "clubpratibimb.sgsits@gmail.com",
+  "adarsh.landge10604@gmail.com",
+  "mohitwadhwani8033@gmail.com",
+  "mohitwadhwani187@gmail.com",
+  "harshitajaiswal1704005@gmail.com",
+  "harshita.23bce11331@vitbhopal.ac.in",
+  "eklavya.7875@gmail.com",
+  "mudittandon202005@gmail.com",
+  "viditmaheshwari435@gmail.com",
+  "jaybaghel7005@gmail.com",
+  "jvsingh7005@gmail.com",
+  "eklavya.indhanpay@gmail.com"
 ];
-
-sendNotificationsToAllUsers(userEmails);
+let userEmails_1 = [
+"adarshl10604@gmail.com",
+"eklavyasinghparihar7875@gmail.com"
+];
+sendNotificationsToAllUsers(userEmails_1);
