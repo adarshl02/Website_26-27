@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
-import { ThreeDCardDemo } from "./test";
 import { ToastContainer,Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PrivateRoute from "./components/general/PrivateRoute";
@@ -14,6 +13,7 @@ import Sponsors from "./pages/Sponsors";
 import { NavbarDemo } from "./components/general/NavbarDemo";
 import Footer from "./components/general/Footer";
 import { Backdrop, Typography, Box} from "@mui/material";
+import Blogs from "./components/general/Blogs";
 
 function App() {
   const latestRef = useRef(null);
@@ -114,7 +114,7 @@ function App() {
                 </>
               }
             />
-            <Route
+             <Route
               path="/sponsors"
               element={
                 <>
@@ -125,17 +125,17 @@ function App() {
               }
             />
             <Route
-              path="/test"
+              path="/blogs"
               element={
                 <>
                   <NavbarDemo />
-                  <ThreeDCardDemo />
+                  <Blogs />
                   <Footer />
                 </>
               }
             />
-          </Route>
-
+            </Route>
+           
           <Route
             path="/sign-up"
             element={

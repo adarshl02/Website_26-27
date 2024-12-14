@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
@@ -7,18 +7,19 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";  
+import ListItemText from "@mui/material/ListItemText";
 import Avatar from "@mui/material/Avatar";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import PeopleIcon from "@mui/icons-material/People";
-import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
-import EventIcon from "@mui/icons-material/Event";
-import InfoIcon from "@mui/icons-material/Info";
-import FeedbackIcon from "@mui/icons-material/Feedback";
-import HomeIcon from '@mui/icons-material/Home';
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Divider from "@mui/material/Divider";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
+import Logout from "@mui/icons-material/Logout";
+import Badge from "@mui/material/Badge";
+import BookIcon from "@mui/icons-material/Book";
+
 import { getAuth, signOut } from "firebase/auth";
 import { toast } from "react-toastify";
 import {
@@ -28,14 +29,23 @@ import {
 } from "../../redux/user/userSlice.js";
 import { logoutUser } from "../../service/api.js";
 
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import PeopleIcon from "@mui/icons-material/People";
+import EventIcon from "@mui/icons-material/Event";
+import HomeIcon from "@mui/icons-material/Home";
+
 const navItems = [
   { name: "Home", path: "/", icon: <HomeIcon /> },
   { name: "Team", path: "/team", icon: <PeopleIcon /> },
-  // { name: "Sponsors", path: "/sponsors", icon: <MonetizationOnIcon /> },
   { name: "Archive", path: "/events", icon: <EventIcon /> },
 ];
 
-export function NavbarDemo({ scrollToCarousel,scrollToFeedback, scrollToAboutUs }) {
+export function NavbarDemo({
+  scrollToCarousel,
+  scrollToFeedback,
+  scrollToAboutUs,
+}) {
   return (
     <div className="relative w-full flex justify-center">
       <Navbar
@@ -48,14 +58,30 @@ export function NavbarDemo({ scrollToCarousel,scrollToFeedback, scrollToAboutUs 
   );
 }
 
-function Navbar({ className, scrollToCarousel,scrollToFeedback, scrollToAboutUs }) {
+function Navbar({
+  className,
+  scrollToCarousel,
+  scrollToFeedback,
+  scrollToAboutUs,
+}) {
   const { currentUser } = useSelector((state) => state.user);
   const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [navbarWidth, setNavbarWidth] = useState("60%"); // Initially set width to 50%
   const isMobile = useMediaQuery("(max-width:600px)");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const auth = getAuth();
   const location = useLocation();
+
+  // Increase width on component mount
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setNavbarWidth("100%"); // Animate to full width
+    }, 1000); // Delay for animation start
+
+    return () => clearTimeout(timer); // Clean up timer on unmount
+  }, []);
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
@@ -91,6 +117,14 @@ function Navbar({ className, scrollToCarousel,scrollToFeedback, scrollToAboutUs 
     }
   };
 
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   const DrawerList = (
     <Box
       sx={{
@@ -117,16 +151,13 @@ function Navbar({ className, scrollToCarousel,scrollToFeedback, scrollToAboutUs 
         <div className="text-gray-600 text-sm mb-4">{currentUser.email}</div>
         <List>
           <ListItem disablePadding>
-            <ListItemButton
-              onClick={() => navigate("/profile")}
-            >
+            <ListItemButton onClick={() => navigate("/profile")}>
               <ListItemIcon>
                 <AccountCircleIcon />
               </ListItemIcon>
               <ListItemText primary="Your profile" />
             </ListItemButton>
           </ListItem>
-          {/* Navigation Links - Mobile Only */}
           {isMobile && (
             <List>
               {navItems.map((item, idx) => (
@@ -151,7 +182,7 @@ function Navbar({ className, scrollToCarousel,scrollToFeedback, scrollToAboutUs 
                       }}
                     >
                       <ListItemIcon>
-                        <InfoIcon />
+                        <AccountCircleIcon />
                       </ListItemIcon>
                       <ListItemText primary="About Us" />
                     </ListItemButton>
@@ -164,7 +195,7 @@ function Navbar({ className, scrollToCarousel,scrollToFeedback, scrollToAboutUs 
                       }}
                     >
                       <ListItemIcon>
-                        <FeedbackIcon />
+                        <AccountCircleIcon />
                       </ListItemIcon>
                       <ListItemText primary="Feedback" />
                     </ListItemButton>
@@ -173,6 +204,16 @@ function Navbar({ className, scrollToCarousel,scrollToFeedback, scrollToAboutUs 
               )}
             </List>
           )}
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => navigate("/blogs")}>
+              <ListItemIcon sx={{ color: "#333" }}>
+                <Badge color="primary" variant="dot">
+                  <BookIcon />
+                </Badge>
+              </ListItemIcon>
+              <ListItemText primary="Blogs" />
+            </ListItemButton>
+          </ListItem>
 
           <ListItem disablePadding>
             <ListItemButton
@@ -196,13 +237,19 @@ function Navbar({ className, scrollToCarousel,scrollToFeedback, scrollToAboutUs 
   );
 
   return (
-    <div className="flex items-center justify-between fixed top-3 left-3 right-3 max-w-4xl mx-auto space-x-5 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 text-slate-100 px-6 py-2 rounded-full shadow-lg z-50">
-        <img
-          src="./PratibimbLogo2.png"
-          alt="Pratibimb Logo"
-          className="h-10 w-auto"
-          onClick={scrollToCarousel}
-        />
+    <div
+      className="flex items-center justify-between fixed top-3 left-1 right-1 max-w-5xl mx-auto space-x-5 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 text-slate-100 px-4 py-1 rounded-full shadow-lg z-50"
+      style={{
+        width: navbarWidth, // Control the width via state
+        transition: "width 0.5s ease-in-out", // Add smooth transition
+      }}
+    >
+      <img
+        src="./PratibimbLogo2.png"
+        alt="Pratibimb Logo"
+        className="h-10 w-auto"
+        onClick={scrollToCarousel}
+      />
       {!isMobile && (
         <div className="hidden sm:flex space-x-6">
           {navItems.map((item, idx) => (
@@ -214,6 +261,7 @@ function Navbar({ className, scrollToCarousel,scrollToFeedback, scrollToAboutUs 
               {item.name}
             </Link>
           ))}
+
           {(location.pathname === "/" || location.pathname === "") && (
             <>
               <Link
@@ -238,21 +286,112 @@ function Navbar({ className, scrollToCarousel,scrollToFeedback, scrollToAboutUs 
               </Link>
             </>
           )}
+          <Link
+            to="/blogs"
+            className="relative text-white cursor-pointer font-bold"
+          >
+            Blogs
+            <span className="ml-1 text-slate-200 cursor-pointer font-bold">
+              <Badge color="primary" variant="dot">
+                <BookIcon />
+              </Badge>
+            </span>
+          </Link>
         </div>
       )}
       <div>
-        <Avatar
-          src={currentUser.avatar}
-          alt={currentUser.name}
-          className="rounded-full h-10 w-10 object-cover cursor-pointer border-gray-300"
-          onClick={toggleDrawer(true)}
-        />
+        <Tooltip title="Account settings">
+          <IconButton
+            onClick={(e) => {
+              if (isMobile) {
+                toggleDrawer(true)(); // Open the drawer in mobile view
+              } else {
+                handleMenuOpen(e); // Open the dropdown menu in larger screens
+              }
+            }}
+            size="small"
+            sx={{ ml: 2 }}
+            aria-controls={Boolean(anchorEl) ? "account-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={Boolean(anchorEl) ? "true" : undefined}
+          >
+            <Avatar src={currentUser.avatar}></Avatar>
+          </IconButton>
+        </Tooltip>
       </div>
+      <Menu
+        anchorEl={anchorEl}
+        id="account-menu"
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}
+        onClick={handleMenuClose}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            overflow: "visible",
+            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+            mt: 1.5,
+            borderRadius: "8px",
+            padding: "2px",
+            "& .MuiAvatar-root": {
+              width: 32,
+              height: 32,
+              ml: -0.5,
+              mr: 1,
+            },
+            "&::before": {
+              content: '""',
+              display: "block",
+              position: "absolute",
+              top: 0,
+              right: 14,
+              width: 10,
+              height: 10,
+              bgcolor: "background.paper",
+              transform: "translateY(-50%) rotate(45deg)",
+              zIndex: 0,
+            },
+          },
+        }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+      >
+        <MenuItem
+          onClick={() => navigate("/profile")}
+          sx={{
+            color: "gray",
+            borderRadius: "8px",
+            padding: "8px 16px",
+            "&:hover": {
+              backgroundColor: "rgba(0, 0, 0, 0.08)",
+            },
+          }}
+        >
+          Your Profile&nbsp;&nbsp;
+          <AccountCircleIcon />
+        </MenuItem>
+
+        <Divider />
+
+        <MenuItem
+          onClick={handleLogout}
+          sx={{
+            color: "rgb(255, 77, 77)",
+            borderRadius: "8px",
+            padding: "8px 16px",
+            "&:hover": {
+              backgroundColor: "rgba(255, 77, 77, 0.1)",
+            },
+          }}
+        >
+          Signout&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <Logout />
+        </MenuItem>
+      </Menu>
+
       <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
         {DrawerList}
       </Drawer>
     </div>
   );
 }
-
-export default Navbar;

@@ -25,14 +25,14 @@ const LatestOfPratibimb = ({handleOpen}) => {
         {/* Card 1 */}
         <div className="bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col items-center text-center">
           <img
-            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60"
+            src="/volunteers.png"
             alt="Mystic Mode"
             className="w-40 h-40 object-cover rounded-md mb-4"
           />
 
           <div className="text-xl font-bold mb-2">Calling Volunteers</div>
           <div className="text-gray-400 text-sm mb-4">
-            Be a part of the biggest Art event. Tentative Date: Dec, 2024
+            Be a part of the biggest Art event. Tentative Date: Jan, 2024
             <br /> <br />
             <motion.button
               whileTap={{ scale: 0.95 }}
@@ -47,7 +47,7 @@ const LatestOfPratibimb = ({handleOpen}) => {
         {/* Card 2 */}
         <div className="bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col items-center text-center">
           <img
-            src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60"
+            src="/sepia_poster.png"
             alt="Customise Settings"
             className="w-40 h-40 object-cover rounded-md mb-4"
           />

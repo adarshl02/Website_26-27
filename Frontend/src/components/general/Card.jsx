@@ -61,7 +61,7 @@ const Card = ({ event }) => {
         </div>
       )}
       <div className="p-6 flex justify-between">
-        {status == "ONGOING" && (
+        
           <>
             <button className="text-sm font-medium text-slate-700">
               Ticket Price: ${ticket_price}
@@ -85,7 +85,7 @@ const Card = ({ event }) => {
                  </div>
             </Backdrop>
           </>
-        )}
+        
       </div>
     </div>
   );

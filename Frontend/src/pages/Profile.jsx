@@ -14,10 +14,6 @@ export default function Profile() {
 
       {/* Profile Section */}
       <div className="flex flex-col sm:flex-row justify-center items-center w-full max-w-4xl mx-auto space-y-8 sm:space-y-0 sm:space-x-8">
-        {/* Illustration Section */}
-        <div className="w-full sm:w-1/2">
-          <img className="w-full max-w-xs mx-auto sm:w-[400px]" src="/Saly.png" alt="Illustration" />
-        </div>
 
         {/* Profile Card */}
         <div className="relative max-w-sm w-full sm:w-1/2">

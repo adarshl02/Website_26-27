@@ -129,7 +129,7 @@ const handleGoogleLogin = async () => {
         <CardBody className="text-black shadow-lg relative group/card  border-white/[0.1] w-full sm:w-[30rem] h-auto rounded-xl p-6">
           <div className="bg-slate-50 p-5 md:p-8 rounded-lg  w-full text-black text-sm">
             <img
-              src="/PratibimbLogo3.png"
+              src="/PratibimbLogo.png"
               alt="Logo"
               className="w-24 mx-auto mb-4"
             />

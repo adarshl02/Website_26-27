@@ -15,6 +15,14 @@ const transporter = nodemailer.createTransport({
     ciphers: 'SSLv3'
   }
 });
+// const transporter = nodemailer.createTransport({
+//   service: 'gmail', // Specify Gmail service
+//   auth: {
+//     user: 'teampratibimb.sgsits@gmail.com', // Your Gmail email address
+//     pass: process.env.NODEMAILER_PASSWORD_1, // Your app password stored in an environment variable
+//   },
+// });
+
 
 const sendEmail = async (
   email,

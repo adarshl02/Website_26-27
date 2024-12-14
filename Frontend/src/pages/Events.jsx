@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import PastEvents from "../components/general/EventsComponent/PastEvents";
-import RecordEvents from "../components/general/EventsComponent/RecordEvents";
 import MiniPratibimb from "../components/general/EventsComponent/MiniPratibimb";
+import Flagship from './../components/general/EventsComponent/Flagship';
 
 export default function Events() {
-  const [selectedOption, setSelectedOption] = useState("Record Events");
+  const [selectedOption, setSelectedOption] = useState("Overnight Events");
 
   const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
+    setSelectedOption(event.target.value);  
   };
 
   return (
-    <div className="">
+    <>
     
       {/* Radio Button Group */}
       <div className="pt-28 flex w-full flex-wrap justify-center space-x-2 md:space-x-8 mb-4">
-        {["Past Events", "Record Events", "Mini Pratibimb"].map((option) => (
+        {["Past Events","Overnight Events","Mini Pratibimb"].map((option) => (
           <div key={option}>
             <input
               type="radio"
@@ -28,12 +28,10 @@ export default function Events() {
               onChange={handleOptionChange}
             />
             <label
-              className={`btn font-medium text-xs md:text-sm cursor-pointer px-2 md:px-4 py-1 md:py-2 rounded-lg flex items-center transition duration-200 ${
+              className={`btn font-bold text-sm md:text-base cursor-pointer px-2 md:px-4 py-1 md:py-2 rounded-lg flex items-center transition duration-300 ${
                 selectedOption === option
-                  ? selectedOption === "Record Events"
-                    ? "bg-gold text-black border border-gold"
-                    : "bg-slate-950 text-white border border-[#4682B4]"
-                  : "bg-white text-[#4682B4] border border-[#4682B4] hover:text-white hover:bg-slate-950"
+                  ? "bg-cyan-500 text-white border-2 border-cyan-500"
+                  : "bg-white text-cyan-800 border-2 border-opacity-50 border-cyan-500 hover:text-white hover:bg-cyan-500"
               }`}
               htmlFor={option}
             >
@@ -43,13 +41,11 @@ export default function Events() {
         ))}
       </div>
 
-      {/* <div className="w-4/5 opacity-90 border-t border-gray-400 my-5 mx-auto"></div> */}
-
-      <div className="mt-5">
+      <div className="mt-5 ">
         {selectedOption === "Past Events" && <PastEvents />}
-        {selectedOption === "Record Events" && <RecordEvents />}
+        {selectedOption === "Overnight Events" && <Flagship />}
         {selectedOption === "Mini Pratibimb" && <MiniPratibimb />}
       </div>
-    </div>
+    </>
   );
 }
