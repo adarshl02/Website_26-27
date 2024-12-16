@@ -15,13 +15,10 @@ const razorpay = new Razorpay({
 const getEvents = async (req, res) => {
   try {
     const { status } = req.query;
-
-    //console.log("Fetching events with status:", status); // Log the incoming status
     const events = await db("events")
       .select("*")
       .where("status", status)
       .orderBy("start_date", "desc");
-    //console.log("Fetched events:", events); // Log the fetched events
 
     if (events.length === 0) {
       return res
@@ -61,7 +58,7 @@ const registerEvents = async (req, res) => {
   try {
     const { event_id } = req.query;
     const { team_name, team_members, name, email, phone } = req.body;
-   
+
     if (!event_id) {
       return res
         .status(400)
@@ -155,44 +152,46 @@ const registerEvents = async (req, res) => {
 
 const paymentVerification = async (req, res) => {
   try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
-    const secret = process.env.RAZORPAY_KEY_SECRET; 
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+      req.body;
+    const secret = process.env.RAZORPAY_KEY_SECRET;
     const hash = crypto
-      .createHmac('sha256', secret)
-      .update(razorpay_order_id + '|' + razorpay_payment_id)
-      .digest('hex');
+      .createHmac("sha256", secret)
+      .update(razorpay_order_id + "|" + razorpay_payment_id)
+      .digest("hex");
 
-    // Fetch attendee and event details
-    const attendee = await db('attendees')
-      .select('attendee_email', 'attendee_name', 'team_name', 'event_id')
+    const attendee = await db("attendees")
+      .select("attendee_email", "attendee_name", "team_name", "event_id")
       .where({
         order_id: razorpay_order_id,
-        payment_status: 'PENDING',
+        payment_status: "PENDING",
       })
       .first();
     console.log(attendee);
 
-    const event = await db('events')
-      .select('event_name', 'start_date', 'location')
+    const event = await db("events")
+      .select("event_name", "start_date", "location")
       .where({ event_id: attendee.event_id })
       .first();
 
     if (hash !== razorpay_signature) {
-      return res.status(400).json({ message: 'Payment verification failed' });
+      return res.status(400).json({ message: "Payment verification failed" });
     }
 
-    // Update payment status
-    await db('attendees')
+    await db("attendees")
       .where({ order_id: razorpay_order_id })
-      .update({ payment_status: 'APPROVED' });
+      .update({ payment_status: "APPROVED" });
 
     const qrCodeData = `Payment was successful for the event : ${event.event_name}`;
     const qrCodeBuffer = await QRCode.toBuffer(qrCodeData);
+    let qrCodeInsertion = db("attendees").insert(qrCodeBuffer).where({
+      order_id: razorpay_order_id,
+    });
 
-    const event_date = new Date(event.start_date).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
+    const event_date = new Date(event.start_date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
 
     await sendEmail(
@@ -206,13 +205,48 @@ const paymentVerification = async (req, res) => {
     );
 
     res.status(200).json({
-      message: 'Payment verified successfully',
+      message: "Payment verified successfully",
       razorpay_payment_id,
       razorpay_order_id,
     });
   } catch (error) {
-    console.error('Payment verification error:', error);
-    res.status(500).json({ message: 'Internal Server Error', error });
+    console.error("Payment verification error:", error);
+    res.status(500).json({ message: "Internal Server Error", error });
+  }
+};
+
+const getEventTicket = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res
+        .status(500)
+        .send(errorHandler(400, "Invalid Request", "Please enter the email"));
+    }
+    let selection = await db("attendees").select("*").where({
+      attendee_email: email,
+    });
+    if (selection.length == 0) {
+      return res
+        .status(500)
+        .send(
+          errorHandler(
+            400,
+            "Error Ocuured",
+            "Some error occured while fetching the data"
+          )
+        );
+    }
+    return res.status(200).send({
+      response: {
+        data: { selection },
+        title: "Successfully Fetched",
+        message: "Event Ticket Successfully Fetched",
+      },
+    });
+  } catch (error) {
+    console.error("Event Ticket Error", error);
+    res.status(500).json({ message: "Internal Server Error", error });
   }
 };
 
@@ -220,4 +254,5 @@ module.exports = {
   getEvents,
   registerEvents,
   paymentVerification,
+  getEventTicket,
 };

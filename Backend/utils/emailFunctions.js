@@ -3,25 +3,25 @@ const fs = require("fs");
 const path = require("path");
 require("dotenv").config();
 
-const transporter = nodemailer.createTransport({
-  host: 'smtp.office365.com', // Microsoft 365 SMTP server
-  port: 587, // TLS port
-  secure: false, // Use TLS (true for 465, false for other ports)
-  auth: {
-    user: 'team@clubpratibimb.com', // Your Microsoft 365 email address
-    pass: process.env.NODEMAILER_PASSWORD, // Your app password stored in an environment variable
-  },
-  tls: {
-    ciphers: 'SSLv3'
-  }
-});
 // const transporter = nodemailer.createTransport({
-//   service: 'gmail', // Specify Gmail service
+//   host: 'smtp.office365.com', // Microsoft 365 SMTP server
+//   port: 587, // TLS port
+//   secure: false, // Use TLS (true for 465, false for other ports)
 //   auth: {
-//     user: 'teampratibimb.sgsits@gmail.com', // Your Gmail email address
-//     pass: process.env.NODEMAILER_PASSWORD_1, // Your app password stored in an environment variable
+//     user: 'team@clubpratibimb.com', // Your Microsoft 365 email address
+//     pass: process.env.NODEMAILER_PASSWORD, // Your app password stored in an environment variable
 //   },
+//   tls: {
+//     ciphers: 'SSLv3'
+//   }
 // });
+const transporter = nodemailer.createTransport({
+  service: 'gmail', // Specify Gmail service
+  auth: {
+    user: 'teampratibimb.sgsits@gmail.com', // Your Gmail email address
+    pass: process.env.NODEMAILER_PASSWORD_1, // Your app password stored in an environment variable
+  },
+});
 
 
 const sendEmail = async (
