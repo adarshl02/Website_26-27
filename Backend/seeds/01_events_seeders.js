@@ -13,7 +13,7 @@ exports.seed = async function (knex) {
         "Sepia:A Whirl Of Visuals was an inspiring event held on September 28, 2024;organized by Pratibimb, the vibrant Art and Photography Club of SGSITS, Indore. With around 500 attendees, including 250 participants and 80 teams, the workshop offered a perfect fusion of photography techniques and artistic creativity. Participants explored new photography methods and delved into the many facets of art, transforming their understanding of both fields. The workshop provided an immersive experience, blending education and creativity, making it an unforgettable journey for all involved.",
       start_date: "2024-11-20 09:00:00",
       location: "SGSITS,Indore",
-      status: "PAST", // Corrected from 'UPCOMIG'
+      status: "ONGOING", // Corrected from 'UPCOMIG'
       ticket_price: 200,
       event_teaser: "https://youtu.be/G3LcD564KLY?si=DWfphGdzA5ZzyBMx",
       event_aftermovie: null,
