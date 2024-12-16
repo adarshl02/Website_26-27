@@ -98,6 +98,9 @@ const handleGoogleLogin = async () => {
     
       toast.success("You're Successfully Logged In");
     } else {
+      if(response.message==="Request failed with status code 404"){
+        toast.error("User not found");
+      }else 
       toast.error(response.message || "Failed to sign in with Google");
       dispatch(signInFailure());
     }

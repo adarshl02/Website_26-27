@@ -36,34 +36,70 @@ import EventIcon from "@mui/icons-material/Event";
 import HomeIcon from "@mui/icons-material/Home";
 
 const navItems = [
-  { name: "Home", path: "/", icon: <HomeIcon /> },
-  { name: "Team", path: "/team", icon: <PeopleIcon /> },
-  { name: "Archive", path: "/events", icon: <EventIcon /> },
+  {
+    name: "Home",
+    path: "/",
+    icon: (
+      <img
+        src="/3dicons-home.png"
+        alt="Home Icon"
+        style={{ width: "32px", height: "32px" }}
+      />
+    ),
+  },
+  { name: "Team", path: "/team", icon: (
+    <img
+      src="/3dicons-team.png"
+      alt="team Icon"
+      style={{ width: "32px", height: "32px" }}
+    />
+  ), },
+  {
+    name: "Archive",
+    path: "/events",
+    icon: (
+      <img
+        src="/3dicons-notebook.png"
+        alt="Notebook Icon"
+        style={{ width: "32px", height: "32px" }}
+      />
+    ),
+  },
+  {
+    name: "Art Community",
+    path: "/art-community",
+    icon: (
+      <img
+        src="/3dicons-color-palette.png"
+        alt="Art Community Icon"
+        style={{ width: "32px", height: "32px" }}
+      />
+    ),
+  },
+  {
+    name: "Blogs",
+    path: "/blogs",
+    icon: (
+      <Badge color="primary" variant="dot">
+        <img
+          src="/3dicons-picture.png"
+          alt="Blog Icon"
+          style={{ width: "32px", height: "32px" }}
+        />
+      </Badge>
+    ),
+  },
 ];
 
-export function NavbarDemo({
-  scrollToCarousel,
-  scrollToFeedback,
-  scrollToAboutUs,
-}) {
+export function NavbarDemo({ scrollToCarousel }) {
   return (
     <div className="relative w-full flex justify-center">
-      <Navbar
-        className="top-2"
-        scrollToFeedback={scrollToFeedback}
-        scrollToAboutUs={scrollToAboutUs}
-        scrollToCarousel={scrollToCarousel}
-      />
+      <Navbar className="top-2" scrollToCarousel={scrollToCarousel} />
     </div>
   );
 }
 
-function Navbar({
-  className,
-  scrollToCarousel,
-  scrollToFeedback,
-  scrollToAboutUs,
-}) {
+function Navbar({ className, scrollToCarousel }) {
   const { currentUser } = useSelector((state) => state.user);
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -153,7 +189,11 @@ function Navbar({
           <ListItem disablePadding>
             <ListItemButton onClick={() => navigate("/profile")}>
               <ListItemIcon>
-                <AccountCircleIcon />
+              <img
+        src="/3dicons-boy.png"
+        alt="Profile Icon"
+        style={{ width: "32px", height: "32px" }}
+      />
               </ListItemIcon>
               <ListItemText primary="Your profile" />
             </ListItemButton>
@@ -172,63 +212,20 @@ function Navbar({
                   </ListItemButton>
                 </ListItem>
               ))}
-              {(location.pathname === "/" || location.pathname === "") && (
-                <>
-                  <ListItem disablePadding>
-                    <ListItemButton
-                      onClick={(e) => {
-                        e.preventDefault();
-                        scrollToAboutUs();
-                      }}
-                    >
-                      <ListItemIcon>
-                        <AccountCircleIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="About Us" />
-                    </ListItemButton>
-                  </ListItem>
-                  <ListItem disablePadding>
-                    <ListItemButton
-                      onClick={(e) => {
-                        e.preventDefault();
-                        scrollToFeedback();
-                      }}
-                    >
-                      <ListItemIcon>
-                        <AccountCircleIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Feedback" />
-                    </ListItemButton>
-                  </ListItem>
-                </>
-              )}
             </List>
           )}
-          <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate("/blogs")}>
-              <ListItemIcon sx={{ color: "#333" }}>
-                <Badge color="primary" variant="dot">
-                  <BookIcon />
-                </Badge>
-              </ListItemIcon>
-              <ListItemText primary="Blogs" />
-            </ListItemButton>
-          </ListItem>
-
           <ListItem disablePadding>
             <ListItemButton
               onClick={handleLogout}
               sx={{
-                backgroundColor: "#E97451",
+                backgroundColor: "#E97450",
                 borderRadius: "0.5rem",
-                padding: "0.5rem",
-                "&:hover": { backgroundColor: "#F88379" },
               }}
             >
-              <ListItemIcon sx={{ color: "#333" }}>
-                <ExitToAppIcon />
+              <ListItemIcon sx={{ color: "#f0f0f0" }}>
+                <ExitToAppIcon sx={{ color: "white" }} />
               </ListItemIcon>
-              <ListItemText primary="Log out" />
+              <ListItemText primary="Log out" sx={{ color: "#f0f0f0" }} />
             </ListItemButton>
           </ListItem>
         </List>
@@ -261,42 +258,6 @@ function Navbar({
               {item.name}
             </Link>
           ))}
-
-          {(location.pathname === "/" || location.pathname === "") && (
-            <>
-              <Link
-                to="#"
-                className="relative text-white cursor-pointer font-bold"
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToAboutUs();
-                }}
-              >
-                About Us
-              </Link>
-              <Link
-                to="#"
-                className="relative text-white cursor-pointer font-bold"
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToFeedback();
-                }}
-              >
-                Feedback
-              </Link>
-            </>
-          )}
-          <Link
-            to="/blogs"
-            className="relative text-white cursor-pointer font-bold"
-          >
-            Blogs
-            <span className="ml-1 text-slate-200 cursor-pointer font-bold">
-              <Badge color="primary" variant="dot">
-                <BookIcon />
-              </Badge>
-            </span>
-          </Link>
         </div>
       )}
       <div>

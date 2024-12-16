@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, {useState } from "react";
 import { PlaceholdersAndVanishInputDemo } from "../components/general/PlaceholdersAndVanishInputDemo";
 import { CoolMode } from "../components/magicui/cool-mode";
 import AnimationIcon from "@mui/icons-material/Animation";
@@ -11,6 +11,7 @@ import LatestOfPratibimb from "../components/general/LatestOfPratibimb";
 import { Backdrop } from "@mui/material";
 import VolunteerForm from "../components/general/VolunteerForm";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const people = [
   {
@@ -54,7 +55,7 @@ const images = [
   "https://res.cloudinary.com/dhy548whh/image/upload/f_auto,q_auto/v1729783496/nd5lefydm7boxosreni0.jpg",
 ];
 
-export default function Home({carouselRef, latestRef, feedbackRef,aboutUsRef,scrollToLatest}) {
+export default function Home({carouselRef, latestRef,scrollToLatest}) {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
@@ -102,14 +103,14 @@ export default function Home({carouselRef, latestRef, feedbackRef,aboutUsRef,scr
         <LatestOfPratibimb handleOpen={handleOpen} />
       </div>
 
-      <div ref={aboutUsRef} className="font-bold text-7xl m-10 bg-gradient-to-r from-blue-400 to-purple-950 bg-clip-text text-transparent">
+      <div className="font-bold text-7xl m-10 bg-gradient-to-r from-blue-400 to-purple-950 bg-clip-text text-transparent">
         About Us
       </div>
-      <div ref={feedbackRef}>
+      <div>
         <PlaceholdersAndVanishInputDemo />
       </div>
 
-      <div className="font-bold text-4xl text-center mb-8">Made with love</div>
+      <div className="font-bold text-4xl text-center mb-8">Made with  <FavoriteIcon style={{ fontSize: '48px', color: 'darkred' }} /> </div>
       <div className="flex flex-row items-center justify-center mb-10 w-full">
         <AnimatedTooltip items={people} />
       </div>
