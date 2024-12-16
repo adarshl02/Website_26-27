@@ -1,5 +1,5 @@
 const QRCode = require("qrcode");
-const db = require("../db/index.js");
+const db = require("../config/db/index.js");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const { errorHandler } = require("../utils/errorHandler");
@@ -228,7 +228,7 @@ const getEventTicket = async (req, res) => {
     });
     if (selection.length == 0) {
       return res
-        .status(500)
+        .status(400)
         .send(
           errorHandler(
             400,

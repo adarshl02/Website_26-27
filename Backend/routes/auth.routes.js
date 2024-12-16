@@ -1,5 +1,5 @@
 const express = require("express");
-const db = require("../db/index.js");
+const db = require("../config/db/index.js");
 const jwt = require("jsonwebtoken");
 const { sendWelcomeEmail } = require("../utils/emailFunctions.js");
 const { errorHandler } = require("../utils/errorHandler.js");

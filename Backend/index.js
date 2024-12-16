@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const eventsRouter = require("./routes/events.routes.js");
 const authRouter = require("./routes/auth.routes.js");
 const userRouter = require("./routes/user.routes.js");
+const artRouter = require("./routes/art.routes.js");
 const volunteerRouter = require("./routes/volunteers.routes.js");
 
 dotenv.config();
@@ -39,6 +40,7 @@ app.use("/api",eventsRouter);
 app.use("/api",authRouter);
 app.use("/api",userRouter);
 app.use("/api", volunteerRouter);
+app.use("/api", artRouter);
 
 
 app.listen(3000, () => {
