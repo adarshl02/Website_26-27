@@ -232,8 +232,8 @@ const getEventTicket = async (req, res) => {
         .send(
           errorHandler(
             400,
-            "Error Ocuured",
-            "Some error occured while fetching the data"
+            "Not Registered",
+            "Not Registered For The Event"
           )
         );
     }

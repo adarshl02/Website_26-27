@@ -5,8 +5,8 @@ exports.up = function (knex) {
       table.foreign("event_id").references("event_id").inTable("events");
       table.string("team_name").notNullable();
       table.integer("team_members").notNullable();
-      table.integer("attendee_name").notNullable();
-      table.integer("attendee_email").notNullable();
+      table.string("attendee_name").notNullable();
+      table.string("attendee_email").notNullable();
       table.string("attendee_phone").notNullable();
       table.string("order_id");
       table.enum("payment_status", ["PENDING", "APPROVED"]);
