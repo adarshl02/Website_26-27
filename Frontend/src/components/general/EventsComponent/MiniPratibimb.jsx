@@ -36,10 +36,6 @@ export default function MiniPratibimb() {
           className="col-span-2 w-full rounded-lg mx-auto max-w-[80%]"
         />
       </div>
-<<<<<<< HEAD
-      <div className="text-center text-neutral-900 text-lg opacity-70 py-6 ">
-        Successfully conducted Photography Workshop in Choitram School
-=======
       <div className="flex my-2 md:my-6 mx-10 md:mx-28 gap-4 md:gap-6">
         <div>
           <img src="/mini1.JPG" alt="image" className="rounded-lg mx-auto" />
@@ -89,7 +85,6 @@ export default function MiniPratibimb() {
             Photography workshop in Choithram School.
           </div>
         </div>
->>>>>>> a4e03fd3e5b65e35cd0fbedeef21995a30507bb2
       </div>
     </div>
   );
