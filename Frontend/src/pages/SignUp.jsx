@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import GoogleIcon from "@mui/icons-material/Google";
 import { CircularProgress, IconButton, Tooltip } from "@mui/material";
 import HelpIcon from "@mui/icons-material/Help";
@@ -16,7 +16,7 @@ import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import { toast } from "react-toastify";
 import { authenticateGoogleLogin } from "../service/api";
 
-export default function SignUp({setBackdropOpen}) {
+export default function SignUp({ setBackdropOpen }) {
   const { loading } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({});
   const [err, setErr] = useState("");
@@ -33,7 +33,7 @@ export default function SignUp({setBackdropOpen}) {
       }
 
       setErr("");
-      
+
       // Configure Google provider
       const provider = new GoogleAuthProvider();
       provider.setCustomParameters({ prompt: "select_account" });
@@ -79,43 +79,60 @@ export default function SignUp({setBackdropOpen}) {
     }
   };
 
-const handleGoogleLogin = async () => {
-  try {
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: "select_account" });
-    const auth = getAuth(app);
-    const result = await signInWithPopup(auth, provider);
-    
+  const handleGoogleLogin = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: "select_account" });
+      const auth = getAuth(app);
+      const result = await signInWithPopup(auth, provider);
 
-    const response = await authenticateGoogleLogin({
-      email: result.user.email,
-      enrollment: false,
-    });
+      const response = await authenticateGoogleLogin({
+        email: result.user.email,
+        enrollment: false,
+      });
 
-    if (response.success) {
-      dispatch(signInSuccess(response.data));
-      navigate("/");
-    
-      toast.success("You're Successfully Logged In");
-    } else {
-      if(response.message==="Request failed with status code 404"){
-        toast.error("User not found");
-      }else 
-      toast.error(response.message || "Failed to sign in with Google");
+      if (response.success) {
+        dispatch(signInSuccess(response.data));
+        navigate("/");
+
+        toast.success("You're Successfully Logged In");
+      } else {
+        if (response.message === "Request failed with status code 404") {
+          toast.error("User not found");
+        } else toast.error(response.message || "Failed to sign in with Google");
+        dispatch(signInFailure());
+      }
+    } catch (error) {
+      console.error("Could not sign up with Google", error);
+      toast.error("Could not sign up with Google. Please try again later.");
       dispatch(signInFailure());
     }
-  } catch (error) {
-    console.error("Could not sign up with Google", error);
-    toast.error("Could not sign up with Google. Please try again later.");
-    dispatch(signInFailure());
-  }
-};
+  };
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const handleResize = () => setIsMobile(mediaQuery.matches);
+
+    handleResize();
+
+    // Add listener
+    mediaQuery.addEventListener("change", handleResize);
+
+    // Cleanup listener on unmount
+    return () => mediaQuery.removeEventListener("change", handleResize);
+  }, []);
+
+  const backgroundImage = isMobile
+    ? "url('/LandingPageBgMobile.png')"
+    : "url('https://res.cloudinary.com/dhy548whh/image/upload/v1734195829/q0zdzie6fbvodeypqq7u.png')";
 
   return (
     <div
       className="flex items-center justify-center min-h-screen bg-fixed bg-cover bg-center  bg-opacity-50"
       style={{
-        backgroundImage: "url('https://res.cloudinary.com/dhy548whh/image/upload/v1734195829/q0zdzie6fbvodeypqq7u.png')",
+        // backgroundImage: "url('https://res.cloudinary.com/dhy548whh/image/upload/v1734195829/q0zdzie6fbvodeypqq7u.png')",
+        backgroundImage,
         backgroundSize: "cover",
         backgroundPosition: "center",
         width: "100vw",
@@ -134,7 +151,7 @@ const handleGoogleLogin = async () => {
             <img
               src="https://res.cloudinary.com/dhy548whh/image/upload/v1734195806/mhwkdrs7niz9yxhrafq8.png"
               alt="Logo"
-              className="w-24 mx-auto mb-4"
+              className="w-24 mx-auto md:mb-4"
             />
 
             {!AdminAuthenticate ? (
@@ -150,23 +167,24 @@ const handleGoogleLogin = async () => {
                       className="block text-left font-medium"
                     >
                       Enrollment Number
-                      
-                        <Tooltip
-                          title="Pratibimb will not disclose your identity to anyone"
-                          placement="right"
-                        >
-                          <IconButton>
-                            <HelpIcon className="text-slate-800"  fontSize="small"/>
-                          </IconButton>
-                        </Tooltip>
-                    
+                      <Tooltip
+                        title="Pratibimb will not disclose your identity to anyone"
+                        placement="right"
+                      >
+                        <IconButton>
+                          <HelpIcon
+                            className="text-slate-800"
+                            fontSize="small"
+                          />
+                        </IconButton>
+                      </Tooltip>
                     </label>
                     <input
                       type="text"
                       id="enrollment"
                       name="enrollment"
                       onChange={handleEnrollmentChange}
-                      className="mt-1 w-full px-4 py-2 ring ring-blue-200  text-slate-800   rounded-lg  text-base focus:ring focus:ring-blue-400 focus:outline-none"
+                      className="md:mt-1 w-full px-4 py-2 ring ring-blue-200  text-slate-800   rounded-lg  text-base focus:ring focus:ring-blue-400 focus:outline-none"
                       placeholder="0801XXXXXXXX"
                     />
                   </div>
