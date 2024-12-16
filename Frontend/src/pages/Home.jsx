@@ -12,7 +12,7 @@ import { Backdrop } from "@mui/material";
 import VolunteerForm from "../components/general/VolunteerForm";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import Spline from '@splinetool/react-spline';
+import VolunteerFormClosed from "../components/general/VolunteerFormClosed";
 
 const people = [
   {
@@ -140,9 +140,9 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
       </div>
 
       <div className="relative flex justify-start">
-        <div className="relative max-w-[60%] md:w-full flex justify-end">
+        <div className="relative max-w-[60%] md:w-full flex justify-start">
           <img
-            src="/aboutus.png" // Path to your image
+            src="/aboutus2.png" // Path to your image
             alt="About Us"
             className="w-full max-w-md md:max-w-2xl object-cover rounded-lg"
           />
@@ -152,7 +152,7 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
           className="shadow-xl absolute top-5 md:top-10 right-0 left-1/2 bottom-5 md:bottom-10 rounded-l-full flex items-center justify-center text-center p-4"
           style={{
             background:
-              "linear-gradient(to right, rgba(200, 194, 186, 0.7), rgba(224, 188, 140, 0.8))",
+              "linear-gradient(to right, rgba(224, 188, 140, 0.8),rgba(200, 194, 186, 0.7))",
           }}
         >
           <div className="text-right md:m-6 bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-xs font-medium tracking-tight text-transparent md:text-2xl font-poppins">
@@ -164,12 +164,6 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
           </div>
         </div>
       </div>
-      <div className="mt-10" >
-      <Spline
-        scene="https://prod.spline.design/q8pbYA528UJZsJ-R/scene.splinecode" 
-      />
-      </div>
-
       <div className="mt-16">
         <PlaceholdersAndVanishInputDemo />
       </div>
@@ -199,7 +193,8 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
         onClick={handleClose}
       >
         <div onClick={(e) => e.stopPropagation()}>
-          <VolunteerForm setOpen={setOpen} />
+          {/* <VolunteerForm setOpen={setOpen} /> */}
+            <VolunteerFormClosed/>
         </div>
       </Backdrop>
     </div>

@@ -103,7 +103,7 @@ function Navbar({ className, scrollToCarousel }) {
   const { currentUser } = useSelector((state) => state.user);
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [navbarWidth, setNavbarWidth] = useState("60%"); // Initially set width to 50%
+  const [navbarWidth, setNavbarWidth] = useState("60%"); // Initially set width to 60%
   const isMobile = useMediaQuery("(max-width:600px)");
   const navigate = useNavigate();
   const dispatch = useDispatch();
