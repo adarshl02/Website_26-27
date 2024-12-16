@@ -198,7 +198,7 @@ const handleGoogleLogin = async () => {
                   )}
                 </form>
 
-                <div className="relative my-6">
+                <div className="relative my-2 md:my-6">
                   <div className="absolute inset-0 flex items-center">
                     <div className="w-full border-t border-gray-700"></div>
                   </div>
