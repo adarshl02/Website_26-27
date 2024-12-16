@@ -22,7 +22,7 @@ export default function Blogs() {
       <div className="w-full max-w-6xl flex flex-wrap bg-white shadow-lg rounded-lg p-4 md:p-6 mt-4 md:mt-8">
         {/* Image Section */}
         <div className='w-full md:w-1/2 flex justify-center items-center mb-4 md:mb-0'>
-          <img src="/blog1.jpg" alt="Blog image" className="w-full h-auto rounded-md" style={{ maxHeight: '400px', objectFit: 'cover' }} />
+          <img src="https://res.cloudinary.com/dhy548whh/image/upload/v1734195277/lyxz1fidjtbknrbsqqve.jpg" alt="Blog image" className="w-full h-auto rounded-md" style={{ maxHeight: '400px', objectFit: 'cover' }} />
         </div>
 
         {/* Content Section */}

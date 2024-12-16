@@ -25,7 +25,7 @@ const LatestOfPratibimb = ({handleOpen}) => {
         {/* Card 1 */}
         <div className="bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col items-center text-center">
           <img
-            src="/volunteers.png"
+            src="https://res.cloudinary.com/dhy548whh/image/upload/v1734195232/fnwxjpfe99cxoqvg4ri1.png"
             alt="Mystic Mode"
             className="w-40 h-40 object-cover rounded-md mb-4"
           />

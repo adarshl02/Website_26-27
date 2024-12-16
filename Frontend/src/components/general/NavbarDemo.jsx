@@ -245,7 +245,7 @@ function Navbar({
       }}
     >
       <img
-        src="./PratibimbLogo2.png"
+        src="https://res.cloudinary.com/dhy548whh/image/upload/v1734195806/zegnantp5rqlmcia9co6.png"
         alt="Pratibimb Logo"
         className="h-10 w-auto"
         onClick={scrollToCarousel}

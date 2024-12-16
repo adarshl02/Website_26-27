@@ -83,7 +83,7 @@ export function TimelineDemo() {
           </div>
           <div className="md:col-span-1 flex justify-center">
             <img
-              src="/graffathon1.png"
+              src="https://res.cloudinary.com/dhy548whh/image/upload/v1734195005/ooteb8bx3xpsiiawlcvj.png"
               alt="startup template"
               className=" rounded-lg object-cover  md:w-full  h-48 md:h-full"
             />
@@ -131,7 +131,7 @@ export function TimelineDemo() {
           </div>
           <div className="md:col-span-1 flex justify-center">
             <img
-              src="/graffathon2.jpg"
+              src="https://res.cloudinary.com/dhy548whh/image/upload/v1734195001/jhtn9aqulolxtkepck13.jpg"
               alt="startup template"
               className=" rounded-lg object-cover  md:w-full  h-48 md:h-full"
             />
@@ -186,7 +186,7 @@ export function TimelineDemo() {
           </div>
           <div className="md:col-span-1 flex justify-center">
             <img
-              src="graffathon3.jpg"
+              src="https://res.cloudinary.com/dhy548whh/image/upload/v1734195001/l2d7gnzv92njaoovywng.jpg"
               alt="startup template"
               className=" rounded-lg object-cover  md:w-full  h-48 md:h-full"
             />
@@ -235,7 +235,7 @@ Club Pratibimb made history during Graffiti 2012, securing a
           </div>
           <div className="md:col-span-1 flex justify-center">
             <img
-              src="graffathon4.jpg"
+              src="https://res.cloudinary.com/dhy548whh/image/upload/v1734195000/aeoux79oezcwxtoz7buh.jpg"
               alt="startup template"
               className=" rounded-lg object-cover  md:w-full  h-48 md:h-full"
             />

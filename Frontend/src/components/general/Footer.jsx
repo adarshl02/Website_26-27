@@ -11,7 +11,7 @@ const Footer = () => {
       <div className="container mx-auto grid grid-cols-2 md:grid-cols-4 gap-10">
         {/* Left Section: Logo and Address */}
         <div className="space-y-4">
-          <img src="/PratibimbLogo2.png" alt="Pratibimb Logo" className="w-40" />
+          <img src="https://res.cloudinary.com/dhy548whh/image/upload/v1734195806/zegnantp5rqlmcia9co6.png" alt="Pratibimb Logo" className="w-40" />
           <p className="text-lg font-semibold">Locate us</p>
           <p className="flex items-center space-x-2">
             <LocationOnIcon />

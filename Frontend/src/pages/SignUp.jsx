@@ -112,7 +112,7 @@ const handleGoogleLogin = async () => {
     <div
       className="flex items-center justify-center min-h-screen bg-fixed bg-cover bg-center  bg-opacity-50"
       style={{
-        backgroundImage: "url('./LandingPageBg.png')",
+        backgroundImage: "url('https://res.cloudinary.com/dhy548whh/image/upload/v1734195829/q0zdzie6fbvodeypqq7u.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         width: "100vw",
@@ -129,7 +129,7 @@ const handleGoogleLogin = async () => {
         <CardBody className="text-black shadow-lg relative group/card  border-white/[0.1] w-full sm:w-[30rem] h-auto rounded-xl p-6">
           <div className="bg-slate-50 p-5 md:p-8 rounded-lg  w-full text-black text-sm">
             <img
-              src="/PratibimbLogo.png"
+              src="https://res.cloudinary.com/dhy548whh/image/upload/v1734195806/mhwkdrs7niz9yxhrafq8.png"
               alt="Logo"
               className="w-24 mx-auto mb-4"
             />
