@@ -98,6 +98,9 @@ const handleGoogleLogin = async () => {
     
       toast.success("You're Successfully Logged In");
     } else {
+      if(response.message==="Request failed with status code 404"){
+        toast.error("User not found");
+      }else 
       toast.error(response.message || "Failed to sign in with Google");
       dispatch(signInFailure());
     }
@@ -195,7 +198,7 @@ const handleGoogleLogin = async () => {
                   )}
                 </form>
 
-                <div className="relative my-6">
+                <div className="relative my-2 md:my-6">
                   <div className="absolute inset-0 flex items-center">
                     <div className="w-full border-t border-gray-700"></div>
                   </div>

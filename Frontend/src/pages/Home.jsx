@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { PlaceholdersAndVanishInputDemo } from "../components/general/PlaceholdersAndVanishInputDemo";
 import { CoolMode } from "../components/magicui/cool-mode";
 import AnimationIcon from "@mui/icons-material/Animation";
@@ -10,7 +10,9 @@ import LatestOfPratibimb from "../components/general/LatestOfPratibimb";
 
 import { Backdrop } from "@mui/material";
 import VolunteerForm from "../components/general/VolunteerForm";
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import Spline from '@splinetool/react-spline';
 
 const people = [
   {
@@ -54,7 +56,7 @@ const images = [
   "https://res.cloudinary.com/dhy548whh/image/upload/f_auto,q_auto/v1729783496/nd5lefydm7boxosreni0.jpg",
 ];
 
-export default function Home({carouselRef, latestRef, feedbackRef,aboutUsRef,scrollToLatest}) {
+export default function Home({ carouselRef, latestRef, scrollToLatest }) {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
@@ -89,7 +91,9 @@ export default function Home({carouselRef, latestRef, feedbackRef,aboutUsRef,scr
               className="px-4 py-2 backdrop-blur-sm border bg-emerald-300/10 border-emerald-500/20 text-white mx-auto text-center rounded-full relative mt-4"
               onClick={scrollToLatest}
             >
-              <span>Featuring <ArrowForwardIcon /></span>
+              <span>
+                Featuring <ArrowForwardIcon />
+              </span>
               <div className="absolute inset-x-0 h-px -bottom-px bg-gradient-to-r w-3/4 mx-auto from-transparent via-emerald-500 to-transparent" />
             </button>
           </motion.div>
@@ -97,19 +101,83 @@ export default function Home({carouselRef, latestRef, feedbackRef,aboutUsRef,scr
       </div>
       <div
         ref={latestRef}
-        className="font-bold text-7xl m-10 bg-gradient-to-r from-blue-400 to-purple-950 bg-clip-text text-transparent"
+        className="font-bold text-7xl m-5 md:m-10 bg-gradient-to-r from-blue-400 to-purple-950 bg-clip-text text-transparent"
       >
         <LatestOfPratibimb handleOpen={handleOpen} />
       </div>
 
-      <div ref={aboutUsRef} className="font-bold text-7xl m-10 bg-gradient-to-r from-blue-400 to-purple-950 bg-clip-text text-transparent">
+      <div className="md:ml-12 bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-7xl font-poppins text-center md:text-left">
         About Us
       </div>
-      <div ref={feedbackRef}>
+
+      <div className="relative flex justify-end">
+        <div className="relative max-w-[60%] md:w-full flex justify-end">
+          <img
+            src="/aboutus.png" // Path to your image
+            alt="About Us"
+            className="w-full max-w-md md:max-w-2xl object-cover rounded-lg"
+          />
+        </div>
+
+        {/* Overlayed Text */}
+        <div
+          className="shadow-xl absolute top-5 md:top-10 left-0 right-1/2 bottom-5 md:bottom-10 rounded-r-full flex items-center justify-center text-center p-4"
+          style={{
+            background:
+              "linear-gradient(to right, rgba(200, 194, 186, 0.7), rgba(224, 188, 140, 0.8))",
+          }}
+        >
+          <div className="text-left md:m-6 bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-xs font-medium tracking-tight text-transparent md:text-2xl font-poppins">
+            <span className="hidden md:block">
+              Club Pratibimb is a realm where imagination reigns, where every
+              stroke, shot, and splash becomes a force for change.
+            </span>{" "}
+            Club was founded on the momentous occasion of World Photography Day,
+            19 August 2011, our journey is a celebration of vision, artistry,
+            and evolution.
+          </div>
+        </div>
+      </div>
+
+      <div className="relative flex justify-start">
+        <div className="relative max-w-[60%] md:w-full flex justify-end">
+          <img
+            src="/aboutus.png" // Path to your image
+            alt="About Us"
+            className="w-full max-w-md md:max-w-2xl object-cover rounded-lg"
+          />
+        </div>
+        {/* Overlayed Text */}
+        <div
+          className="shadow-xl absolute top-5 md:top-10 right-0 left-1/2 bottom-5 md:bottom-10 rounded-l-full flex items-center justify-center text-center p-4"
+          style={{
+            background:
+              "linear-gradient(to right, rgba(200, 194, 186, 0.7), rgba(224, 188, 140, 0.8))",
+          }}
+        >
+          <div className="text-right md:m-6 bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-xs font-medium tracking-tight text-transparent md:text-2xl font-poppins">
+            Fueled by passion, driven by precision, and crowned by legacy,
+            Pratibimb transforms art from mere visuals into movements that
+            endure beyond time. <span className="hidden md:block" > We don't just create, we leave behind imprints
+            of transformation, shaping a future where every vision evolves into
+            a lasting legacy.</span> 
+          </div>
+        </div>
+      </div>
+      <div className="mt-10" >
+      <Spline
+        scene="https://prod.spline.design/q8pbYA528UJZsJ-R/scene.splinecode" 
+      />
+      </div>
+
+      <div className="mt-16">
         <PlaceholdersAndVanishInputDemo />
       </div>
 
-      <div className="font-bold text-4xl text-center mb-8">Made with love</div>
+      <div className="font-bold text-4xl text-center mb-8">
+        Made with{" "}
+        <FavoriteIcon style={{ fontSize: "48px", color: "darkred" }} />{" "}
+      </div>
       <div className="flex flex-row items-center justify-center mb-10 w-full">
         <AnimatedTooltip items={people} />
       </div>

@@ -13,12 +13,13 @@ import Sponsors from "./pages/Sponsors";
 import { NavbarDemo } from "./components/general/NavbarDemo";
 import Footer from "./components/general/Footer";
 import { Backdrop, Typography, Box} from "@mui/material";
-import Blogs from "./components/general/Blogs";
+import Blogs from "./pages/Blogs";
+import ArtCommunity from "./pages/ArtCommunity";
 
 function App() {
   const latestRef = useRef(null);
-  const feedbackRef = useRef(null);
-  const aboutUsRef = useRef(null);
+  // const feedbackRef = useRef(null);
+  // const aboutUsRef = useRef(null);
   const carouselRef = useRef(null);
 
   const scrollToLatest = () => {
@@ -32,26 +33,26 @@ function App() {
     }
   };
 
-  const scrollToFeedback = () => {
-    if (feedbackRef.current) {
-      const yOffset = -80; // Adjust this value according to your navbar's height
-      const yPosition =
-        feedbackRef.current.getBoundingClientRect().top +
-        window.pageYOffset +
-        yOffset;
-      window.scrollTo({ top: yPosition, behavior: "smooth" });
-    }
-  };
-  const scrollToAboutUs = () => {
-    if (aboutUsRef.current) {
-      const yOffset = -80; // Adjust this value according to your navbar's height
-      const yPosition =
-      aboutUsRef.current.getBoundingClientRect().top +
-        window.pageYOffset +
-        yOffset;
-      window.scrollTo({ top: yPosition, behavior: "smooth" });
-    }
-  };
+  // const scrollToFeedback = () => {
+  //   if (feedbackRef.current) {
+  //     const yOffset = -80; // Adjust this value according to your navbar's height
+  //     const yPosition =
+  //       feedbackRef.current.getBoundingClientRect().top +
+  //       window.pageYOffset +
+  //       yOffset;
+  //     window.scrollTo({ top: yPosition, behavior: "smooth" });
+  //   }
+  // };
+  // const scrollToAboutUs = () => {
+  //   if (aboutUsRef.current) {
+  //     const yOffset = -80; // Adjust this value according to your navbar's height
+  //     const yPosition =
+  //     aboutUsRef.current.getBoundingClientRect().top +
+  //       window.pageYOffset +
+  //       yOffset;
+  //     window.scrollTo({ top: yPosition, behavior: "smooth" });
+  //   }
+  // };
   const scrollToCarousel = () => {
     if (carouselRef.current) {
       const yOffset = -80; // Adjust this value according to your navbar's height
@@ -75,11 +76,9 @@ function App() {
               element={
                 <>
                   <NavbarDemo
-                    scrollToFeedback={scrollToFeedback}
-                    scrollToAboutUs={scrollToAboutUs}
                     scrollToCarousel={scrollToCarousel}
                   />
-                  <Home carouselRef={carouselRef} latestRef={latestRef} feedbackRef={feedbackRef} aboutUsRef={aboutUsRef} scrollToLatest={scrollToLatest} />
+                  <Home carouselRef={carouselRef} latestRef={latestRef} scrollToLatest={scrollToLatest} />
                   <Footer />
                 </>
               }
@@ -130,6 +129,16 @@ function App() {
                 <>
                   <NavbarDemo />
                   <Blogs />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="/art-community"
+              element={
+                <>
+                  <NavbarDemo />
+                  <ArtCommunity />
                   <Footer />
                 </>
               }
