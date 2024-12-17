@@ -141,7 +141,6 @@ function Navbar({ className, scrollToCarousel }) {
       // Sign out from Firebase authentication
       await signOut(auth);
 
-      // On successful sign out, dispatch success action, show toast, and navigate
       toast.success("You're Signed Out!");
       dispatch(signOutSuccess());
       navigate("/sign-up");

@@ -12,9 +12,15 @@ export const AnimatedTooltip = ({ items }) => {
   const springConfig = { stiffness: 100, damping: 5 };
   const x = useMotionValue(0); // going to set this value on mouse move
   // rotate the tooltip
-  const rotate = useSpring(useTransform(x, [-100, 100], [-45, 45]), springConfig);
+  const rotate = useSpring(
+    useTransform(x, [-100, 100], [-45, 45]),
+    springConfig
+  );
   // translate the tooltip
-  const translateX = useSpring(useTransform(x, [-100, 100], [-50, 50]), springConfig);
+  const translateX = useSpring(
+    useTransform(x, [-100, 100], [-50, 50]),
+    springConfig
+  );
 
   const handleMouseMove = (event) => {
     const halfWidth = event.target.offsetWidth / 2;
@@ -65,8 +71,20 @@ export const AnimatedTooltip = ({ items }) => {
             onMouseMove={handleMouseMove}
             src={item.image}
             alt={item.name}
-            className="object-cover !m-0 !p-0 object-top rounded-full h-14 w-14 border-2 group-hover:scale-105 group-hover:z-30 border-white relative transition duration-500"
-            style={{ height: "100px", width: "100px" }}
+            className="
+    object-cover 
+    object-top 
+    rounded-full 
+    border-2 
+    group-hover:scale-105 
+    group-hover:z-30 
+    border-white 
+    relative 
+    transition 
+    duration-500 
+    w-16 h-16
+    md:w-24 md:h-24 
+  "
           />
         </div>
       ))}

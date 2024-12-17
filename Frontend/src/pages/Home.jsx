@@ -16,30 +16,31 @@ import VolunteerFormClosed from "../components/general/VolunteerFormClosed";
 
 const people = [
   {
+    id: 3,
+    name: "Vibhuti Baldwa",
+    designation: "UI Designer",
+    image:
+      "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
+  },
+
+  {
     id: 1,
     name: "Adarsh Landge",
     designation: "Web Head",
-    image:
-      "https://res.cloudinary.com/dhy548whh/image/upload/v1729850929/zjrpk72glgbozuqczh1k.jpg",
+    image: "/me.jpg",
   },
   {
     id: 2,
     name: "Eklavya Parihar",
-    designation: "Web Assistant",
+    designation: "Backend Coordinator",
     image:
       "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
   },
-  {
-    id: 3,
-    name: "Vibhuti Baldwa",
-    designation: "Designer",
-    image:
-      "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
-  },
+
   {
     id: 4,
     name: "Emily Davis",
-    designation: "UX Designer",
+    designation: "Content Writer",
     image:
       "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGF2YXRhcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
   },
@@ -158,9 +159,12 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
           <div className="text-right md:m-6 bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-xs font-medium tracking-tight text-transparent md:text-2xl font-poppins">
             Fueled by passion, driven by precision, and crowned by legacy,
             Pratibimb transforms art from mere visuals into movements that
-            endure beyond time. <span className="hidden md:block" > We don't just create, we leave behind imprints
-            of transformation, shaping a future where every vision evolves into
-            a lasting legacy.</span> 
+            endure beyond time.{" "}
+            <span className="hidden md:block">
+              {" "}
+              We don't just create, we leave behind imprints of transformation,
+              shaping a future where every vision evolves into a lasting legacy.
+            </span>
           </div>
         </div>
       </div>
@@ -168,11 +172,17 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
         <PlaceholdersAndVanishInputDemo />
       </div>
 
-      <div className="font-bold text-4xl text-center mb-8">
+      <div className="font-bold text-xl md:text-4xl text-center mb-2">
         Made with{" "}
-        <FavoriteIcon style={{ fontSize: "48px", color: "darkred" }} />{" "}
+        <FavoriteIcon
+          style={{
+            fontSize: "32px", // Smaller size for mobile
+          }}
+          className="text-red-900 md:!text-[48px]"
+        />{" "}
       </div>
-      <div className="flex flex-row items-center justify-center mb-10 w-full">
+
+      <div className="flex flex-row items-center justify-center mb-5 w-full">
         <AnimatedTooltip items={people} />
       </div>
       <div className="fixed bottom-4 right-4">
@@ -194,7 +204,7 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
       >
         <div onClick={(e) => e.stopPropagation()}>
           {/* <VolunteerForm setOpen={setOpen} /> */}
-            <VolunteerFormClosed/>
+          <VolunteerFormClosed />
         </div>
       </Backdrop>
     </div>
