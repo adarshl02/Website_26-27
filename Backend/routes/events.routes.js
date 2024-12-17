@@ -5,12 +5,13 @@ const {
   paymentVerification,
   getEventTicket,
 } = require("../controllers/event.controllers.js");
+const { verifyToken } = require("../utils/verifyUser.js");
 
 const router = Router();
 
 router.route("/get/events").get(getEvents);
-router.route("/register/").post(registerEvents);
-router.route("/payment/verify").post(paymentVerification);
-router.route("/get/event-ticket").get(getEventTicket);
+router.route("/register/").post(verifyToken,registerEvents);
+router.route("/payment/verify").post(verifyToken,paymentVerification);
+router.route("/get/event-ticket").get(verifyToken,getEventTicket);
 
 module.exports = router;

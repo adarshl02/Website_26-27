@@ -14,7 +14,7 @@ import { app } from "../firebase";
 import { CardBody, CardContainer } from "../components/accertinityui/3d-card";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import { toast } from "react-toastify";
-import { authenticateGoogleLogin } from "../service/api";
+import { authenticateGoogleLogin, authenticateGoogleSignup } from "../service/api";
 
 export default function SignUp({ setBackdropOpen }) {
   const { loading } = useSelector((state) => state.user);
@@ -41,29 +41,30 @@ export default function SignUp({ setBackdropOpen }) {
       // Initialize Firebase authentication
       const auth = getAuth(app);
       const result = await signInWithPopup(auth, provider);
-
-      // Dispatch sign-in start action
+      
       dispatch(signInStart());
 
-      // Call the authenticateGoogleLogin API function
-      const response = await authenticateGoogleLogin({
+      const response = await authenticateGoogleSignup({
         name: result.user.displayName,
         email: result.user.email,
         avatar: result.user.photoURL,
+        uid : result.user.uid,
         enrollment: formData.enrollment,
+      
       });
 
-      // Handle the API response
       if (response.success) {
         dispatch(signInSuccess(response.data));
         navigate("/");
         setBackdropOpen(true);
         toast.success("You're Successfully Signed Up");
       } else {
+        dispatch(signInFailure(response.message));
         toast.error(response.message);
         dispatch(signInFailure(response.message));
       }
     } catch (error) {
+      dispatch(signInFailure(response.message));
       toast.error("Could not sign up with Google");
       console.error("Could not sign up with Google", error);
     }
@@ -85,10 +86,13 @@ export default function SignUp({ setBackdropOpen }) {
       provider.setCustomParameters({ prompt: "select_account" });
       const auth = getAuth(app);
       const result = await signInWithPopup(auth, provider);
+      console.log(result);
+      
+      dispatch(signInStart());
 
       const response = await authenticateGoogleLogin({
         email: result.user.email,
-        enrollment: false,
+        uid : result.user.uid,
       });
 
       if (response.success) {
@@ -100,12 +104,11 @@ export default function SignUp({ setBackdropOpen }) {
         if (response.message === "Request failed with status code 404") {
           toast.error("User not found");
         } else toast.error(response.message || "Failed to sign in with Google");
-        dispatch(signInFailure());
+        dispatch(signInFailure(response.message));
       }
     } catch (error) {
-      console.error("Could not sign up with Google", error);
+      dispatch(signInFailure(response.message));
       toast.error("Could not sign up with Google. Please try again later.");
-      dispatch(signInFailure());
     }
   };
   const [isMobile, setIsMobile] = useState(false);

@@ -8,9 +8,18 @@ const handleApiError = (error, apiName) => {
   return { success: false, message: errorMsg, status: error.response?.status };
 };
 
+export const authenticateGoogleSignup = async (data) => {
+  try {
+    const response = await axios.post(`${URL}/api/auth/google/signup`, data, { withCredentials: true } );
+    return { success: true, data: response.data };
+  } catch (error) {
+    return handleApiError(error, 'Google Login API');
+  }
+};
+
 export const authenticateGoogleLogin = async (data) => {
   try {
-    const response = await axios.post(`${URL}/api/auth/google`, data);
+    const response = await axios.post(`${URL}/api/auth/google/signin`, data,  { withCredentials: true } );
     return { success: true, data: response.data };
   } catch (error) {
     return handleApiError(error, 'Google Login API');

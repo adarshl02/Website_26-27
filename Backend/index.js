@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const cookieParser = require('cookie-parser');
 const eventsRouter = require("./routes/events.routes.js");
 const authRouter = require("./routes/auth.routes.js");
 const userRouter = require("./routes/user.routes.js");
@@ -10,6 +11,7 @@ const volunteerRouter = require("./routes/volunteers.routes.js");
 dotenv.config();
 
 const app = express();
+app.use(cookieParser());
 
 const allowedOrigins = [
   'https://website-26-27-ten.vercel.app',
@@ -17,7 +19,10 @@ const allowedOrigins = [
 ];
 
 if (process.env.NODE_ENV === 'development'){
-  app.use(cors());
+  app.use(cors({
+    origin: "http://localhost:5173", // Replace with your frontend URL
+    credentials: true // Allow cookies to be sent and received
+  }));
 } else {
   app.use(cors({
     origin: allowedOrigins,
