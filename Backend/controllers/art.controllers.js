@@ -3,7 +3,7 @@ const db = require("../config/db");
 
 const artCommunity = async (req, res) => {
   try {
-    const { email, name, phone, instagram_user_id } = req.body;
+    const { email, name, phone,description, instagram_user_id } = req.body;
 
     if (!req.file) {
       return res.status(400).json({ error: "No image file provided" });
@@ -32,6 +32,7 @@ const artCommunity = async (req, res) => {
         email,
         name,
         phone,
+        description,
         instagram_user_id,
       })
       .returning("*");
@@ -50,5 +51,5 @@ const artCommunity = async (req, res) => {
 };
 
 module.exports = {
- artCommunity,
+  artCommunity,
 };

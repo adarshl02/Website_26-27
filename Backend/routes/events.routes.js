@@ -9,7 +9,7 @@ const { verifyToken } = require("../utils/verifyUser.js");
 
 const router = Router();
 
-router.route("/get/events").get(getEvents);
+router.route("/get/events").get(verifyToken,getEvents);
 router.route("/register/").post(verifyToken,registerEvents);
 router.route("/payment/verify").post(verifyToken,paymentVerification);
 router.route("/get/event-ticket").get(verifyToken,getEventTicket);

@@ -15,10 +15,11 @@ exports.up = function (knex) {
     table.string("branch").notNullable();
     table.string("enrollment").notNullable();
     table.boolean("is_member").defaultTo(false);
-    table.timestamps(true, true); // Created at and updated at timestamps
+    table.boolean("is_artist").defaultTo(false);
+    table.timestamps(true, true);
   });
-}
+};
 
 exports.down = function (knex) {
   return knex.schema.dropTableIfExists("users"); // Drop users table if it exists
-}
+};

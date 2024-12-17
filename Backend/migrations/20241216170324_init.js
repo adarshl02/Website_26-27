@@ -6,6 +6,7 @@ exports.up = function (knex) {
       table.string("name").notNullable();
       table.string("phone").notNullable();
       table.string("instagram_user_id").notNullable();
+      table.text('description').notNullable()
       table.timestamps(true, true);
     });
   };
