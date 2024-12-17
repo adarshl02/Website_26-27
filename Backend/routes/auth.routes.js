@@ -49,12 +49,15 @@ router.post("/auth/google/signup", async (req, res, next) => {
        
         const token = jwt.sign({ id: insertedUser.hashedUid }, process.env.JWT_SECRET);
         const { uid: hasheduid, ...rest } = insertedUser;
-        res
-          .cookie("access_token", token, { httpOnly: true })
-          .status(200)
-          .json(rest);
+        return res.status(200).send({
+          response: {
+            data: { rest,token },
+            title: "Account Created Successfully",
+            message: "Account Created Successfully Redirecting To The Login Page",
+          },
+        });
         } catch (error) {
-          console.error("Error sending welcome email:", error);
+          console.error("Error creating account:", error);
           return res.status(500).json({ message: "Internal server error." });
         }
       } 
@@ -90,10 +93,13 @@ router.post("/auth/google/signin", async (req, res, next) => {
 
       const token = jwt.sign({ id: user.uid }, process.env.JWT_SECRET);
       const { uid: hasheduid, ...rest } = user;
-      res
-        .cookie("access_token", token, { httpOnly: true })
-        .status(200)
-        .json(rest);
+      return res.status(200).send({
+        response: {
+          data: { rest,token },
+          title: "Login Successfull",
+          message: "Logged In Successfull Redirecting To The Home Page",
+        },
+      });
   } catch (error) {
     console.error("Error during Google Auth:", error);  
     next(error);
