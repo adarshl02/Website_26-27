@@ -15,6 +15,7 @@ import Footer from "./components/general/Footer";
 import { Backdrop, Typography, Box} from "@mui/material";
 import Blogs from "./pages/Blogs";
 import ArtCommunity from "./pages/ArtCommunity";
+import UpcomingEventPage from './pages/UpcomingEventPage';
 
 function App() {
   const latestRef = useRef(null);
@@ -139,6 +140,16 @@ function App() {
                 <>
                   <NavbarDemo />
                   <ArtCommunity />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="/upcoming-event-page"
+              element={
+                <>
+                  <NavbarDemo />
+                  <UpcomingEventPage />
                   <Footer />
                 </>
               }

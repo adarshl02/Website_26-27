@@ -28,10 +28,10 @@ const VolunteerForm = ({ setOpen }) => {
       }
   };
   const [formData, setFormData] = useState({
-    name: currentUser.name,
+    name: currentUser.rest.name,
     phone: "",
-    email: currentUser.email,
-    branch: currentUser.branch,
+    email: currentUser.rest.email,
+    branch: currentUser.rest.branch,
     batch: "",
     domain: [],
   });
@@ -67,38 +67,25 @@ const VolunteerForm = ({ setOpen }) => {
     setLoading(true);
 
     try {
-      const response = await registerVolunteer(formData);
-      console.log(response);
-
-      if(response.status >= 200 && response.status < 300){
-        toast.success("Registered successfully");
-        toast.success("Check your mail");
+      const response = await registerVolunteer(formData, currentUser.token);
+      if (response.success) {
+        toast.success("Registered successfully! Check your email for confirmation.");
+        setFormData({
+          name: "",
+          phone: "",
+          email: "",
+          branch:  "",
+          batch: "",
+          domain: [],
+        });
+        setOpen(false);
+      } else {
+        toast.error(error.message || "Failed to register. Please try again.");
       }
-
-      // Reset form
-      setFormData({
-        name: "",
-        phone: "",
-        email: "",
-        branch: "",
-        batch: "",
-        domain: [],
-      });
-      setLoading(false);
-      setOpen(false);
-
     } catch (error) {
-      toast.error(response.data.errors.detail);
-      setFormData({
-        name: "",
-        phone: "",
-        email: "",
-        branch: "",
-        batch: "",
-        domain: [],
-      });
+      toast.error(error.message || "Failed to register. Please try again.");
+    } finally {
       setLoading(false);
-      setOpen(false);
     }
   };
 

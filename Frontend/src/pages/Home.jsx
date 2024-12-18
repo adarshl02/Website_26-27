@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PlaceholdersAndVanishInputDemo } from "../components/general/PlaceholdersAndVanishInputDemo";
 import { CoolMode } from "../components/magicui/cool-mode";
 import AnimationIcon from "@mui/icons-material/Animation";
@@ -13,6 +13,14 @@ import VolunteerForm from "../components/general/VolunteerForm";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import VolunteerFormClosed from "../components/general/VolunteerFormClosed";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  ongoingFailure,
+  ongoingStart,
+  ongoingSuccess,
+} from "../redux/events/eventsSlice";
+import { fetchEventsByStatus } from "../service/api";
+import UpcomingEventNotReleased from './../components/general/UpcomingEventNotReleased';
 
 const people = [
   {
@@ -59,6 +67,11 @@ const images = [
 
 export default function Home({ carouselRef, latestRef, scrollToLatest }) {
   const [open, setOpen] = useState(false);
+  const [open2, setOpen2] = useState(false);
+  const { ongoing } = useSelector((state) => state.events);
+  const { token } = useSelector((state) => state.user.currentUser);
+
+  const dispatch = useDispatch();
 
   const handleClose = () => {
     setOpen(false);
@@ -66,6 +79,38 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
   const handleOpen = () => {
     setOpen(true);
   };
+
+  const handleClose2 = () => {
+    setOpen2(false);
+  };
+  const handleOpen2 = () => {
+    setOpen2(true);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        ongoingStart();
+
+        const response = await fetchEventsByStatus("ONGOING",token);
+        if (response.success) {
+          dispatch(ongoingSuccess(response.data));
+        } else {
+          // dispatch(ongoingFailure(response.message));
+          // console.error("Failed to fetch events:", response.message);
+          console.log('Failed to fetch event');
+          
+        }
+      } catch (error) {
+        // dispatch(ongoingFailure(response.error));
+        // console.error("Error fetching events:", error);
+        console.log('Failed to fetch event');
+      }
+    };
+    if (!ongoing) { 
+      fetchData();
+    }
+  }, []);
 
   return (
     <div>
@@ -104,7 +149,7 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
         ref={latestRef}
         className="font-bold text-7xl m-5 md:m-10 bg-gradient-to-r from-blue-400 to-purple-950 bg-clip-text text-transparent"
       >
-        <LatestOfPratibimb handleOpen={handleOpen} />
+        <LatestOfPratibimb handleOpen={handleOpen} handleOpen2={handleOpen2} />
       </div>
 
       <div className="md:ml-12 bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-7xl font-poppins text-center md:text-left">
@@ -203,8 +248,22 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
         onClick={handleClose}
       >
         <div onClick={(e) => e.stopPropagation()}>
+          <VolunteerForm setOpen={setOpen} />
+          {/* <VolunteerFormClosed /> */}
+        </div>
+      </Backdrop>
+
+      <Backdrop
+        sx={(theme) => ({
+          color: "#fff",
+          zIndex: theme.zIndex.drawer + 1,
+        })}
+        open={open2}
+        onClick={handleClose2}
+      >
+        <div onClick={(e) => e.stopPropagation()}>
           {/* <VolunteerForm setOpen={setOpen} /> */}
-          <VolunteerFormClosed />
+          <UpcomingEventNotReleased />
         </div>
       </Backdrop>
     </div>

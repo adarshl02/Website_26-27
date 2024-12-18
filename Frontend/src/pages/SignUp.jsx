@@ -14,7 +14,10 @@ import { app } from "../firebase";
 import { CardBody, CardContainer } from "../components/accertinityui/3d-card";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import { toast } from "react-toastify";
-import { authenticateGoogleLogin, authenticateGoogleSignup } from "../service/api";
+import {
+  authenticateGoogleLogin,
+  authenticateGoogleSignup,
+} from "../service/api";
 
 export default function SignUp({ setBackdropOpen }) {
   const { loading } = useSelector((state) => state.user);
@@ -41,16 +44,15 @@ export default function SignUp({ setBackdropOpen }) {
       // Initialize Firebase authentication
       const auth = getAuth(app);
       const result = await signInWithPopup(auth, provider);
-      
+
       dispatch(signInStart());
 
       const response = await authenticateGoogleSignup({
         name: result.user.displayName,
         email: result.user.email,
         avatar: result.user.photoURL,
-        uid : result.user.uid,
+        uid: result.user.uid,
         enrollment: formData.enrollment,
-      
       });
 
       if (response.success) {
@@ -61,7 +63,6 @@ export default function SignUp({ setBackdropOpen }) {
       } else {
         dispatch(signInFailure(response.message));
         toast.error(response.message);
-        dispatch(signInFailure(response.message));
       }
     } catch (error) {
       dispatch(signInFailure(response.message));
@@ -86,19 +87,18 @@ export default function SignUp({ setBackdropOpen }) {
       provider.setCustomParameters({ prompt: "select_account" });
       const auth = getAuth(app);
       const result = await signInWithPopup(auth, provider);
-      console.log(result);
       
+
       dispatch(signInStart());
 
       const response = await authenticateGoogleLogin({
         email: result.user.email,
-        uid : result.user.uid,
+        uid: result.user.uid,
       });
 
       if (response.success) {
         dispatch(signInSuccess(response.data));
         navigate("/");
-
         toast.success("You're Successfully Logged In");
       } else {
         if (response.message === "Request failed with status code 404") {
@@ -112,7 +112,7 @@ export default function SignUp({ setBackdropOpen }) {
     }
   };
   const [isMobile, setIsMobile] = useState(false);
-  
+
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 768px)");
     const handleResize = () => setIsMobile(mediaQuery.matches);

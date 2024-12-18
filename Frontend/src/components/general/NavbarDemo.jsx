@@ -34,6 +34,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import PeopleIcon from "@mui/icons-material/People";
 import EventIcon from "@mui/icons-material/Event";
 import HomeIcon from "@mui/icons-material/Home";
+import { deleteEvents } from "../../redux/events/eventsSlice.js";
 
 const navItems = [
   {
@@ -127,7 +128,7 @@ function Navbar({ className, scrollToCarousel }) {
     try {
       // Start sign out process
       dispatch(signOutStart());
-
+      dispatch(deleteEvents())
       // Call the logout API function
       const response = await logoutUser();
 

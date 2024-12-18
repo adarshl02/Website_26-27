@@ -59,7 +59,7 @@ const registerEvents = async (req, res) => {
     const { event_id } = req.query;
     const { team_name, team_members, name, email, phone } = req.body;
 
-    if (!event_id) {
+    if (!event_id) {r
       return res
         .status(400)
         .send(errorHandler(400, "Not Found", "Mentioned Event not found"));

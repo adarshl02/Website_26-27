@@ -14,6 +14,7 @@ const RegistrationForm = ({ event_id , setOpen }) => {
   });
 
   const { currentUser } = useSelector((state) => state.user);
+  const { token } = useSelector((state) => state.user.currentUser);
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -33,11 +34,11 @@ const RegistrationForm = ({ event_id , setOpen }) => {
         team_name: formData.teamName,
         team_members: formData.teamMembers,
         name: formData.name,
-        email: currentUser.email,
+        email: currentUser.rest.email,
         phone: formData.phone,
       };
   
-      const response = await registerEvent(payload);
+      const response = await registerEvent(payload,token);
   
       if (response.success) {
         toast.success("Redirecting to Payment Page");
@@ -101,7 +102,7 @@ const RegistrationForm = ({ event_id , setOpen }) => {
         razorpay_order_id: response.razorpay_order_id,
         razorpay_payment_id: response.razorpay_payment_id,
         razorpay_signature: response.razorpay_signature,
-      });
+      },token);
   
       if (verificationResponse.success) {
         setFormData({
