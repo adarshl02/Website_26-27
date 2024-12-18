@@ -6,10 +6,10 @@ import { AnimatedTestimonials } from "../accertinityui/animated-testimonials";
 
 const testimonials = [
   {
-    src: "https://res.cloudinary.com/dhy548whh/image/upload/v1734528470/ItsMe2_2_t3tvmi.png",
-    quote: `It been such a pleasure to mentor Club Pratibimb since the past few years.I wish that the future of each member of the club be ever filled with love, joy, happiness, and ART!`,
-    name: "Mr. Paswan",
-    designation: "Mentor, Club Pratibimb",
+    src: "/ajnar.jpeg",
+    quote: `Art gives me divine experience. This is the only thing that will last forever. I hope my students give their best to both art and to Club Pratibimb.`,
+    name: "Prof. D S Ajnar",
+    designation: "President, Club Pratibimb",
   },
   {
     src: "/kutty.jpeg",
@@ -18,11 +18,12 @@ const testimonials = [
     designation: "Mentor, Club Pratibimb",
   },
   {
-    src: "/ajnar.jpeg",
-    quote: `Art gives me divine experience. This is the only thing that will last forever. I hope my students give their best to both art and to Club Pratibimb.`,
-    name: "Prof. D S Ajnar",
+    src: "https://res.cloudinary.com/dhy548whh/image/upload/v1734528470/ItsMe2_2_t3tvmi.png",
+    quote: `Mentoring Club Pratibimb has been an incredibly fulfilling journey, witnessing the creativity and passion of its members grow.`,
+    name: "Prof. Suresh Paswan",
     designation: "Mentor, Club Pratibimb",
   },
+
 ];
 
 const ModernCarousel = () => {

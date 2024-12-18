@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PastEvents from "../components/general/EventsComponent/PastEvents";
 import MiniPratibimb from "../components/general/EventsComponent/MiniPratibimb";
 import Flagship from './../components/general/EventsComponent/Flagship';
@@ -9,6 +9,9 @@ export default function Events() {
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);  
   };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  },[])
 
   return (
     <>

@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { TeamCard } from "../components/general/TeamCard";
 
 export default function Team() {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  },[])
+
   const teamBatch2026 = [
     {
       name: "Adarsh Landge",

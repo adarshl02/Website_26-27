@@ -22,8 +22,8 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef }
   const location = useLocation(); 
   const pageTransition = {
     initial: { opacity: 0, y: 30 },
-    animate: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-    exit: { opacity: 0, y: -30, transition: { duration: 0.3 } },
+    animate: { opacity: 1, y: 0, transition: { duration: 0.2 } },
+    exit: { opacity: 0, y: -30, transition: { duration: 0.1 } },
   };
 
   return (

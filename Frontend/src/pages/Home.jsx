@@ -1,4 +1,4 @@
-import React, {useState } from "react";
+import React, {useEffect, useState } from "react";
 import { PlaceholdersAndVanishInputDemo } from "../components/general/PlaceholdersAndVanishInputDemo";
 import { CoolMode } from "../components/magicui/cool-mode";
 import AnimationIcon from "@mui/icons-material/Animation";
@@ -78,6 +78,9 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
   const handleOpen2 = () => {
     setOpen2(true);
   };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  },[])
 
 
   return (

@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Meteors, MeteorsPremium } from "./../components/accertinityui/Meteor";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 export default function Profile() {
   const { rest: user } = useSelector((state) => state.user.currentUser);  // Assuming user data is stored in the redux state
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  },[])
   return (
     <div className="flex flex-col items-center mt-20 text-lg px-4 sm:px-6 ">
       <div className="text-center mb-6 sm:mb-8">

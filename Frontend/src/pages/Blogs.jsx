@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Heart from "react-animated-heart";
 
 export default function Blogs() {
@@ -9,6 +9,9 @@ export default function Blogs() {
     setClick(!isClick);
     setLikes((prevLikes) => (isClick ? prevLikes - 1 : prevLikes + 1));
   };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  },[])
 
   return (
     <div className='p-4 md:p-6 flex flex-col justify-center items-center mt-20'>
