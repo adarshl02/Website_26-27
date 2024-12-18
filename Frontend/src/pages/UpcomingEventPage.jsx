@@ -23,6 +23,7 @@ const UpcomingEventPage = () => {
       };
 
       useEffect(() => {
+         window.scrollTo(0, 0);
         const fetchData = async () => {
           try {
             ongoingStart();

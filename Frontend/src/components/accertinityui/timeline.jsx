@@ -72,13 +72,13 @@ export const Timeline = ({ data }) => {
               <h3 className="md:hidden block text-2xl mb-4 text-left font-bold text-neutral-500 dark:text-neutral-500">
                 {item.title}
                 {item.title === "2016" && (
-                  <img className="h-28" src="/records_india.png" alt="image" />
+                  <img className="h-28" src="https://res.cloudinary.com/dhy548whh/image/upload/v1734195277/h9hbnlhhkgcjd82am6id.png" alt="image" />
                 )}
                 {item.title === "2012" && (
-                  <img className="h-32" src="/records_limca.png" alt="image" />
+                  <img className="h-32" src="https://res.cloudinary.com/dhy548whh/image/upload/v1734195277/ud2xrkuxmdzdjszojh2y.png" alt="image" />
                 )}
                 {item.title === "2024" && (
-                  <img className="h-32" src="/records_london.png" alt="image" />
+                  <img className="h-32" src="https://res.cloudinary.com/dhy548whh/image/upload/v1734195278/kklso8t7ahnzrhrjitlm.png" alt="image" />
                 )}
               </h3>
               <div className="">{item.content} </div>

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useNavigate } from "react-router-dom";
 
-const LatestOfPratibimb = ({ handleOpen,handleOpen2 }) => {
+const LatestOfPratibimb = ({ handleOpen }) => {
   const navigate = useNavigate();
   return (
     <div className="bg-slate-700 rounded-md p-4 md:p-8 flex justify-center">

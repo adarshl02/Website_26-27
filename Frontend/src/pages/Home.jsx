@@ -120,7 +120,7 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
         <LatestOfPratibimb handleOpen={handleOpen} handleOpen2={handleOpen2} />
       </div>
 
-      <div className="ml-4 md:ml-16 bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-4xl font-medium tracking-tight text-transparent md:text-7xl font-poppins text-left">
+      <div className="mt-16 md:mt-28 ml-4 md:ml-16 bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-4xl font-medium tracking-tight text-transparent md:text-7xl font-poppins text-left">
         About Us
       </div>
 

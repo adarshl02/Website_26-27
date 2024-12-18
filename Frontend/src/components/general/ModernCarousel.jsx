@@ -64,7 +64,7 @@ const ModernCarousel = () => {
           ))}
         </Slider>
       </div> */}
-      <div className="mx-10 mt-14 md:mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 items-center md:gap-10">
+      <div className="mx-10 mt-20 md:mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 items-center md:gap-10">
         {/* Left Section: Title */}
         <div className="col-span-1 md:col-span-2 text-center md:text-left">
           <div className="mb-2 mx-auto md:ml-16   md:text-left bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-7xl font-poppins">
