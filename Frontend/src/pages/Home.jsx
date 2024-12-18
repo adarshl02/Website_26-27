@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 import { PlaceholdersAndVanishInputDemo } from "../components/general/PlaceholdersAndVanishInputDemo";
 import { CoolMode } from "../components/magicui/cool-mode";
 import AnimationIcon from "@mui/icons-material/Animation";
@@ -14,13 +14,8 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import VolunteerFormClosed from "../components/general/VolunteerFormClosed";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  ongoingFailure,
-  ongoingStart,
-  ongoingSuccess,
-} from "../redux/events/eventsSlice";
-import { fetchEventsByStatus } from "../service/api";
 import UpcomingEventNotReleased from './../components/general/UpcomingEventNotReleased';
+import ModernCarousel from "../components/general/ModernCarousel";
 
 const people = [
   {
@@ -28,29 +23,29 @@ const people = [
     name: "Vibhuti Baldwa",
     designation: "UI Designer",
     image:
-      "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
+      "https://res.cloudinary.com/dhy548whh/image/upload/v1734528512/IMG-20241217-WA0010_2_niscra.jpg",
   },
 
   {
     id: 1,
     name: "Adarsh Landge",
     designation: "Web Head",
-    image: "/me.jpg",
+    image: "https://res.cloudinary.com/dhy548whh/image/upload/v1734528470/ItsMe2_2_t3tvmi.png",
   },
   {
     id: 2,
     name: "Eklavya Parihar",
     designation: "Backend Coordinator",
     image:
-      "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
+      "https://res.cloudinary.com/dhy548whh/image/upload/v1734528551/IMG-20241217-WA0022_2_e867zl.jpg",
   },
 
   {
     id: 4,
-    name: "Emily Davis",
+    name: "Arpita Jain",
     designation: "Content Writer",
     image:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGF2YXRhcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
+      "https://res.cloudinary.com/dhy548whh/image/upload/v1734528510/IMG-20241217-WA0003_2_k0wdnf.jpg",
   },
 ];
 
@@ -68,10 +63,7 @@ const images = [
 export default function Home({ carouselRef, latestRef, scrollToLatest }) {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
-  const { ongoing } = useSelector((state) => state.events);
-  const { token } = useSelector((state) => state.user.currentUser);
-
-  const dispatch = useDispatch();
+ 
 
   const handleClose = () => {
     setOpen(false);
@@ -87,30 +79,6 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
     setOpen2(true);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        ongoingStart();
-
-        const response = await fetchEventsByStatus("ONGOING",token);
-        if (response.success) {
-          dispatch(ongoingSuccess(response.data));
-        } else {
-          // dispatch(ongoingFailure(response.message));
-          // console.error("Failed to fetch events:", response.message);
-          console.log('Failed to fetch event');
-          
-        }
-      } catch (error) {
-        // dispatch(ongoingFailure(response.error));
-        // console.error("Error fetching events:", error);
-        console.log('Failed to fetch event');
-      }
-    };
-    if (!ongoing) { 
-      fetchData();
-    }
-  }, []);
 
   return (
     <div>
@@ -152,12 +120,12 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
         <LatestOfPratibimb handleOpen={handleOpen} handleOpen2={handleOpen2} />
       </div>
 
-      <div className="md:ml-12 bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-7xl font-poppins text-center md:text-left">
+      <div className="ml-4 md:ml-16 bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-4xl font-medium tracking-tight text-transparent md:text-7xl font-poppins text-left">
         About Us
       </div>
 
       <div className="relative flex justify-end">
-        <div className="relative max-w-[60%] md:w-full flex justify-end">
+        <div className="relative md:max-w-[50%] max-w-[60%] flex justify-end">
           <img
             src="/aboutus.png" // Path to your image
             alt="About Us"
@@ -167,7 +135,7 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
 
         {/* Overlayed Text */}
         <div
-          className="shadow-xl absolute top-5 md:top-10 left-0 right-1/2 bottom-5 md:bottom-10 rounded-r-full flex items-center justify-center text-center p-4"
+          className="shadow-xl absolute top-5 md:top-16 left-0 right-1/2 md:right-[600px] bottom-5 md:bottom-16 rounded-r-full flex items-center justify-center text-center p-4 md:p-12"
           style={{
             background:
               "linear-gradient(to right, rgba(200, 194, 186, 0.7), rgba(224, 188, 140, 0.8))",
@@ -186,7 +154,7 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
       </div>
 
       <div className="relative flex justify-start">
-        <div className="relative max-w-[60%] md:w-full flex justify-start">
+        <div className="relative md:max-w-[50%] max-w-[60%] flex justify-start">
           <img
             src="/aboutus2.png" // Path to your image
             alt="About Us"
@@ -195,29 +163,30 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
         </div>
         {/* Overlayed Text */}
         <div
-          className="shadow-xl absolute top-5 md:top-10 right-0 left-1/2 bottom-5 md:bottom-10 rounded-l-full flex items-center justify-center text-center p-4"
+          className="shadow-xl absolute top-5 md:top-16 right-0 left-1/2 md:left-[600px] bottom-5 md:bottom-16 rounded-l-full flex items-center justify-center text-center  p-4 md:p-12"
           style={{
             background:
               "linear-gradient(to right, rgba(224, 188, 140, 0.8),rgba(200, 194, 186, 0.7))",
           }}
         >
           <div className="text-right md:m-6 bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-xs font-medium tracking-tight text-transparent md:text-2xl font-poppins">
-            Fueled by passion, driven by precision, and crowned by legacy,
+            Fueled by passion and crowned by legacy,
             Pratibimb transforms art from mere visuals into movements that
             endure beyond time.{" "}
             <span className="hidden md:block">
               {" "}
               We don't just create, we leave behind imprints of transformation,
-              shaping a future where every vision evolves into a lasting legacy.
+              shaping a future where every vision evolves into a lasting legacy. 
             </span>
           </div>
         </div>
       </div>
-      <div className="mt-16">
-        <PlaceholdersAndVanishInputDemo />
-      </div>
+          
+       <ModernCarousel/>
 
-      <div className="font-bold text-xl md:text-4xl text-center mb-2">
+        <PlaceholdersAndVanishInputDemo />
+
+      <div className="mt-16 font-bold text-xl md:text-4xl text-center mb-2">
         Made with{" "}
         <FavoriteIcon
           style={{

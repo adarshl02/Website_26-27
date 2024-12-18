@@ -21,15 +21,23 @@ export function PlaceholdersAndVanishInputDemo() {
   };
 
   return (
-    <div className="m-10 flex flex-col justify-center items-center px-4">
-      <h2 className="mb-10 sm:mb-12 text-3xl text-center sm:text-5xl text-slate-800">
-       Give your Valuable Feedback!
-      </h2>
-      <PlaceholdersAndVanishInput
-        placeholders={placeholders}
-        onChange={handleChange}
-        onSubmit={onSubmit}
-      />
-    </div>
+    <div className="mt-8 md:my-4 flex flex-col justify-center items-center px-4">
+    <h2 className="mb-4 md:mb-8 text-center bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-5xl font-poppins">
+      Post any queries or Feedback!
+    </h2>
+    
+    {/* Input section */}
+    <PlaceholdersAndVanishInput
+      placeholders={placeholders}
+      onChange={handleChange}
+      onSubmit={onSubmit}
+    />
+  
+    {/* Bottom Message */}
+    <p className="mt-4 text-xs md:text-sm text-gray-500 text-center">
+      We will revert back to your queries in the profile section.
+    </p>
+  </div>
+  
   );
 }

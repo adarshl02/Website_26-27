@@ -1,15 +1,19 @@
 import { motion } from "framer-motion";
 import RegistrationForm from "../components/general/RegistrationForm";
 import { Backdrop } from "@mui/material";
-import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { fetchEventsByStatus } from "../service/api";
+import { ongoingFailure, ongoingStart, ongoingSuccess } from "../redux/events/eventsSlice";
 
 const UpcomingEventPage = () => {
 
     const [open, setOpen] = useState(false);
     const { ongoing } = useSelector((state) => state.events);
+    const { token } = useSelector((state) => state.user.currentUser);
     
     
+  const dispatch = useDispatch();
 
     const handleClose = () => {
         setOpen(false);
@@ -17,6 +21,32 @@ const UpcomingEventPage = () => {
       const handleOpen = () => {
         setOpen(true);
       };
+
+      useEffect(() => {
+        const fetchData = async () => {
+          try {
+            ongoingStart();
+            console.log("hi");
+            
+            const response = await fetchEventsByStatus("ONGOING",token);
+            if (response.success) {
+              dispatch(ongoingSuccess(response.data));
+            } else {
+               dispatch(ongoingFailure(response.message));
+               console.error("Failed to fetch events:", response.message);
+              console.log('Failed to fetch event');
+              
+            }
+          } catch (error) {
+            // dispatch(ongoingFailure(response.error));
+            // console.error("Error fetching events:", error);
+            console.log('Failed to fetch event');
+          }
+        };
+        if (!ongoing) { 
+          fetchData();
+        }
+      }, []);
 
   return (
     <div className="mt-20 min-h-screen bg-gradient-to-b from-gray-900 to-black text-white flex flex-col items-center justify-center px-4 md:px-8 py-6 md:py-12">
@@ -83,7 +113,7 @@ const UpcomingEventPage = () => {
         onClick={handleClose}
       >
         <div onClick={(e) => e.stopPropagation()}>
-          <RegistrationForm event_id={ongoing.event_id} setOpen={setOpen} />
+          <RegistrationForm event_id={ongoing?.event_id} setOpen={setOpen} />
         </div>
       </Backdrop>
 

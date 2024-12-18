@@ -176,15 +176,15 @@ function Navbar({ className, scrollToCarousel }) {
       onClick={toggleDrawer(false)}
     >
       <Box sx={{ padding: "16px", textAlign: "center" }}>
-        {currentUser.avatar && (
+        {currentUser.rest.avatar && (
           <Avatar
-            src={currentUser.avatar}
-            alt={currentUser.name}
+            src={currentUser.rest.avatar}
+            alt={currentUser.rest.name}
             sx={{ width: 48, height: 48, margin: "auto" }}
           />
         )}
-        <div className="text-black mt-2">{currentUser.name}</div>
-        <div className="text-gray-600 text-sm mb-4">{currentUser.email}</div>
+        <div className="text-black mt-2">{currentUser.rest.name}</div>
+        <div className="text-gray-600 text-sm mb-4">{currentUser.rest.email}</div>
         <List>
           <ListItem disablePadding>
             <ListItemButton onClick={() => navigate("/profile")}>
@@ -235,7 +235,7 @@ function Navbar({ className, scrollToCarousel }) {
 
   return (
     <div
-      className="flex items-center justify-between fixed top-3 left-1 right-1 max-w-5xl mx-auto space-x-5 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 text-slate-100 px-4 py-1 rounded-full shadow-lg z-50"
+      className="flex items-center justify-between fixed top-3  md:max-w-5xl mx-auto space-x-5 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 text-slate-100 px-4 py-1 rounded-full shadow-lg z-50"
       style={{
         width: navbarWidth, // Control the width via state
         transition: "width 0.5s ease-in-out", // Add smooth transition
@@ -276,7 +276,7 @@ function Navbar({ className, scrollToCarousel }) {
             aria-haspopup="true"
             aria-expanded={Boolean(anchorEl) ? "true" : undefined}
           >
-            <Avatar src={currentUser.avatar}></Avatar>
+            <Avatar src={currentUser.rest.avatar}></Avatar>
           </IconButton>
         </Tooltip>
       </div>

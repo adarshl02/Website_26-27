@@ -4,7 +4,7 @@ import { Meteors, MeteorsPremium } from "./../components/accertinityui/Meteor";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 export default function Profile() {
-  const user = useSelector((state) => state.user.currentUser); // Assuming user data is stored in the redux state
+  const { rest: user } = useSelector((state) => state.user.currentUser);  // Assuming user data is stored in the redux state
 
   return (
     <div className="flex flex-col items-center mt-20 text-lg px-4 sm:px-6 ">
