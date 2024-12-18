@@ -147,7 +147,8 @@ export default function SignUp({ setBackdropOpen }) {
       }}
     >
       {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black opacity-40"></div>
+      <div className={`absolute inset-0 bg-black ${isMobile ? "opacity-10" : "opacity-40"}`}></div>
+      
       <CardContainer className="inter-var z-10">
         <CardBody className="text-black shadow-lg relative group/card  border-white/[0.1] w-full sm:w-[30rem] h-auto rounded-xl p-6">
           <div className="bg-slate-50 p-5 md:p-8 rounded-lg  w-full text-black text-sm">

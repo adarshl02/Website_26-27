@@ -28,9 +28,9 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef }
 
   return (
     <>
-      <NavbarDemo scrollToCarousel={scrollToCarousel} />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
+
           <Route element={<PrivateRoute />}>
             <Route
               path="/"
@@ -39,7 +39,7 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef }
                   initial={pageTransition.initial}
                   animate={pageTransition.animate}
                   exit={pageTransition.exit}
-                >
+                ><NavbarDemo scrollToCarousel={scrollToCarousel} />
                   <Home
                     carouselRef={carouselRef}
                     latestRef={latestRef}
@@ -56,7 +56,8 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef }
                   initial={pageTransition.initial}
                   animate={pageTransition.animate}
                   exit={pageTransition.exit}
-                >
+                > 
+                  <NavbarDemo scrollToCarousel={scrollToCarousel} />
                   <Profile />
                   <Footer />
                 </motion.div>
@@ -69,7 +70,8 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef }
                   initial={pageTransition.initial}
                   animate={pageTransition.animate}
                   exit={pageTransition.exit}
-                >
+                > 
+                  <NavbarDemo scrollToCarousel={scrollToCarousel} />
                   <Events />
                   <Footer />
                 </motion.div>
@@ -82,7 +84,8 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef }
                   initial={pageTransition.initial}
                   animate={pageTransition.animate}
                   exit={pageTransition.exit}
-                >
+                > 
+                <NavbarDemo scrollToCarousel={scrollToCarousel} />
                   <Team />
                   <Footer />
                 </motion.div>
@@ -95,7 +98,8 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef }
                   initial={pageTransition.initial}
                   animate={pageTransition.animate}
                   exit={pageTransition.exit}
-                >
+                > 
+                <NavbarDemo scrollToCarousel={scrollToCarousel} />
                   <Sponsors />
                   <Footer />
                 </motion.div>
@@ -108,7 +112,7 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef }
                   initial={pageTransition.initial}
                   animate={pageTransition.animate}
                   exit={pageTransition.exit}
-                >
+                > <NavbarDemo scrollToCarousel={scrollToCarousel} />
                   <Blogs />
                   <Footer />
                 </motion.div>
@@ -121,7 +125,7 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef }
                   initial={pageTransition.initial}
                   animate={pageTransition.animate}
                   exit={pageTransition.exit}
-                >
+                > <NavbarDemo scrollToCarousel={scrollToCarousel} />
                   <ArtCommunity />
                   <Footer />
                 </motion.div>
@@ -134,7 +138,7 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef }
                   initial={pageTransition.initial}
                   animate={pageTransition.animate}
                   exit={pageTransition.exit}
-                >
+                > <NavbarDemo scrollToCarousel={scrollToCarousel} />
                   <UpcomingEventPage />
                   <Footer />
                 </motion.div>
