@@ -53,6 +53,33 @@ const changeEnrollment = async (req, res) => {
   }
 };
 
+const countUsers = async (req, res) => {
+  try {
+    const result = await db("users").count("id as count"); 
+    const userCount = result[0].count; 
+
+    return res.status(200).send({
+      response: {
+        data: userCount,
+        title: "Successfully Fetched",
+        message: "Users Successfully Fetched",
+        status: 200,
+      },
+    });
+  } catch (error) {
+    console.error("Error counting users:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to retrieve user count",
+      error: error.message,
+    });
+  }
+};
+
+
+
+
 module.exports = {
   changeEnrollment,
+  countUsers
 };
