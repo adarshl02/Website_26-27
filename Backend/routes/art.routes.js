@@ -1,8 +1,11 @@
 const express = require("express");
 const multer = require("multer");
-const { artCommunity } = require("../controllers/art.controllers.js");
+const {
+  artCommunity,
+  imAnArtist,
+  getUserAndArtCommunityDetails
+} = require("../controllers/art.controllers.js");
 const { verifyToken } = require("../utils/verifyUser.js");
-const { verify } = require("crypto");
 
 const router = express.Router();
 
@@ -14,5 +17,7 @@ router.post(
   upload.single("image"),
   artCommunity
 );
+router.post("/enroll-artist", verifyToken, imAnArtist);
+router.get("/user-art-details", verifyToken,getUserAndArtCommunityDetails);
 
 module.exports = router;

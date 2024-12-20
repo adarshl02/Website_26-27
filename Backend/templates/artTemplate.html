@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artwork Submission Confirmation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #121212;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .email-card {
+      background: linear-gradient(135deg, #1f1f1f, #3a3a3a);
+      border-radius: 8px;
+      max-width: 600px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .email-card img {
+      display: block;
+      margin: 0 auto;
+      max-width: 150px;
+      border-radius: 50%;
+    }
+    .email-card h1 {
+      font-size: 24px;
+      text-align: center;
+      margin-top: 20px;
+      color: #f9d342;
+    }
+    .email-card p {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #e1e1e1;
+    }
+    .email-card a {
+      color: #f9d342;
+      text-decoration: none;
+    }
+    .footer {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #bbb;
+    }
+  </style>
+</head>
+<body>
+  <div class="email-card">
+    <img src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1733825280/uqfmoxybdavba23awyjg.png" alt="Club Pratibimb Logo">
+    <h1>Artwork Submission Confirmation</h1>
+    <p>Dear <strong>{{name}}</strong>,</p>
+    <p>
+      Thank you for submitting your artwork to Club Pratibimb. We are thrilled to have your work as part of our community.
+    </p>
+    <p>
+      We confirm that your submission has been successfully received. Our team will review your artwork, and if it is selected for our upcoming weekly post, you will be notified via email.
+    </p>
+    <p>
+      We appreciate your contribution and look forward to the possibility of featuring your work.
+    </p>
+    <div class="footer">
+      <p>Best regards,</p>
+      <p>Club Pratibimb</p>
+      <p><a href="https://www.clubpratibimb.com">[Club Pratibimb]</a> | <a href="mailto:clubpratibimb.sgsits@gmail.com">[Contact Information]</a></p>
+    </div>
+  </div>
+</body>
+</html>

@@ -111,4 +111,26 @@ const sendWelcomeEmail = async (email, name) => {
   }
 };
 
-module.exports = { sendEmail, sendEmailForVolunteering, sendWelcomeEmail };
+const sendEmailForArtist = async (email,name) => {
+  try {
+    let templatePath = path.join(__dirname, "../templates/artTemplate.html");
+    let emailTemplate = fs.readFileSync(templatePath, "utf-8");
+    emailTemplate = emailTemplate.replace("{{name}}", name);
+
+    await transporter.sendMail({
+      from: '"Club Pratibimb" <team@clubpratibimb.com>',
+      to: email,
+      subject: "Artwork Submission Confirmation - Club Pratibimb",
+      html: emailTemplate,
+    });
+  } catch (error) {
+    console.error("Error sending welcome email:", error);
+  }
+};
+
+module.exports = {
+  sendEmail,
+  sendEmailForVolunteering,
+  sendWelcomeEmail,
+  sendEmailForArtist,
+};
