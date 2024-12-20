@@ -56,7 +56,7 @@ export const FileUpload = ({ onChange, resetTrigger }) => {
       <motion.div
         onClick={handleClick}
         whileHover="animate"
-        className="pt-2 md:p-10 group/file block rounded-lg cursor-pointer w-full h-[200px] relative overflow-hidden"
+        className="pt-2 md:p-10 group/file block rounded-lg cursor-pointer w-full h-[220px] md:h-[350px] relative overflow-hidden"
       >
         <input
           ref={fileInputRef}
@@ -68,14 +68,14 @@ export const FileUpload = ({ onChange, resetTrigger }) => {
           }
           className="hidden"
         />
-        <div className="absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]">
+        <div className="absolute inset-0">
           <GridPattern />
         </div>
         <div className="flex flex-col items-center justify-center">
-          <p className="relative z-20 text-slate-900 text-lg font-poppins">
+          <p className="mt-2 md:mt-0 relative z-20 text-slate-200 text-lg font-poppins font-bold">
             Upload file
           </p>
-          <p className="relative z-20 text-slate-900 text-base px-4 md:mt-2 text-center">
+          <p className="relative z-20 text-slate-300 text-base px-4 md:mt-2 text-center font-sans">
             Drag or drop your file here or click to upload. Only one image
             (size &lt; 5MB) is allowed.
           </p>
@@ -139,7 +139,7 @@ export const FileUpload = ({ onChange, resetTrigger }) => {
                   damping: 20,
                 }}
                 className={cn(
-                  "relative group-hover/file:shadow-2xl z-40 bg-neutral-100 flex items-center justify-center h-24 md:h-32 mt-4 w-full max-w-[120px] md:max-w-[8rem] mx-auto rounded-md",
+                  "relative group-hover/file:shadow-2xl z-40 bg-neutral-200 flex items-center justify-center h-20 md:h-32 mt-2 md:mt-4 w-full max-w-[120px] md:max-w-[8rem] mx-auto rounded-md",
                   "shadow-[0px_10px_50px_rgba(0,0,0,0.1)]"
                 )}
               >

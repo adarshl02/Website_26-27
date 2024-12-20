@@ -87,13 +87,14 @@ export default function ArtCommunityForm({ setOpen }) {
       description: "",
       file: null,
     });
-    setResetTrigger((prev) => !prev); // Toggle resetTrigger to reset the FileUpload component
+    setResetTrigger((prev) => !prev); 
+    setOpen(false);
   };
 
   return (
-   <div className="w-full max-w-[400px] md:max-w-4xl bg-white shadow-2xl p-6 rounded-lg md:mx-auto mx-4">
+   <div className="w-full max-w-[310px] md:max-w-4xl bg-white shadow-2xl p-5 md:p-6 rounded-lg mx-auto">
   <form onSubmit={handleSubmit}>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 md:gap-6">
       {/* Left Column */}
       <div className="flex flex-col text-sm md:text-lg space-y-1 md:space-y-4 text-gray-800 font-poppins">
         <div>
@@ -106,7 +107,7 @@ export default function ArtCommunityForm({ setOpen }) {
             name="phone"
             value={formData.phone}
             onChange={handleChange}
-            className="w-full px-3 py-2 md:py-2 border bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-xs md:text-sm"
+            className="w-full px-3 py-2 border-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-xs md:text-base"
           />
         </div>
 
@@ -120,7 +121,7 @@ export default function ArtCommunityForm({ setOpen }) {
             name="instagram_id"
             value={formData.instagram_id}
             onChange={handleChange}
-            className="w-full px-3 py-2 md:py-2 border bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-xs md:text-sm"
+            className="w-full px-3 py-2 md:py-2 border-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-xs md:text-base"
           />
         </div>
 
@@ -134,13 +135,13 @@ export default function ArtCommunityForm({ setOpen }) {
             value={formData.description}
             onChange={handleChange}
             rows={4}
-            className="w-full px-3 py-1.5 md:py-2 border bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-xs md:text-sm"
+            className="w-full px-3 py-1.5 md:py-2 border-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-xs md:text-base"
           />
         </div>
       </div>
 
       {/* Right Column */}
-      <div className="">
+      <div className="px-2 md:p-0 ">
    <div className="flex justify-center md:justify-start">
     <FileUpload
       onChange={handleFileChange}
