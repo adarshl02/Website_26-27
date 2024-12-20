@@ -8,7 +8,7 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage for
 const rootReducer=combineReducers({user : userReducer,events : eventsReducer,loadinganderror:loadinganderrorReducer})
 
 const persistConfig={
-    key:'pratibimbsgsits',
+    key:'clubpratibimb',
     storage,
     version : 1,
 }

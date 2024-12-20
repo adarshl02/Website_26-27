@@ -55,6 +55,7 @@ const changeEnrollment = async (req, res) => {
 
 const countUsers = async (req, res) => {
   try {
+    
     const result = await db("users").count("id as count"); 
     const userCount = result[0].count; 
 

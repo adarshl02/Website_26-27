@@ -1,19 +1,16 @@
 import { motion } from "framer-motion";
 import RegistrationForm from "../components/general/RegistrationForm";
 import { Backdrop } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { fetchEventsByStatus } from "../service/api";
-import { ongoingFailure, ongoingStart, ongoingSuccess } from "../redux/events/eventsSlice";
 
 const UpcomingEventPage = () => {
 
     const [open, setOpen] = useState(false);
-    const { ongoing } = useSelector((state) => state.events);
     const { token } = useSelector((state) => state.user.currentUser);
+    const [ongoing, setOngoing] = useState(null);
     
-    
-  const dispatch = useDispatch();
 
     const handleClose = () => {
         setOpen(false);
@@ -25,28 +22,19 @@ const UpcomingEventPage = () => {
       useEffect(() => {
          window.scrollTo(0, 0);
         const fetchData = async () => {
-          try {
-            ongoingStart();
-            console.log("hi");
-            
+          try {  
             const response = await fetchEventsByStatus("ONGOING",token);
             if (response.success) {
-              dispatch(ongoingSuccess(response.data));
+              setOngoing(response.data);
             } else {
-               dispatch(ongoingFailure(response.message));
-               console.error("Failed to fetch events:", response.message);
-              console.log('Failed to fetch event');
-              
+               console.error("Failed to fetch events:", response?.message);              
             }
           } catch (error) {
-            // dispatch(ongoingFailure(response.error));
-            // console.error("Error fetching events:", error);
             console.log('Failed to fetch event');
           }
         };
-        if (!ongoing) { 
+
           fetchData();
-        }
       }, []);
 
   return (

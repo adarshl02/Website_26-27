@@ -91,100 +91,94 @@ export default function ArtCommunityForm({ setOpen }) {
   };
 
   return (
-    <div className="w-full max-w-4xl bg-white shadow-2xl p-6 rounded-lg">
-      <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Left Column */}
-          <div className="flex flex-col text-lg space-y-4 text-gray-800 font-poppins">
-            <div>
-              <label htmlFor="phone" className="block font-medium">
-                Phone Number
-              </label>
-              <input
-                type="text"
-                id="phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                className="w-full px-4 py-1.5 md:py-2 border-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 
-                md:text-base text-sm"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="instagram_id" className="block font-medium">
-                Instagram ID
-              </label>
-              <input
-                type="text"
-                id="instagram_id"
-                name="instagram_id"
-                value={formData.instagram_id}
-                onChange={handleChange}
-                className="w-full px-4 py-1.5 md:py-2 border-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 
-                md:text-base text-sm"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="description" className="block font-medium">
-                Description
-              </label>
-              <textarea
-                id="description"
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                rows={5}
-                className="w-full px-4 py-1.5 md:py-2 border-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 
-                md:text-base text-sm"
-              />
-            </div>
-          </div>
-
-          {/* Right Column */}
-          <div>
-            <div className="mt-4">
-              <FileUpload
-                onChange={handleFileChange}
-                resetTrigger={resetTrigger}
-              />
-            </div>
-          </div>
+   <div className="w-full max-w-[400px] md:max-w-4xl bg-white shadow-2xl p-6 rounded-lg md:mx-auto mx-4">
+  <form onSubmit={handleSubmit}>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-6">
+      {/* Left Column */}
+      <div className="flex flex-col text-sm md:text-lg space-y-1 md:space-y-4 text-gray-800 font-poppins">
+        <div>
+          <label htmlFor="phone" className="block font-medium">
+            Phone Number
+          </label>
+          <input
+            type="text"
+            id="phone"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            className="w-full px-3 py-2 md:py-2 border bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-xs md:text-sm"
+          />
         </div>
 
-        {/* Error Message */}
-        {error && <p className="text-red-600 mt-4">{error}</p>}
-
-        <div className="mt-6 flex justify-end">
-          <button
-            type="button"
-            onClick={handleCancel}
-            className="mr-4 inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="inline-flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-900 hover:bg-blue-800 relative"
-            disabled={loading}
-          >
-            {/* Loader spinner overlay */}
-            {loading && (
-              <CircularProgress
-                size={22}
-                color="inherit"
-                className="absolute inset-0 m-auto"
-              />
-            )}
-
-            {/* Button text */}
-            <span className={loading ? "opacity-0" : "opacity-100"}>
-              Submit
-            </span>
-          </button>
+        <div>
+          <label htmlFor="instagram_id" className="block font-medium">
+            Instagram ID
+          </label>
+          <input
+            type="text"
+            id="instagram_id"
+            name="instagram_id"
+            value={formData.instagram_id}
+            onChange={handleChange}
+            className="w-full px-3 py-2 md:py-2 border bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-xs md:text-sm"
+          />
         </div>
-      </form>
+
+        <div>
+          <label htmlFor="description" className="block font-medium">
+            Description
+          </label>
+          <textarea
+            id="description"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            rows={4}
+            className="w-full px-3 py-1.5 md:py-2 border bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-xs md:text-sm"
+          />
+        </div>
+      </div>
+
+      {/* Right Column */}
+      <div className="">
+   <div className="flex justify-center md:justify-start">
+    <FileUpload
+      onChange={handleFileChange}
+      resetTrigger={resetTrigger}
+      className="max-w-full" // Smaller width for mobile
+    />
+  </div>
+</div>
     </div>
+
+    {/* Error Message */}
+    {error && <p className="text-red-600 text-xs md:text-sm mt-4">{error}</p>}
+
+    <div className="mt-6 flex justify-between md:justify-end space-x-2 md:space-x-4">
+      <button
+        type="button"
+        onClick={handleCancel}
+        className="py-2 px-4 border rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+      >
+        Cancel
+      </button>
+      <button
+        type="submit"
+        className="relative py-2 px-4 border rounded-md shadow-sm text-sm font-medium text-white bg-blue-900 hover:bg-blue-800 disabled:opacity-50"
+        disabled={loading}
+      >
+        {loading && (
+          <CircularProgress
+            size={18} // Smaller spinner for mobile
+            color="inherit"
+            className="absolute inset-0 m-auto"
+          />
+        )}
+        <span className={loading ? "opacity-0" : "opacity-100"}>Submit</span>
+      </button>
+    </div>
+  </form>
+</div>
+
   );
 }

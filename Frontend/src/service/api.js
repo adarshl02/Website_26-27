@@ -79,6 +79,19 @@ export const registerVolunteer = async (data,token) => {
   }
 };
 
+export const countUsers = async (token) => {
+  try {
+    const response = await axios.get(`${URL}/api/count-users`, {
+      headers: {
+       "Authorization": `${token}`,  // Include token in the headers
+      },
+    });
+    return { success: true, data: response.data.response.data };
+  } catch (error) {
+    return handleApiError(error, 'Count User API');
+  }
+};
+
 export const verifyPayment = async (data,token) => {
   try {
     const response = await axios.post(`${URL}/api/payment/verify`, data, {

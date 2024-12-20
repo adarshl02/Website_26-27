@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import ArtCommunityForm from "./../components/general/ArtCommunityForm";
 import { motion } from "framer-motion";
@@ -10,12 +10,59 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { MeteorsPremium } from "../components/accertinityui/Meteor";
+import { toast } from "react-toastify";
 
 export default function ArtCommunityPage() {
   const [isRegistered, setIsRegistered] = useState(false);
   const [open, setOpen] = useState(false);
 
+  const [isVisible, setIsVisible] = useState(false);
+  const [count, setCount] = useState(34);
+  const elementRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    if (elementRef.current) {
+      observer.observe(elementRef.current);
+    }
+
+    return () => {
+      if (elementRef.current) {
+        observer.unobserve(elementRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isVisible) {
+      let current = 0;
+      const targetCount = 34; // Desired count value
+      const increment = targetCount / 50; // Adjust speed here
+      const interval = setInterval(() => {
+        current += increment;
+        if (current >= targetCount) {
+          clearInterval(interval);
+          setCount(targetCount); // Ensure it finishes at the correct count
+        } else {
+          setCount(Math.floor(current));
+        }
+      }, 40); // Adjust interval here
+    }
+  }, [isVisible]);
+  
+
   const handleRegisterClick = () => {
+    toast.success("Thanks for Registering with Art Community");
+    toast.success("Waiting for your art submission");
     setIsRegistered(true);
   };
 
@@ -53,6 +100,33 @@ export default function ArtCommunityPage() {
       <div className="text-slate-500 text-base md:text-xl opacity-70 text-center mb-4 font-poppins">
         Join a vibrant community of artists and let your creativity shine.
       </div>
+
+      <div className="mb-4 relative w-[60%] md:w-[30%]">
+          {/* Background Blur and Gradient */}
+          {/* Main Content Container */}
+          <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-yellow-600 to-yellow-900 transform scale-[0.85] rounded-full blur-3xl" />
+
+          <div
+            ref={elementRef}
+            className="relative shadow-lg bg-gradient-to-r from-yellow-600 via-yellow-600 to-yellow-800  px-6 py-1 md:py-2 rounded-full flex items-center justify-between text-slate-100 overflow-hidden"
+            style={{ willChange: "contents" }}
+          >
+            {/* Left Text */}
+            <div className="text-slate-100 text-left text-xl md:text-3xl font-medium font-poppins tracking-tight">
+              Registered Artist
+            </div>
+
+            {/* Animated Count */}
+            <span className="bg-gradient-to-br from-slate-100 to-slate-400 bg-clip-text text-4xl md:text-6xl font-medium tracking-tight text-transparent">
+              {count}
+            </span>
+
+            {/* Meteors Animation */}
+            <div className="absolute inset-0 overflow-hidden">
+              <MeteorsPremium number={20} />
+            </div>
+          </div>
+        </div>
       {/* Registration Section */}
       {!isRegistered ? (
         <>
@@ -148,7 +222,7 @@ export default function ArtCommunityPage() {
                     <TableCell>
                       <a
                         href={`https://instagram.com/${member.insta_userid}`}
-                        target="_blank"
+                        count="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-400 hover:underline"
                       >

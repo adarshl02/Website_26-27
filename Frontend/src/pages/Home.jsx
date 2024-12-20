@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import UpcomingEventNotReleased from "./../components/general/UpcomingEventNotReleased";
 import ModernCarousel from "../components/general/ModernCarousel";
 import SocialHandles from "../components/general/SocialHandles";
+import { countUsers } from "../service/api";
 
 const people = [
   {
@@ -61,28 +62,51 @@ const images = [
   "https://res.cloudinary.com/dhy548whh/image/upload/f_auto,q_auto/v1729783494/g10d8iewbzhjxitzx6qa.jpg",
   "https://res.cloudinary.com/dhy548whh/image/upload/f_auto,q_auto/v1729783496/nd5lefydm7boxosreni0.jpg",
 ];
-const socialHandles = [
-  {
-    target: 25,
-    avatarSrc: "",
-  },
-  {
-    target: 3536,
-    avatarSrc:
-      "https://res.cloudinary.com/dhy548whh/image/upload/v1733923563/tpuqqhg73ccx2cbs6ccq.png",
-  },
-  { target: 3167, avatarSrc: "/facebook.png" },
-  { target: 537, avatarSrc: "/linkedin.png" },
-  {
-    target: 113,
-    avatarSrc:
-      "https://res.cloudinary.com/dhy548whh/image/upload/v1733923562/ph251e5rkfoteorw38ug.png",
-  },
-];
+
 
 export default function Home({ carouselRef, latestRef, scrollToLatest }) {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
+  const [websiteUserTarget, setWebsiteUserTarget] = useState(138); 
+  const { token } = useSelector((state) => state.user.currentUser);
+
+  useEffect(() => {
+    const fetchUserCount = async () => {
+      if (!token) {
+        console.error("No token found. Please authenticate.");
+        return;
+      }
+      const response = await countUsers(token);
+      if (response.success) {
+          setWebsiteUserTarget(response.data); 
+          console.log(response);
+          
+      } else {
+        console.error("Failed to fetch user count:", response.error);
+      }
+    };
+    fetchUserCount();
+  }, []);
+
+
+  const socialHandles = [
+    {
+      target: websiteUserTarget,
+      avatarSrc: "",
+    },
+    {
+      target: 3536,
+      avatarSrc:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1733923563/tpuqqhg73ccx2cbs6ccq.png",
+    },
+    { target: 3167, avatarSrc: "/facebook.png" },
+    { target: 537, avatarSrc: "/linkedin.png" },
+    {
+      target: 113,
+      avatarSrc:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1733923562/ph251e5rkfoteorw38ug.png",
+    },
+  ];
 
   const handleClose = () => {
     setOpen(false);
@@ -202,7 +226,7 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
         </div>
       </div>
 
-      <div className="text-center mt-16 md:mt-28 md:mb-3 bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-4xl font-medium tracking-tight text-transparent md:text-7xl font-poppins">
+      <div className="text-center mt-16 md:mt-28 md:mb-3 bg-gradient-to-br from-slate-500 to-slate-900 bg-clip-text text-4xl font-medium tracking-tight text-transparent md:text-7xl font-poppins">
         Our Network
         <div className="flex flex-wrap justify-center items-center mt-4  md:mt-12  gap-4 sm:gap-6 md:gap-12">
           {socialHandles.map((handle, index) => (
