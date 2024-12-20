@@ -133,7 +133,7 @@ function Navbar({ className, scrollToCarousel }) {
       const response = await logoutUser();
 
       // Check if the API call was successful
-      if (!response.success) {
+      if (!response.success){
         dispatch(signOutFailure(response.message));
         toast.error(response.message);
         return;

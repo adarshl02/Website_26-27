@@ -91,3 +91,17 @@ export const verifyPayment = async (data,token) => {
     return handleApiError(error, 'Payment Verification API');
   }
 };
+
+export const uploadArtCommunityDetails = async (formData,token) => {
+  try {
+    const response = await axios.post(`${URL}/api/art-community`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data", // Specify content type for file uploads
+        "Authorization": `${token}`, 
+      },
+    });
+    return { success: true, data: response.data };
+  } catch (error) {
+    return handleApiError(error, 'Art Community API');
+  }
+};

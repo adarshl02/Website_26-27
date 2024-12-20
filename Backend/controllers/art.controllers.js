@@ -3,6 +3,8 @@ const db = require("../config/db");
 
 const artCommunity = async (req, res) => {
   try {
+    console.log(req.body);
+    
     const { email, name, phone,description, instagram_user_id } = req.body;
 
     if (!req.file) {

@@ -1,4 +1,4 @@
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { PlaceholdersAndVanishInputDemo } from "../components/general/PlaceholdersAndVanishInputDemo";
 import { CoolMode } from "../components/magicui/cool-mode";
 import AnimationIcon from "@mui/icons-material/Animation";
@@ -14,8 +14,9 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import VolunteerFormClosed from "../components/general/VolunteerFormClosed";
 import { useDispatch, useSelector } from "react-redux";
-import UpcomingEventNotReleased from './../components/general/UpcomingEventNotReleased';
+import UpcomingEventNotReleased from "./../components/general/UpcomingEventNotReleased";
 import ModernCarousel from "../components/general/ModernCarousel";
+import SocialHandles from "../components/general/SocialHandles";
 
 const people = [
   {
@@ -30,7 +31,8 @@ const people = [
     id: 1,
     name: "Adarsh Landge",
     designation: "Web Head",
-    image: "https://res.cloudinary.com/dhy548whh/image/upload/v1734528470/ItsMe2_2_t3tvmi.png",
+    image:
+      "https://res.cloudinary.com/dhy548whh/image/upload/v1734528470/ItsMe2_2_t3tvmi.png",
   },
   {
     id: 2,
@@ -59,11 +61,28 @@ const images = [
   "https://res.cloudinary.com/dhy548whh/image/upload/f_auto,q_auto/v1729783494/g10d8iewbzhjxitzx6qa.jpg",
   "https://res.cloudinary.com/dhy548whh/image/upload/f_auto,q_auto/v1729783496/nd5lefydm7boxosreni0.jpg",
 ];
+const socialHandles = [
+  {
+    target: 25,
+    avatarSrc: "",
+  },
+  {
+    target: 3536,
+    avatarSrc:
+      "https://res.cloudinary.com/dhy548whh/image/upload/v1733923563/tpuqqhg73ccx2cbs6ccq.png",
+  },
+  { target: 3167, avatarSrc: "/facebook.png" },
+  { target: 537, avatarSrc: "/linkedin.png" },
+  {
+    target: 113,
+    avatarSrc:
+      "https://res.cloudinary.com/dhy548whh/image/upload/v1733923562/ph251e5rkfoteorw38ug.png",
+  },
+];
 
 export default function Home({ carouselRef, latestRef, scrollToLatest }) {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
- 
 
   const handleClose = () => {
     setOpen(false);
@@ -78,10 +97,9 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
   const handleOpen2 = () => {
     setOpen2(true);
   };
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  },[])
-
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, []);
 
   return (
     <div>
@@ -173,21 +191,35 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
           }}
         >
           <div className="text-right md:m-6 bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-xs font-medium tracking-tight text-transparent md:text-2xl font-poppins">
-            Fueled by passion and crowned by legacy,
-            Pratibimb transforms art from mere visuals into movements that
-            endure beyond time.{" "}
+            Fueled by passion and crowned by legacy, Pratibimb transforms art
+            from mere visuals into movements that endure beyond time.{" "}
             <span className="hidden md:block">
               {" "}
               We don't just create, we leave behind imprints of transformation,
-              shaping a future where every vision evolves into a lasting legacy. 
+              shaping a future where every vision evolves into a lasting legacy.
             </span>
           </div>
         </div>
       </div>
-          
-       <ModernCarousel/>
 
-        <PlaceholdersAndVanishInputDemo />
+      <div className="text-center mt-16 md:mt-28 md:mb-3 bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-4xl font-medium tracking-tight text-transparent md:text-7xl font-poppins">
+        Our Network
+        <div className="flex flex-wrap justify-center items-center mt-4  md:mt-12  gap-4 sm:gap-6 md:gap-12">
+          {socialHandles.map((handle, index) => (
+            <SocialHandles
+              key={index}
+              target={handle.target}
+              avatarSrc={handle.avatarSrc}
+            />
+          ))}
+
+          {/* Website Users Component */}
+        </div>
+      </div>
+
+      <ModernCarousel />
+
+      <PlaceholdersAndVanishInputDemo />
 
       <div className="mt-16 font-bold text-xl md:text-4xl text-center mb-2">
         Made with{" "}

@@ -18,7 +18,7 @@ import { ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Backdrop, Typography, Box } from "@mui/material";
 
-const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef }) => {
+const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef,setBackdropOpen}) => {
   const location = useLocation(); 
   const pageTransition = {
     initial: { opacity: 0, y: 30 },
@@ -145,6 +145,7 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef }
               }
             />
           </Route>
+
           <Route
             path="/sign-up"
             element={
@@ -154,7 +155,7 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef }
                 exit={pageTransition.exit}
               >
                 <ProtectedRoute>
-                  <SignUp />
+                  <SignUp setBackdropOpen={setBackdropOpen} />
                 </ProtectedRoute>
               </motion.div>
             }
@@ -201,6 +202,7 @@ function App() {
           scrollToLatest={scrollToLatest}
           latestRef={latestRef}
           carouselRef={carouselRef}
+          setBackdropOpen={setBackdropOpen}
         />
       </BrowserRouter>
       <ToastContainer

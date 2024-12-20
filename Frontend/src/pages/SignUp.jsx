@@ -64,9 +64,9 @@ export default function SignUp({ setBackdropOpen }) {
         dispatch(signInFailure(response.message));
         toast.error(response.message);
       }
-    } catch (error) {
+    } catch (error){
       dispatch(signInFailure(response.message));
-      toast.error("Could not sign up with Google");
+      toast.error("Could not sign up with google");
       console.error("Could not sign up with Google", error);
     }
   };

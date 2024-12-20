@@ -14,12 +14,12 @@ export default function Blogs() {
   },[])
 
   return (
-    <div className='p-4 md:p-6 flex flex-col justify-center items-center mt-20'>
-      <div className="mb-4 bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-7xl font-poppins">
-        BiWeekly Blog Page 
+    <div className='p-4 md:p-6 flex flex-col justify-center items-center mt-16'>
+      <div className="py-2 md:mb-4 bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-7xl font-poppins">
+        Weekly Blog Page 
       </div>
-      <div className="text-slate-500 text-base md:text-xl opacity-70 text-center">
-        Pratibimb will post weekly blogs from the Registered Art Community.
+      <div className="text-slate-500 text-base md:text-xl opacity-70 text-center font-poppins">
+        Pratibimb will post weekly blogs about latest Arts & photography skills and post selected from art community.
       </div>
 
       <div className="w-full max-w-6xl flex flex-wrap bg-white shadow-lg rounded-lg p-4 md:p-6 mt-4 md:mt-8">

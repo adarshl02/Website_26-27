@@ -26,7 +26,7 @@ export const Timeline = ({ data }) => {
   return (
     <div className="font-sans" ref={containerRef}>
       <div className="relative text-center pt-4">
-        <div className="mt-4 bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text text-4xl font-medium tracking-tight text-transparent md:text-8xl">
+        <div className="mt-4 bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text text-4xl font-medium tracking-tight text-transparent md:text-8xl font md:py-2">
           Overnight Series
         </div>
         <Meteors number={30} className="custom-meteor-class" />
