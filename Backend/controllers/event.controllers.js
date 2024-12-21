@@ -215,7 +215,7 @@ const paymentVerification = async (req, res) => {
   }
 };
 
-const getEventTicket = async (req, res) => {
+const getEventTicket = async (req, res) =>{
   try {
     const { email } = req.body;
     if (!email) {

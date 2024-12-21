@@ -12,7 +12,7 @@ export function PlaceholdersAndVanishInputDemo() {
   
 
   const handleChange = (e) => {
-    console.log(e.target.value);
+   
   };
 
   const onSubmit = (e) => {
@@ -35,7 +35,7 @@ export function PlaceholdersAndVanishInputDemo() {
   
     {/* Bottom Message */}
     <p className="mt-4 text-xs md:text-sm text-gray-500 text-center">
-      We will revert back to your queries in the profile section.
+      We will revert back to your queries via mail.
     </p>
   </div>
   

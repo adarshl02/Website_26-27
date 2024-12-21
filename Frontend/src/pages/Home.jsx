@@ -258,6 +258,10 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
       <div className="flex flex-row items-center justify-center mb-5 w-full">
         <AnimatedTooltip items={people} />
       </div>
+      <div className="mt-2  text-sm mx-12 md:text-base text-slate-500 text-center">
+        Crafted with love and some coffee and constantly improved by @teampratibimb
+       
+      </div>
       <div className="fixed bottom-4 right-4">
         <CoolMode>
           <Button>
