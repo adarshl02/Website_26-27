@@ -3,7 +3,7 @@ const multer = require("multer");
 const {
   artCommunity,
   imAnArtist,
-  getUserAndArtCommunityDetails
+  getUserAndArtCommunityDetails,
 } = require("../controllers/art.controllers.js");
 const { verifyToken } = require("../utils/verifyUser.js");
 
@@ -18,6 +18,6 @@ router.post(
   artCommunity
 );
 router.post("/enroll-artist", verifyToken, imAnArtist);
-router.get("/user-art-details", verifyToken,getUserAndArtCommunityDetails);
+router.get("/user-art-details", verifyToken, getUserAndArtCommunityDetails);
 
 module.exports = router;
