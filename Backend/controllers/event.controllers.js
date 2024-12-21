@@ -1,5 +1,6 @@
 const QRCode = require("qrcode");
 const db = require("../config/db/index.js");
+const cloudinary = require("../config/cloudinary");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const { errorHandler } = require("../utils/errorHandler");
@@ -59,7 +60,8 @@ const registerEvents = async (req, res) => {
     const { event_id } = req.query;
     const { team_name, team_members, name, email, phone } = req.body;
 
-    if (!event_id) {r
+    if (!event_id) {
+      r;
       return res
         .status(400)
         .send(errorHandler(400, "Not Found", "Mentioned Event not found"));
@@ -154,11 +156,16 @@ const paymentVerification = async (req, res) => {
   try {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
       req.body;
+
     const secret = process.env.RAZORPAY_KEY_SECRET;
     const hash = crypto
       .createHmac("sha256", secret)
       .update(razorpay_order_id + "|" + razorpay_payment_id)
       .digest("hex");
+
+    if (hash !== razorpay_signature) {
+      return res.status(400).json({ message: "Payment verification failed" });
+    }
 
     const attendee = await db("attendees")
       .select("attendee_email", "attendee_name", "team_name", "event_id")
@@ -167,27 +174,42 @@ const paymentVerification = async (req, res) => {
         payment_status: "PENDING",
       })
       .first();
-    console.log(attendee);
+
+    if (!attendee) {
+      return res.status(404).json({ message: "Attendee not found" });
+    }
 
     const event = await db("events")
       .select("event_name", "start_date", "location")
       .where({ event_id: attendee.event_id })
       .first();
 
-    if (hash !== razorpay_signature) {
-      return res.status(400).json({ message: "Payment verification failed" });
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
     }
-
     await db("attendees")
       .where({ order_id: razorpay_order_id })
       .update({ payment_status: "APPROVED" });
 
-    const qrCodeData = `Payment was successful for the event : ${event.event_name}`;
-    const qrCodeBuffer = await QRCode.toBuffer(qrCodeData);
-    let qrCodeInsertion = db("attendees").insert(qrCodeBuffer).where({
-      order_id: razorpay_order_id,
+    const qrCodeData = `Payment was successful for the event: ${event.event_name}`;
+    const qrCodeBuffer = await QRCode.toDataURL(qrCodeData);
+
+    const uploadedResponse = await cloudinary.uploader.upload(qrCodeBuffer, {
+      folder: "qr_codes",
+      public_id: `qr_${razorpay_order_id}`,
+      overwrite: true,
     });
 
+    if (!uploadedResponse.secure_url) {
+      return res.status(500).json({ message: "QR code upload failed" });
+    }
+
+    // Save QR code URL in the database
+    await db("attendees")
+      .where({ order_id: razorpay_order_id })
+      .update({ qr_code: uploadedResponse.secure_url });
+
+    // Send email with event details and QR code
     const event_date = new Date(event.start_date).toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
@@ -201,13 +223,15 @@ const paymentVerification = async (req, res) => {
       event_date,
       event.event_name,
       event.location,
-      qrCodeBuffer
+      uploadedResponse.secure_url
     );
 
+    // Return success response
     res.status(200).json({
       message: "Payment verified successfully",
       razorpay_payment_id,
       razorpay_order_id,
+      qr_code_url: uploadedResponse.secure_url, // Return QR code URL
     });
   } catch (error) {
     console.error("Payment verification error:", error);
@@ -230,11 +254,7 @@ const getEventTicket = async (req, res) => {
       return res
         .status(400)
         .send(
-          errorHandler(
-            400,
-            "Not Registered",
-            "Not Registered For The Event"
-          )
+          errorHandler(400, "Not Registered", "Not Registered For The Event")
         );
     }
     return res.status(200).send({

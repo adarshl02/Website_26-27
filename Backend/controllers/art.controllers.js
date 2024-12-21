@@ -123,12 +123,12 @@ const getUserAndArtCommunityDetails = async (req, res) => {
         "art_community.instagram_user_id"
       );
     return res.status(200).send({
-        response: {
-          data: { data },
-          title: "Fetched Successfully",
-          message: "Data Fetched Sucessfully",
-        },
-      });
+      response: {
+        data: { data },
+        title: "Fetched Successfully",
+        message: "Data Fetched Sucessfully",
+      },
+    });
   } catch (error) {
     console.error("Error fetching data:", error);
     return res.status(500).json({
