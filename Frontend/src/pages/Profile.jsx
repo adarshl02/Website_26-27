@@ -35,7 +35,7 @@ export default function Profile() {
   // }, []);
 
   return (
-    <div className="p-2 md:p-4  mt-16">
+    <div className="p-2 md:px-10 mt-16">
       <div className="text-center py-2 bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-7xl font-poppins">
         My Profile
       </div>
@@ -43,8 +43,8 @@ export default function Profile() {
       {/* Profile Section */}
       {/* Profile Card */}
       <div className="relative w-full">
-        <div className="py-2 relative shadow-xl bg-gray-900 border rounded-full border-gray-800 flex justify-around items-center text-white overflow-hidden">
-          <div className="pl-8 md:pl-0 py-2 ">
+        <div className="py-2 md:py-4 relative md:max-w-4xl md:mx-auto shadow-xl bg-gray-900 border rounded-full border-gray-800 flex justify-between items-center text-white overflow-hidden">
+          <div className="pl-10 md:pl-24">
             {" "}
             <p className="text-sm font-poppins md:text-2xl font-medium  relative">
               {user.name}
@@ -55,42 +55,41 @@ export default function Profile() {
             <p className="text-xs md:text-lg text-slate-400  relative">
               Batch: {user.batch}
             </p>
-            <p className="text-xs md:text-lg text-slate-400 relative">
+            <p className="text-xs md:text-lg text-slate-400 relative mb-1">
               Branch: {user.branch}
             </p>
-            //TODO:
-            <div className="flex flex-wrap items-center space-x-6 text-xs md:text-lg relative">
-              <div className="flex items-center text-xs text-slate-400">
-                <span>Non-Member</span>
+            <div className="flex md:flex-col space-x-6 md:space-x-0 text-xs md:text-lg relative">
+              <div className="text-slate-700 mb-1">
+                <span className="bg-slate-300 px-1 md:px-3 md:py-1 rounded-full" >Non-Member</span>
                 <button
                   onClick={scrollToPerks}
-                  className="hidden md:inline-flex  items-center md:px-4 md:py-2 bg-yellow-400 text-slate-800 font-poppins rounded-2xl hover:bg-yellow-300 ml-2"
+                  className="hidden md:inline-flex text-xs items-center px-2 py-1 bg-yellow-400 text-slate-800 font-poppins rounded-2xl hover:bg-yellow-300 ml-2"
                 >
                   Claim your membership now
-                  <ArrowForwardIcon className="ml-2" />
+                  <ArrowForwardIcon />
                 </button>
               </div>
 
-              <div className="flex items-center text-xs text-slate-400">
-                <span>Non-Artist</span>
-                <button className="hidden md:inline-flex text-sm items-center bg-yellow-400 text-slate-800 font-poppins rounded-2xl hover:bg-yellow-300 ml-2">
+              <div className="flex items-center text-slate-700">
+              <span className="bg-slate-300 px-1 md:px-3 md:py-1 rounded-full" >Non-Artist</span>
+                <button  onClick={() => navigate("/art-community")} className="hidden md:inline-flex text-xs items-center px-2 py-1 bg-yellow-400 text-slate-800 font-poppins rounded-2xl hover:bg-yellow-300 ml-7">
                   Become an Artist
-                  <ArrowForwardIcon className="ml-2" />
+                  <ArrowForwardIcon />
                 </button>
               </div>
             </div>
           </div>
 
-          <div className="">
+          <div className="pr-4 md:pr-10">
             <img
               src={user.avatar}
               alt={user.name}
-              className="w-24 h-24 md:w-40 md:h-40 rounded-full border-4 border-gray-700 shadow-md"
+              className="w-24 h-24 md:w-44 md:h-44 rounded-full border-4 border-gray-700 shadow-md"
             />
           </div>
 
           {/* Meaty part - Meteor effect */}
-          <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <Meteors number={20} />
           </div>
         </div>
@@ -120,15 +119,24 @@ export default function Profile() {
       <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
 
       <div className="mt-4 px-2 py-2">
-        <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-7xl font-poppins">
+        <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins">
           Your Event Ticket
         </div>
-        <div className="mt-2 text-slate-500 text-xs md:text-xl  text-center font-poppins">
-          Sorry you have not registered for an event via website.
+        <div className="mt-2 text-slate-500 text-xs md:text-xl px-4 font-poppins">
+          Visit the event Page to register for a event.
+          <br/>
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            // onClick={handleOpen}
+            onClick={() => navigate("/upcoming-event-page")}
+            className="mt-2 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-1 md:py-2 px-2 md:px-4 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
+          >
+            Go to Event Page
+          </motion.button>
         </div>
         <img
           src="/ticket.png"
-          className="mt-4 blur-sm w-[80%] mx-auto"
+          className="mt-4 blur-sm w-[80%] md:w-[60%] mx-auto"
           alt="image"
         />
       </div>
@@ -136,33 +144,30 @@ export default function Profile() {
       <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
 
       <div className="mt-4 px-2 py-2">
-        <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-7xl font-poppins">
+        <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins">
           Claim your Certificate
         </div>
-
-        <div className="mt-4 flex justify-between items-center gap-4">
-          <div className="relative w-1/2">
+        <div className="mt-2 text-slate-500 text-xs md:text-xl px-4 font-poppins">
+          Sorry , The Certificate of partition is not been issued with your id.
+        </div>
+        <div className="relative">
             {/* Blurred Image */}
             <img
               src="/certificatetemplate.png"
               alt="template"
-              className="w-full h-auto rounded-md blur-sm"
+               className="mt-4 blur-sm w-[50%] md:w-[40%] mx-auto"
             />
             {/* Overlay Button */}
             <div className="absolute inset-0 flex items-center justify-center">
               <button
-                className="px-2 py-1 bg-slate-800 text-slate-200 rounded-xl text-sm cursor-not-allowed"
+                className="px-2 md:px-6 py-1 md:py-2 bg-slate-800 text-slate-200 rounded-xl text-sm cursor-not-allowed"
                 disabled
               >
                 Download <FileDownloadIcon />
               </button>
             </div>
           </div>
-
-          <div className="w-1/2 text-slate-600 font-roboto">
-            Sorry, you have not registered for an event through the website.
-          </div>
-        </div>
+        
       </div>
 
       <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
@@ -170,13 +175,13 @@ export default function Profile() {
       <div className="mt-4 px-2 py-2">
         <div
           ref={perks}
-          className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-7xl font-poppins"
+          className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins"
         >
           Membership Perks
         </div>
 
-        <div className="mt-4 px-4 py-1 bg-gray-900 rounded-lg">
-          <ul className="mt-6 space-y-4 text-sm text-slate-400 font-poppins">
+        <div className="mt-4 px-4 py-1 bg-gray-900 rounded-lg md:px-8">
+          <ul className="mt-6 space-y-4 text-sm md:text-base text-slate-400 font-poppins ">
             <li>
               <span className="font-medium text-white">
                 Lifetime Membership
@@ -204,7 +209,7 @@ export default function Profile() {
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={handleOpen}
-            className="my-4 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-1 px-2 rounded-full shadow-lg text-sm font-poppins transition duration-300 hover:opacity-90 hover:shadow-2xl"
+            className="my-4 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-1 md:py-2 md:px-4 px-2 rounded-full shadow-lg text-sm font-poppins transition duration-300 hover:opacity-90 hover:shadow-2xl"
           >
             Become a Member
             <ArrowForwardIcon />
@@ -215,25 +220,25 @@ export default function Profile() {
       <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
 
       <div className="mt-4 px-2 py-2">
-        <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-7xl font-poppins">
+        <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins">
           Features in Next Version(1.1.0)
         </div>
-        <div className="mt-2 flex flex-col gap-4 font-poppins text-sm">
+        <div className="mt-2 flex flex-col gap-4 font-poppins text-base md:text-lg">
           <div className="bg-slate-200 px-4 py-2 rounded-2xl">
-            <div className="text-slate-700 font-medium text-base">
+            <div className="text-slate-700 font-medium">
               Website Access for all
             </div>
-            <div className="text-slate-600 text-xs">
+            <div className="text-slate-600 text-xs md:text-base">
               The website will now be open to everyone, making it accessible to
               a broader audience.
             </div>
           </div>
 
           <div className="bg-slate-200 px-4 py-2 rounded-2xl">
-            <div className="text-slate-700 font-medium text-base">
-               Online Membership Registration 
+            <div className="text-slate-700 font-medium">
+              Online Membership Registration
             </div>
-            <div className="text-slate-600 text-xs">
+            <div className="text-slate-600 text-xs md:text-base">
               Users can seamlessly register for membership directly through the
               website, ensuring a smooth and hassle-free process.
             </div>
