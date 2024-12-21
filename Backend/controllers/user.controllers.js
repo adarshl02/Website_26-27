@@ -55,9 +55,8 @@ const changeEnrollment = async (req, res) => {
 
 const countUsers = async (req, res) => {
   try {
-    
-    const result = await db("users").count("id as count"); 
-    const userCount = result[0].count; 
+    const result = await db("users").count("id as count");
+    const userCount = result[0].count;
 
     return res.status(200).send({
       response: {
@@ -77,10 +76,58 @@ const countUsers = async (req, res) => {
   }
 };
 
+const giveFeedback = async (req, res) => {
+  try {
+    const { email,feedback } = req.body;
 
+    if (!email || !feedback) {
+      return res
+        .status(400)
+        .send(
+          errorHandler(
+            400,
+            "Invalid Request",
+            "Please Enter The All The Required Fields"
+          )
+        );
+    }
 
+    let data = {
+      email,
+      feedback,
+    };
+    let insertion = await db("feedback").insert(data).returning("*");
+
+    if (!insertion) {
+      return res
+        .status(400)
+        .send(
+          errorHandler(
+            400,
+            "Some Error Occurred",
+            "Some Error Occurred While Inserting Feedback"
+          )
+        );
+    }
+    return res.status(200).send({
+      response: {
+        data: insertion,
+        title: "Successfully Fetched",
+        message: "Users Successfully Fetched",
+        status: 200,
+      },
+    });
+  } catch (error) {
+    console.error("Error inserting description:", error);
+    return res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
 
 module.exports = {
   changeEnrollment,
-  countUsers
+  countUsers,
+  giveFeedback,
 };
