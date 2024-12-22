@@ -239,13 +239,13 @@ const paymentVerification = async (req, res) => {
   }
 };
 
-const getEventTicket = async (req, res) =>{
+const getEventTicket = async (req, res) => {
   try {
     
     const { email } = req.query;
     if (!email) {
       return res
-        .status(500)
+        .status(400)
         .send(errorHandler(400, "Invalid Request", "Please enter the email"));
     }
     let selection = await db("attendees").select("*").where({
