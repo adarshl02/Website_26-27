@@ -5,8 +5,7 @@ import { toast } from "react-toastify";
 import { uploadArtCommunityDetails } from "../../service/api";
 import { CircularProgress } from "@mui/material";
 
-export default function ArtCommunityForm({ setOpen }) {
-  const { rest: user, token } = useSelector((state) => state.user.currentUser);
+export default function ArtCommunityForm({ setOpen,user,token }) {
   const [formData, setFormData] = useState({
     name: user.name,
     email: user.email,

@@ -12,14 +12,22 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { MeteorsPremium } from "../components/accertinityui/Meteor";
 import { toast } from "react-toastify";
+import { setArtist } from "../service/api";
+import { useDispatch, useSelector } from "react-redux";
+import { CircularProgress } from "@mui/material";
+import { updateIsArtist } from "../redux/user/userSlice";
+
 
 export default function ArtCommunityPage() {
-  const [isRegistered, setIsRegistered] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
   const [isVisible, setIsVisible] = useState(false);
   const [count, setCount] = useState(34);
+
+  const dispatch = useDispatch();
   const elementRef = useRef(null);
+  const { rest: user, token } = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -58,12 +66,31 @@ export default function ArtCommunityPage() {
       }, 40); // Adjust interval here
     }
   }, [isVisible]);
-  
 
-  const handleRegisterClick = () => {
-    toast.success("Thanks for Registering with Art Community");
-    toast.success("Waiting for your art submission");
-    setIsRegistered(true);
+  const handleRegisterClick = async () => {
+    setLoading(true);
+    
+    
+    const data={
+      email : user.email,
+    }
+    try {
+      const response = await setArtist(data, token);
+      if (response.success) {
+        
+        dispatch(updateIsArtist(true))
+        toast.success("Thanks for Registering with Art Community");
+        toast.success("Waiting for your art submission");
+      } else {
+        toast.error(response.message || "Something went wrong!");
+        console.error("API Error:", response.message);
+      }
+    } catch (err) {
+      console.error("Set Artist Error:", err);
+      toast.error("Failed to enroll you as Artist. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleOpen = () => {
@@ -102,33 +129,33 @@ export default function ArtCommunityPage() {
       </div>
 
       <div className="mb-4 relative w-[60%] md:w-[30%]">
-          {/* Background Blur and Gradient */}
-          {/* Main Content Container */}
-          <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-yellow-600 to-yellow-900 transform scale-[0.85] rounded-full blur-3xl" />
+        {/* Background Blur and Gradient */}
+        {/* Main Content Container */}
+        <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-yellow-600 to-yellow-900 transform scale-[0.85] rounded-full blur-3xl" />
 
-          <div
-            ref={elementRef}
-            className="relative shadow-lg bg-gradient-to-r from-yellow-600 via-yellow-600 to-yellow-800  px-6 py-1 md:py-2 rounded-full flex items-center justify-between text-slate-100 overflow-hidden"
-            style={{ willChange: "contents" }}
-          >
-            {/* Left Text */}
-            <div className="text-slate-100 text-left text-xl md:text-3xl font-medium font-poppins tracking-tight">
-              Registered Artist
-            </div>
+        <div
+          ref={elementRef}
+          className="relative shadow-lg bg-gradient-to-r from-yellow-600 via-yellow-600 to-yellow-800  px-6 py-1 md:py-2 rounded-full flex items-center justify-between text-slate-100 overflow-hidden"
+          style={{ willChange: "contents" }}
+        >
+          {/* Left Text */}
+          <div className="text-slate-100 text-left text-xl md:text-3xl font-medium font-poppins tracking-tight">
+            Registered Artist
+          </div>
 
-            {/* Animated Count */}
-            <span className="bg-gradient-to-br from-slate-100 to-slate-400 bg-clip-text text-4xl md:text-6xl font-medium tracking-tight text-transparent">
-              {count}
-            </span>
+          {/* Animated Count */}
+          <span className="bg-gradient-to-br from-slate-100 to-slate-400 bg-clip-text text-4xl md:text-6xl font-medium tracking-tight text-transparent">
+            {count}
+          </span>
 
-            {/* Meteors Animation */}
-            <div className="absolute inset-0 overflow-hidden">
-              <MeteorsPremium number={20} />
-            </div>
+          {/* Meteors Animation */}
+          <div className="absolute inset-0 overflow-hidden">
+            <MeteorsPremium number={20} />
           </div>
         </div>
+      </div>
       {/* Registration Section */}
-      {!isRegistered ? (
+      {!user.is_artist ? (
         <>
           <div className="p-6 rounded-lg shadow-lg mb-8 w-full max-w-4xl bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700">
             <h2 className="bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text text-2xl md:text-3xl font-semibold text-transparent font-poppins mb-4">
@@ -148,9 +175,19 @@ export default function ArtCommunityPage() {
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={handleRegisterClick}
+              disabled={loading}
               className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-2 px-4 rounded-full shadow-lg font-bold transition duration-300 hover:opacity-90 hover:shadow-2xl"
             >
-              I am an Artist
+              {loading && (
+                <CircularProgress
+                  size={18} // Smaller spinner for mobile
+                  color="inherit"
+                  className="absolute inset-0 m-auto"
+                />
+              )}
+              <span className={loading ? "opacity-0" : "opacity-100"}>
+                I am an Artist
+              </span>
             </motion.button>
             <p className="text-sm mt-2 text-gray-600 font-poppins">
               *Single click Registration
@@ -166,7 +203,10 @@ export default function ArtCommunityPage() {
             Now that you’ve joined, you can submit your artwork every 7 days. If
             selected, your art will be featured in our Weekly Blog Page and
             shared with thousands of art enthusiasts on Instagram!
-           <p className="text-sx md:text-base text-red-400">P.S : There should be sign of you matching with your name registered.</p> 
+            <p className="text-sx md:text-base text-red-400">
+              P.S : There should be sign of you matching with your name
+              registered.
+            </p>
           </div>
           <motion.button
             whileTap={{ scale: 0.95 }}
@@ -179,7 +219,7 @@ export default function ArtCommunityPage() {
       )}
 
       {/* Members Section */}
-      {isRegistered && (
+      {user.is_artist && (
         <div className="w-full max-w-5xl mt-10">
           <h2 className="bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-2xl md:text-4xl font-medium text-transparent font-poppins mb-6 text-center">
             Members of Art Community
@@ -204,10 +244,22 @@ export default function ArtCommunityPage() {
                     Name
                   </TableCell>
 
-                  <TableCell sx={{ color: "#CBD5E1", fontWeight: "bold", fontFamily: "'Poppins', sans-serif", }}>
+                  <TableCell
+                    sx={{
+                      color: "#CBD5E1",
+                      fontWeight: "bold",
+                      fontFamily: "'Poppins', sans-serif",
+                    }}
+                  >
                     Instagram
                   </TableCell>
-                  <TableCell sx={{ color: "#CBD5E1", fontWeight: "bold", fontFamily: "'Poppins', sans-serif" }}>
+                  <TableCell
+                    sx={{
+                      color: "#CBD5E1",
+                      fontWeight: "bold",
+                      fontFamily: "'Poppins', sans-serif",
+                    }}
+                  >
                     Avatar
                   </TableCell>
                 </TableRow>
@@ -215,10 +267,15 @@ export default function ArtCommunityPage() {
               <TableBody>
                 {members.map((member, index) => (
                   <TableRow key={index}>
-                    <TableCell sx={{ color: "#E2E8F0", fontFamily: "'Poppins', sans-serif", }}>
+                    <TableCell
+                      sx={{
+                        color: "#E2E8F0",
+                        fontFamily: "'Poppins', sans-serif",
+                      }}
+                    >
                       {member.name}
                     </TableCell>
-                    
+
                     <TableCell>
                       <a
                         href={`https://instagram.com/${member.insta_userid}`}
@@ -250,7 +307,7 @@ export default function ArtCommunityPage() {
         onClick={handleClose}
       >
         <div onClick={(e) => e.stopPropagation()}>
-          <ArtCommunityForm setOpen={setOpen} />
+          <ArtCommunityForm setOpen={setOpen} user={user} token={token} />
         </div>
       </Backdrop>
     </div>

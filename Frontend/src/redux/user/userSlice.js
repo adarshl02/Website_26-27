@@ -36,6 +36,11 @@ const userSlice = createSlice({
         state.error = action.payload;
         state.loading = false;
       },
+      updateIsArtist: (state, action) => {
+        if (state.currentUser) {
+          state.currentUser.rest.is_artist = action.payload;
+        }
+      },
   },
 });
 
@@ -46,6 +51,7 @@ export const {
   signOutStart,
   signOutSuccess,
   signOutFailure,
+  updateIsArtist
 } = userSlice.actions;
 
 export default userSlice.reducer;
