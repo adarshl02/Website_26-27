@@ -5,13 +5,18 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Backdrop } from "@mui/material";
+import { Backdrop, CircularProgress } from "@mui/material";
 import Membershiptrial from "./../components/general/Backdrops/Membershiptrial";
+import { jsPDF } from "jspdf";
+import Certificate from "./../components/general/Certificate";
+import html2canvas from "html2canvas";
 
 export default function Profile() {
   const { rest: user } = useSelector((state) => state.user.currentUser); // Assuming user data is stored in the redux state
   const perks = useRef(null);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [paymentDone, setPaymentDone] = useState(false);
   const handleClose = () => {
     setOpen(false);
   };
@@ -33,6 +38,26 @@ export default function Profile() {
   // useEffect(() => {
   //   window.scrollTo(0, 0);
   // }, []);
+  const downloadCertificate = () => {
+    setLoading(true);
+    const input = document.getElementById("certificate");
+  
+    html2canvas(input, {
+      scrollX: 0,
+      scrollY: 0,
+      useCORS: true, // Allow cross-origin images
+      scale: 2, // High-quality rendering
+    }).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("l", "px", [1100, 794]); // Match dimensions of the certificate
+  
+      pdf.addImage(imgData, "PNG", 0, 0, 1123, 794); // No margins
+      pdf.save(`${user.name}_Certificate_of_Participation.pdf`);
+      setLoading(false);
+    });
+  };
+  
+  
 
   return (
     <div className="p-2 md:px-10 mt-16">
@@ -60,7 +85,9 @@ export default function Profile() {
             </p>
             <div className="flex md:flex-col space-x-6 md:space-x-0 text-xs md:text-lg relative">
               <div className="text-slate-700 mb-1">
-                <span className="bg-slate-300 px-1 md:px-3 md:py-1 rounded-full" >Non-Member</span>
+                <span className="bg-slate-300 px-1 md:px-3 md:py-1 rounded-full">
+                  Non-Member
+                </span>
                 <button
                   onClick={scrollToPerks}
                   className="hidden md:inline-flex text-xs items-center px-2 py-1 bg-yellow-400 text-slate-800 font-poppins rounded-2xl hover:bg-yellow-300 ml-2"
@@ -71,8 +98,13 @@ export default function Profile() {
               </div>
 
               <div className="flex items-center text-slate-700">
-              <span className="bg-slate-300 px-1 md:px-3 md:py-1 rounded-full" >Non-Artist</span>
-                <button  onClick={() => navigate("/art-community")} className="hidden md:inline-flex text-xs items-center px-2 py-1 bg-yellow-400 text-slate-800 font-poppins rounded-2xl hover:bg-yellow-300 ml-7">
+                <span className="bg-slate-300 px-1 md:px-3 md:py-1 rounded-full">
+                  Non-Artist
+                </span>
+                <button
+                  onClick={() => navigate("/art-community")}
+                  className="hidden md:inline-flex text-xs items-center px-2 py-1 bg-yellow-400 text-slate-800 font-poppins rounded-2xl hover:bg-yellow-300 ml-7"
+                >
                   Become an Artist
                   <ArrowForwardIcon />
                 </button>
@@ -124,7 +156,7 @@ export default function Profile() {
         </div>
         <div className="mt-2 text-slate-500 text-xs md:text-xl px-4 font-poppins">
           Visit the event Page to register for a event.
-          <br/>
+          <br />
           <motion.button
             whileTap={{ scale: 0.95 }}
             // onClick={handleOpen}
@@ -151,23 +183,39 @@ export default function Profile() {
           Sorry , The Certificate of partition is not been issued with your id.
         </div>
         <div className="relative">
-            {/* Blurred Image */}
-            <img
-              src="/certificatetemplate.png"
-              alt="template"
-               className="mt-4 blur-sm w-[50%] md:w-[40%] mx-auto"
-            />
-            {/* Overlay Button */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <button
-                className="px-2 md:px-6 py-1 md:py-2 bg-slate-800 text-slate-200 rounded-xl text-sm cursor-not-allowed"
-                disabled
-              >
-                Download <FileDownloadIcon />
-              </button>
-            </div>
+          {/* Blurred Image */}
+          <img
+            src="/certificatetemplate.png"
+            alt="template"
+            className="mt-4 blur-sm w-[50%] md:w-[40%] mx-auto"
+          />
+          {/* Overlay Button */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <button
+              className="px-2 md:px-6 py-1 md:py-2 bg-slate-800 text-slate-200 rounded-xl text-sm "
+              onClick={downloadCertificate}
+            >
+              {loading ? (
+                  <CircularProgress size={18} color="inherit" className="px-2 md:px-6 py-1 md:py-2"  />
+                ) : (
+                  <span>
+                   Download <FileDownloadIcon />
+                  </span>
+                )}
+            </button>
           </div>
-        
+        </div>
+
+        <div
+          id="certificate"
+          style={{
+            position: "absolute",
+            top: "-9999px", // Move it far off-screen
+            left: "-9999px",
+          }}
+        >
+          <Certificate user={user} />
+        </div>
       </div>
 
       <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
@@ -180,7 +228,7 @@ export default function Profile() {
           Membership Perks
         </div>
 
-        <div className="mt-4 px-4 py-1 bg-gray-900 rounded-lg md:px-8">
+        <div className="mt-4 px-4 py-1 bg-slate-900 rounded-lg md:px-8">
           <ul className="mt-6 space-y-4 text-sm md:text-base text-slate-400 font-poppins ">
             <li>
               <span className="font-medium text-white">

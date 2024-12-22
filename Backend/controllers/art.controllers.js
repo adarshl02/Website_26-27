@@ -140,24 +140,30 @@ const getUserAndArtCommunityDetails = async (req, res) => {
 
 const countArtist = async (req, res) => {
   try {
-    const count = await db("users")
+    const result = await db("users")
       .where({ is_artist: true })
-      .count("id as total");
+      .count("id as count");
+    const artistCount = result[0].count;
 
-    res.status(200).json({
-      success: true,
-      count: count[0].total,
-      message: "Number of artists fetched successfully.",
+    return res.status(200).send({
+      response: {
+        data: artistCount,
+        title: "Successfully Fetched",
+        message: "Artists Successfully Fetched",
+        status: 200,
+      },
     });
   } catch (error) {
     console.error("Error fetching artist count:", error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: "Internal Server Error",
+      message: "Failed to retrieve artist count",
       error: error.message,
     });
   }
 };
+
+
 module.exports = {
   artCommunity,
   imAnArtist,

@@ -92,6 +92,20 @@ export const countUsers = async (token) => {
   }
 };
 
+export const countArtist = async (token) => {
+  try {
+    const response = await axios.get(`${URL}/api/get-artists`, {
+      headers: {
+       "Authorization": `${token}`,  // Include token in the headers
+      },
+    });
+    
+    return { success: true, data: response.data.response.data };
+  } catch (error) {
+    return handleApiError(error, 'Count Artist API');
+  }
+};
+
 export const setArtist = async (data,token) => {
   try {
     const response = await axios.post(`${URL}/api/enroll-artist`,data,{

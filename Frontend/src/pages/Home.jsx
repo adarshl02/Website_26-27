@@ -71,15 +71,16 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
   const { token } = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {
+    
     const fetchUserCount = async () => {
       if (!token) {
         console.error("No token found. Please authenticate.");
         return;
       }
       const response = await countUsers(token);
+      
       if (response.success) {
           setWebsiteUserTarget(response.data); 
-          console.log(response);
           
       } else {
         console.error("Failed to fetch user count:", response.error);

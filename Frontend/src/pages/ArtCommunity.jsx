@@ -12,7 +12,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { MeteorsPremium } from "../components/accertinityui/Meteor";
 import { toast } from "react-toastify";
-import { setArtist } from "../service/api";
+import { countArtist, setArtist } from "../service/api";
 import { useDispatch, useSelector } from "react-redux";
 import { CircularProgress } from "@mui/material";
 import { updateIsArtist } from "../redux/user/userSlice";
@@ -21,12 +21,12 @@ import { updateIsArtist } from "../redux/user/userSlice";
 export default function ArtCommunityPage() {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-
-  const [isVisible, setIsVisible] = useState(false);
-  const [count, setCount] = useState(34);
-
+  const [Artistcount, setArtistCount] = useState(0);
+  
+ 
   const dispatch = useDispatch();
   const elementRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
   const { rest: user, token } = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {
@@ -38,11 +38,11 @@ export default function ArtCommunityPage() {
       },
       { threshold: 0.5 }
     );
-
+  
     if (elementRef.current) {
       observer.observe(elementRef.current);
     }
-
+  
     return () => {
       if (elementRef.current) {
         observer.unobserve(elementRef.current);
@@ -53,23 +53,41 @@ export default function ArtCommunityPage() {
   useEffect(() => {
     if (isVisible) {
       let current = 0;
-      const targetCount = 34; // Desired count value
-      const increment = targetCount / 50; // Adjust speed here
+      const increment = Artistcount / 50; // Adjust speed here
       const interval = setInterval(() => {
         current += increment;
-        if (current >= targetCount) {
+        if (current >= Artistcount) {
+          current = Artistcount;
           clearInterval(interval);
-          setCount(targetCount); // Ensure it finishes at the correct count
-        } else {
-          setCount(Math.floor(current));
         }
+        setArtistCount(Math.floor(current));
       }, 40); // Adjust interval here
     }
   }, [isVisible]);
 
+  useEffect(() => {
+    
+    const fetchArtistCount = async () => {
+      if (!token) {
+        console.error("No token found. Please authenticate.");
+        return;
+      }
+      const response = await countArtist(token);
+      if (response.success) {
+        setArtistCount(response.data); 
+        
+      } else {
+        console.error("Failed to fetch user count:", response.error);
+      }
+    };
+  
+    fetchArtistCount();
+  }, [user.is_artist]);
+
+
+  
   const handleRegisterClick = async () => {
     setLoading(true);
-    
     
     const data={
       email : user.email,
@@ -145,7 +163,7 @@ export default function ArtCommunityPage() {
 
           {/* Animated Count */}
           <span className="bg-gradient-to-br from-slate-100 to-slate-400 bg-clip-text text-4xl md:text-6xl font-medium tracking-tight text-transparent">
-            {count}
+            {Artistcount}
           </span>
 
           {/* Meteors Animation */}
