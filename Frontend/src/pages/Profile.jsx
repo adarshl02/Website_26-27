@@ -10,18 +10,28 @@ import Membershiptrial from "./../components/general/Backdrops/Membershiptrial";
 import { jsPDF } from "jspdf";
 import Certificate from "./../components/general/Certificate";
 import html2canvas from "html2canvas";
+import Certificatetrial from "../components/general/Backdrops/Certificatetrial";
+import { getEventTicket } from "../service/api";
 
 export default function Profile() {
-  const { rest: user } = useSelector((state) => state.user.currentUser); // Assuming user data is stored in the redux state
+  const { rest: user ,token} = useSelector((state) => state.user.currentUser); // Assuming user data is stored in the redux state
   const perks = useRef(null);
   const [open, setOpen] = useState(false);
+  const [open2, setOpen2] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [paymentDone, setPaymentDone] = useState(false);
+  const [eventTicketData,setEventTicketData] = useState({});
   const handleClose = () => {
     setOpen(false);
   };
   const handleOpen = () => {
     setOpen(true);
+  };
+
+  const handleClose2 = () => {
+    setOpen2(false);
+  };
+  const handleOpen2 = () => {
+    setOpen2(true);
   };
   const navigate = useNavigate();
 
@@ -49,13 +59,40 @@ export default function Profile() {
       scale: 2, // High-quality rendering
     }).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("l", "px", [1100, 794]); // Match dimensions of the certificate
+      const pdf = new jsPDF("l", "px", [1123, 794]); // Match dimensions of the certificate
   
       pdf.addImage(imgData, "PNG", 0, 0, 1123, 794); // No margins
       pdf.save(`${user.name}_Certificate_of_Participation.pdf`);
       setLoading(false);
     });
   };
+
+  useEffect(()=>{
+    const getTicket = async () => {
+      try {  
+        const data={
+          email : user.email,
+        }
+        
+        const response = await getEventTicket(data,token);
+       
+        
+        if (response.success) {
+          setEventTicketData(response.data.selection[0]);
+          console.log(eventTicketData);
+          
+        } else {
+          console.log(response);
+          
+           console.error("Failed to fetch event ticket:", response?.message);              
+        }
+      } catch (error) {
+        console.log('Failed to fetch ticket');
+      }
+    };
+
+    getTicket();
+  },[]);
   
   
 
@@ -179,9 +216,6 @@ export default function Profile() {
         <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins">
           Claim your Certificate
         </div>
-        <div className="mt-2 text-slate-500 text-xs md:text-xl px-4 font-poppins">
-          Sorry , The Certificate of partition is not been issued with your id.
-        </div>
         <div className="relative">
           {/* Blurred Image */}
           <img
@@ -194,9 +228,10 @@ export default function Profile() {
             <button
               className="px-2 md:px-6 py-1 md:py-2 bg-slate-800 text-slate-200 rounded-xl text-sm "
               onClick={downloadCertificate}
+              //onClick={handleOpen2}
             >
               {loading ? (
-                  <CircularProgress size={18} color="inherit" className="px-2 md:px-6 py-1 md:py-2"  />
+                  <CircularProgress size={18} color="inherit" />
                 ) : (
                   <span>
                    Download <FileDownloadIcon />
@@ -303,6 +338,18 @@ export default function Profile() {
       >
         <div onClick={(e) => e.stopPropagation()}>
           <Membershiptrial />
+        </div>
+      </Backdrop>
+      <Backdrop
+        sx={(theme) => ({
+          color: "#fff",
+          zIndex: theme.zIndex.drawer + 1,
+        })}
+        open={open2}
+        onClick={handleClose2}
+      >
+        <div onClick={(e) => e.stopPropagation()}>
+          <Certificatetrial />
         </div>
       </Backdrop>
     </div>

@@ -118,6 +118,20 @@ export const setArtist = async (data,token) => {
     return handleApiError(error, 'Set Artist API');
   }
 };
+export const getEventTicket = async (data,token) => {
+  try {
+    
+    const response = await axios.get(`${URL}/api/get/event-ticket`,{
+      params: data,
+      headers: {
+       "Authorization": `${token}`,  // Include token in the headers
+      },
+    }); 
+    return { success: true, data: response.data.response.data };
+  } catch (error) {
+    return handleApiError(error, 'Get event ticket API');
+  }
+};
 
 export const verifyPayment = async (data,token) => {
   try {

@@ -241,7 +241,8 @@ const paymentVerification = async (req, res) => {
 
 const getEventTicket = async (req, res) =>{
   try {
-    const { email } = req.body;
+    
+    const { email } = req.query;
     if (!email) {
       return res
         .status(500)
