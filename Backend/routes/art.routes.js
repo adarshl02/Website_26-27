@@ -4,6 +4,7 @@ const {
   artCommunity,
   imAnArtist,
   getUserAndArtCommunityDetails,
+  countArtist
 } = require("../controllers/art.controllers.js");
 const { verifyToken } = require("../utils/verifyUser.js");
 
@@ -19,5 +20,6 @@ router.post(
 );
 router.post("/enroll-artist", verifyToken, imAnArtist);
 router.get("/user-art-details", verifyToken, getUserAndArtCommunityDetails);
+router.get("/get-artists", verifyToken, countArtist);
 
 module.exports = router;
