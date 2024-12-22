@@ -18,7 +18,7 @@ const sendEmail = async (
   event_date,
   event_name,
   event_location,
-  qrCodeBuffer
+  qr_code
 ) => {
   try {
     const templatePath = path.join(
@@ -32,20 +32,14 @@ const sendEmail = async (
       .replace("{{team_name}}", team_name)
       .replace("{{event_name}}", event_name)
       .replace("{{event_date}}", event_date)
-      .replace("{{event_location}}", event_location);
+      .replace("{{event_location}}", event_location)
+      .replace("{{qr_code}}",qr_code)
 
     const mailOptions = {
-      from: '"Club Pratibimb" <team@clubpratibimb.com>',
+      from: '"Club Pratibimb" <teampratibimb.sgsits@gmail.com>',
       to: email,
       subject: "Your Event Ticket",
       html: emailContent,
-      attachments: [
-        {
-          filename: "qr_code.png",
-          content: qrCodeBuffer,
-          cid: "qrCodeImage",
-        },
-      ],
     };
 
     await transporter.sendMail(mailOptions);
@@ -111,7 +105,7 @@ const sendWelcomeEmail = async (email, name) => {
   }
 };
 
-const sendEmailForArtist = async (email,name) => {
+const sendEmailForArtist = async (email, name) => {
   try {
     let templatePath = path.join(__dirname, "../templates/artTemplate.html");
     let emailTemplate = fs.readFileSync(templatePath, "utf-8");
