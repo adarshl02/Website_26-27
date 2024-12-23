@@ -173,7 +173,7 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
       <div className="relative flex justify-end">
         <div className="relative md:max-w-[50%] max-w-[60%] flex justify-end">
           <img
-            src="/aboutus.png" // Path to your image
+            src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1734951075/dve1te6jjd5pjyohkmba.png" // Path to your image
             alt="About Us"
             className="w-full max-w-md md:max-w-2xl object-cover rounded-lg"
           />
@@ -202,7 +202,7 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
       <div className="relative flex justify-start">
         <div className="relative md:max-w-[50%] max-w-[60%] flex justify-start">
           <img
-            src="/aboutus2.png" // Path to your image
+            src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1734951074/dybsi3dmognev7xysqrl.png" // Path to your image
             alt="About Us"
             className="w-full max-w-md md:max-w-2xl object-cover rounded-lg"
           />

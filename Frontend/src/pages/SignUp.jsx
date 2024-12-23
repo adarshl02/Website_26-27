@@ -127,7 +127,7 @@ export default function SignUp({ setBackdropOpen }) {
   }, []);
 
   const backgroundImage = isMobile
-    ? "url('/LandingPageBgMobile.png')"
+    ? "url('https://res.cloudinary.com/dgc7xsrcx/image/upload/v1734950871/dihacrqgg1bkzoip1vay.png')"
     : "url('https://res.cloudinary.com/dhy548whh/image/upload/v1734195829/q0zdzie6fbvodeypqq7u.png')";
 
   return (

@@ -10,7 +10,7 @@ export default function Membershiptrial() {
       </div>
       <div className="w-1/2" >
       <img
-        src="/comingsoon.jpeg"
+        src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1734951776/tcxtqwgmqhogfggy14n7.jpg"
         alt="image"
         className="md:mt-4 h-36 md:h-48"
       />

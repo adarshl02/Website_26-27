@@ -12,7 +12,7 @@ const Certificate = ({ user }) => {
     >
       {/* Certificate image */}
       <img
-        src="/sepia_certificate.png" // Path to your uploaded image
+        src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1734951222/fjfkgmpmqsxetumsln5e.png" // Path to your uploaded image
         alt="Certificate"
         className="absolute top-0 left-0 w-full h-full object-cover"
       />
