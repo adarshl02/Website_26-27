@@ -79,7 +79,7 @@ const countUsers = async (req, res) => {
 const giveFeedback = async (req, res) => {
   try {
     const { email,feedback } = req.body;
-
+    
     if (!email || !feedback) {
       return res
         .status(400)

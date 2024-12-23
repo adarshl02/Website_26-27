@@ -1,5 +1,8 @@
+import { useState } from 'react';
 import { PlaceholdersAndVanishInput } from '../accertinityui/placeholders-and-vanish-input';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
+import { submitfeedback } from '../../service/api';
 
 export function PlaceholdersAndVanishInputDemo() {
   const placeholders = [
@@ -10,14 +13,32 @@ export function PlaceholdersAndVanishInputDemo() {
     "How would you rate the overall design and layout of the site?"
   ];
   
+  const [feedback,setFeedback]= useState("");
+  const {token,rest:user} = useSelector((state)=>state.user.currentUser);
 
   const handleChange = (e) => {
+   setFeedback(e.target.value);
    
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async(e) => {
     e.preventDefault();
-    toast.success("Thanks for your feedback");
+
+      const data={
+        feedback:feedback,
+        email:user.email,
+      }
+    try{
+      const response = await submitfeedback(data,token);
+      if(response.success){
+        toast.success("Thanks for your feedback"); 
+        }else{
+          toast.error("Error submitting feedback");
+        }
+
+    }catch(error){
+      toast.error("Error submitting feedback");
+    }
   };
 
   return (

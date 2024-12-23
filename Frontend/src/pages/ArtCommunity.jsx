@@ -12,22 +12,21 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { MeteorsPremium } from "../components/accertinityui/Meteor";
 import { toast } from "react-toastify";
-import { countArtist, setArtist } from "../service/api";
+import { countArtist, fetchartcommunity, setArtist } from "../service/api";
 import { useDispatch, useSelector } from "react-redux";
 import { CircularProgress } from "@mui/material";
 import { updateIsArtist } from "../redux/user/userSlice";
-
 
 export default function ArtCommunityPage() {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [Artistcount, setArtistCount] = useState(0);
-  
- 
+
   const dispatch = useDispatch();
   const elementRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const { rest: user, token } = useSelector((state) => state.user.currentUser);
+  const [members, setMembers] = useState([]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -38,11 +37,11 @@ export default function ArtCommunityPage() {
       },
       { threshold: 0.5 }
     );
-  
+
     if (elementRef.current) {
       observer.observe(elementRef.current);
     }
-  
+
     return () => {
       if (elementRef.current) {
         observer.unobserve(elementRef.current);
@@ -66,8 +65,6 @@ export default function ArtCommunityPage() {
   }, [isVisible]);
 
   useEffect(() => {
-   
-    
     const fetchArtistCount = async () => {
       if (!token) {
         console.error("No token found. Please authenticate.");
@@ -75,29 +72,34 @@ export default function ArtCommunityPage() {
       }
       const response = await countArtist(token);
       if (response.success) {
-        setArtistCount(response.data); 
-        
+        setArtistCount(response.data);
       } else {
         console.error("Failed to fetch user count:", response.error);
       }
     };
-  
+    const fetchCommunity = async () => {
+      const response = await fetchartcommunity(token);
+      if (response.success) {
+        setMembers(response.data.data);
+      } else {
+        console.error("Failed to fetch user count:", response.error);
+      }
+    };
+
     fetchArtistCount();
+    fetchCommunity();
   }, [user.is_artist]);
 
-
-  
   const handleRegisterClick = async () => {
     setLoading(true);
-    
-    const data={
-      email : user.email,
-    }
+
+    const data = {
+      email: user.email,
+    };
     try {
       const response = await setArtist(data, token);
       if (response.success) {
-        
-        dispatch(updateIsArtist(true))
+        dispatch(updateIsArtist(true));
         toast.success("Thanks for Registering with Art Community");
         toast.success("Waiting for your art submission");
       } else {
@@ -119,24 +121,6 @@ export default function ArtCommunityPage() {
   const handleClose = () => {
     setOpen(false);
   };
-
-  const members = [
-    {
-      name: "John Doe",
-      insta_userid: "@johndoe",
-      img: "https://via.placeholder.com/150",
-    },
-    {
-      name: "Jane Smith",
-      insta_userid: "@janesmith",
-      img: "https://via.placeholder.com/150",
-    },
-    {
-      name: "Alice Johnson",
-      insta_userid: "@alicejohnson",
-      img: "https://via.placeholder.com/150",
-    },
-  ];
 
   return (
     <div className="p-4 md:p-6 flex flex-col justify-center items-center mt-16">
@@ -295,18 +279,16 @@ export default function ArtCommunityPage() {
                       {member.name}
                     </TableCell>
 
-                    <TableCell>
-                      <a
-                        href={`https://instagram.com/${member.insta_userid}`}
-                        count="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-400 hover:underline"
-                      >
-                        {member.insta_userid}
-                      </a>
+                    <TableCell
+                      sx={{
+                        color: "#E2E8F0",
+                        fontFamily: "'Poppins', sans-serif",
+                      }}
+                    >
+                      {member.instagram_user_id}
                     </TableCell>
                     <TableCell>
-                      <Avatar src={member.img} alt={member.name} />
+                      <Avatar src={member.avatar} alt={member.name} />
                     </TableCell>
                   </TableRow>
                 ))}

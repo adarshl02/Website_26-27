@@ -105,6 +105,19 @@ export const countArtist = async (token) => {
     return handleApiError(error, 'Count Artist API');
   }
 };
+export const fetchartcommunity = async (token) => {
+  try {
+    const response = await axios.get(`${URL}/api/user-art-details`, {
+      headers: {
+       "Authorization": `${token}`,  // Include token in the headers
+      },
+    });
+    
+    return { success: true, data: response.data.response.data };
+  } catch (error) {
+    return handleApiError(error, 'Count Artist API');
+  }
+};
 
 export const setArtist = async (data,token) => {
   try {
@@ -155,6 +168,20 @@ export const uploadArtCommunityDetails = async (formData,token) => {
       },
     });
     return { success: true, data: response.data };
+  } catch (error) {
+    return handleApiError(error, 'Art Community API');
+  }
+};
+
+export const submitfeedback = async (data,token) => {
+  try {
+    const response = await axios.post(`${URL}/api/give-feedback`, data, {
+      headers: {
+        "Authorization": `${token}`, 
+      },
+    });
+    
+    return { success: true, data: response.data.response.data };
   } catch (error) {
     return handleApiError(error, 'Art Community API');
   }

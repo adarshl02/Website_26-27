@@ -18,7 +18,6 @@ import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import Logout from "@mui/icons-material/Logout";
 import Badge from "@mui/material/Badge";
-import BookIcon from "@mui/icons-material/Book";
 
 import { getAuth, signOut } from "firebase/auth";
 import { toast } from "react-toastify";
@@ -31,9 +30,6 @@ import { logoutUser } from "../../service/api.js";
 
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import PeopleIcon from "@mui/icons-material/People";
-import EventIcon from "@mui/icons-material/Event";
-import HomeIcon from "@mui/icons-material/Home";
 import { deleteEvents } from "../../redux/events/eventsSlice.js";
 
 const navItems = [

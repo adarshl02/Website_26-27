@@ -234,21 +234,20 @@ export default function Profile() {
             <>
            
             <Ticket eventTicketData={eventTicketData} />
-            <div className="mt-4 md:flex md:justify-center" >
-               <button
-              className="px-2 md:px-6 py-1 md:py-2 bg-slate-800 text-slate-200 rounded-xl text-sm "
-              onClick={downloadTicket}
-              //onClick={handleOpen2}
-            >
-              {loading2 ? (
-                  <CircularProgress size={18} color="inherit" />
-                ) : (
-                  <span>
-                   Download <FileDownloadIcon />
-                  </span>
-                )}
-            </button>
-            </div>
+            <div className="flex justify-center"><button
+            onClick={downloadTicket}
+            className="w-36 font-bold bg-gradient-to-r from-slate-600 to-slate-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-500 transition"
+            disabled={loading2}
+          >
+            {loading2 ? (
+              <CircularProgress size={18} color="inherit" />
+            ) : (
+              <span>
+              Download <FileDownloadIcon />
+             </span>
+            )}
+          </button></div>
+            
             <div
           id="ticket"
           style={{
@@ -295,7 +294,7 @@ export default function Profile() {
               </button>
             ):(
               <button
-                className="px-2 md:px-6 py-1 md:py-2 bg-slate-800 text-slate-200 rounded-xl text-sm "
+                className="w-36 px-2 md:px-6 py-1 md:py-2 bg-slate-800 text-slate-200 rounded-xl text-sm "
                  onClick={downloadCertificate}
               >
                 {loading ? (
