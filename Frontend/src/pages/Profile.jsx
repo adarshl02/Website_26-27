@@ -280,19 +280,35 @@ export default function Profile() {
           />
           {/* Overlay Button */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <button
-              className="px-2 md:px-6 py-1 md:py-2 bg-slate-800 text-slate-200 rounded-xl text-sm "
-               onClick={downloadCertificate}
-              //onClick={handleOpen2}
-            >
-              {loading ? (
-                  <CircularProgress size={18} color="inherit" />
-                ) : (
-                  <span>
-                   Download <FileDownloadIcon />
-                  </span>
-                )}
-            </button>
+            {Object.keys(eventTicketData).length === 0?(
+                <button
+                className="px-2 md:px-6 py-1 md:py-2 bg-slate-800 text-slate-200 rounded-xl text-sm "
+                  onClick={handleOpen2}
+              >
+                {loading ? (
+                    <CircularProgress size={18} color="inherit" />
+                  ) : (
+                    <span>
+                     Download <FileDownloadIcon />
+                    </span>
+                  )}
+              </button>
+            ):(
+              <button
+                className="px-2 md:px-6 py-1 md:py-2 bg-slate-800 text-slate-200 rounded-xl text-sm "
+                 onClick={downloadCertificate}
+              >
+                {loading ? (
+                    <CircularProgress size={18} color="inherit" />
+                  ) : (
+                    <span>
+                     Download <FileDownloadIcon />
+                    </span>
+                  )}
+              </button>
+            )
+          }
+            
           </div>
         </div>
 

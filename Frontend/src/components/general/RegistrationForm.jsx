@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { CircularProgress } from "@mui/material";
 import { registerEvent, verifyPayment } from "../../service/api";
+import { useNavigate } from "react-router-dom";
 
 const RegistrationForm = ({ event_id , setOpen }) => {
   const [formData, setFormData] = useState({
@@ -16,6 +17,7 @@ const RegistrationForm = ({ event_id , setOpen }) => {
   const { currentUser } = useSelector((state) => state.user);
   const { token } = useSelector((state) => state.user.currentUser);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -113,6 +115,7 @@ const RegistrationForm = ({ event_id , setOpen }) => {
         });
         toast.success("Payment successful and verified!");
         toast.success("Check Your Mail");
+        navigate("/profile");
         // Update the order status to "paid" in the database
       } else {
         toast.error(verificationResponse.message || "Payment verification failed. Please try again.");
@@ -148,7 +151,7 @@ const RegistrationForm = ({ event_id , setOpen }) => {
 
           <div className="mb-4">
             <label className="block text-sm mb-2" htmlFor="phone">
-              Phone Number for Group joining
+              Phone Number 
             </label>
             <input
               type="tel"

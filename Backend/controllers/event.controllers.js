@@ -94,7 +94,7 @@ const registerEvents = async (req, res) => {
         );
     }
 
-    const amount = 10 * 100;
+    const amount = 200 * 100;
 
     const options = {
       amount: amount,
@@ -191,7 +191,7 @@ const paymentVerification = async (req, res) => {
       .where({ order_id: razorpay_order_id })
       .update({ payment_status: "APPROVED" });
 
-    const qrCodeData = `Payment was successful for the event: ${event.event_name}`;
+    const qrCodeData = `Payment was successful for the event: ${event.event_name}. Your Order id is : ${razorpay_order_id}`;
     const qrCodeBuffer = await QRCode.toDataURL(qrCodeData);
 
     const uploadedResponse = await cloudinary.uploader.upload(qrCodeBuffer, {
