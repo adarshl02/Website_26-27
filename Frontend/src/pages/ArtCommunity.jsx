@@ -66,6 +66,7 @@ export default function ArtCommunityPage() {
   }, [isVisible]);
 
   useEffect(() => {
+   
     
     const fetchArtistCount = async () => {
       if (!token) {

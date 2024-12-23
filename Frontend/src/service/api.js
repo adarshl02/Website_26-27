@@ -5,7 +5,7 @@ const URL = import.meta.env.VITE_URL;
 
 const handleApiError = (error, apiName) => {
   const errorMsg = error.response?.data?.message || error.message || 'An unexpected error occurred';
-  console.log(`Error in ${apiName}:`, errorMsg);
+ // console.log(`Error in ${apiName}:`, errorMsg);
   return { success: false, message: errorMsg, status: error.response?.status };
 };
 
@@ -116,6 +116,20 @@ export const setArtist = async (data,token) => {
     return { success: true, data: response.data.response.data };
   } catch (error) {
     return handleApiError(error, 'Set Artist API');
+  }
+};
+export const getEventTicket = async (data,token) => {
+  try {
+    
+    const response = await axios.get(`${URL}/api/get/event-ticket`,{
+      params: data,
+      headers: {
+       "Authorization": `${token}`,  // Include token in the headers
+      },
+    });  
+    return { success: true, data: response.data.response.data };
+  } catch (error) {
+    return handleApiError(error, 'Get event ticket API');
   }
 };
 
