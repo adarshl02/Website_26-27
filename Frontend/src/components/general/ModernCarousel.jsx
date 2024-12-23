@@ -6,13 +6,13 @@ import { AnimatedTestimonials } from "../accertinityui/animated-testimonials";
 
 const testimonials = [
   {
-    src: "/ajnar.jpeg",
+    src: "https://res.cloudinary.com/dgc7xsrcx/image/upload/v1734951689/d8tvzgty5wlerqtgwtjn.jpg",
     quote: `Art gives me divine experience. This is the only thing that will last forever. I hope my students give their best to both art and to Club Pratibimb.`,
     name: "Prof. D S Ajnar",
     designation: "President, Club Pratibimb",
   },
   {
-    src: "/kutty.jpeg",
+    src: "https://res.cloudinary.com/dgc7xsrcx/image/upload/v1734950869/yl9bnyss2ivjf4whibhp.jpg",
     quote: `It's been such a pleasure to mentor Club Pratibimb since the past few years.I wish that the future of each member of the club be ever filled with love, joy, happiness, and ART!`,
     name: "Mr. Alex Kutty",
     designation: "Mentor, Club Pratibimb",

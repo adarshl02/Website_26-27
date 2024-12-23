@@ -31,17 +31,17 @@ export default function MiniPratibimb() {
 
       <div className="mt-4">
         <img
-          src="/mini1_1.png"
+          src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1734950568/isvwixlbdpetjx1k2scn.png"
           alt="image"
           className="col-span-2 w-full rounded-lg mx-auto max-w-[80%]"
         />
       </div>
       <div className="flex my-2 md:my-6 mx-10 md:mx-28 gap-4 md:gap-6">
         <div>
-          <img src="/mini1.JPG" alt="image" className="rounded-lg mx-auto" />
+          <img src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1734950568/jojim6asxs6y5myypgjp.jpg" alt="image" className="rounded-lg mx-auto" />
         </div>
         <div>
-          <img src="/mini2.JPG" alt="image" className="rounded-lg mx-auto" />
+          <img src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1734950569/ac6u7gcltgvgtntxgchz.jpg" alt="image" className="rounded-lg mx-auto" />
         </div>
       </div>
 
@@ -60,7 +60,7 @@ export default function MiniPratibimb() {
           workshop organised by the club in Choithram School.
         </div>
         <div className="flex-1 flex justify-center">
-          <img src="/mini2_1.png" alt="image" className="w-[40%] rounded-xl" />
+          <img src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1734950568/nyws74l7nbpiwy8htnpv.png" alt="image" className="w-[40%] rounded-xl" />
         </div>
       </div>
 

@@ -42,7 +42,7 @@ const navItems = [
     path: "/",
     icon: (
       <img
-        src="/3dicons-home.png"
+        src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1734951309/gyfghcjtv8bivrzww0rb.png"
         alt="Home Icon"
         style={{ width: "32px", height: "32px" }}
       />
@@ -50,7 +50,7 @@ const navItems = [
   },
   { name: "Team", path: "/team", icon: (
     <img
-      src="/3dicons-team.png"
+      src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1734951309/apfbrylovmp4xmtbxyhb.png"
       alt="team Icon"
       style={{ width: "32px", height: "32px" }}
     />
@@ -60,7 +60,7 @@ const navItems = [
     path: "/events",
     icon: (
       <img
-        src="/3dicons-notebook.png"
+        src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1734951308/exfsltqcjw6wckxxszia.png"
         alt="Notebook Icon"
         style={{ width: "32px", height: "32px" }}
       />
@@ -71,7 +71,7 @@ const navItems = [
     path: "/art-community",
     icon: (
       <img
-        src="/3dicons-color-palette.png"
+        src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1734951308/ids1wdjgumtjhvyenwgc.png"
         alt="Art Community Icon"
         style={{ width: "32px", height: "32px" }}
       />
@@ -83,7 +83,7 @@ const navItems = [
     icon: (
       <Badge color="primary" variant="dot">
         <img
-          src="/3dicons-picture.png"
+          src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1734951308/y9rtv5ukygh2rbhbfbpo.png"
           alt="Blog Icon"
           style={{ width: "32px", height: "32px" }}
         />
@@ -190,7 +190,7 @@ function Navbar({ className, scrollToCarousel }) {
             <ListItemButton onClick={() => navigate("/profile")}>
               <ListItemIcon>
               <img
-        src="/3dicons-boy.png"
+        src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1734951308/tzrt5vney9zrzjrnkmri.png"
         alt="Profile Icon"
         style={{ width: "32px", height: "32px" }}
       />

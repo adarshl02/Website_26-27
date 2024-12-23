@@ -9,7 +9,7 @@ export default function UpcomingEventNotReleased() {
       </h2>
 
       <img
-        src="/comingsoon.jpeg"
+        src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1734951776/tcxtqwgmqhogfggy14n7.jpg"
         alt="image"
         className="mt-6 md:mt-4 h-36 md:h-48"
       />
