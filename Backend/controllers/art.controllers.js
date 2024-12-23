@@ -119,9 +119,9 @@ const getUserAndArtCommunityDetails = async (req, res) => {
       .join("art_community", "users.email", "art_community.email")
       .select(
         "users.avatar",
-        "art_community.email",
+        "art_community.name",
         "art_community.instagram_user_id"
-      );
+      ).limit(10);
     return res.status(200).send({
       response: {
         data: { data },
