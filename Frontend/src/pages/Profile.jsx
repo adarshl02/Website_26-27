@@ -12,6 +12,8 @@ import Certificate from "./../components/general/Certificate";
 import html2canvas from "html2canvas";
 import Certificatetrial from "../components/general/Backdrops/Certificatetrial";
 import { getEventTicket } from "../service/api";
+import { Ticket } from "../components/general/Ticket";
+import { Ticketorg } from "../components/general/Ticketorg";
 
 export default function Profile() {
   const { rest: user ,token} = useSelector((state) => state.user.currentUser); // Assuming user data is stored in the redux state
@@ -19,6 +21,7 @@ export default function Profile() {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
   const [eventTicketData,setEventTicketData] = useState({});
   const handleClose = () => {
     setOpen(false);
@@ -66,6 +69,24 @@ export default function Profile() {
       setLoading(false);
     });
   };
+  const downloadTicket = () => {
+    setLoading2(true);
+    const input = document.getElementById("ticket");
+  
+    html2canvas(input, {
+      scrollX: 0,
+      scrollY: 0,
+      useCORS: true, // Allow cross-origin images
+      scale: 2, // High-quality rendering
+    }).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("l", "px", [1100, 500]); // Match dimensions of the certificate
+  
+      pdf.addImage(imgData, "PNG", 0, 0, 1100, 500); // No margins
+      pdf.save(`${user.name}_Event_Ticket.pdf`);    
+      setLoading2(false);
+    });
+  };
 
   useEffect(()=>{
     const getTicket = async () => {
@@ -79,23 +100,20 @@ export default function Profile() {
         
         if (response.success) {
           setEventTicketData(response.data.selection[0]);
-          console.log(eventTicketData);
+          console.log(response.data.selection[0]); // it contains data 
+          console.log(eventTicketData);            // it is not 
           
         } else {
           console.log(response);
-          
-           console.error("Failed to fetch event ticket:", response?.message);              
         }
       } catch (error) {
         console.log('Failed to fetch ticket');
       }
     };
-
     getTicket();
   },[]);
   
   
-
   return (
     <div className="p-2 md:px-10 mt-16">
       <div className="text-center py-2 bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-7xl font-poppins">
@@ -191,23 +209,60 @@ export default function Profile() {
         <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins">
           Your Event Ticket
         </div>
-        <div className="mt-2 text-slate-500 text-xs md:text-xl px-4 font-poppins">
-          Visit the event Page to register for a event.
-          <br />
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            // onClick={handleOpen}
-            onClick={() => navigate("/upcoming-event-page")}
-            className="mt-2 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-1 md:py-2 px-2 md:px-4 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
-          >
-            Go to Event Page
-          </motion.button>
+        {
+          Object.keys(eventTicketData).length === 0 ?(
+            <>
+            <div className="mt-2 text-slate-500 text-xs md:text-xl px-4 font-poppins">
+            Visit the event Page to register for a event.
+            <br />
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              // onClick={handleOpen}
+              onClick={() => navigate("/upcoming-event-page")}
+              className="mt-2 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-1 md:py-2 px-2 md:px-4 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
+            >
+              Go to Event Page
+            </motion.button>
+          </div>
+          <img
+            src="/ticket.png"
+            className="mt-4 blur-sm w-[80%] md:w-[60%] mx-auto"
+            alt="image"
+          />
+          </>
+          ):(
+            <>
+           
+            <Ticket eventTicketData={eventTicketData} />
+            <div className="mt-4 md:flex md:justify-center" >
+               <button
+              className="px-2 md:px-6 py-1 md:py-2 bg-slate-800 text-slate-200 rounded-xl text-sm "
+              onClick={downloadTicket}
+              //onClick={handleOpen2}
+            >
+              {loading2 ? (
+                  <CircularProgress size={18} color="inherit" />
+                ) : (
+                  <span>
+                   Download <FileDownloadIcon />
+                  </span>
+                )}
+            </button>
+            </div>
+            <div
+          id="ticket"
+          style={{
+            position: "absolute",
+            top: "-9999px", // Move it far off-screen
+            left: "-9999px",
+          }}
+        >
+          <Ticketorg eventTicketData={eventTicketData}  />
         </div>
-        <img
-          src="/ticket.png"
-          className="mt-4 blur-sm w-[80%] md:w-[60%] mx-auto"
-          alt="image"
-        />
+            </>
+          )
+        }
+        
       </div>
 
       <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
@@ -227,7 +282,7 @@ export default function Profile() {
           <div className="absolute inset-0 flex items-center justify-center">
             <button
               className="px-2 md:px-6 py-1 md:py-2 bg-slate-800 text-slate-200 rounded-xl text-sm "
-              onClick={downloadCertificate}
+               onClick={downloadCertificate}
               //onClick={handleOpen2}
             >
               {loading ? (

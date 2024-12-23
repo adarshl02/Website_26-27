@@ -254,9 +254,7 @@ const getEventTicket = async (req, res) => {
     if (selection.length == 0) {
       return res
         .status(400)
-        .send(
-          errorHandler(400, "Not Registered", "Not Registered For The Event")
-        );
+        .json({ message: "Not Registered for the event." });
     }
     return res.status(200).send({
       response: {
