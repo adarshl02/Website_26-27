@@ -32,7 +32,7 @@ const LatestOfPratibimb = ({ handleOpen,handleOpen2 }) => {
       {/* Card 1 */}
       <div className="bg-gray-900 p-4 md:p-6 rounded-lg shadow-2xl border-2 border-gradient-to-r from-blue-500 via-purple-600 to-pink-500 flex flex-col items-center text-center">
         <img
-          src="https://res.cloudinary.com/dhy548whh/image/upload/v1734195005/ooteb8bx3xpsiiawlcvj.png"
+          src="pixshala_poster.png"
           alt="Upcoming Event"
           className="w-44 h-44 object-cover rounded-md mb-4 shadow-lg"
         />
@@ -43,7 +43,7 @@ const LatestOfPratibimb = ({ handleOpen,handleOpen2 }) => {
         <div className="text-gray-300 text-sm mb-1 md:mb-2">
           An unparalleled journey into art awaits you. <br />
           <div className="text-slate-400 font-medium opacity-75 mb-2">
-            Tentative Date: Feb, 2024
+            Tentative Date: March, 2025
           </div>
           <motion.button
             whileTap={{ scale: 0.95 }}

@@ -56,7 +56,7 @@ const UpcomingEventPage = () => {
         {/* Event Image */}
         <div className="flex justify-center">
           <img
-            src="https://res.cloudinary.com/dhy548whh/image/upload/v1734195005/ooteb8bx3xpsiiawlcvj.png"
+            src="pixshala_poster.png"
             alt="Upcoming Event Poster"
             className="w-64 max-w-sm object-cover rounded-lg shadow-lg"
           />
@@ -74,7 +74,7 @@ const UpcomingEventPage = () => {
             <li>🛍️ Exclusive Merchandise and Giveaways</li>
           </ul>
           <p className="text-sm md:text-base text-gray-400 italic">
-            Tentative Date: February 2024
+            Tentative Date: March 2025
           </p>
           <motion.button
             whileTap={{ scale: 0.95 }}

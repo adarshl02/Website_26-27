@@ -57,7 +57,7 @@ export const Ticketorg = ({ eventTicketData }) => {
           <div className="mt-6 text-sm text-gray-700">
             <h3 className="text-lg font-semibold text-gray-800 mb-2">Event Details:</h3>
             <p>
-              <span className="font-medium">Event Name:</span> Graffathon Back to Rituals
+              <span className="font-medium">Event Name:</span> Pixshala "Enhance the aesthetics"
             </p>
             <p>
               <span className="font-medium">Event Date:</span> 03 March, 2025
