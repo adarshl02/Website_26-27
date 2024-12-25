@@ -39,7 +39,7 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef,s
                   initial={pageTransition.initial}
                   animate={pageTransition.animate}
                   exit={pageTransition.exit}
-                ><NavbarDemo scrollToCarousel={scrollToCarousel} />
+                >
                   <Home
                     carouselRef={carouselRef}
                     latestRef={latestRef}

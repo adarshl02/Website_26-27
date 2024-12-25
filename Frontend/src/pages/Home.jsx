@@ -25,7 +25,7 @@ const people = [
     name: "Vibhuti Baldwa",
     designation: "UI Designer",
     image:
-      "https://res.cloudinary.com/dhy548whh/image/upload/v1734528512/IMG-20241217-WA0010_2_niscra.jpg",
+      "/vibhuti.jpg",
   },
 
   {
