@@ -23,8 +23,9 @@
         padding: px 0;
       }
       .header img {
-        width: 120px;
-        height: auto;
+        display: block;
+      margin: 0 auto;
+      max-width: 150px;
       }
       .header h1 {
         font-size: 22px;
@@ -54,6 +55,10 @@
       .btn:hover {
         background-color: #3c495c;
       }
+      .divider {
+      border-top: 2px solid #444444;
+      margin: 20px 0;
+    }
       .footer {
         text-align: center;
         margin-top: 20px;
@@ -75,15 +80,19 @@
         margin: 0 8px;
         vertical-align: middle;
       }
+      .copyright{
+        text-align: center;
+        margin-top: 30px;
+        font-size: 12px;
+        color: #aaaaaa;
+      }
     </style>
   </head>
   <body>
     <div class="email-container">
       <div class="header">
-        <img
-          src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1733249718/k5adyreqoelqg1molfoi.png"
-          alt="Pratibimb Logo"
-        />
+        <img src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1733825280/uqfmoxybdavba23awyjg.png" alt="Club Pratibimb Logo">
+    <div class="divider"></div>
       </div>
       <div class="content">
         <p><b>Hi {{name}},</b></p>
@@ -93,14 +102,14 @@
           photography.
         </p>
         <p>
-          As a member, you gain access to exclusive resources, event
+          As a website user, you gain access to exclusive resources, event
           invitations, and the opportunity to showcase your talent.
         </p>
         <p>
           Don’t miss out on our upcoming events. Click below to explore more and
           stay inspired:
         </p>
-        <a href="https://www.clubpratibimb.com" class="btn">Discover Events</a>
+        <a href="https://clubpratibimb.com" class="btn">Discover Events</a>
       </div>
       <div class="footer">
         <p>Stay connected with us:</p>
@@ -125,6 +134,8 @@
               alt="YouTube"
           /></a>
         </div>
+        <p>Thank you for your time and dedication!</p>
+        
         <p>
           Have questions? Email us at
           <a href="mailto:clubpratibimb.sgsits@gmail.com"
@@ -135,6 +146,9 @@
           If you wish to unsubscribe from our emails, click
           <a href="{{unsubscribe_link}}">here</a>.
         </p>
+        <div class="copyright" >
+        <p>© 2024 Pratibimb. All rights reserved.</p>
+      </div>
       </div>
     </div>
   </body>

@@ -17,7 +17,7 @@ export default function Events() {
     <>
     
       {/* Radio Button Group */}
-      <div className="pt-28 flex w-full flex-wrap justify-center space-x-2 md:space-x-8 mb-4">
+      <div className="pt-24 flex w-full flex-wrap justify-center space-x-2 md:space-x-8 mb-4">
         {["Past Events","Overnight Events","Mini Pratibimb"].map((option) => (
           <div key={option}>
             <input

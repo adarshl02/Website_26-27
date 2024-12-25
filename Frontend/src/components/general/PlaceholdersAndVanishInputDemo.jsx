@@ -26,7 +26,7 @@ export function PlaceholdersAndVanishInputDemo() {
 
       const data={
         feedback:feedback,
-        email:user.email,
+        name:user.name,
       }
     try{
       const response = await submitfeedback(data,token);

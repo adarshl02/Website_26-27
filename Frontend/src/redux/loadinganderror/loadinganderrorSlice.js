@@ -13,7 +13,7 @@ const loadinganderrorSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    loadingEndsSuccess: (state, action) => {
+    loadingEndsSuccess: (state) => {
         state.error = null;
         state.loading = false;
       },

@@ -78,9 +78,9 @@ const countUsers = async (req, res) => {
 
 const giveFeedback = async (req, res) => {
   try {
-    const { email,feedback } = req.body;
+    const { name,feedback } = req.body;
     
-    if (!email || !feedback) {
+    if (!name || !feedback) {
       return res
         .status(400)
         .send(
@@ -93,7 +93,7 @@ const giveFeedback = async (req, res) => {
     }
 
     let data = {
-      email,
+      name,
       feedback,
     };
     let insertion = await db("feedback").insert(data).returning("*");

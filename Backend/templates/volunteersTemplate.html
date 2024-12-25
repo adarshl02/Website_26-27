@@ -47,7 +47,6 @@
         margin: 20px 0;
         padding: 20px;
         background: linear-gradient(45deg, #003366, #336699, #66aaff);
-
         border-radius: 10px;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
         font-size: 16px;
@@ -72,37 +71,61 @@
         line-height: 1.5;
       }
 
+      .btn {
+        display: inline-block;
+        padding: 12px 20px;
+        margin-top: 20px;
+        background-color: #2a374b;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .btn:hover {
+        background-color: #3c495c;
+      }
+
       .footer {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+        color: #f4f4f4;
+      }
+      .footer a {
+        color: #67778e;
+        text-decoration: none;
+      }
+      .footer a:hover {
+        text-decoration: underline;
+      }
+      .social-icons {
+        margin-top: 20px;
+      }
+      .social-icons img {
+        width: 30px;
+        margin: 0 8px;
+        vertical-align: middle;
+      }
+      .copyright{
         text-align: center;
         margin-top: 30px;
         font-size: 12px;
         color: #aaaaaa;
-      }
-
-      .footer a {
-        text-decoration: none;
-        color: #f4f4f4;
-        font-weight: bold;
-      }
-    </style>
+      } 
+         </style>
   </head>
   <body>
     <div class="email-container">
-      <!-- Logo Section -->
       <div class="logo">
-        <img src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1733249718/k5adyreqoelqg1molfoi.png" alt="Club Logo" />
+        <img src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1733825280/uqfmoxybdavba23awyjg.png" alt="Club Pratibimb Logo">
       </div>
       <div class="divider"></div>
 
-      <!-- Title -->
       <h2 class="title">Thank You for filling Volunteering form!</h2>
+      <p style="font-size: 14px; text-align: center; color: #e0e0e0;">We are excited to have you as a volunteer! We will send volunteering interview details on email or our instagram account. See you there!</p>
 
-      <!-- Introduction -->
-      <p style="font-size: 14px; text-align: center; color: #e0e0e0;">
-        We are excited to have you as a volunteer! We will send volunteering interview details on email or our instagram accound.See you theres
-      </p>
-
-      <!-- Overview Card -->
       <div class="overview-card">
         <h3>Volunteer Overview</h3>
         <ul class="overview-details">
@@ -113,14 +136,46 @@
         </ul>
       </div>
 
-      <!-- Footer Section -->
+      <a href="https://clubpratibimb.com" class="btn">Discover Events</a>
+
       <div class="footer">
+        <p>Stay connected with us:</p>
+        <div class="social-icons">
+          <a href="https://bit.ly/3Mu4CN2" target="_blank"
+            ><img
+              src="https://res.cloudinary.com/dhy548whh/image/upload/v1733923563/tpuqqhg73ccx2cbs6ccq.png"
+              alt="Instagram"
+          /></a>
+          <a
+            href="https://chat.whatsapp.com/Lo2YDqUGt9vDgxhtjQqe43"
+            target="_blank"
+            ><img
+              src="https://res.cloudinary.com/dhy548whh/image/upload/v1733924392/wkes107z9zx08debjfa3.png"
+              alt="WhatsApp"
+          /></a>
+          <a
+            href="https://youtube.com/@pratibimb_sgsits?si=BLxqIAt6U6Sxn-l3"
+            target="_blank"
+            ><img
+              src="https://res.cloudinary.com/dhy548whh/image/upload/v1733923562/ph251e5rkfoteorw38ug.png"
+              alt="YouTube"
+          /></a>
+        </div>
         <p>Thank you for your time and dedication!</p>
-        <p>© 2024 Pratibimb. All rights reserved.</p>
+        
         <p>
-          For any inquiries, feel free to contact us at
-          <a href="mailto:clubpratibimb.sgsits">clubpratibimb.sgsits@gmail.com</a>
+          Have questions? Email us at
+          <a href="mailto:clubpratibimb.sgsits@gmail.com"
+            >clubpratibimb.sgsits@gmail.com</a
+          >
         </p>
+        <p>
+          If you wish to unsubscribe from our emails, click
+          <a href="{{unsubscribe_link}}">here</a>.
+        </p>
+        <div class="copyright" >
+        <p>© 2024 Pratibimb. All rights reserved.</p>
+      </div>
       </div>
     </div>
   </body>

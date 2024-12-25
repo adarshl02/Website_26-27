@@ -64,7 +64,7 @@ export default function SignUp({ setBackdropOpen }) {
         dispatch(signInFailure(response.message));
         toast.error(response.message);
       }
-    } catch (error){
+    } catch (error) {
       dispatch(signInFailure(response.message));
       toast.error("Could not sign up with google");
       console.error("Could not sign up with Google", error);
@@ -87,7 +87,6 @@ export default function SignUp({ setBackdropOpen }) {
       provider.setCustomParameters({ prompt: "select_account" });
       const auth = getAuth(app);
       const result = await signInWithPopup(auth, provider);
-      
 
       dispatch(signInStart());
 
@@ -147,12 +146,18 @@ export default function SignUp({ setBackdropOpen }) {
       }}
     >
       {/* Dark Overlay */}
-      <div className={`absolute inset-0 bg-black ${isMobile ? "opacity-10" : "opacity-40"}`}></div>
-      <div className="absolute inset-0 text-xl font-poppins flex justify-center items-end mb-12 text-slate-300 md:text-white" >Version 1.0.0</div>
-      
+      <div
+        className={`absolute inset-0 bg-black ${
+          isMobile ? "opacity-10" : "opacity-40"
+        }`}
+      ></div>
+      <div className="absolute inset-0 text-xl font-poppins flex justify-center items-end mb-12 text-slate-300 md:text-white">
+        Version 1.0.0
+      </div>
+
       <CardContainer className="inter-var z-10">
         <CardBody className="text-black shadow-lg relative group/card  border-white/[0.1] w-full sm:w-[30rem] h-auto rounded-xl p-6">
-          <div className="bg-slate-50 p-5 md:p-8 rounded-lg  w-full text-black text-sm">
+          <div className="bg-slate-50 p-4 md:p-8 rounded-lg  w-full text-black text-sm">
             <img
               src="https://res.cloudinary.com/dhy548whh/image/upload/v1734195806/mhwkdrs7niz9yxhrafq8.png"
               alt="Logo"
@@ -230,14 +235,18 @@ export default function SignUp({ setBackdropOpen }) {
                   </div>
                 </div>
 
-                <div className="text-center text-sm">
+                <div className="text-center text-sm flex justify-center items-center">
+                  <div>
                   Already Have an Account? Login with{" "}
-                  <span
+                  </div>
+                  <div>
+                  <button
                     onClick={handleGoogleLogin}
-                    className="cursor-pointer text-violet-950"
+                    className="md:ml-2 w-8 md:w-10 h-8 md:h-10 items-center justify-center rounded-full bg-violet-100 text-violet-950 hover:bg-violet-200 focus:outline-none focus:ring-2 focus:ring-violet-400 transition duration-200"
                   >
-                    <GoogleIcon />
-                  </span>
+                    <GoogleIcon className="w-5 h-5" />
+                  </button>
+                  </div>
                 </div>
 
                 <div
@@ -265,7 +274,7 @@ export default function SignUp({ setBackdropOpen }) {
                       type="text"
                       id="username"
                       name="username"
-                      className="w-full px-4 py-2 bg-gray-600 border border-gray-600 text-white rounded-lg focus:ring focus:ring-blue-400 focus:outline-none"
+                      className="md:mt-1 w-full px-4 py-2 ring ring-blue-200  text-slate-800   rounded-lg  text-base focus:ring focus:ring-blue-400 focus:outline-none"
                       placeholder="admin@example.com"
                     />
                   </div>
@@ -281,7 +290,7 @@ export default function SignUp({ setBackdropOpen }) {
                       type="password"
                       id="password"
                       name="password"
-                      className="w-full px-4 py-2 bg-gray-600 border border-gray-600 text-slate-50 rounded-lg focus:ring focus:ring-blue-400 focus:outline-none"
+                      className="md:mt-1 w-full px-4 py-2 ring ring-blue-200  text-slate-800   rounded-lg  text-base focus:ring focus:ring-blue-400 focus:outline-none"
                       placeholder="Enter your password"
                     />
                   </div>

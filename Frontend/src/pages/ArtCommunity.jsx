@@ -225,7 +225,7 @@ export default function ArtCommunityPage() {
       {user.is_artist && (
         <div className="w-full max-w-5xl mt-10">
           <h2 className="bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-2xl md:text-4xl font-medium text-transparent font-poppins mb-6 text-center">
-            Members of Art Community
+            Active Members of Art Community
           </h2>
 
           <TableContainer

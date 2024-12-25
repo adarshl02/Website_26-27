@@ -5,37 +5,16 @@ const { errorHandler } = require("../utils/errorHandler");
 
 const artCommunity = async (req, res) => {
   try {
-    console.log(req.body);
-
+   
     const { email, name, phone, description, instagram_user_id } = req.body;
 
     if (!req.file) {
       return res.status(400).json({ error: "No image file provided" });
     }
-
+    
     if (!email || !name || !phone || !instagram_user_id) {
       return res.status(400).json({ error: "All fields are required" });
     }
-    const lastUpload = await db("art_community")
-      .where("email", email)
-      .orWhere("instagram_user_id", instagram_user_id)
-      .orderBy("created_at", "desc")
-      .first();
-
-    if (lastUpload) {
-      const lastUploadDate = new Date(lastUpload.created_at);
-      const currentDate = new Date();
-
-      const diffInDays = (currentDate - lastUploadDate) / (1000 * 60 * 60 * 24);
-      if (diffInDays < 7) {
-        return res.status(400).json({
-          error: `You can upload a new photo after ${
-            7 - Math.floor(diffInDays)
-          } day(s).`,
-        });
-      }
-    }
-
     const result = await new Promise((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(
         { folder: "Pratibimb" },
@@ -48,7 +27,7 @@ const artCommunity = async (req, res) => {
     });
 
     const { secure_url } = result;
-
+    
     const insertedData = await db("art_community")
       .insert({
         image_url: secure_url,

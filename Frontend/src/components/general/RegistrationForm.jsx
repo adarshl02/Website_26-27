@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { CircularProgress } from "@mui/material";
 import { registerEvent, verifyPayment } from "../../service/api";
 import { useNavigate } from "react-router-dom";
+import { loadingEndsSuccess, loadingStart } from "../../redux/loadinganderror/loadinganderrorSlice";
 
 const RegistrationForm = ({ event_id , setOpen }) => {
   const [formData, setFormData] = useState({
@@ -13,10 +14,11 @@ const RegistrationForm = ({ event_id , setOpen }) => {
     teamName: "",
     teamMembers: "",
   });
+  const dispatch = useDispatch();
 
   const { currentUser } = useSelector((state) => state.user);
   const { token } = useSelector((state) => state.user.currentUser);
-  const [loading, setLoading] = useState(false);
+  const [loadings, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -29,7 +31,7 @@ const RegistrationForm = ({ event_id , setOpen }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-  
+    dispatch(loadingStart());
     try {
       const payload = {
         event_id,
@@ -113,6 +115,7 @@ const RegistrationForm = ({ event_id , setOpen }) => {
           teamName: "",
           teamMembers: "",
         });
+        dispatch(loadingEndsSuccess());
         toast.success("Payment successful and verified!");
         toast.success("Check Your Mail");
         navigate("/profile");
@@ -123,12 +126,14 @@ const RegistrationForm = ({ event_id , setOpen }) => {
     } catch (error) {
       console.error("Payment verification error:", error);
       toast.error("Error verifying payment. Please try again.");
+    }finally{
+      dispatch(loadingEndsSuccess());
     }
   };
 
   return (
     <div className="m-4 flex items-center justify-center">
-      <div className="bg-slate-100 text-slate-800 p-8 rounded-lg shadow-md max-w-md w-full">
+      <div className="bg-white text-slate-800 p-8 rounded-lg shadow-md max-w-md w-full">
         <h2 className="text-2xl font-bold mb-4">
           Please fill in your details to continue
         </h2>
@@ -142,7 +147,8 @@ const RegistrationForm = ({ event_id , setOpen }) => {
               type="text"
               id="name"
               value={formData.name}
-              className="w-full px-4 py-2 bg-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-1.5 md:py-2 border-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 
+              md:text-base text-sm"    
               placeholder="Your Name"
               onChange={handleChange}
               required
@@ -157,8 +163,8 @@ const RegistrationForm = ({ event_id , setOpen }) => {
               type="tel"
               id="phone"
               value={formData.phone}
-              className="w-full px-4 py-2 bg-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Your Phone Number"
+              className="w-full px-4 py-1.5 md:py-2 border-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 
+              md:text-base text-sm"                  placeholder="Your Phone Number"
               onChange={handleChange}
               required
             />
@@ -172,8 +178,8 @@ const RegistrationForm = ({ event_id , setOpen }) => {
               type="text"
               id="teamName"
               value={formData.teamName}
-              className="w-full px-4 py-2 bg-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Team Name"
+              className="w-full px-4 py-1.5 md:py-2 border-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 
+              md:text-base text-sm"                  placeholder="Team Name"
               onChange={handleChange}
               required
             />
@@ -187,8 +193,8 @@ const RegistrationForm = ({ event_id , setOpen }) => {
               type="number"
               id="teamMembers"
               value={formData.teamMembers}
-              className="w-full px-4 py-2 bg-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Number"
+              className="w-full px-4 py-1.5 md:py-2 border-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 
+              md:text-base text-sm"                  placeholder="Number"
               onChange={handleChange}
               required
             />
@@ -197,9 +203,9 @@ const RegistrationForm = ({ event_id , setOpen }) => {
           <button
             type="submit"
             className="w-full font-bold bg-gradient-to-r from-indigo-600 to-blue-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-500 transition"
-            disabled={loading}
+            disabled={loadings}
           >
-            {loading ? (
+            {loadings ? (
               <CircularProgress size={24} color="inherit" />
             ) : (
               "GO TO PAYMENT →"

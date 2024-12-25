@@ -1,76 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Artwork Submission Confirmation</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #121212;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-    .email-card {
-      background: linear-gradient(135deg, #1f1f1f, #3a3a3a);
-      border-radius: 8px;
-      max-width: 600px;
-      padding: 20px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-    .email-card img {
-      display: block;
-      margin: 0 auto;
-      max-width: 150px;
-      border-radius: 50%;
-    }
-    .email-card h1 {
-      font-size: 24px;
-      text-align: center;
-      margin-top: 20px;
-      color: #f9d342;
-    }
-    .email-card p {
-      font-size: 16px;
-      line-height: 1.6;
-      color: #e1e1e1;
-    }
-    .email-card a {
-      color: #f9d342;
-      text-decoration: none;
-    }
-    .footer {
-      margin-top: 20px;
-      text-align: center;
-      font-size: 14px;
-      color: #bbb;
-    }
-  </style>
-</head>
-<body>
-  <div class="email-card">
-    <img src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1733825280/uqfmoxybdavba23awyjg.png" alt="Club Pratibimb Logo">
-    <h1>Artwork Submission Confirmation</h1>
-    <p>Dear <strong>{{name}}</strong>,</p>
-    <p>
-      Thank you for submitting your artwork to Club Pratibimb. We are thrilled to have your work as part of our community.
-    </p>
-    <p>
-      We confirm that your submission has been successfully received. Our team will review your artwork, and if it is selected for our upcoming weekly post, you will be notified via email.
-    </p>
-    <p>
-      We appreciate your contribution and look forward to the possibility of featuring your work.
-    </p>
-    <div class="footer">
-      <p>Best regards,</p>
-      <p>Club Pratibimb</p>
-      <p><a href="https://www.clubpratibimb.com">[Club Pratibimb]</a> | <a href="mailto:clubpratibimb.sgsits@gmail.com">[Contact Information]</a></p>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artwork Submission Confirmation</title>
+    <style>
+      body {
+        font-family: "Georgia", serif;
+        margin: 0;
+        padding: 0;
+        background: #1e1e1e;
+        color: #f4f4f4;
+      }
+      .email-container {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 20px;
+        background: linear-gradient(135deg, #2e2e2e, #1a1a1a);
+        border: 1px solid #8f6d7a;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+      .header {
+        text-align: center;
+      }
+      .header img {
+        display: block;
+        margin: 0 auto;
+        max-width: 150px;
+      }
+      .header h1 {
+        font-size: 22px;
+        color: #f9d342;
+        margin: 0;
+      }
+      .content {
+        line-height: 1.8;
+        font-size: 16px;
+        color: #f4f4f4;
+        padding: 20px 0;
+      }
+      .content p {
+        margin: 10px 0;
+      }
+      .btn {
+        display: inline-block;
+        padding: 12px 20px;
+        margin-top: 20px;
+        background-color: #2a374b;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      }
+      .btn:hover {
+        background-color: #3c495c;
+      }
+      .divider {
+        border-top: 2px solid #444444;
+        margin: 20px 0;
+      }
+      .footer {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+        color: #f4f4f4;
+      }
+      .footer a {
+        color: #67778e;
+        text-decoration: none;
+      }
+      .footer a:hover {
+        text-decoration: underline;
+      }
+      .social-icons {
+        margin-top: 20px;
+      }
+      .social-icons img {
+        width: 30px;
+        margin: 0 8px;
+        vertical-align: middle;
+      }
+      .copyright {
+        text-align: center;
+        margin-top: 30px;
+        font-size: 12px;
+        color: #aaaaaa;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <div class="header">
+        <img src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1733825280/uqfmoxybdavba23awyjg.png" alt="Club Pratibimb Logo">
+        <div class="divider"></div>
+        <h1>Artwork Submission Confirmation</h1>
+      </div>
+      <div class="content">
+        <p><strong>Dear {{name}},</strong></p>
+        <p>Thank you for submitting your artwork to Club Pratibimb. We are thrilled to have your work as part of our community.</p>
+        <p>We confirm that your submission has been successfully received. Our team will review your artwork, and if it is selected for our upcoming weekly post and Insta story, you will be notified via email.</p>
+        <p>We appreciate your contribution and look forward to the possibility of featuring your work.</p>
+        <a href="https://clubpratibimb.com" class="btn">Discover Events</a>
+      </div>
+      <div class="footer">
+        <p>Stay connected with us:</p>
+        <div class="social-icons">
+          <a href="https://bit.ly/3Mu4CN2" target="_blank">
+            <img src="https://res.cloudinary.com/dhy548whh/image/upload/v1733923563/tpuqqhg73ccx2cbs6ccq.png" alt="Instagram">
+          </a>
+          <a href="https://chat.whatsapp.com/Lo2YDqUGt9vDgxhtjQqe43" target="_blank">
+            <img src="https://res.cloudinary.com/dhy548whh/image/upload/v1733924392/wkes107z9zx08debjfa3.png" alt="WhatsApp">
+          </a>
+          <a href="https://youtube.com/@pratibimb_sgsits?si=BLxqIAt6U6Sxn-l3" target="_blank">
+            <img src="https://res.cloudinary.com/dhy548whh/image/upload/v1733923562/ph251e5rkfoteorw38ug.png" alt="YouTube">
+          </a>
+        </div>
+        <p>Thank you for your time and dedication!</p>
+        <p>Have questions? Email us at <a href="mailto:clubpratibimb.sgsits@gmail.com">clubpratibimb.sgsits@gmail.com</a></p>
+        <p>If you wish to unsubscribe from our emails, click <a href="{{unsubscribe_link}}">here</a>.</p>
+        <div class="copyright">
+          <p>© 2024 Pratibimb. All rights reserved.</p>
+        </div>
+      </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>

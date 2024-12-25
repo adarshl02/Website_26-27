@@ -1,41 +1,40 @@
 import { motion } from "framer-motion";
 import RegistrationForm from "../components/general/RegistrationForm";
-import { Backdrop } from "@mui/material";
+import { Backdrop, CircularProgress } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { fetchEventsByStatus } from "../service/api";
 
 const UpcomingEventPage = () => {
+  const [open, setOpen] = useState(false);
+  const { token } = useSelector((state) => state.user.currentUser);
+  const { loading } = useSelector((state) => state.loadinganderror);
+  const [ongoing, setOngoing] = useState(null);
 
-    const [open, setOpen] = useState(false);
-    const { token } = useSelector((state) => state.user.currentUser);
-    const [ongoing, setOngoing] = useState(null);
-    
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
-    const handleClose = () => {
-        setOpen(false);
-      };
-      const handleOpen = () => {
-        setOpen(true);
-      };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const fetchData = async () => {
+      try {
+        const response = await fetchEventsByStatus("ONGOING", token);
+        if (response.success) {
+          setOngoing(response.data);
+        } else {
+          console.error("Failed to fetch events:", response?.message);
+        }
+      } catch (error) {
+        console.log("Failed to fetch event");
+      }
+    };
 
-      useEffect(() => {
-         window.scrollTo(0, 0);
-        const fetchData = async () => {
-          try {  
-            const response = await fetchEventsByStatus("ONGOING",token);
-            if (response.success) {
-              setOngoing(response.data);
-            } else {
-               console.error("Failed to fetch events:", response?.message);              
-            }
-          } catch (error) {
-            console.log('Failed to fetch event');
-          }
-        };
-
-          fetchData();
-      }, []);
+    fetchData();
+  }, []);
 
   return (
     <div className="mt-20 min-h-screen bg-gradient-to-b from-gray-900 to-black text-white flex flex-col items-center justify-center px-4 md:px-8 py-6 md:py-12">
@@ -80,9 +79,18 @@ const UpcomingEventPage = () => {
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={handleOpen}
-            className="mt-6 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-3 px-6 rounded-full shadow-lg font-bold transition duration-300 hover:opacity-90 hover:shadow-2xl"
+            className="relative flex justify-center items-center mt-6 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-3 px-6 rounded-full shadow-lg font-bold transition duration-300 hover:opacity-90 hover:shadow-2xl"
           >
-            Register Now
+            {loading && (
+              <CircularProgress
+                size={20}
+                color="inherit"
+                className="absolute"
+              />
+            )}
+            <span className={loading ? "opacity-0" : "opacity-100"}>
+              Register Now
+            </span>
           </motion.button>
         </div>
       </div>
@@ -105,7 +113,6 @@ const UpcomingEventPage = () => {
           <RegistrationForm event_id={ongoing?.event_id} setOpen={setOpen} />
         </div>
       </Backdrop>
-
     </div>
   );
 };

@@ -8,97 +8,208 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #333333;
             margin: 0;
             padding: 0;
+            color: #f4f4f4;
         }
-        .container {
-            background-color: #ffffff;
-            width: 100%;
+
+        .email-container {
             max-width: 600px;
-            margin: 20px auto;
+            margin: 40px auto;
             padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #2a2a2a;
+            border-radius: 15px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+            color: #f4f4f4;
         }
-        .header {
+
+        .logo {
             text-align: center;
-            background-color: #1d58a0;
-            color: white;
-            padding: 20px 0;
         }
-        .content {
+
+        .logo img {
+            display: block;
+            margin: 0 auto;
+            max-width: 150px;
+        }
+
+        .divider {
+            border-top: 2px solid #444444;
             margin: 20px 0;
-            font-size: 16px;
-            line-height: 1.5;
         }
-        .event-details {
-            background-color: #f9f9f9;
-            padding: 10px;
-            border-left: 5px solid #0cdac2;
-            margin-bottom: 20px;
-        }
-        .footer {
+
+        .title {
+            font-size: 26px;
             text-align: center;
-            font-size: 12px;
-            color: #666666;
             margin-top: 20px;
+            color: #f3f3f3;
         }
-        .qr-code {
+
+        .ticket-container {
+            width: 100%;
+            background-color: white;
+            display: flex;
+            flex-direction: row;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            color: #333;
+            font-size: 14px;
+        }
+
+        .ticket-left {
+            background-color: #fecd01;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            margin: 20px 0;
+            padding: 10px;
+            font-size: 12px;
+            font-weight: bold;
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
         }
-        .qr-code img {
-            width: 200px;
-            height: 200px;
+
+        .ticket-center {
+            padding: 10px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
-        .button {
+
+        .ticket-body {
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+        .ticket-body .header {
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .ticket-right {
+            display: flex;
+            align-items: center;
+            justify-content:end;    
+            padding: 10px;
+        }
+        .ticket-right .qr-code img {
+            width: 80px;
+            height: 80px;
+        }
+        .btn {
             display: inline-block;
-            padding: 10px 20px;
-            background-color: #0b5e92;
-            color: white; 
+            padding: 10px 15px;
+            margin-top: 20px;
+            background-color: #2a374b;
+            color: #ffffff;
             text-decoration: none;
             border-radius: 5px;
-            margin-top: 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            background-color: #3c495c;
+        }
+
+        .footer {
             text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #f4f4f4;
+        }
+
+        .footer a {
+            color: #67778e;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .social-icons {
+            margin-top: 20px;
+        }
+
+        .social-icons img {
+            width: 30px;
+            margin: 0 8px;
+            vertical-align: middle;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: #aaaaaa;
         }
     </style>
 </head>
 <body>
+    <div class="email-container">
+        <div class="logo">
+            <img src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1733825280/uqfmoxybdavba23awyjg.png" alt="Club Pratibimb Logo">
+        </div>
+        <div class="divider"></div>
 
-    <div class="container">
-        <div class="header">
-            <h1>Your Event Ticket</h1>
+        <h1 class="title">Your Event Ticket</h1>
+
+        <p style="font-size: 14px; text-align: center; color: #e0e0e0;">
+            Thank you for registering for the event! We are excited to have you join us.
+        </p>
+
+        <div class="ticket-container">
+            <div class="ticket-left">CLUB PRATIBIMB</div>
+            <div class="ticket-center">
+                
+                <div class="ticket-body">
+                    <div class="header" >
+                        <b>{{event_name}}</b>
+                    </div>
+                    <div>
+                        <b>Team Name:</b> {{team_name}}
+                    </div>
+                    <div>
+                        <b>Date:</b> {{event_date}}
+                    </div>
+                    <div>
+                        <b>Event Location:</b> {{event_location}}
+                    </div>
+                </div>
+                
+            </div>
+            <div class="ticket-right">
+                <div class="qr-code">
+                    <img src="{{qr_code}}" alt="QR Code">
+                </div>
+            </div>
         </div>
 
-        <div class="content">
-            <p>Hello <strong>{{name}}</strong>,</p>
-
-            <p>Thank you for registering for the event! We are excited to have you join us.</p>
-
-            <div class="event-details">
-                <p><strong>Event Name:</strong> {{event_name}}</p>
-                <p><strong>Team Name:</strong> {{team_name}}</p>
-                <p><strong>Event Date:</strong> {{event_date}}</p>
-                <p><strong>Event Location:</strong> {{event_location}}</p>
-            </div>
-
-            <p>Please find the QR code below. You will need to present this at the event entrance for your ticket verification.</p>
-
-            <div class="qr-code">
-                <!-- QR Code Image -->
-                <img src={{qr_code}} alt="QR Code">
-            </div>
-
-            <p>If you have any questions, feel free to reach out to us at <a href="mailto:clubpratibimb.sgsits@gmail.com">clubpratibimb.sgsits@gmail.com</a>.</p>
-
-            <a href="https://www.adarshlandge.xyz" class="button">Visit Event Page</a>
-        </div>
+        <a href="https://clubpratibimb.com" class="btn">Visit Event Page</a>
 
         <div class="footer">
-            <p>Best regards,</p>
-            <p>The Event Team</p>
+            <p>Stay connected with us:</p>
+            <div class="social-icons">
+                <a href="https://bit.ly/3Mu4CN2" target="_blank"><img src="https://res.cloudinary.com/dhy548whh/image/upload/v1733923563/tpuqqhg73ccx2cbs6ccq.png" alt="Instagram"></a>
+                <a href="https://chat.whatsapp.com/Lo2YDqUGt9vDgxhtjQqe43" target="_blank"><img src="https://res.cloudinary.com/dhy548whh/image/upload/v1733924392/wkes107z9zx08debjfa3.png" alt="WhatsApp"></a>
+                <a href="https://youtube.com/@pratibimb_sgsits?si=BLxqIAt6U6Sxn-l3" target="_blank"><img src="https://res.cloudinary.com/dhy548whh/image/upload/v1733923562/ph251e5rkfoteorw38ug.png" alt="YouTube"></a>
+            </div>
+            <p>Thank you for your time and dedication!</p>
+            
+            <p>
+                Have questions? Email us at
+                <a href="mailto:clubpratibimb.sgsits@gmail.com">clubpratibimb.sgsits@gmail.com</a>
+            </p>
+            <p>
+                If you wish to unsubscribe from our emails, click
+                <a href="{{unsubscribe_link}}">here</a>.
+            </p>
+            <div class="copyright">
+                <p>© 2024 Pratibimb. All rights reserved.</p>
+            </div>
         </div>
     </div>
-
 </body>
 </html>

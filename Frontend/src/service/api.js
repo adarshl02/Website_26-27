@@ -5,7 +5,6 @@ const URL = import.meta.env.VITE_URL;
 
 const handleApiError = (error, apiName) => {
   const errorMsg = error.response?.data?.message || error.message || 'An unexpected error occurred';
- // console.log(`Error in ${apiName}:`, errorMsg);
   return { success: false, message: errorMsg, status: error.response?.status };
 };
 
@@ -163,7 +162,7 @@ export const uploadArtCommunityDetails = async (formData,token) => {
   try {
     const response = await axios.post(`${URL}/api/art-community`, formData, {
       headers: {
-        "Content-Type": "multipart/form-data", // Specify content type for file uploads
+        "Content-Type": "multipart/form-data", 
         "Authorization": `${token}`, 
       },
     });

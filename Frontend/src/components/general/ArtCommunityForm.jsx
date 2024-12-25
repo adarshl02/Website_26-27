@@ -55,12 +55,12 @@ export default function ArtCommunityForm({ setOpen,user,token }) {
       formDataToSend.append("image", formData.file);
 
       // Call the API using the refactored function
+
       const result = await uploadArtCommunityDetails(formDataToSend, token);
 
       if (result.success) {
         toast.success("Form submitted successfully!");
         toast.success("Check your Mail");
-        console.log("API Response:", result.data);
 
         // Reset form and close the modal
         handleCancel();

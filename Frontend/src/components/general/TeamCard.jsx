@@ -1,7 +1,7 @@
 import { Skeleton, Stack } from "@mui/material";
 import React, { useState } from "react";
 
-export function TeamCard({ name, post, image }) {
+export function TeamCard({ name, image }) {
   const [isLoading, setIsLoading] = useState(true); // State to track image loading
 
   return (

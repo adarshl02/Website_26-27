@@ -13,12 +13,12 @@ const testimonials = [
   },
   {
     src: "https://res.cloudinary.com/dgc7xsrcx/image/upload/v1734950869/yl9bnyss2ivjf4whibhp.jpg",
-    quote: `It's been such a pleasure to mentor Club Pratibimb since the past few years.I wish that the future of each member of the club be ever filled with love, joy, happiness, and ART!`,
+    quote: `It's been such a pleasure to mentor Club Pratibimb since the past few years.I wish , future of each member of the club be ever filled with joy and ART!`,
     name: "Mr. Alex Kutty",
     designation: "Mentor, Club Pratibimb",
   },
   {
-    src: "https://res.cloudinary.com/dhy548whh/image/upload/v1734528470/ItsMe2_2_t3tvmi.png",
+    src: "/paswan.jpg",
     quote: `Mentoring Club Pratibimb has been an incredibly fulfilling journey, witnessing the creativity and passion of its members grow.`,
     name: "Prof. Suresh Paswan",
     designation: "Mentor, Club Pratibimb",

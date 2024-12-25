@@ -11,6 +11,7 @@ const volunteerRouter = require("./routes/volunteers.routes.js");
 dotenv.config();
 
 const app = express();
+app.use(express.json());
 app.use(cookieParser());
 
 const allowedOrigins = [
@@ -32,7 +33,6 @@ if (process.env.NODE_ENV === 'development'){
 }
 
 
-app.use(express.json());
 
 app.get('/', (req, res) => {
   res.status(404).send({ message: "Not Found" });

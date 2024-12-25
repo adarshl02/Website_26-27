@@ -16,13 +16,13 @@ import { Ticket } from "../components/general/Ticket";
 import { Ticketorg } from "../components/general/Ticketorg";
 
 export default function Profile() {
-  const { rest: user ,token} = useSelector((state) => state.user.currentUser); // Assuming user data is stored in the redux state
+  const { rest: user, token } = useSelector((state) => state.user.currentUser); // Assuming user data is stored in the redux state
   const perks = useRef(null);
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
-  const [eventTicketData,setEventTicketData] = useState({});
+  const [eventTicketData, setEventTicketData] = useState({});
   const handleClose = () => {
     setOpen(false);
   };
@@ -54,7 +54,7 @@ export default function Profile() {
   const downloadCertificate = () => {
     setLoading(true);
     const input = document.getElementById("certificate");
-  
+
     html2canvas(input, {
       scrollX: 0,
       scrollY: 0,
@@ -63,7 +63,7 @@ export default function Profile() {
     }).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("l", "px", [1123, 794]); // Match dimensions of the certificate
-  
+
       pdf.addImage(imgData, "PNG", 0, 0, 1123, 794); // No margins
       pdf.save(`${user.name}_Certificate_of_Participation.pdf`);
       setLoading(false);
@@ -72,7 +72,7 @@ export default function Profile() {
   const downloadTicket = () => {
     setLoading2(true);
     const input = document.getElementById("ticket");
-  
+
     html2canvas(input, {
       scrollX: 0,
       scrollY: 0,
@@ -81,39 +81,33 @@ export default function Profile() {
     }).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("l", "px", [1100, 500]); // Match dimensions of the certificate
-  
+
       pdf.addImage(imgData, "PNG", 0, 0, 1100, 500); // No margins
-      pdf.save(`${user.name}_Event_Ticket.pdf`);    
+      pdf.save(`${user.name}_Event_Ticket.pdf`);
       setLoading2(false);
     });
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     const getTicket = async () => {
-      try {  
-        const data={
-          email : user.email,
-        }
-        
-        const response = await getEventTicket(data,token);
-       
-        
+      try {
+        const data = {
+          email: user.email,
+        };
+
+        const response = await getEventTicket(data, token);
+
         if (response.success) {
           setEventTicketData(response.data.selection[0]);
-          console.log(response.data.selection[0]); // it contains data 
-          console.log(eventTicketData);            // it is not 
-          
-        } else {
-          console.log(response);
         }
       } catch (error) {
-        console.log('Failed to fetch ticket');
+        console.log(error);
+        
       }
     };
     getTicket();
-  },[]);
-  
-  
+  }, []);
+
   return (
     <div className="p-2 md:px-10 mt-16">
       <div className="text-center py-2 bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-7xl font-poppins">
@@ -138,8 +132,8 @@ export default function Profile() {
             <p className="text-xs md:text-lg text-slate-400 relative mb-1">
               Branch: {user.branch}
             </p>
-            <div className="flex md:flex-col space-x-6 md:space-x-0 text-xs md:text-lg relative">
-              <div className="text-slate-700 mb-1">
+            <div className="flex md:flex-col space-x-4 md:space-x-0 text-xs md:text-lg relative">
+              <div className="text-slate-700 md:mb-1">
                 <span className="bg-slate-300 px-1 md:px-3 md:py-1 rounded-full">
                   Non-Member
                 </span>
@@ -152,17 +146,26 @@ export default function Profile() {
                 </button>
               </div>
 
-              <div className="flex items-center text-slate-700">
-                <span className="bg-slate-300 px-1 md:px-3 md:py-1 rounded-full">
-                  Non-Artist
-                </span>
-                <button
-                  onClick={() => navigate("/art-community")}
-                  className="hidden md:inline-flex text-xs items-center px-2 py-1 bg-yellow-400 text-slate-800 font-poppins rounded-2xl hover:bg-yellow-300 ml-7"
-                >
-                  Become an Artist
-                  <ArrowForwardIcon />
-                </button>
+              <div className="flex  text-slate-700">
+                {user.is_artist ? (
+                  <button className=" bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white px-2 md:px-4 md:py-1 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl">
+                    Artist
+                  </button>
+                ) : (
+                  <span className="bg-slate-300 px-1 md:px-3 md:py-1 rounded-full">
+                    Non-Artist
+                  </span>
+                )}
+
+                {!user.is_artist && (
+                  <button
+                    onClick={() => navigate("/art-community")}
+                    className="hidden md:inline-flex text-xs items-center px-2 py-1 bg-yellow-400 text-slate-800 font-poppins rounded-2xl hover:bg-yellow-300 ml-7"
+                  >
+                    Become an Artist
+                    <ArrowForwardIcon />
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -192,15 +195,17 @@ export default function Profile() {
             <ArrowForwardIcon />
           </button>
         </div>
-        <div>
-          <button
-            onClick={() => navigate("/art-community")}
-            className="text-xs px-2 py-1 md:px-4 md:py-2 bg-yellow-400 text-slate-800 rounded-2xl hover:bg-yellow-300"
-          >
-            Become an Artist
-            <ArrowForwardIcon />
-          </button>
-        </div>
+        {!user.is_artist && (
+          <div>
+            <button
+              onClick={() => navigate("/art-community")}
+              className="text-xs px-2 py-1 md:px-4 md:py-2 bg-yellow-400 text-slate-800 rounded-2xl hover:bg-yellow-300"
+            >
+              Become an Artist
+              <ArrowForwardIcon />
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
@@ -209,59 +214,57 @@ export default function Profile() {
         <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins">
           Your Event Ticket
         </div>
-        {
-          Object.keys(eventTicketData).length === 0 ?(
-            <>
+        {Object.keys(eventTicketData).length === 0 ? (
+          <>
             <div className="mt-2 text-slate-500 text-xs md:text-xl px-4 font-poppins">
-            Visit the event Page to register for a event.
-            <br />
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              // onClick={handleOpen}
-              onClick={() => navigate("/upcoming-event-page")}
-              className="mt-2 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-1 md:py-2 px-2 md:px-4 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
-            >
-              Go to Event Page
-            </motion.button>
-          </div>
-          <img
-            src="/ticket.png"
-            className="mt-4 blur-sm w-[80%] md:w-[60%] mx-auto"
-            alt="image"
-          />
+              Visit the event Page to register for a event.
+              <br />
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                // onClick={handleOpen}
+                onClick={() => navigate("/upcoming-event-page")}
+                className="mt-2 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-1 md:py-2 px-2 md:px-4 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
+              >
+                Go to Event Page
+              </motion.button>
+            </div>
+            <img
+              src="/ticket.png"
+              className="mt-4 blur-sm w-[80%] md:w-[60%] mx-auto"
+              alt="image"
+            />
           </>
-          ):(
-            <>
-           
+        ) : (
+          <>
             <Ticket eventTicketData={eventTicketData} />
-            <div className="flex justify-center"><button
-            onClick={downloadTicket}
-            className="w-36 font-bold bg-gradient-to-r from-slate-600 to-slate-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-500 transition"
-            disabled={loading2}
-          >
-            {loading2 ? (
-              <CircularProgress size={18} color="inherit" />
-            ) : (
-              <span>
-              Download <FileDownloadIcon />
-             </span>
-            )}
-          </button></div>
-            
+            <div className="flex justify-center">
+              <button
+                onClick={downloadTicket}
+                className="w-36 font-bold bg-gradient-to-r from-slate-600 to-slate-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-500 transition"
+                disabled={loading2}
+              >
+                {loading2 ? (
+                  <CircularProgress size={18} color="inherit" />
+                ) : (
+                  <span>
+                    Download <FileDownloadIcon />
+                  </span>
+                )}
+              </button>
+            </div>
+
             <div
-          id="ticket"
-          style={{
-            position: "absolute",
-            top: "-9999px", // Move it far off-screen
-            left: "-9999px",
-          }}
-        >
-          <Ticketorg eventTicketData={eventTicketData}  />
-        </div>
-            </>
-          )
-        }
-        
+              id="ticket"
+              style={{
+                position: "absolute",
+                top: "-9999px", // Move it far off-screen
+                left: "-9999px",
+              }}
+            >
+              <Ticketorg eventTicketData={eventTicketData} />
+            </div>
+          </>
+        )}
       </div>
 
       <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
@@ -279,35 +282,33 @@ export default function Profile() {
           />
           {/* Overlay Button */}
           <div className="absolute inset-0 flex items-center justify-center">
-            {Object.keys(eventTicketData).length === 0?(
-                <button
+            {Object.keys(eventTicketData).length === 0 ? (
+              <button
                 className="px-2 md:px-6 py-1 md:py-2 bg-slate-800 text-slate-200 rounded-xl text-sm "
-                  onClick={handleOpen2}
+                onClick={handleOpen2}
               >
                 {loading ? (
-                    <CircularProgress size={18} color="inherit" />
-                  ) : (
-                    <span>
-                     Download <FileDownloadIcon />
-                    </span>
-                  )}
+                  <CircularProgress size={18} color="inherit" />
+                ) : (
+                  <span>
+                    Download <FileDownloadIcon />
+                  </span>
+                )}
               </button>
-            ):(
+            ) : (
               <button
                 className="w-36 px-2 md:px-6 py-1 md:py-2 bg-slate-800 text-slate-200 rounded-xl text-sm "
-                 onClick={downloadCertificate}
+                onClick={downloadCertificate}
               >
                 {loading ? (
-                    <CircularProgress size={18} color="inherit" />
-                  ) : (
-                    <span>
-                     Download <FileDownloadIcon />
-                    </span>
-                  )}
+                  <CircularProgress size={18} color="inherit" />
+                ) : (
+                  <span>
+                    Download <FileDownloadIcon />
+                  </span>
+                )}
               </button>
-            )
-          }
-            
+            )}
           </div>
         </div>
 

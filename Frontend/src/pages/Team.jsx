@@ -1,13 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { TeamCard } from "../components/general/TeamCard";
 
 export default function Team() {
+  const [selectedOption, setSelectedOption] = useState("Post Holders");
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  },[])
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
+
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // },[])
 
   const teamBatch2026 = [
+    {
+      name: "Jinesh Sanghvi Secretary",
+      post: "Secretary",
+      image:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1732364788/sdpejdmpeuwaluj2ktjn.png",
+    },
     {
       name: "Adarsh Landge",
       post: "Web Head",
@@ -56,9 +67,12 @@ export default function Team() {
       image:
         "https://res.cloudinary.com/dhy548whh/image/upload/v1729850889/fgkt9xdoe4to0sfjaey6.jpg",
     },
-    { name: "Vivek Gaharwar", post: "Photography Head",
+    {
+      name: "Vivek Gaharwar",
+      post: "Photography Head",
       image:
-      "https://res.cloudinary.com/dhy548whh/image/upload/v1733399200/jtdmsezle9mbi1kc5u1z.png", },
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1733399200/jtdmsezle9mbi1kc5u1z.png",
+    },
     {
       name: "Himanshi Mandloi",
       post: "Information Manager",
@@ -84,13 +98,95 @@ export default function Team() {
         "https://res.cloudinary.com/dhy548whh/image/upload/v1729871076/i0fcwt2guhaievhrjw1u.png",
     },
   ];
+  const teamBatch2025 = [
+    {
+      name: "Abbas Ujjainwala",
+      image: "/Abbas_Sir.png",
+    },
+    {
+      name: "Divyanshi Rawat",
+      image:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1732364523/ounv915uq6td68ufkrta.png",
+    },
+    {
+      name: "Ansh Jain",
+      image:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1732364739/syebrfo0dcct6uw02lqi.png",
+    },
+    {
+      name: "Churchill Jain",
+      image:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1732364909/brdfviwcmqdhnxbmakip.jpg",
+    },
+    {
+      name: "Kartik Baghel",
+      image:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1732364262/dn0asjpmizuy5rx0rg7z.png",
+    },
+    {
+      name: "Shivam Bhatia",
+      image:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1732364262/ymq3u7jtrrrq9rrmuer9.png",
+    },
+    {
+      name: "Akriti Pandey",
+      image:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1732364541/fq4s3w9kqp1gvjjnt5xx.png",
+    },
+    {
+      name: "Nishika Shahidhar",
+      image:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1732364130/vztssoypf6sbdogr5c1p.png",
+    },
+    {
+      name: "Shubhang Nigudkar",
+      image:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1732364185/vxsbc2rb02tf1ky8vgav.png",
+    },
+    {
+      name: "Aditi Bidkar",
+      image:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1732364424/hmze0ok9yc1jgx3ab3xz.png",
+    },
+    {
+      name: "Ashi Soni",
+      image:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1732364503/jwwmz9yptlflm2sp6vpg.png",
+    },
+    {
+      name: "Priyank Bhadoriya",
+      image:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1732364424/fssst0shrgaohidtsqlo.png",
+    },
+
+    {
+      name: "Sneha Mandloi",
+      image:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1732364262/nhmbkcytp59rdlw8pxj2.png",
+    },
+    {
+      name: "Aditee Pathak",
+      image:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1732364767/y98vteghgymbq4chiu9c.png",
+    },
+    {
+      name: "Ashwin Barua",
+      image:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1732364262/vs3nhqlri5r8pvw2gpx9.png",
+    },
+    {
+      name: "Arun Kumar",
+      image:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1732364739/thkv3typjfvmoruzbuoq.png",
+    },
+  ];
 
   const teamBatch2027 = [
     {
-      name: "Anuja Pathan",
+      name: "Vibhuti Baldva",
       post: "Coordinator",
       image:
-        "https://res.cloudinary.com/dhy548whh/image/upload/v1729852486/miysrumrsn3m2tmtt1qy.png",
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1729851772/mxr7w9xz8fkmlk0jqvus.png",
     },
     {
       name: "Arpita Jain",
@@ -98,23 +194,31 @@ export default function Team() {
       image:
         "https://res.cloudinary.com/dhy548whh/image/upload/v1729852589/ryktkpalxadk8n9akkk7.png",
     },
-    {
-      name: "Drashti Dharamsey",
-      post: "Coordinator",
-      image:
-        "https://res.cloudinary.com/dhy548whh/image/upload/v1729851690/yzdjjqvca1vkew7uojoy.png",
-    },
+
     {
       name: "Eklavya Singh Parihar",
       post: "Coordinator",
       image:
         "https://res.cloudinary.com/dhy548whh/image/upload/v1729852752/nbch2nr3d93z6yimiq8e.png",
     },
+
+    {
+      name: "Aadarsh Bharti",
+      post: "Coordinator",
+      image:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1729852547/vtwlgahzqa1fl0aibvng.png",
+    },
     {
       name: "Harsh Gharewal",
       post: "Coordinator",
       image:
         "https://res.cloudinary.com/dhy548whh/image/upload/v1729852354/gxdt6cf4dtlxbf2r8n83.png",
+    },
+    {
+      name: "Drashti Dharamsey",
+      post: "Coordinator",
+      image:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1729851690/yzdjjqvca1vkew7uojoy.png",
     },
     {
       name: "Harshita Balchandani",
@@ -151,6 +255,12 @@ export default function Team() {
       post: "Coordinator",
       image:
         "https://res.cloudinary.com/dhy548whh/image/upload/v1729852152/fhbujxqi0lrxcptmdaa0.png",
+    },
+    {
+      name: "Anuja Pathan",
+      post: "Coordinator",
+      image:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1729852486/miysrumrsn3m2tmtt1qy.png",
     },
     {
       name: "Manish Verma",
@@ -219,18 +329,6 @@ export default function Team() {
         "https://res.cloudinary.com/dhy548whh/image/upload/v1729870896/t5jjndnyarz8i38zepz3.png",
     },
     {
-      name: "Vibhuti Baldva",
-      post: "Coordinator",
-      image:
-        "https://res.cloudinary.com/dhy548whh/image/upload/v1729851772/mxr7w9xz8fkmlk0jqvus.png",
-    },
-    {
-      name: "Aadarsh Bharti",
-      post: "Coordinator",
-      image:
-        "https://res.cloudinary.com/dhy548whh/image/upload/v1729852547/vtwlgahzqa1fl0aibvng.png",
-    },
-    {
       name: "Adityaraj Panchal",
       post: "Coordinator",
       image:
@@ -246,25 +344,59 @@ export default function Team() {
 
   return (
     <>
-      <div className=" text-center font-bold text-4xl md:text-8xl mt-20 m-2 bg-gradient-to-r from-blue-600 to-teal-300 bg-clip-text text-transparent ">
-        Batch 2026
-      </div>
-
-      <div className="flex justify-center gap-6 md:gap-12 flex-wrap">
-        {teamBatch2026.map((member, index) => (
-          <TeamCard key={index} name={member.name} post={member.post} image={member.image} />
+      {/* Fixed Radio Button Group */}
+      <div className="fixed top-0 left-0 w-full pt-24 pb-6 flex justify-center space-x-2 md:space-x-8 mb-4 bg-white z-10">
+        {["Advisory Board", "Post Holders", "Coordinators"].map((option) => (
+          <div key={option}>
+            <input
+              type="radio"
+              className="btn-check hidden"
+              name="eventOptions"
+              id={option}
+              value={option}
+              autoComplete="off"
+              checked={selectedOption === option}
+              onChange={handleOptionChange}
+            />
+            <label
+              className={`btn font-bold text-sm md:text-base cursor-pointer px-2 md:px-4 py-1 md:py-2 rounded-lg flex items-center transition duration-300 ${
+                selectedOption === option
+                  ? "bg-blue-700 text-white border-2 border-blue-700"
+                  : "bg-white text-cyan-800 border-2 border-opacity-50 border-blue-700 hover:text-white hover:bg-blue-700"
+              }`}
+              htmlFor={option}
+            >
+              {option}
+            </label>
+          </div>
         ))}
       </div>
-
-      <div className=" text-start font-bold text-8xl mt-20 m-2 bg-gradient-to-r from-blue-600 to-teal-300 bg-clip-text text-transparent ">
-        Batch 2027
-      </div>
-
-      <div className="flex justify-center gap-6 md:gap-12 flex-wrap">
-        {teamBatch2027.map((member, index) => (
-          <TeamCard key={index} name={member.name} post={member.post} image={member.image}/>
-        ))}
+    
+      {/* Scrollable Team Section */}
+      <div className="mt-36 py-6 overflow-y-auto h-screen bg-gradient-to-r from-slate-950 to-slate-800">
+        {selectedOption === "Advisory Board" && (
+          <div className="flex justify-center gap-6 md:gap-12 flex-wrap">
+            {teamBatch2025.map((member, index) => (
+              <TeamCard key={index} name={member.name} image={member.image} />
+            ))}
+          </div>
+        )}
+        {selectedOption === "Post Holders" && (
+          <div className="flex justify-center gap-6 md:gap-12 flex-wrap">
+            {teamBatch2026.map((member, index) => (
+              <TeamCard key={index} name={member.name} image={member.image} />
+            ))}
+          </div>
+        )}
+        {selectedOption === "Coordinators" && (
+          <div className="flex justify-center gap-6 md:gap-12 flex-wrap">
+            {teamBatch2027.map((member, index) => (
+              <TeamCard key={index} name={member.name} image={member.image} />
+            ))}
+          </div>
+        )}
       </div>
     </>
   );
+  
 }

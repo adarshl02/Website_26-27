@@ -69,7 +69,8 @@ const VolunteerForm = ({ setOpen }) => {
     try {
       const response = await registerVolunteer(formData, currentUser.token);
       if (response.success) {
-        toast.success("Registered successfully! Check your email for confirmation.");
+        toast.success("Registered successfully!");
+        toast.success("Check your email for confirmation.");
         setFormData({
           name: "",
           phone: "",

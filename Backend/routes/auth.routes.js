@@ -44,7 +44,7 @@ router.post("/auth/google/signup", async (req, res, next) => {
 
     if (insertedUser) {
       try {
-        sendWelcomeEmail(email, name);
+        await sendWelcomeEmail(email, name);
 
         const token = jwt.sign(
           { id: insertedUser.hashedUid },

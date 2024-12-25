@@ -5,7 +5,7 @@
 exports.up = function(knex) {
     return knex.schema.createTable('feedback',(table)=>{
         table.increments('id').primary()
-        table.string('email').notNullable()
+        table.string('name').notNullable()
         table.text('feedback').notNullable()
     })
   
