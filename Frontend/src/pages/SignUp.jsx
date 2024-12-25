@@ -151,7 +151,7 @@ export default function SignUp({ setBackdropOpen }) {
           isMobile ? "opacity-10" : "opacity-40"
         }`}
       ></div>
-      <div className="absolute inset-0 text-xl font-poppins flex justify-center items-end mb-12 text-slate-300 md:text-white">
+      <div className="absolute inset-0 text-xl font-poppins flex justify-center items-end mb-16 md:mb-12 text-slate-300 md:text-white">
         Version 1.0.0
       </div>
 
