@@ -10,7 +10,7 @@ export function TeamCard({ name, image }) {
       <img
         src={image}
         alt={name}
-        className={`w-full h-48 md:h-64 object-cover transition-transform duration-300 transform hover:scale-110 ${isLoading ? "blur-3xl" : "blur-0"}`} 
+        className={`w-full h-48 md:h-64 object-cover transition-transform duration-300 transform scale-110 hover:scale-100 ${isLoading ? "blur-3xl" : "blur-0"}`} 
         onLoad={() => setIsLoading(false)} // Set isLoading to false when image loads
         onError={() => setIsLoading(false)} // Handle image loading error
       />

@@ -345,7 +345,7 @@ export default function Team() {
   return (
     <>
       {/* Fixed Radio Button Group */}
-      <div className="fixed top-0 left-0 w-full pt-24 pb-6 flex justify-center space-x-2 md:space-x-8 mb-4 bg-white z-10">
+      <div className="fixed top-0 left-0 w-full pt-24 pb-6 md:pb-4 flex justify-center space-x-2 md:space-x-8 mb-4 bg-white z-10">
         {["Advisory Board", "Post Holders", "Coordinators"].map((option) => (
           <div key={option}>
             <input
@@ -361,8 +361,8 @@ export default function Team() {
             <label
               className={`btn font-bold text-sm md:text-base cursor-pointer px-2 md:px-4 py-1 md:py-2 rounded-lg flex items-center transition duration-300 ${
                 selectedOption === option
-                  ? "bg-blue-700 text-white border-2 border-blue-700"
-                  : "bg-white text-cyan-800 border-2 border-opacity-50 border-blue-700 hover:text-white hover:bg-blue-700"
+                  ? "bg-[#4169E1] text-white border-2 border-[#4169E1]"
+                  : "bg-white text-cyan-800 border-2 border-opacity-50 border-[#4169E1] hover:text-white hover:bg-[#4169E1]"
               }`}
               htmlFor={option}
             >
@@ -373,7 +373,7 @@ export default function Team() {
       </div>
     
       {/* Scrollable Team Section */}
-      <div className="mt-36 py-6 overflow-y-auto h-screen bg-gradient-to-r from-slate-950 to-slate-800">
+      <div className="mt-36 py-6 md:py-10 overflow-y-auto h-screen bg-gradient-to-r from-slate-950 to-slate-800">
         {selectedOption === "Advisory Board" && (
           <div className="flex justify-center gap-6 md:gap-12 flex-wrap">
             {teamBatch2025.map((member, index) => (
