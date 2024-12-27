@@ -139,6 +139,10 @@ export const getEventTicket = async (data,token) => {
        "Authorization": `${token}`,  // Include token in the headers
       },
     });  
+    if (response.status === 204) {
+      return { success: false, message: "User is not registered for the event.", status: 204 };
+    }
+    
     return { success: true, data: response.data.response.data };
   } catch (error) {
     return handleApiError(error, 'Get event ticket API');

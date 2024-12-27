@@ -253,7 +253,7 @@ const getEventTicket = async (req, res) => {
     });
     if (selection.length == 0) {
       return res
-        .status(400)
+        .status(204)
         .json({ message: "Not Registered for the event." });
     }
     return res.status(200).send({

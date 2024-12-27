@@ -98,14 +98,16 @@ export default function Profile() {
         const response = await getEventTicket(data, token);
 
         if (response.success) {
-          setEventTicketData(response.data.selection[0]);
+          setEventTicketData(response.data.selection[0]);  
+        }else if (response.status === 204){
+          
         }
       } catch (error) {
         console.log(error);
         
       }
     };
-    getTicket();
+     getTicket();
   }, []);
 
   return (
@@ -214,7 +216,7 @@ export default function Profile() {
         <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins">
           Your Event Ticket
         </div>
-        {Object.keys(eventTicketData).length === 0 ? (
+        {Object.keys(eventTicketData).length === 0 || eventTicketData?.payment_status === "PENDING" ? (
           <>
             <div className="mt-2 text-slate-500 text-xs md:text-xl px-4 font-poppins">
               Visit the event Page to register for a event.
