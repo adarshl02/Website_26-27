@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { FileUpload } from "../accertinityui/file-upload";
-import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { uploadArtCommunityDetails } from "../../service/api";
 import { CircularProgress } from "@mui/material";
@@ -21,10 +20,12 @@ export default function ArtCommunityForm({ setOpen,user,token }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setError("");
   };
 
   const handleFileChange = (files) => {
     setFormData((prevData) => ({ ...prevData, file: files[0] || null }));
+    setError("");
   };
 
   const handleSubmit = async (e) => {
@@ -146,6 +147,8 @@ export default function ArtCommunityForm({ setOpen,user,token }) {
       onChange={handleFileChange}
       resetTrigger={resetTrigger}
       className="max-w-full" // Smaller width for mobile
+      setError={setError}
+      setLoading={setLoading}
     />
   </div>
 </div>

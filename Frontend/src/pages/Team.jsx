@@ -44,6 +44,12 @@ export default function Team() {
         "https://res.cloudinary.com/dhy548whh/image/upload/v1729850833/iwehabzjkvxb3dski6wj.jpg",
     },
     {
+      name: "Mrudul Mehta",
+      post: "Sponsorship Head",
+      image:
+        "https://res.cloudinary.com/dhy548whh/image/upload/v1729851120/tpbplhsmhnmffafrcglu.jpg",
+    },
+    {
       name: "Aishwarya Choubey",
       post: "Creative Head",
       image:
@@ -84,12 +90,6 @@ export default function Team() {
       post: "Public Relation Officer",
       image:
         "https://res.cloudinary.com/dhy548whh/image/upload/v1729870824/fpnftmlo8zjc2qglevzg.png",
-    },
-    {
-      name: "Mrudul Mehta",
-      post: "Sponsorship Head",
-      image:
-        "https://res.cloudinary.com/dhy548whh/image/upload/v1729851120/tpbplhsmhnmffafrcglu.jpg",
     },
     {
       name: "Devansh Porwal",

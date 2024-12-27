@@ -16,13 +16,21 @@ const mainVariant = {
   },
 };
 
-export const FileUpload = ({ onChange, resetTrigger }) => {
+export const FileUpload = ({ onChange, resetTrigger, setError, setLoading }) => {
   const [files, setFiles] = useState([]);
   const fileInputRef = useRef(null);
+  const maxFileSize = 4 * 1024 * 1024; // 4MB size limit
 
   const handleFileChange = (newFiles) => {
     if (newFiles.length > 0) {
       const file = newFiles[0]; // Restrict to a single file
+
+      if (file.size > maxFileSize) {
+        setError("File size exceeds 4 MB");
+        setLoading(false);
+        return;
+      }
+
       setFiles([file]);
       onChange && onChange([file]);
     }
@@ -32,19 +40,24 @@ export const FileUpload = ({ onChange, resetTrigger }) => {
     fileInputRef.current?.click();
   };
 
-  const { getRootProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
     multiple: false,
     noClick: true,
     accept: {
       'image/*': [], // Correct MIME type for all image formats
     },
-    maxSize: 5 * 1024 * 1024, // 5MB size limit
+    maxSize: maxFileSize,
     onDrop: handleFileChange,
-    onDropRejected: (error) => {
-      console.log("File upload error:", error);
+    onDropRejected: (fileRejections) => {
+      const error = fileRejections[0].errors[0];
+      if (error.code === "file-too-large") {
+        setError("File size exceeds 4 MB");
+      } else {
+        setError("File upload error");
+      }
+      setLoading(false);
     },
   });
-  
 
   // Reset files if resetTrigger changes
   React.useEffect(() => {
@@ -52,7 +65,7 @@ export const FileUpload = ({ onChange, resetTrigger }) => {
   }, [resetTrigger]);
 
   return (
-    <div className=" h-[200px]" {...getRootProps()}>
+    <div className="h-[200px]" {...getRootProps()}>
       <motion.div
         onClick={handleClick}
         whileHover="animate"
@@ -77,7 +90,7 @@ export const FileUpload = ({ onChange, resetTrigger }) => {
           </p>
           <p className="relative z-20 text-slate-300 text-base px-4 md:mt-2 text-center font-sans">
             Drag or drop your file here or click to upload. Only one image
-            (size &lt; 5MB) is allowed.
+            (size &lt; 4MB) is allowed.
           </p>
           <div className="relative w-full px-4 md:mt-10 max-w-xl mx-auto">
             {files.length > 0 &&
@@ -108,7 +121,7 @@ export const FileUpload = ({ onChange, resetTrigger }) => {
                       {(file.size / (1024 * 1024)).toFixed(2)} MB
                     </motion.p>
                   </div>
-                  <div className="flex text-sm md:flex-row flex-col items-start md:items-center  md:mt-2 justify-between text-neutral-400">
+                  <div className="flex text-sm md:flex-row flex-col items-start md:items-center md:mt-2 justify-between text-neutral-400">
                     <motion.p
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -117,7 +130,6 @@ export const FileUpload = ({ onChange, resetTrigger }) => {
                     >
                       {file.type}
                     </motion.p>
- 
                     <motion.p
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -187,4 +199,3 @@ export function GridPattern() {
     </div>
   );
 }
-

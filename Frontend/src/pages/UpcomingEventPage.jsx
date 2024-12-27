@@ -1,15 +1,17 @@
 import { motion } from "framer-motion";
 import RegistrationForm from "../components/general/RegistrationForm";
 import { Backdrop, CircularProgress } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { fetchEventsByStatus } from "../service/api";
+import { loadingEndsSuccess } from "../redux/loadinganderror/loadinganderrorSlice";
 
 const UpcomingEventPage = () => {
   const [open, setOpen] = useState(false);
   const { token } = useSelector((state) => state.user.currentUser);
   const { loading } = useSelector((state) => state.loadinganderror);
   const [ongoing, setOngoing] = useState(null);
+  const dispatch = useDispatch();
 
   const handleClose = () => {
     setOpen(false);
@@ -22,6 +24,10 @@ const UpcomingEventPage = () => {
     window.scrollTo(0, 0);
     const fetchData = async () => {
       try {
+        
+        dispatch(loadingEndsSuccess());
+       
+        
         const response = await fetchEventsByStatus("ONGOING", token);
         if (response.success) {
           setOngoing(response.data);

@@ -22,7 +22,7 @@ import { countUsers } from "../service/api";
 const people = [
   {
     id: 3,
-    name: "Vibhuti Baldwa",
+    name: "Vibhuti Baldva",
     designation: "UI Designer",
     image:
       "/vibhuti.jpg",
@@ -67,7 +67,7 @@ const images = [
 export default function Home({ carouselRef, latestRef, scrollToLatest }) {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
-  const [websiteUserTarget, setWebsiteUserTarget] = useState(138); 
+  const [websiteUserTarget, setWebsiteUserTarget] = useState(0); 
   const { token } = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {

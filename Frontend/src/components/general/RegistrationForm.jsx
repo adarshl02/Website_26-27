@@ -52,8 +52,10 @@ const RegistrationForm = ({ event_id , setOpen }) => {
         handlePayment(order_id, amount);
       } else {
         toast.error(response.message);
+        dispatch(loadingEndsSuccess());
       }
     } catch (error) {
+      dispatch(loadingEndsSuccess());
       console.error("Error in event registration:", error);
       toast.error("Network error. Please try again later.");
     } finally {
@@ -122,8 +124,10 @@ const RegistrationForm = ({ event_id , setOpen }) => {
         // Update the order status to "paid" in the database
       } else {
         toast.error(verificationResponse.message || "Payment verification failed. Please try again.");
+        dispatch(loadingEndsSuccess());
       }
     } catch (error) {
+      dispatch(loadingEndsSuccess());
       console.error("Payment verification error:", error);
       toast.error("Error verifying payment. Please try again.");
     }finally{
