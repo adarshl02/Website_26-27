@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
-import "react-toastify/dist/ReactToastify.css";
 import { CircularProgress } from "@mui/material";
 import { registerEvent, verifyPayment } from "../../service/api";
 import { useNavigate } from "react-router-dom";
