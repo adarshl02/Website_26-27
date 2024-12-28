@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Meteors } from "./../components/accertinityui/Meteor";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
@@ -11,9 +11,14 @@ import { jsPDF } from "jspdf";
 import Certificate from "./../components/general/Certificate";
 import html2canvas from "html2canvas";
 import Certificatetrial from "../components/general/Backdrops/Certificatetrial";
-import { getEventTicket } from "../service/api";
+import { getEventTicket, logoutUser } from "../service/api";
 import { Ticket } from "../components/general/Ticket";
 import { Ticketorg } from "../components/general/Ticketorg";
+import Logout from "@mui/icons-material/Logout";
+import { signOutFailure, signOutStart, signOutSuccess } from "../redux/user/userSlice";
+import { deleteEvents } from "../redux/events/eventsSlice";
+import { getAuth, signOut } from "firebase/auth";
+import { toast } from "sonner";
 
 export default function Profile() {
   const { rest: user, token } = useSelector((state) => state.user.currentUser); // Assuming user data is stored in the redux state
@@ -23,6 +28,7 @@ export default function Profile() {
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [eventTicketData, setEventTicketData] = useState({});
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -37,6 +43,8 @@ export default function Profile() {
     setOpen2(true);
   };
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const auth = getAuth();
 
   const scrollToPerks = () => {
     if (perks.current) {
@@ -48,9 +56,9 @@ export default function Profile() {
       window.scrollTo({ top: yPosition, behavior: "smooth" });
     }
   };
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  // }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const downloadCertificate = () => {
     setLoading(true);
     const input = document.getElementById("certificate");
@@ -67,6 +75,7 @@ export default function Profile() {
       pdf.addImage(imgData, "PNG", 0, 0, 1123, 794); // No margins
       pdf.save(`${user.name}_Certificate_of_Participation.pdf`);
       setLoading(false);
+      toast.success("Certificate downloaded!")
     });
   };
   const downloadTicket = () => {
@@ -85,7 +94,36 @@ export default function Profile() {
       pdf.addImage(imgData, "PNG", 0, 0, 1100, 500); // No margins
       pdf.save(`${user.name}_Event_Ticket.pdf`);
       setLoading2(false);
+      toast.success("Ticket downloaded!");
     });
+  };
+
+  const handleLogout = async () => {
+    try {
+      // Start sign out process
+      dispatch(signOutStart());
+      dispatch(deleteEvents())
+      // Call the logout API function
+      const response = await logoutUser();
+
+      // Check if the API call was successful
+      if (!response.success){
+        dispatch(signOutFailure(response.message));
+        toast.error(response.message);
+        return;
+      }
+
+      // Sign out from Firebase authentication
+      await signOut(auth);
+
+      toast.success("You're Signed Out!");
+      dispatch(signOutSuccess());
+      navigate("/sign-up");
+    } catch (error) {
+      // Handle any errors during the sign out process
+      dispatch(signOutFailure(error.message));
+      toast.error("Logout error: " + error.message);
+    }
   };
 
   useEffect(() => {
@@ -111,14 +149,17 @@ export default function Profile() {
   }, []);
 
   return (
-    <div className="p-2 md:px-10 mt-16">
-      <div className="text-center py-2 bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-7xl font-poppins">
-        My Profile
+    <div className="md:px-10 ">
+      <div className='py-1 md:mt-16 text-center bg-white rounded-2xl fixed md:static top-0 w-full z-40' >
+      <div className=" py-2  bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-7xl font-poppins">
+       My Profile 
+      </div>
       </div>
 
       {/* Profile Section */}
       {/* Profile Card */}
-      <div className="relative w-full">
+      <div className="p-4" >
+      <div className="relative w-full mt-14 md:mt-0">
         <div className="py-2 md:py-4 relative md:max-w-4xl md:mx-auto shadow-xl bg-gray-900 border rounded-full border-gray-800 flex justify-between items-center text-white overflow-hidden">
           <div className="pl-10 md:pl-24">
             {" "}
@@ -186,8 +227,19 @@ export default function Profile() {
           </div>
         </div>
       </div>
+        
+        <div className="md:hidden px-10" >
+        <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={handleLogout}
+                className="mt-2 bg-red-500 text-white py-1 px-2 rounded-xl text-xs shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
+              >
+                Signout<Logout fontSize="small" className="ml-2" />
 
-      <div className="md:hidden mt-6 flex justify-between px-2 gap-2">
+              </motion.button>
+        </div>
+
+      <div className="md:hidden mt-2 flex justify-between px-2 gap-2">
         <div>
           <button
             onClick={scrollToPerks}
@@ -288,6 +340,7 @@ export default function Profile() {
               <button
                 className="px-2 md:px-6 py-1 md:py-2 bg-slate-800 text-slate-200 rounded-xl text-sm "
                 onClick={handleOpen2}
+                disabled={loading}
               >
                 {loading ? (
                   <CircularProgress size={18} color="inherit" />
@@ -301,6 +354,7 @@ export default function Profile() {
               <button
                 className="w-36 px-2 md:px-6 py-1 md:py-2 bg-slate-800 text-slate-200 rounded-xl text-sm "
                 onClick={downloadCertificate}
+                disabled={loading}
               >
                 {loading ? (
                   <CircularProgress size={18} color="inherit" />
@@ -425,6 +479,7 @@ export default function Profile() {
           <Certificatetrial />
         </div>
       </Backdrop>
+    </div>
     </div>
   );
 }

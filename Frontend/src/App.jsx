@@ -14,9 +14,9 @@ import ArtCommunity from "./pages/ArtCommunity";
 import UpcomingEventPage from "./pages/UpcomingEventPage";
 import PrivateRoute from "./components/general/PrivateRoute";
 import { ProtectedRoute } from "./components/general/ProtectedRoute";
-import { ToastContainer, Zoom } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { Backdrop, Typography, Box } from "@mui/material";
+import Navigation from "./components/general/Navigation";
+import { Toaster} from 'sonner';
 
 const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef,setBackdropOpen}) => {
   const location = useLocation(); 
@@ -28,6 +28,7 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef,s
 
   return (
     <>
+     {location.pathname !== "/sign-up" && <Navigation />}
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
 
@@ -196,6 +197,7 @@ function App() {
 
   return (
     <>
+    <Toaster richColors position="top-right" expand={true} />
       <BrowserRouter>
         <AppContent
           scrollToCarousel={scrollToCarousel}
@@ -205,19 +207,7 @@ function App() {
           setBackdropOpen={setBackdropOpen}
         />
       </BrowserRouter>
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss={false}
-        draggable
-        pauseOnHover
-        theme="light"
-        transition={Zoom}
-      />
+      
       <Backdrop
         open={backdropOpen}
         onClick={() => setBackdropOpen(false)}

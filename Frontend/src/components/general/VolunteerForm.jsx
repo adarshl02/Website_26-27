@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { registerVolunteer } from "../../service/api.js";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 
 const VolunteerForm = ({ setOpen }) => {
@@ -69,8 +69,8 @@ const VolunteerForm = ({ setOpen }) => {
     try {
       const response = await registerVolunteer(formData, currentUser.token);
       if (response.success) {
+        toast.info("Check your email for confirmation.");
         toast.success("Registered successfully!");
-        toast.success("Check your email for confirmation.");
         setFormData({
           name: "",
           phone: "",
@@ -184,7 +184,7 @@ const VolunteerForm = ({ setOpen }) => {
             onClick={handleSubmit}
           >
             {loading ? (
-              <CircularProgress size={24} color="inherit" />
+              <CircularProgress size={18} color="inherit" />
             ) : (
               "Submit"
             )}

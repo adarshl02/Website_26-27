@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Heart from "react-animated-heart";
+import { motion } from "framer-motion";
+import { useNavigate } from 'react-router-dom';
 
 export default function Blogs() {
   const [likes, setLikes] = useState(5);
   const [isClick, setClick] = useState(false);
+  const navigate = useNavigate();
 
   const handleHeartClick = () => {
     setClick(!isClick);
@@ -11,18 +14,35 @@ export default function Blogs() {
   };
   useEffect(() => {
     window.scrollTo(0, 0);
-  },[])
+  },[]);
 
   return (
-    <div className='p-4 md:p-6 flex flex-col justify-center items-center mt-16'>
-      <div className="py-2 md:mb-4 bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-7xl font-poppins">
+    <div className='py-4 md:p-6 flex flex-col justify-center items-center md:mt-16'>
+      <div className='py-1 rounded-2xl text-center bg-white md:bg-azure fixed md:static  top-0 w-full z-40' >
+      <div className=" py-2 md:mb-4 bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-7xl font-poppins">
         Weekly Blog Page 
       </div>
-      <div className="text-slate-500 text-base md:text-xl opacity-70 text-center font-poppins">
+      </div>
+      <div className='mt-12 md:mt-0' >
+      <div className="text-slate-500 text-sm md:text-xl opacity-70 text-center font-poppins">
         Pratibimb will post weekly blogs about latest Arts & photography skills and post selected from art community.
       </div>
 
-      <div className="w-full max-w-6xl flex flex-wrap bg-white shadow-lg rounded-lg p-4 md:p-6 mt-4 md:mt-8">
+      <div className='my-2 flex flex-col justify-center items-center md:hidden'>
+      <span className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-xl font-medium tracking-tight text-transparent font-poppins">Want your Art Display here</span>
+      
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              onClick={() => navigate("/art-community")}
+              className="my-2 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white text-sm py-2 px-4 rounded-full shadow-lg font-medium transition duration-300 hover:opacity-90 hover:shadow-2xl"
+            >
+              <span>
+               Go to ArtCommunity Page
+              </span>
+            </motion.button>
+      </div>
+
+      <div className="w-full max-w-6xl flex flex-wrap bg-white shadow-lg rounded-2xl p-4 md:p-6 md:mt-8">
         {/* Image Section */}
         <div className='w-full md:w-1/2 flex justify-center items-center mb-4 md:mb-0'>
           <img src="https://res.cloudinary.com/dhy548whh/image/upload/v1734195277/lyxz1fidjtbknrbsqqve.jpg" alt="Blog image" className="w-full h-auto rounded-md" style={{ maxHeight: '400px', objectFit: 'cover' }} />
@@ -49,6 +69,7 @@ export default function Blogs() {
             <span className="text-gray-600 text-sm ml-2">{likes} {likes === 1 ? 'Like' : 'Likes'}</span>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

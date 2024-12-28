@@ -122,9 +122,9 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
   const handleOpen2 = () => {
     setOpen2(true);
   };
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  // }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div>
@@ -263,7 +263,7 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
         Crafted with love and some coffee and constantly improved by @teampratibimb
        
       </div>
-      <div className="fixed bottom-4 right-4">
+      <div className="fixed bottom-4 right-4 hidden md:block">
         <CoolMode>
           <Button>
             Spread Art

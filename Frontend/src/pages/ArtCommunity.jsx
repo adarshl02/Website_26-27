@@ -11,58 +11,16 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { MeteorsPremium } from "../components/accertinityui/Meteor";
-import { toast } from "react-toastify";
-import { countArtist, fetchartcommunity, setArtist } from "../service/api";
-import { useDispatch, useSelector } from "react-redux";
-import { CircularProgress } from "@mui/material";
+import { countArtist, fetchartcommunity } from "../service/api";
+import { useSelector } from "react-redux";
 import { updateIsArtist } from "../redux/user/userSlice";
 
 export default function ArtCommunityPage() {
-  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [Artistcount, setArtistCount] = useState(0);
 
-  const dispatch = useDispatch();
-  const elementRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
   const { rest: user, token } = useSelector((state) => state.user.currentUser);
   const [members, setMembers] = useState([]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.5 }
-    );
-
-    if (elementRef.current) {
-      observer.observe(elementRef.current);
-    }
-
-    return () => {
-      if (elementRef.current) {
-        observer.unobserve(elementRef.current);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    if (isVisible) {
-      let current = 0;
-      const increment = Artistcount / 50; // Adjust speed here
-      const interval = setInterval(() => {
-        current += increment;
-        if (current >= Artistcount) {
-          current = Artistcount;
-          clearInterval(interval);
-        }
-        setArtistCount(Math.floor(current));
-      }, 40); // Adjust interval here
-    }
-  }, [isVisible]);
 
   useEffect(() => {
     const fetchArtistCount = async () => {
@@ -88,31 +46,7 @@ export default function ArtCommunityPage() {
 
     fetchArtistCount();
     fetchCommunity();
-  }, [user.is_artist]);
-
-  const handleRegisterClick = async () => {
-    setLoading(true);
-
-    const data = {
-      email: user.email,
-    };
-    try {
-      const response = await setArtist(data, token);
-      if (response.success) {
-        dispatch(updateIsArtist(true));
-        toast.success("Thanks for Registering with Art Community");
-        toast.success("Waiting for your art submission");
-      } else {
-        toast.error(response.message || "Something went wrong!");
-        console.error("API Error:", response.message);
-      }
-    } catch (err) {
-      console.error("Set Artist Error:", err);
-      toast.error("Failed to enroll you as Artist. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, []);
 
   const handleOpen = () => {
     setOpen(true);
@@ -123,21 +57,21 @@ export default function ArtCommunityPage() {
   };
 
   return (
-    <div className="p-4 md:p-6 flex flex-col justify-center items-center mt-16">
-      <div className="py-2 bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-7xl font-poppins">
-        Art Community
+    <div className="p-4 md:p-6 flex flex-col justify-center items-center mt-14">
+      <div className="py-1 rounded-2xl text-center bg-white md:bg-azure  fixed md:static top-0 w-full z-40">
+        <div className=" py-2 md:mb-4 bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-7xl font-poppins">
+          Art Community
+        </div>
       </div>
-      <div className="text-slate-500 text-base md:text-xl opacity-70 text-center mb-4 font-poppins">
+      <div className="text-slate-500 text-sm md:text-xl opacity-70 text-center mb-2 font-poppins">
         Join a vibrant community of artists and let your creativity shine.
       </div>
 
-      <div className="mb-4 relative w-[60%] md:w-[30%]">
+      <div className="mb-2 relative w-[60%] md:w-[30%]">
         {/* Background Blur and Gradient */}
         {/* Main Content Container */}
-        <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-yellow-600 to-yellow-900 transform scale-[0.85] rounded-full blur-3xl" />
 
         <div
-          ref={elementRef}
           className="relative shadow-lg bg-gradient-to-r from-yellow-600 via-yellow-600 to-yellow-800  px-6 py-1 md:py-2 rounded-full flex items-center justify-between text-slate-100 overflow-hidden"
           style={{ willChange: "contents" }}
         >
@@ -168,32 +102,31 @@ export default function ArtCommunityPage() {
             <ul className="list-disc list-inside text-slate-300 text-sm md:text-xl font-display opacity-70">
               <li>Get featured in our Weekly Blog Page.</li>
               <li>
-                Receive exposure on our Instagram handle with 3500+ followers.
+                Receive exposure on our Instagram handle&nbsp; &nbsp;
+                &nbsp;&nbsp;with 3500+ followers.
               </li>
               <li>Boost your visibility as an artist.</li>
               <li>Connect with a vibrant art community.</li>
             </ul>
           </div>
-          <div className="flex flex-col items-center">
+          <h2 className=" bg-gradient-to-br from-slate-600 to-slate-900 bg-clip-text text-2xl md:text-3xl font-semibold text-transparent font-poppins mb-2">
+            To Join Art Community
+          </h2>
+          <div className="flex justify-center">
             <motion.button
               whileTap={{ scale: 0.95 }}
-              onClick={handleRegisterClick}
-              disabled={loading}
-              className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-2 px-4 rounded-full shadow-lg font-bold transition duration-300 hover:opacity-90 hover:shadow-2xl"
+              onClick={handleOpen}
+              className=" bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-2 px-4 rounded-full shadow-lg font-bold transition duration-300 hover:opacity-90 hover:shadow-2xl"
             >
-              {loading && (
-                <CircularProgress
-                  size={18} // Smaller spinner for mobile
-                  color="inherit"
-                  className="absolute inset-0 m-auto"
-                />
-              )}
-              <span className={loading ? "opacity-0" : "opacity-100"}>
-                I am an Artist
-              </span>
+              Submit your artwork
             </motion.button>
-            <p className="text-sm mt-2 text-gray-600 font-poppins">
-              *Single click Registration
+          </div>
+          <div className="text-center mt-2  text-slate-800 text-xs md:text-xl font-display opacity-70 mb-8">
+            Our team will make you <b>Artist </b> based on your artwork. If
+            selected, your art will be featured in our Weekly Blog Page and
+            shared with thousands of art enthusiasts on Instagram!
+            <p className="text-sx md:text-base text-red-600 mt-1">
+              P.S : There should be sign on artwork with your name registered.
             </p>
           </div>
         </>
@@ -222,81 +155,80 @@ export default function ArtCommunityPage() {
       )}
 
       {/* Members Section */}
-      {user.is_artist && (
-        <div className="w-full max-w-5xl mt-10">
-          <h2 className="bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-2xl md:text-4xl font-medium text-transparent font-poppins mb-6 text-center">
-            Active Members of Art Community
-          </h2>
 
-          <TableContainer
-            component={Paper}
-            sx={{
-              backgroundColor: "#1E293B", // Equivalent to bg-slate-800
-            }}
-          >
-            <Table>
-              <TableHead>
-                <TableRow>
+      <div className="w-full max-w-5xl ">
+        <h2 className="bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-2xl md:text-4xl font-medium text-transparent font-poppins mb-6 text-center">
+          Members of Art Community
+        </h2>
+
+        <TableContainer
+          component={Paper}
+          sx={{
+            backgroundColor: "#1E293B", // Equivalent to bg-slate-800
+          }}
+        >
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell
+                  sx={{
+                    color: "#CBD5E1",
+                    fontWeight: "bold",
+                    fontFamily: "'Poppins', sans-serif",
+                  }}
+                >
+                  Name
+                </TableCell>
+
+                <TableCell
+                  sx={{
+                    color: "#CBD5E1",
+                    fontWeight: "bold",
+                    fontFamily: "'Poppins', sans-serif",
+                  }}
+                >
+                  Instagram
+                </TableCell>
+                <TableCell
+                  sx={{
+                    color: "#CBD5E1",
+                    fontWeight: "bold",
+                    fontFamily: "'Poppins', sans-serif",
+                  }}
+                >
+                  Avatar
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {members.map((member, index) => (
+                <TableRow key={index}>
                   <TableCell
                     sx={{
-                      color: "#CBD5E1",
-                      fontWeight: "bold",
+                      color: "#E2E8F0",
                       fontFamily: "'Poppins', sans-serif",
                     }}
                   >
-                    Name
+                    {member.name}
                   </TableCell>
 
                   <TableCell
                     sx={{
-                      color: "#CBD5E1",
-                      fontWeight: "bold",
+                      color: "#E2E8F0",
                       fontFamily: "'Poppins', sans-serif",
                     }}
                   >
-                    Instagram
+                    {member.instagram_user_id}
                   </TableCell>
-                  <TableCell
-                    sx={{
-                      color: "#CBD5E1",
-                      fontWeight: "bold",
-                      fontFamily: "'Poppins', sans-serif",
-                    }}
-                  >
-                    Avatar
+                  <TableCell>
+                    <Avatar src={member.avatar} alt={member.name} />
                   </TableCell>
                 </TableRow>
-              </TableHead>
-              <TableBody>
-                {members.map((member, index) => (
-                  <TableRow key={index}>
-                    <TableCell
-                      sx={{
-                        color: "#E2E8F0",
-                        fontFamily: "'Poppins', sans-serif",
-                      }}
-                    >
-                      {member.name}
-                    </TableCell>
-
-                    <TableCell
-                      sx={{
-                        color: "#E2E8F0",
-                        fontFamily: "'Poppins', sans-serif",
-                      }}
-                    >
-                      {member.instagram_user_id}
-                    </TableCell>
-                    <TableCell>
-                      <Avatar src={member.avatar} alt={member.name} />
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </div>
-      )}
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
 
       {/* Backdrop Section */}
       <Backdrop
@@ -308,7 +240,12 @@ export default function ArtCommunityPage() {
         onClick={handleClose}
       >
         <div onClick={(e) => e.stopPropagation()}>
-          <ArtCommunityForm setOpen={setOpen} user={user} token={token} />
+          <ArtCommunityForm
+            setOpen={setOpen}
+            user={user}
+            token={token}
+            updateIsArtist={updateIsArtist}
+          />
         </div>
       </Backdrop>
     </div>

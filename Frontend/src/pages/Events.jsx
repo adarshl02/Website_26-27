@@ -7,18 +7,22 @@ export default function Events() {
   const [selectedOption, setSelectedOption] = useState("Overnight Events");
 
   const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);  
+    setSelectedOption(event.target.value);
   };
+
   useEffect(() => {
     window.scrollTo(0, 0);
-  },[])
+  }, []);
 
   return (
-    <>
-    
+    <div className="py-2 md:mt-20">
+      <div className="md:hidden text-center py-2  bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-4xl font-medium tracking-tight text-transparent  font-poppins">
+        Archives
+      </div>
+
       {/* Radio Button Group */}
-      <div className="pt-24 flex w-full flex-wrap justify-center space-x-2 md:space-x-8 mb-4">
-        {["Past Events","Overnight Events","Mini Pratibimb"].map((option) => (
+      <div className="flex w-full flex-wrap justify-center space-x-2 md:space-x-8 mb-4">
+        {["Past Events", "Overnight Events", "Mini Pratibimb"].map((option) => (
           <div key={option}>
             <input
               type="radio"
@@ -44,11 +48,11 @@ export default function Events() {
         ))}
       </div>
 
-      <div className="mt-5 ">
+      <div className="mt-5 md:overflow-hidden md:h-auto overflow-y-auto custom-scrollbar h-screen">
         {selectedOption === "Past Events" && <PastEvents />}
         {selectedOption === "Overnight Events" && <Flagship />}
         {selectedOption === "Mini Pratibimb" && <MiniPratibimb />}
       </div>
-    </>
+    </div>
   );
 }

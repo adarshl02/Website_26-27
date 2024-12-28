@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import "react-toastify/dist/ReactToastify.css";
 import { CircularProgress } from "@mui/material";
 import { registerEvent, verifyPayment } from "../../service/api";
@@ -45,7 +45,7 @@ const RegistrationForm = ({ event_id , setOpen }) => {
       const response = await registerEvent(payload,token);
   
       if (response.success) {
-        toast.success("Redirecting to Payment Page");
+        toast.info("Redirecting to Payment Page");
         setOpen(false);
         const { amount, insertion } = response.data.response.data;
         const { order_id } = insertion[0];
@@ -56,7 +56,6 @@ const RegistrationForm = ({ event_id , setOpen }) => {
       }
     } catch (error) {
       dispatch(loadingEndsSuccess());
-      console.error("Error in event registration:", error);
       toast.error("Network error. Please try again later.");
     } finally {
       setLoading(false);
@@ -118,8 +117,8 @@ const RegistrationForm = ({ event_id , setOpen }) => {
           teamMembers: "",
         });
         dispatch(loadingEndsSuccess());
-        toast.success("Payment successful and verified!");
-        toast.success("Check Your Mail");
+        toast.info("Check Your Mail for confirmation");
+         toast.success("Payment successful and verified!");
         navigate("/profile");
         // Update the order status to "paid" in the database
       } else {
@@ -210,7 +209,7 @@ const RegistrationForm = ({ event_id , setOpen }) => {
             disabled={loadings}
           >
             {loadings ? (
-              <CircularProgress size={24} color="inherit" />
+              <CircularProgress size={18} color="inherit" />
             ) : (
               "GO TO PAYMENT →"
             )}

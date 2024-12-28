@@ -43,7 +43,7 @@ const UpcomingEventPage = () => {
   }, []);
 
   return (
-    <div className="mt-20 min-h-screen bg-gradient-to-b from-gray-900 to-black text-white flex flex-col items-center justify-center px-4 md:px-8 py-6 md:py-12">
+    <div className="md:mt-20 min-h-screen bg-gradient-to-b from-gray-900 to-black text-white flex flex-col items-center justify-center px-4 md:px-8 py-6 md:py-12">
       {/* Hero Section */}
       <div className="max-w-4xl text-center mb-12">
         <h1 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent mb-4">
@@ -85,6 +85,7 @@ const UpcomingEventPage = () => {
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={handleOpen}
+            disabled={loading}
             className="relative flex justify-center items-center mt-6 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-3 px-6 rounded-full shadow-lg font-bold transition duration-300 hover:opacity-90 hover:shadow-2xl"
           >
             {loading && (

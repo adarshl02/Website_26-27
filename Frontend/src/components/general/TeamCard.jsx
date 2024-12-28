@@ -5,7 +5,7 @@ export function TeamCard({ name, image }) {
   const [isLoading, setIsLoading] = useState(true); // State to track image loading
 
   return (
-    <div className="relative w-40 md:w-56 max-w-xs rounded-lg overflow-hidden">
+    <div className="relative w-40 md:w-56 max-w-xs rounded-2xl overflow-hidden">
       {/* Image */}
       <img
         src={image}

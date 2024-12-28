@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { PlaceholdersAndVanishInput } from '../accertinityui/placeholders-and-vanish-input';
-import { toast } from 'react-toastify';
+import { toast } from "sonner";
 import { useSelector } from 'react-redux';
 import { submitfeedback } from '../../service/api';
 

@@ -3,7 +3,7 @@ import { TimelineDemo } from './Graffathon'
 
 export default function Flagship() {
   return (
-    <div className='bg-slate-950 mx-0 md:mx-4 rounded-3xl pb-12'>
+    <div className='bg-slate-950 mx-0 md:mx-4 rounded-3xl pb-12 overflow-y-auto h-screen custom-scrollbar md:overflow-hidden md:h-auto'>
 
 <TimelineDemo/>
 

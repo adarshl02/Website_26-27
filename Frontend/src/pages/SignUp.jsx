@@ -13,11 +13,11 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { app } from "../firebase";
 import { CardBody, CardContainer } from "../components/accertinityui/3d-card";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
-import { toast } from "react-toastify";
 import {
   authenticateGoogleLogin,
   authenticateGoogleSignup,
 } from "../service/api";
+import { toast } from "sonner";
 
 export default function SignUp({ setBackdropOpen }) {
   const { loading } = useSelector((state) => state.user);
@@ -59,7 +59,7 @@ export default function SignUp({ setBackdropOpen }) {
         dispatch(signInSuccess(response.data));
         navigate("/");
         setBackdropOpen(true);
-        toast.success("You're Successfully Signed Up");
+        toast.success("Signed Up Successfully!");
       } else {
         dispatch(signInFailure(response.message));
         toast.error(response.message);
@@ -67,7 +67,6 @@ export default function SignUp({ setBackdropOpen }) {
     } catch (error) {
       dispatch(signInFailure(response.message));
       toast.error("Could not sign up with google");
-      console.error("Could not sign up with Google", error);
     }
   };
 
@@ -98,7 +97,7 @@ export default function SignUp({ setBackdropOpen }) {
       if (response.success) {
         dispatch(signInSuccess(response.data));
         navigate("/");
-        toast.success("You're Successfully Logged In");
+        toast.success(`Welcome back ${response.data.rest.name}`);
       } else {
         if (response.message === "Request failed with status code 404") {
           toast.error("User not found");

@@ -20,7 +20,7 @@ import Logout from "@mui/icons-material/Logout";
 import Badge from "@mui/material/Badge";
 
 import { getAuth, signOut } from "firebase/auth";
-import { toast } from "react-toastify";
+
 import {
   signOutFailure,
   signOutStart,
@@ -31,6 +31,7 @@ import { logoutUser } from "../../service/api.js";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { deleteEvents } from "../../redux/events/eventsSlice.js";
+import { toast } from "sonner";
 
 const navItems = [
   {
@@ -145,7 +146,6 @@ function Navbar({ className, scrollToCarousel }) {
       // Handle any errors during the sign out process
       dispatch(signOutFailure(error.message));
       toast.error("Logout error: " + error.message);
-      console.error("Logout error:", error);
     }
   };
 
@@ -231,7 +231,7 @@ function Navbar({ className, scrollToCarousel }) {
 
   return (
     <div
-      className="flex items-center justify-between fixed top-3  md:max-w-5xl mx-auto space-x-5 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 text-slate-100 px-4 py-1 rounded-full shadow-lg z-50"
+      className={` ${isMobile?"hidden":"block"} flex items-center justify-between fixed top-3  md:max-w-5xl mx-auto space-x-5 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 text-slate-100 px-4 py-1 rounded-full shadow-lg z-50`}
       style={{
         width: navbarWidth, // Control the width via state
         transition: "width 0.5s ease-in-out", // Add smooth transition

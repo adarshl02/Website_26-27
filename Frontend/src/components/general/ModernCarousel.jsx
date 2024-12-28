@@ -1,7 +1,4 @@
 import React from "react";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import { AnimatedTestimonials } from "../accertinityui/animated-testimonials";
 
 const testimonials = [
@@ -27,44 +24,10 @@ const testimonials = [
 ];
 
 const ModernCarousel = () => {
-  //   const settings = {
-  //     dots: true,
-  //     infinite: true,
-  //     speed: 500,
-  //     slidesToShow: 1,
-  //     slidesToScroll: 1,
-  //     autoplay: true,
-  //     autoplaySpeed: 5000,
-  //     arrows: true,
-  //     pauseOnHover: false,
-  //   };
 
   return (
     <>
-      {/* <div className="mt-8 text-center bg-gradient-to-br from-slate-600 to-slate-800 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-7xl font-poppins py-2">
-        Supporting Pillars
-      </div> */}
-      {/* <div className="px-16 md:px-28">
-        <Slider {...settings}>
-          {testimonials.map((item, index) => (
-            <div key={index} className="flex flex-col items-center text-center space-y-4">
-              
-              <div className="p-2 md:p-4 bg-gradient-to-r from-purple-400 via-pink-500 to-red-400 rounded-full shadow-lg">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="mx-auto object-cover w-20 h-20 md:w-40 md:h-40 border-4 border-white rounded-full"
-                />
-              </div>
-              <p className="bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-xs font-medium tracking-tight text-transparent md:text-2xl font-poppins">
-                "{item.testimonial}"
-              </p>
-              <p className="text-emerald-500 font-semibold mt-4 text-xl">{item.name}</p>
-              <p className="text-slate-600 text-sm">{item.designation}</p>
-            </div>
-          ))}
-        </Slider>
-      </div> */}
+      
       <div className="mx-10 mt-20 md:mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 items-center md:gap-10">
         {/* Left Section: Title */}
         <div className="col-span-1 md:col-span-2 text-center md:text-left">

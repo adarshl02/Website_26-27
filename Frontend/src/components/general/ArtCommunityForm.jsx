@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { FileUpload } from "../accertinityui/file-upload";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { uploadArtCommunityDetails } from "../../service/api";
 import { CircularProgress } from "@mui/material";
+import { useDispatch } from "react-redux";
 
-export default function ArtCommunityForm({ setOpen,user,token }) {
+export default function ArtCommunityForm({ setOpen,user,token,updateIsArtist }) {
   const [formData, setFormData] = useState({
     name: user.name,
     email: user.email,
@@ -16,6 +17,7 @@ export default function ArtCommunityForm({ setOpen,user,token }) {
   const [resetTrigger, setResetTrigger] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -60,18 +62,17 @@ export default function ArtCommunityForm({ setOpen,user,token }) {
       const result = await uploadArtCommunityDetails(formDataToSend, token);
 
       if (result.success) {
-        toast.success("Form submitted successfully!");
-        toast.success("Check your Mail");
-
+       toast.info("Check your mail for confirmation");
+       toast.success("Form Submitted Successfully");
+        
         // Reset form and close the modal
         handleCancel();
         setOpen(false);
+        dispatch(updateIsArtist(true));
       } else {
         toast.error(result.message || "Something went wrong!");
-        console.error("API Error:", result.message);
       }
     } catch (err) {
-      console.error("Submission Error:", err);
       toast.error("Failed to submit the form. Please try again.");
     } finally {
       setLoading(false);
