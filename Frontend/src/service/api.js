@@ -3,6 +3,7 @@ import axios from 'axios';
 const URL = import.meta.env.VITE_URL; 
 
 
+
 const handleApiError = (error, apiName) => {
   const errorMsg = error.response?.data?.message || error.message || 'An unexpected error occurred';
   return { success: false, message: errorMsg, status: error.response?.status };
@@ -10,7 +11,7 @@ const handleApiError = (error, apiName) => {
 
 export const authenticateGoogleSignup = async (data) => {
   try {
-    const response = await axios.post(`${URL}/api/auth/google/signup`, data, { withCredentials: true });
+    const response = await axios.post(`${URL}/api/v1/user/auth/google/signup`, data, { withCredentials: true });
     return { success: true, data: response.data.response.data };
   } catch (error) {
     return handleApiError(error, 'Google Login API');
@@ -19,7 +20,7 @@ export const authenticateGoogleSignup = async (data) => {
 
 export const authenticateGoogleLogin = async (data) => {
   try {
-    const response = await axios.post(`${URL}/api/auth/google/signin`, data, { withCredentials: true });
+    const response = await axios.post(`${URL}/api/v1/user/auth/google/signin`, data, { withCredentials: true });
     return { success: true, data: response.data.response.data };
   } catch (error) {
     return handleApiError(error, 'Google Login API');
@@ -28,7 +29,8 @@ export const authenticateGoogleLogin = async (data) => {
 
 export const logoutUser = async () => {
   try {
-    const response = await axios.get(`${URL}/api/auth/signout`); 
+    const response = await axios.get(`${URL}/api/v1/user/auth/signout`); 9
+
     return { success: true, data: response.data };
   } catch (error) {
     return handleApiError(error, 'Logout API');
@@ -38,7 +40,7 @@ export const logoutUser = async () => {
 export const fetchEventsByStatus = async (status,token) => {
   try {
     
-    const response = await axios.get(`${URL}/api/get/events?status=${status}`, {
+    const response = await axios.get(`${URL}/api/v1/user/get/events?status=${status}`, {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `${token}`,  // Include token in the headers
@@ -54,7 +56,7 @@ export const registerEvent = async (data,token) => {
   try {
     
     const { event_id, ...payload } = data;
-    const response = await axios.post(`${URL}/api/register?event_id=${event_id}`, payload, {
+    const response = await axios.post(`${URL}/api/v1/user/register?event_id=${event_id}`, payload, {
       headers: {
        "Authorization": `${token}`,  // Include token in the headers
       },
@@ -67,7 +69,7 @@ export const registerEvent = async (data,token) => {
 
 export const registerVolunteer = async (data,token) => {
   try {
-    const response = await axios.post(`${URL}/api/register/volunteer`, data, {
+    const response = await axios.post(`${URL}/api/v1/user/register/volunteer`, data, {
       headers: {
        "Authorization": `${token}`,  // Include token in the headers
       },
@@ -80,7 +82,7 @@ export const registerVolunteer = async (data,token) => {
 
 export const countUsers = async (token) => {
   try {
-    const response = await axios.get(`${URL}/api/count-users`, {
+    const response = await axios.get(`${URL}/api/v1/user/count-users`, {
       headers: {
        "Authorization": `${token}`,  // Include token in the headers
       },
@@ -93,7 +95,7 @@ export const countUsers = async (token) => {
 
 export const countArtist = async (token) => {
   try {
-    const response = await axios.get(`${URL}/api/get-artists`, {
+    const response = await axios.get(`${URL}/api/v1/user/get-artists`, {
       headers: {
        "Authorization": `${token}`,  // Include token in the headers
       },
@@ -106,7 +108,7 @@ export const countArtist = async (token) => {
 };
 export const fetchartcommunity = async (token) => {
   try {
-    const response = await axios.get(`${URL}/api/user-art-details`, {
+    const response = await axios.get(`${URL}/api/v1/user/user-art-details`, {
       headers: {
        "Authorization": `${token}`,  // Include token in the headers
       },
@@ -121,7 +123,7 @@ export const fetchartcommunity = async (token) => {
 export const getEventTicket = async (data,token) => {
   try {
     
-    const response = await axios.get(`${URL}/api/get/event-ticket`,{
+    const response = await axios.get(`${URL}/api/v1/user/get/event-ticket`,{
       params: data,
       headers: {
        "Authorization": `${token}`,  // Include token in the headers
@@ -139,7 +141,7 @@ export const getEventTicket = async (data,token) => {
 
 export const verifyPayment = async (data,token) => {
   try {
-    const response = await axios.post(`${URL}/api/payment/verify`, data, {
+    const response = await axios.post(`${URL}/api/v1/user/payment/verify`, data, {
       headers: {
         "Authorization": `${token}`,  // Include token in the headers
       },
@@ -152,7 +154,7 @@ export const verifyPayment = async (data,token) => {
 
 export const uploadArtCommunityDetails = async (formData,token) => {
   try {
-    const response = await axios.post(`${URL}/api/art-community`, formData, {
+    const response = await axios.post(`${URL}/api/v1/user/art-community`, formData, {
       headers: {
         "Content-Type": "multipart/form-data", 
         "Authorization": `${token}`, 
@@ -166,7 +168,7 @@ export const uploadArtCommunityDetails = async (formData,token) => {
 
 export const submitfeedback = async (data,token) => {
   try {
-    const response = await axios.post(`${URL}/api/give-feedback`, data, {
+    const response = await axios.post(`${URL}/api/v1/user/give-feedback`, data, {
       headers: {
         "Authorization": `${token}`, 
       },

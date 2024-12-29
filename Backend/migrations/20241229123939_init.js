@@ -1,12 +1,12 @@
 exports.up = function (knex) {
     return knex.schema.table("users", (table) => {
-      table.enum("ROLE",['USERS,ADMIN']).defaultTo('USERS')
+      table.enum("ROLE",['USER','ADMIN'])
     });
   };
   
-  exports.down = function (knex) {
+exports.down = function (knex) {
     return knex.schema.table("users", (table) => {
-        table.enum("ROLE",['USERS,ADMIN']).defaultTo('USERS')
+        table.enum("ROLE",['USER','ADMIN'])
     });
   };
   
