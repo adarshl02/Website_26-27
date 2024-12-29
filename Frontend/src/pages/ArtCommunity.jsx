@@ -14,6 +14,7 @@ import { MeteorsPremium } from "../components/accertinityui/Meteor";
 import { countArtist, fetchartcommunity } from "../service/api";
 import { useSelector } from "react-redux";
 import { updateIsArtist } from "../redux/user/userSlice";
+import { Helmet } from "react-helmet-async";
 
 export default function ArtCommunityPage() {
   const [open, setOpen] = useState(false);
@@ -58,6 +59,11 @@ export default function ArtCommunityPage() {
 
   return (
     <div className="p-4 md:p-6 flex flex-col justify-center items-center mt-14">
+      <Helmet>
+        <title>Art Community</title>
+        <meta name="description" content="Join PRATIBIMB's art community at SGSITS, Indore. Connect with fellow artists, share your passion for Fine Arts and Photography, and let your creativity shine." />
+        <link rel="canonical" href="https://www.clubpratibimb.com/art-community" />
+      </Helmet>
       <div className="py-1 rounded-2xl text-center bg-white md:bg-azure  fixed md:static top-0 w-full z-40">
         <div className=" py-2 md:mb-4 bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-7xl font-poppins">
           Art Community
