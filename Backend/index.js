@@ -41,11 +41,11 @@ app.get('/', (req, res) => {
 // Handle favicon.ico requests
 app.get('/favicon.ico', (req, res) => res.status(204).end());
 
-app.use("/api",eventsRouter);
-app.use("/api",authRouter);
-app.use("/api",userRouter);
-app.use("/api", volunteerRouter);
-app.use("/api", artRouter);
+app.use("/api/v1/users",eventsRouter);
+app.use("/api/v1/users",authRouter);
+app.use("/api/v1/users",userRouter);
+app.use("/api/v1/users", volunteerRouter)
+app.use("/api/v1/users", artRouter);
 
 
 app.listen(3000, () => {

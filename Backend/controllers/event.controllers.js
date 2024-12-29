@@ -250,6 +250,7 @@ const getEventTicket = async (req, res) => {
     }
     let selection = await db("attendees").select("*").where({
       attendee_email: email,
+      payment_status:"APPROVED"
     });
     if (selection.length == 0) {
       return res
