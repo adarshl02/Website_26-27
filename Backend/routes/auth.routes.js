@@ -38,7 +38,8 @@ router.post("/auth/google/signup", async (req, res, next) => {
       batch,
       branch,
       enrollment,
-    };
+      ROLE:"USER"
+      };
 
     const [insertedUser] = await db("users").insert(newUser).returning("*");
 
