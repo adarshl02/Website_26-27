@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const db = require("../config/db/index.js");
 const { errorHandler } = require("../utils/errorHandler");
-require('dotenv').config()
+require("dotenv").config();
 
 const registerAdmin = async (req, res) => {
   try {
@@ -45,32 +45,79 @@ const loginAdmin = async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
-    return res.status(400).json({ error: 'Username and password are required' });
+    return res
+      .status(400)
+      .json({ error: "Username and password are required" });
   }
 
   try {
-    const user = await db('admins').where({ username }).first();
+    const user = await db("admins").where({ username }).first();
     if (!user) {
-      return res.status(400).json({ error: 'Invalid credentials' });
+      return res.status(400).json({ error: "Invalid credentials" });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(400).json({ error: 'Invalid credentials' });
+      return res.status(400).json({ error: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, {
-      expiresIn: '1h',
-    });
-    res.status(200).json({ message: 'Login successful', token });
+    const token = jwt.sign(
+      { id: user.id, username: user.username },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
+    res.status(200).json({ message: "Login successful", token });
   } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: "Internal server error" });
   }
+};
 
+const markAttendance = async (req, res) => {
+  try {
+    const { qrCodeData } = req.body;
 
-}
+    const regex = /Order id is : (.+)$/;
+    const match = qrCodeData.match(regex);
+
+    if (!match) {
+      return res
+        .status(400)
+        .send(errorHandler(400, "Invalid Data", "Invalid QR code data"));
+    }
+    const razorpay_order_id = match[1];
+    const attendee = await db("attendees")
+      .select("id", "is_attended")
+      .where({
+        order_id: razorpay_order_id,
+      })
+      .first();
+    return res
+      .status(400)
+      .send(errorHandler(400, "Not Found", "Attendee Not Found"));
+
+    if (attendee.is_attended == true) {
+      return res
+        .status(400)
+        .send(errorHandler(400, "Already Marked", "Attendee Already Marked"));
+    }
+
+    await db("attendees")
+      .where({ order_id: razorpay_order_id })
+      .update({ is_attended: true });
+
+    res.status(200).json({ message: "Attendance marked successfully" });
+  } catch (error) {
+    console.error("Attendance marking error:", error);
+    return res
+      .status(500)
+      .send(errorHandler(500, "Server Error", "Internal Server Error"));
+  }
+};
 
 module.exports = {
   registerAdmin,
-  loginAdmin
-}
+  loginAdmin,
+  markAttendance,
+};
