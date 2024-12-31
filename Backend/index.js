@@ -7,6 +7,8 @@ const authRouter = require("./routes/auth.routes.js");
 const userRouter = require("./routes/user.routes.js");
 const artRouter = require("./routes/art.routes.js");
 const volunteerRouter = require("./routes/volunteers.routes.js");
+const adminRouter = require("./routes/admin.routes.js");
+
 
 dotenv.config();
 
@@ -46,6 +48,7 @@ app.use("/api",authRouter);
 app.use("/api",userRouter);
 app.use("/api", volunteerRouter);
 app.use("/api", artRouter);
+app.use("/api/admin", adminRouter);
 
 
 app.listen(3000, () => {
