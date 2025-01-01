@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Pratibimb</string>
+    <string name="title_activity_main">Pratibimb</string>
+    <string name="package_name">com.pratibimb.app</string>
+    <string name="custom_url_scheme">com.pratibimb.app</string>
+</resources>
