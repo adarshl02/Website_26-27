@@ -139,7 +139,7 @@ function Navbar({ className, scrollToCarousel }) {
       // Sign out from Firebase authentication
       await signOut(auth);
 
-      toast.success("You're Signed Out!");
+      toast.success(response.message);
       dispatch(signOutSuccess());
       navigate("/sign-up");
     } catch (error) {

@@ -11,7 +11,7 @@ const handleApiError = (error, apiName) => {
 export const authenticateGoogleSignup = async (data) => {
   try {
     const response = await axios.post(`${URL}/api/auth/google/signup`, data, { withCredentials: true });
-    return { success: true, data: response.data.response.data };
+    return { success: true, data: response.data.response.data , message:"Signed Up Successfully!"};
   } catch (error) {
     return handleApiError(error, 'Google Login API');
   }
@@ -29,7 +29,7 @@ export const authenticateGoogleLogin = async (data) => {
 export const logoutUser = async () => {
   try {
     const response = await axios.get(`${URL}/api/auth/signout`); 
-    return { success: true, data: response.data };
+    return { success: true, data: response.data ,message:"You're Signed Out!"};
   } catch (error) {
     return handleApiError(error, 'Logout API');
   }

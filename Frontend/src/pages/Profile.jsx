@@ -159,7 +159,7 @@ export default function Profile() {
       {/* Profile Section */}
       {/* Profile Card */}
       <div className="p-4" >
-      <div className="relative w-full mt-14 md:mt-0">
+      <div className="relative w-full mt-14 md:mt-0 mb-4 md:mb-0">
         <div className="py-2 md:py-4 relative md:max-w-4xl md:mx-auto shadow-xl bg-gray-900 border rounded-full border-gray-800 flex justify-between items-center text-white overflow-hidden">
           <div className="pl-10 md:pl-24">
             {" "}
@@ -227,17 +227,19 @@ export default function Profile() {
           </div>
         </div>
       </div>
-        
-        <div className="md:hidden px-10" >
-        <motion.button
-                whileTap={{ scale: 0.95 }}
-                onClick={handleLogout}
-                className="mt-2 bg-red-500 text-white py-1 px-2 rounded-xl text-xs shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
-              >
-                Signout<Logout fontSize="small" className="ml-2" />
 
-              </motion.button>
-        </div>
+      {
+        user.email==="teampratibimb@admin.com" &&(
+          <motion.button
+          whileTap={{ scale: 0.95 }}
+          onClick={() => navigate("/admin-dashboard")}
+          className="w-full  bg-red-500 text-white py-1 px-2 rounded-xl text-sm shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
+        >
+          Go to Admin Routes
+
+        </motion.button>
+        )
+      }
 
       <div className="md:hidden mt-2 flex justify-between px-2 gap-2">
         <div>
@@ -454,7 +456,24 @@ export default function Profile() {
             </div>
           </div>
         </div>
+        <div className="my-5 border-t border-slate-400"></div>
+
       </div>
+
+
+
+      <div className="md:hidden px-10" >
+        <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={handleLogout}
+                className="w-full  bg-red-500 text-white py-1 px-2 rounded-xl text-sm shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
+              >
+                Signout<Logout  className="ml-2" />
+
+              </motion.button>
+        </div>
+
+
       <Backdrop
         sx={(theme) => ({
           color: "#fff",

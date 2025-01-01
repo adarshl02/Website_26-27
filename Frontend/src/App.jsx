@@ -17,6 +17,8 @@ import { ProtectedRoute } from "./components/general/ProtectedRoute";
 import { Backdrop, Typography, Box } from "@mui/material";
 import Navigation from "./components/general/Navigation";
 import { Toaster} from 'sonner';
+import AdminDashboard from "./adminPages/AdminDashboard";
+import AdminRoute from "./components/general/AdminRoute";
 
 const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef,setBackdropOpen}) => {
   const location = useLocation(); 
@@ -142,6 +144,25 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef,s
                 > <NavbarDemo scrollToCarousel={scrollToCarousel} />
                   <UpcomingEventPage />
                   <Footer />
+                </motion.div>
+              }
+            />
+          </Route>
+
+
+          <Route element={<AdminRoute />}>
+           <Route
+              path="/admin-dashboard"
+              element={
+                <motion.div
+                  initial={pageTransition.initial}
+                  animate={pageTransition.animate}
+                  exit={pageTransition.exit}
+                >
+                  <AdminDashboard
+                    
+                  />
+            
                 </motion.div>
               }
             />

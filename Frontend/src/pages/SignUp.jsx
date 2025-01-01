@@ -18,14 +18,47 @@ import {
   authenticateGoogleSignup,
 } from "../service/api";
 import { toast } from "sonner";
+import { adminLogin } from '../service/api2';
 
 export default function SignUp({ setBackdropOpen }) {
   const { loading } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({});
+  const [formData2, setFormData2] = useState({});
   const [err, setErr] = useState("");
+  const [err2, setErr2] = useState("");
   const [AdminAuthenticate, setAdminAuthenticate] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [adminLoading,setAdminLoading]=useState(false);
+
+  const handleAdminLogin = async()=>{
+    try {
+      // Validate enrollment number
+      if (!formData2.username || !formData2.password) {
+        setErr2("All fields are required");
+        return;
+      }
+
+      setErr2("");
+      setAdminLoading(true);
+
+
+      const response = await adminLogin(formData2);
+     
+     if(response.success){
+      dispatch(signInSuccess(response.data));
+      navigate("/");
+      toast.success(response.message);
+     }else{
+      toast.error(response.message);
+     }
+    }catch(error){
+      toast.error(error.message);
+    }finally{
+      setAdminLoading(false);
+    }
+  }
 
   const handleGoogleSignUp = async () => {
     try {
@@ -59,7 +92,7 @@ export default function SignUp({ setBackdropOpen }) {
         dispatch(signInSuccess(response.data));
         navigate("/");
         setBackdropOpen(true);
-        toast.success("Signed Up Successfully!");
+        toast.success(response.message);
       } else {
         dispatch(signInFailure(response.message));
         toast.error(response.message);
@@ -78,6 +111,17 @@ export default function SignUp({ setBackdropOpen }) {
     if (err) {
       setErr(""); // Clear the error when the input field is clicked or changed
     }
+  };
+
+  const handleAdminChange = (e) => {
+    setFormData2({
+      ...formData2,
+      [e.target.id]: e.target.value,
+    });
+    if (err2) {
+      setErr2(""); 
+    }
+    
   };
 
   const handleGoogleLogin = async () => {
@@ -155,7 +199,7 @@ export default function SignUp({ setBackdropOpen }) {
       </div>
 
       <CardContainer className="inter-var z-10">
-        <CardBody className="text-black shadow-lg relative group/card  border-white/[0.1] w-full sm:w-[30rem] h-auto rounded-xl p-6">
+        <CardBody className="text-black shadow-lg relative group/card  border-white/[0.1] w-[22rem] sm:w-[30rem] h-auto rounded-xl p-6">
           <div className="bg-slate-50 p-4 md:p-8 rounded-lg  w-full text-black text-sm">
             <img
               src="https://res.cloudinary.com/dhy548whh/image/upload/v1734195806/mhwkdrs7niz9yxhrafq8.png"
@@ -262,7 +306,7 @@ export default function SignUp({ setBackdropOpen }) {
                   <h2 className="text-3xl font-bold text-black">Admin Login</h2>
                 </div>
                 <form>
-                  <div className="mb-6">
+                  <div className="mb-4">
                     <label
                       htmlFor="username"
                       className="block text-left font-medium text-black mb-2"
@@ -272,13 +316,14 @@ export default function SignUp({ setBackdropOpen }) {
                     <input
                       type="text"
                       id="username"
-                      name="username"
                       className="md:mt-1 w-full px-4 py-2 ring ring-blue-200  text-slate-800   rounded-lg  text-base focus:ring focus:ring-blue-400 focus:outline-none"
                       placeholder="admin@example.com"
+                      onChange={handleAdminChange}
+                      
                     />
                   </div>
 
-                  <div className="mb-6">
+                  <div className="mb-4">
                     <label
                       htmlFor="password"
                       className="block text-left font-medium text-black mb-2"
@@ -288,13 +333,17 @@ export default function SignUp({ setBackdropOpen }) {
                     <input
                       type="password"
                       id="password"
-                      name="password"
                       className="md:mt-1 w-full px-4 py-2 ring ring-blue-200  text-slate-800   rounded-lg  text-base focus:ring focus:ring-blue-400 focus:outline-none"
+                      onChange={handleAdminChange}
                       placeholder="Enter your password"
                     />
+                    {err2 && (
+                    <div className="text-red-500 text-xs flex justify-start mt-2">{err2}</div>
+                  )}
                   </div>
+                  
 
-                  <div className="flex justify-between items-center mb-6">
+                  <div className="flex justify-between items-center mb-2">
                     <div
                       className="cursor-pointer text-blue-800 hover:text-blue-900 transition duration-200"
                       onClick={() => setAdminAuthenticate(false)}
@@ -303,10 +352,16 @@ export default function SignUp({ setBackdropOpen }) {
                       <ArrowCircleRightIcon className="ml-2" />
                     </div>
                     <button
-                      type="submit"
-                      className="px-6 py-2 bg-blue-700 text-slate-50 rounded-lg hover:bg-blue-600 focus:outline-none transition duration-300"
+                      type="button"
+                      onClick={handleAdminLogin}
+                      disabled={adminLoading}
+                      className="w-[6rem] px-6 py-2 bg-blue-700 text-slate-50 rounded-lg hover:bg-blue-600 focus:outline-none transition duration-300"
                     >
-                      Submit
+                      {adminLoading ? (
+                      <CircularProgress size={18} color="inherit" />
+                    ) : (
+                      "Submit"
+                    )}
                     </button>
                   </div>
                 </form>
