@@ -150,7 +150,7 @@ export default function Profile() {
 
   return (
     <div className="md:px-10 ">
-      <div className='py-1 md:mt-16 text-center bg-white rounded-2xl fixed md:static top-0 w-full z-40' >
+      <div className='py-1 md:mt-16 text-center bg-white md:bg-azure rounded-2xl fixed md:static top-0 w-full z-40' >
       <div className=" py-2  bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-7xl font-poppins">
        My Profile 
       </div>
@@ -427,6 +427,72 @@ export default function Profile() {
             <ArrowForwardIcon />
           </motion.button>
         </div>
+      </div>
+
+      <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
+
+
+      <div className="mt-4 px-2 py-2">
+        <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins">
+          Pratibimb's Terms and Conditions 
+        </div>
+
+          <div className="my-1 md:my-2 text-slate-500 text-xs md:text-xl font-poppins">
+          We use Razorpay as our trusted payment gateway provider. By making a payment through our platform, you agree to the following terms:
+          </div>
+
+        <div className="mt-2 flex flex-col gap-4 font-poppins text-base md:text-lg">
+          <div className="bg-slate-200 px-4 py-2 rounded-2xl">
+            <div className="text-slate-700 font-medium">
+            Secure Transactions 
+            </div>
+            <div className="text-slate-600 text-xs md:text-base">
+            All transactions are processed securely using Razorpay's encrypted payment system.
+            </div>
+          </div>
+
+          <div className="bg-slate-200 px-4 py-2 rounded-2xl">
+            <div className="text-slate-700 font-medium">
+            Refunds and Cancellations
+            </div>
+            <div className="text-slate-600 text-xs md:text-base">
+            Refunds and cancellations are subject to our refund policy. Razorpay may deduct transaction fees as applicable.
+
+            </div>
+          </div>
+
+
+          <div className="bg-slate-200 px-4 py-2 rounded-2xl">
+            <div className="text-slate-700 font-medium">
+            Compliance
+            </div>
+            <div className="text-slate-600 text-xs md:text-base">
+            Users must comply with all applicable laws and regulations while using our platform.
+            </div>
+          </div>
+
+
+          <div className="bg-slate-200 px-4 py-2 rounded-2xl">
+            <div className="text-slate-700 font-medium">
+            Prohibited Transactions
+            </div>
+            <div className="text-slate-600 text-xs md:text-base">
+            Payments for prohibited goods and services as defined by Razorpay, including illegal or restricted items, are not allowed.
+            </div>
+          </div>
+
+          <div className="bg-slate-200 px-4 py-2 rounded-2xl">
+            <div className="text-slate-700 font-medium">
+            Privacy
+            </div>
+            <div className="text-slate-600 text-xs md:text-base">
+            Razorpay ensures the protection of your personal and payment information in accordance with their Privacy Policy.
+            </div>
+          </div>
+
+        </div>
+        <div className="my-5 border-t border-slate-400"></div>
+
       </div>
 
       <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
