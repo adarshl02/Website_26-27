@@ -19,6 +19,7 @@ import Navigation from "./components/general/Navigation";
 import { Toaster} from 'sonner';
 import AdminDashboard from "./adminPages/AdminDashboard";
 import AdminRoute from "./components/general/AdminRoute";
+import TermsAndConditions from "./pages/TermsAndConditions";
 
 const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef,setBackdropOpen}) => {
   const location = useLocation(); 
@@ -130,6 +131,19 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef,s
                   exit={pageTransition.exit}
                 > <NavbarDemo scrollToCarousel={scrollToCarousel} />
                   <ArtCommunity />
+                  <Footer />
+                </motion.div>
+              }
+            />
+             <Route
+              path="/terms-and-conditions"
+              element={
+                <motion.div
+                  initial={pageTransition.initial}
+                  animate={pageTransition.animate}
+                  exit={pageTransition.exit}
+                > <NavbarDemo scrollToCarousel={scrollToCarousel} />
+                  <TermsAndConditions />
                   <Footer />
                 </motion.div>
               }
