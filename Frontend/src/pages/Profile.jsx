@@ -4,7 +4,7 @@ import { Meteors } from "./../components/accertinityui/Meteor";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Backdrop, CircularProgress } from "@mui/material";
 import Membershiptrial from "./../components/general/Backdrops/Membershiptrial";
 import { jsPDF } from "jspdf";
@@ -275,6 +275,11 @@ export default function Profile() {
             <div className="mt-2 text-slate-500 text-xs md:text-xl px-4 font-poppins">
               Visit the event Page to register for a event.
               <br />
+              {/* <Link to='/terms-and-conditions' >
+              <div className="mt-2 text-slate-500 text-xs md:text-lg hover:underline font-poppins">
+                Our Terms and Conditions
+              </div>
+              </Link> */}
               <motion.button
                 whileTap={{ scale: 0.95 }}
                 // onClick={handleOpen}
@@ -431,7 +436,31 @@ export default function Profile() {
 
       <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
 
+      <div className="mt-4 px-2 py-2">
+        <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins">
+         Our Terms and Conditions
+        </div>
+       
+        <div className="mt-2 text-slate-500 text-xs md:text-xl px-4 font-poppins flex justify-between items-center">
+              Visit the Terms and Conditions Page before registering for an event.
+              <br />
+              {/* <Link to='/terms-and-conditions' >
+              <div className="mt-2 text-slate-500 text-xs md:text-lg hover:underline font-poppins">
+                Our Terms and Conditions
+              </div>
+              </Link> */}
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                
+                onClick={() => navigate("/terms-and-conditions")}
+                className="text-xs  bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-1 md:py-2 px-2 md:px-4 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
+              >
+                Go to Page
+              </motion.button>
+            </div>
 
+
+      </div>
       <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
 
       <div className="mt-4 px-2 py-2">
@@ -459,13 +488,13 @@ export default function Profile() {
             </div>
           </div>
         </div>
-        <div className="my-5 border-t border-slate-400"></div>
+      
 
       </div>
 
 
 
-      <div className="md:hidden px-10" >
+      <div className="md:hidden px-10 mt-6" >
         <motion.button
                 whileTap={{ scale: 0.95 }}
                 onClick={handleLogout}

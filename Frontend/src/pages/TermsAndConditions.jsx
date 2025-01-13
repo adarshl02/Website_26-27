@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const TermsAndConditions = () => {
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
+
+
   return (
     <div className="md:mt-6 px-6 md:px-8 lg:px-16">
      
