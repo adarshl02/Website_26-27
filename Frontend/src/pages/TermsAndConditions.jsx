@@ -1,31 +1,28 @@
 import React, { useEffect } from "react";
 
 const TermsAndConditions = () => {
-
-    useEffect(() => {
-        window.scrollTo(0, 0);
-      }, []);
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="md:mt-6 px-6 md:px-8 lg:px-16">
-     
-        <div className=" py-2 text-center  md:bg-azure rounded-2xl fixed md:static top-0 left-0 w-full z-40 bg-white" >
+      <div className="py-2 text-center md:bg-azure rounded-2xl fixed md:static top-0 left-0 w-full z-40 bg-white">
         <h1 className="text-center bg-gradient-to-br md:mt-12 from-slate-400 to-slate-800 bg-clip-text text-3xl font-extrabold text-transparent md:text-5xl font-poppins">
           Pratibimb's Terms and Conditions
         </h1>
-        </div>
-        <p className="text-center mt-24 md:mt-0 text-gray-600 text-sm md:text-lg font-poppins">
-          Welcome! Please read our terms carefully before making any transaction. By using Razorpay through our platform, you agree to these terms and policies.
-        </p>
-   
+      </div>
+
+      <p className="text-center mt-24 md:mt-0 text-gray-600 text-sm md:text-lg font-poppins">
+        Welcome to Pratibimb! Please read our terms carefully before engaging with our platform. By using our services, including payment processing via Razorpay, you agree to these terms and policies.
+      </p>
 
       <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3 font-poppins">
         {/* Secure Transactions */}
         <div className="bg-white shadow-md rounded-xl p-6 border border-gray-200 hover:shadow-lg transition">
           <h2 className="text-lg font-bold text-gray-800">Secure Transactions</h2>
           <p className="mt-2 text-gray-600 text-sm md:text-base">
-            Razorpay ensures all transactions are encrypted and meet PCI-DSS compliance. Your payment data is protected at all times.
+            Payments made through Pratibimb's platform are processed via Razorpay, ensuring secure, encrypted, and PCI-DSS-compliant transactions.
           </p>
         </div>
 
@@ -33,7 +30,7 @@ const TermsAndConditions = () => {
         <div className="bg-white shadow-md rounded-xl p-6 border border-gray-200 hover:shadow-lg transition">
           <h2 className="text-lg font-bold text-gray-800">Refunds and Cancellations</h2>
           <p className="mt-2 text-gray-600 text-sm md:text-base">
-            Refunds are governed by our policy. Razorpay may deduct applicable transaction fees during cancellations.
+            Pratibimb does not entertain any refunds or cancellations once a transaction is completed. Please ensure all details are accurate before proceeding with payments.
           </p>
         </div>
 
@@ -41,7 +38,7 @@ const TermsAndConditions = () => {
         <div className="bg-white shadow-md rounded-xl p-6 border border-gray-200 hover:shadow-lg transition">
           <h2 className="text-lg font-bold text-gray-800">Compliance</h2>
           <p className="mt-2 text-gray-600 text-sm md:text-base">
-            All users must comply with legal and regulatory requirements. Misuse of the platform for fraudulent activities is strictly prohibited.
+            All users are required to comply with applicable legal and regulatory requirements. Any misuse of Pratibimb's platform is strictly prohibited.
           </p>
         </div>
 
@@ -49,7 +46,7 @@ const TermsAndConditions = () => {
         <div className="bg-white shadow-md rounded-xl p-6 border border-gray-200 hover:shadow-lg transition">
           <h2 className="text-lg font-bold text-gray-800">Privacy and Security</h2>
           <p className="mt-2 text-gray-600 text-sm md:text-base">
-            Razorpay maintains robust data protection measures. All personal and payment details are safeguarded according to its Privacy Policy.
+            Pratibimb is committed to safeguarding your personal and payment data. We adhere to robust data protection measures to ensure your information remains secure.
           </p>
         </div>
 
@@ -57,22 +54,20 @@ const TermsAndConditions = () => {
         <div className="bg-white shadow-md rounded-xl p-6 border border-gray-200 hover:shadow-lg transition">
           <h2 className="text-lg font-bold text-gray-800">Prohibited Transactions</h2>
           <p className="mt-2 text-gray-600 text-sm md:text-base">
-            Payments for restricted items as per Razorpay’s guidelines, including illegal goods, are strictly forbidden.
+            Transactions involving prohibited items or activities, as outlined in Pratibimb's guidelines, are not allowed. Violations may lead to account suspension or legal action.
           </p>
         </div>
 
-        {/* Razorpay Contact */}
+        {/* Pratibimb Support */}
         <div className="bg-white shadow-md rounded-xl p-6 border border-gray-200 hover:shadow-lg transition">
           <h2 className="text-lg font-bold text-gray-800">Need Help?</h2>
           <p className="mt-2 text-gray-600 text-sm md:text-base">
-            For disputes or queries regarding transactions, reach out to Razorpay at{" "}
+            For any issues or queries related to transactions or platform use, please reach out to Pratibimb's support team at &nbsp;
             <a
-              href="https://razorpay.com"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="mailto: clubpratibimb.sgsits@gmail.com"
               className="text-blue-500 hover:underline"
             >
-              their support page
+              clubpratibimb.sgsits@gmail.com
             </a>.
           </p>
         </div>
