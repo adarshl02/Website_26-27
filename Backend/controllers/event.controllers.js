@@ -204,12 +204,10 @@ const paymentVerification = async (req, res) => {
       return res.status(500).json({ message: "QR code upload failed" });
     }
 
-    // Save QR code URL in the database
     await db("attendees")
       .where({ order_id: razorpay_order_id })
       .update({ qr_code: uploadedResponse.secure_url });
 
-    // Send email with event details and QR code
     const event_date = new Date(event.start_date).toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
@@ -226,12 +224,11 @@ const paymentVerification = async (req, res) => {
       uploadedResponse.secure_url
     );
 
-    // Return success response
     res.status(200).json({
       message: "Payment verified successfully",
       razorpay_payment_id,
       razorpay_order_id,
-      qr_code_url: uploadedResponse.secure_url, // Return QR code URL
+      qr_code_url: uploadedResponse.secure_url, 
     });
   } catch (error) {
     console.error("Payment verification error:", error);
