@@ -95,7 +95,7 @@ const TermsAndConditions = () => {
                 href="mailto:clubpratibimb.sgsits@gmail.com"
                 className="text-blue-500 hover:underline"
               >
-                clubpratibimb.sgsits@gmail.com
+                &nbsp;clubpratibimb.sgsits@gmail.com
               </a>.
             </p>
           </div>
