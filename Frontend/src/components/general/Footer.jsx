@@ -7,7 +7,7 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 text-slate-100 py-10 px-6 mt-5">
+    <footer className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 text-slate-100 py-10 px-6 mt-5 mb-10 md:mb-0">
       <div className="container mx-auto grid grid-cols-2 md:grid-cols-4 gap-10">
         {/* Left Section: Logo and Address */}
         <div className="space-y-4">
