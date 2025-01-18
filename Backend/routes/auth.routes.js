@@ -8,16 +8,16 @@ const router = express.Router();
 
 router.post("/auth/google/signup", async (req, res, next) => {
   try {
-    const { name, email, avatar, uid, enrollment } = req.body;
+    const { name, email, avatar, uid } = req.body;
 
     if (!name || !email || !uid || !avatar) {
       return res.status(400).json({ message: "All fields are required." });
     }
-    if (!enrollment || enrollment.length !== 12) {
-      return res
-        .status(404)
-        .json({ message: "Enrollment must be of size 12 fields." });
-    }
+    // if (!enrollment || enrollment.length !== 12) {
+    //   return res
+    //     .status(404)
+    //     .json({ message: "Enrollment must be of size 12 fields." });
+    // }
 
     const existingUser = await db("users").where({ email }).first();
     if (existingUser) {
@@ -27,17 +27,17 @@ router.post("/auth/google/signup", async (req, res, next) => {
     }
 
     const hashedUid = await bcrypt.hash(uid, 10);
-    let branch = enrollment.slice(4, 6).toUpperCase();
-    let batch = enrollment.slice(6, 8);
+    // let branch = enrollment.slice(4, 6).toUpperCase();
+    // let batch = enrollment.slice(6, 8);
 
     const newUser = {
       name,
       email,
       uid: hashedUid,
       avatar,
-      batch,
-      branch,
-      enrollment,
+      batch:"batch",
+      branch:"branch",
+      enrollment:"enrollment",
     };
 
     const [insertedUser] = await db("users").insert(newUser).returning("*");
