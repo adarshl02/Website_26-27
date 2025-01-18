@@ -129,7 +129,7 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
   return (
     <div>
       <div ref={carouselRef} className="bg-slate-900">
-        <ImagesSlider className="h-[45rem]" images={images}>
+        <ImagesSlider className="min-h-screen" images={images}>
           <motion.div
             initial={{
               opacity: 0,

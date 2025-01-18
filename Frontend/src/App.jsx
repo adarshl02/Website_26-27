@@ -20,9 +20,12 @@ import { Toaster} from 'sonner';
 import AdminDashboard from "./adminPages/AdminDashboard";
 import AdminRoute from "./components/general/AdminRoute";
 import TermsAndConditions from "./pages/TermsAndConditions";
+import { useSelector } from "react-redux";
 
 const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef,setBackdropOpen}) => {
   const location = useLocation(); 
+  const { currentUser } = useSelector((state) => state.user);
+  const isAuthenticated = !!currentUser;
   const pageTransition = {
     initial: { opacity: 0, y: 30 },
     animate: { opacity: 1, y: 0, transition: { duration: 0.2 } },
@@ -31,141 +34,159 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef,s
 
   return (
     <>
-     {location.pathname !== "/sign-up" && <Navigation />}
+      {location.pathname !== "/sign-up" && isAuthenticated && (
+       <>
+          <Navigation />
+          <NavbarDemo scrollToCarousel={scrollToCarousel} />
+          </>
+      )}
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
-
+  
           <Route element={<PrivateRoute />}>
             <Route
               path="/"
               element={
-                <motion.div
-                  initial={pageTransition.initial}
-                  animate={pageTransition.animate}
-                  exit={pageTransition.exit}
-                ><NavbarDemo scrollToCarousel={scrollToCarousel} />
-                  <Home
-                    carouselRef={carouselRef}
-                    latestRef={latestRef}
-                    scrollToLatest={scrollToLatest}
-                  />
-                  <Footer />
-                </motion.div>
+                <>
+                  <motion.div
+                    initial={pageTransition.initial}
+                    animate={pageTransition.animate}
+                    exit={pageTransition.exit}
+                  >
+                    <Home
+                      carouselRef={carouselRef}
+                      latestRef={latestRef}
+                      scrollToLatest={scrollToLatest}
+                    />
+                    <Footer />
+                  </motion.div>
+                </>
               }
             />
             <Route
               path="/profile"
               element={
-                <motion.div
-                  initial={pageTransition.initial}
-                  animate={pageTransition.animate}
-                  exit={pageTransition.exit}
-                > 
-                  <NavbarDemo scrollToCarousel={scrollToCarousel} />
-                  <Profile />
-                  <Footer />
-                </motion.div>
+                <>
+                  <motion.div
+                    initial={pageTransition.initial}
+                    animate={pageTransition.animate}
+                    exit={pageTransition.exit}
+                  >
+                    <Profile />
+                    <Footer />
+                  </motion.div>
+                </>
               }
             />
             <Route
               path="/events"
               element={
-                <motion.div
-                  initial={pageTransition.initial}
-                  animate={pageTransition.animate}
-                  exit={pageTransition.exit}
-                > 
-                  <NavbarDemo scrollToCarousel={scrollToCarousel} />
-                  <Events />
-                  <Footer />
-                </motion.div>
+                <>
+                  <motion.div
+                    initial={pageTransition.initial}
+                    animate={pageTransition.animate}
+                    exit={pageTransition.exit}
+                  >
+                    <Events />
+                    <Footer />
+                  </motion.div>
+                </>
               }
             />
             <Route
               path="/team"
               element={
-                <motion.div
-                  initial={pageTransition.initial}
-                  animate={pageTransition.animate}
-                  exit={pageTransition.exit}
-                > 
-                <NavbarDemo scrollToCarousel={scrollToCarousel} />
-                  <Team />
-                  <Footer />
-                </motion.div>
+                <>
+                  <motion.div
+                    initial={pageTransition.initial}
+                    animate={pageTransition.animate}
+                    exit={pageTransition.exit}
+                  >
+                    <Team />
+                    <Footer />
+                  </motion.div>
+                </>
               }
             />
             <Route
               path="/sponsors"
               element={
-                <motion.div
-                  initial={pageTransition.initial}
-                  animate={pageTransition.animate}
-                  exit={pageTransition.exit}
-                > 
-                <NavbarDemo scrollToCarousel={scrollToCarousel} />
-                  <Sponsors />
-                  <Footer />
-                </motion.div>
+                <>
+                  <motion.div
+                    initial={pageTransition.initial}
+                    animate={pageTransition.animate}
+                    exit={pageTransition.exit}
+                  >
+                    <Sponsors />
+                    <Footer />
+                  </motion.div>
+                </>
               }
             />
             <Route
               path="/blogs"
               element={
-                <motion.div
-                  initial={pageTransition.initial}
-                  animate={pageTransition.animate}
-                  exit={pageTransition.exit}
-                > <NavbarDemo scrollToCarousel={scrollToCarousel} />
-                  <Blogs />
-                  <Footer />
-                </motion.div>
+                <>
+                  <motion.div
+                    initial={pageTransition.initial}
+                    animate={pageTransition.animate}
+                    exit={pageTransition.exit}
+                  >
+                    <Blogs />
+                    <Footer />
+                  </motion.div>
+                </>
               }
             />
             <Route
               path="/art-community"
               element={
-                <motion.div
-                  initial={pageTransition.initial}
-                  animate={pageTransition.animate}
-                  exit={pageTransition.exit}
-                > <NavbarDemo scrollToCarousel={scrollToCarousel} />
-                  <ArtCommunity />
-                  <Footer />
-                </motion.div>
+                <>
+                  <motion.div
+                    initial={pageTransition.initial}
+                    animate={pageTransition.animate}
+                    exit={pageTransition.exit}
+                  >
+                    <ArtCommunity />
+                    <Footer />
+                  </motion.div>
+                </>
               }
             />
-             <Route
+            <Route
               path="/terms-and-conditions"
               element={
-                <motion.div
-                  initial={pageTransition.initial}
-                  animate={pageTransition.animate}
-                  exit={pageTransition.exit}
-                > <NavbarDemo scrollToCarousel={scrollToCarousel} />
-                  <TermsAndConditions />
-                  <Footer />
-                </motion.div>
+                <>
+                  <motion.div
+                    initial={pageTransition.initial}
+                    animate={pageTransition.animate}
+                    exit={pageTransition.exit}
+                  >
+                    <TermsAndConditions />
+                    <Footer />
+                  </motion.div>
+                </>
               }
             />
             <Route
               path="/upcoming-event-page"
               element={
-                <motion.div
-                  initial={pageTransition.initial}
-                  animate={pageTransition.animate}
-                  exit={pageTransition.exit}
-                > <NavbarDemo scrollToCarousel={scrollToCarousel} />
-                  <UpcomingEventPage />
-                  <Footer />
-                </motion.div>
+                <>
+                  <motion.div
+                    initial={pageTransition.initial}
+                    animate={pageTransition.animate}
+                    exit={pageTransition.exit}
+                  >
+                    <UpcomingEventPage />
+                    <Footer />
+                  </motion.div>
+                </>
               }
             />
           </Route>
-
-
+  
           <Route element={<AdminRoute />}>
-           <Route
+            <Route
               path="/admin-dashboard"
               element={
                 <motion.div
@@ -173,15 +194,12 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef,s
                   animate={pageTransition.animate}
                   exit={pageTransition.exit}
                 >
-                  <AdminDashboard
-                    
-                  />
-            
+                  <AdminDashboard />
                 </motion.div>
               }
             />
           </Route>
-
+  
           <Route
             path="/sign-up"
             element={

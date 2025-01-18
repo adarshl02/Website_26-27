@@ -343,7 +343,7 @@ export default function Profile() {
           />
           {/* Overlay Button */}
           <div className="absolute inset-0 flex items-center justify-center">
-            {Object.keys(eventTicketData).length === 0 ? (
+            {Object.keys(eventTicketData).length === 0 ||eventTicketData.is_attended ===false ? (
               <button
                 className="px-2 md:px-6 py-1 md:py-2 bg-slate-800 text-slate-200 rounded-xl text-sm "
                 onClick={handleOpen2}

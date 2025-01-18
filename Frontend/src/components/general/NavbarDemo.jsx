@@ -18,6 +18,9 @@ import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import Logout from "@mui/icons-material/Logout";
 import Badge from "@mui/material/Badge";
+import {
+  motion,
+} from "framer-motion";
 
 import { getAuth, signOut } from "firebase/auth";
 
@@ -243,19 +246,38 @@ function Navbar({ className, scrollToCarousel }) {
         className="h-10 w-auto"
         onClick={scrollToCarousel}
       />
+
+
       {!isMobile && (
-        <div className="hidden sm:flex space-x-6">
-          {navItems.map((item, idx) => (
-            <Link
-              to={item.path}
-              key={idx}
-              className="relative text-white cursor-pointer font-bold"
-            >
-              {item.name}
-            </Link>
-          ))}
-        </div>
-      )}
+  <div className="hidden sm:flex space-x-6">
+    {navItems.map((item, idx) => {
+      const isActive = location.pathname === item.path;
+
+      return (
+        <Link
+          to={item.path}
+          key={idx}
+          className="relative text-white cursor-pointer font-bold py-1 px-3"
+        >
+          <span className="relative z-10">{item.name}</span>
+          {isActive && (
+            <motion.div
+              layoutId="nav-active"
+              className="absolute inset-0 bg-gray-700 rounded-full"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            />
+          )}
+        </Link>
+      );
+    })}
+  </div>
+)}
+
+
+
+
       <div>
         <Tooltip title="Account settings">
           <IconButton
