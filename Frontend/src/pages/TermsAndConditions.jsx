@@ -37,7 +37,7 @@ const TermsAndConditions = () => {
               rel="noopener noreferrer"
               className="text-blue-500 hover:underline"
             >
-              Razorpay Policies
+             &nbsp; Razorpay Policies
             </a>.
           </p>
         </div>
