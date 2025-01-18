@@ -15,7 +15,7 @@ const Footer = () => {
           <p className="text-lg font-semibold">Locate us</p>
           <p className="flex items-center space-x-2">
             <LocationOnIcon />
-            <span className='text-sm' >SGSITS 23, M.Visvesvaraya Marg, Indore,Madhya Pradesh, 452003</span>
+            <span className='text-sm' >SGSITS 23, M.Visvesvaraya Marg, Indore, Madhya Pradesh, 452003</span>
           </p>
           <p className="flex items-center space-x-2">
             <EmailIcon />
