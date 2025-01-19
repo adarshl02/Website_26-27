@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
+
 
 export default function ContactUs() {
+
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="md:mt-6 px-6 md:px-8 lg:px-16">
       <div className="py-2 text-center md:bg-azure rounded-2xl fixed md:static top-0 left-0 w-full z-40 bg-white">
