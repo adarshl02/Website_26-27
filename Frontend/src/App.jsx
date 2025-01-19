@@ -21,6 +21,7 @@ import AdminDashboard from "./adminPages/AdminDashboard";
 import AdminRoute from "./components/general/AdminRoute";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import { useSelector } from "react-redux";
+import ContactUs from "./components/general/ContactUs";
 
 const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef,setBackdropOpen}) => {
   const location = useLocation(); 
@@ -163,6 +164,21 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef,s
                     exit={pageTransition.exit}
                   >
                     <TermsAndConditions />
+                    <Footer />
+                  </motion.div>
+                </>
+              }
+            />
+            <Route
+              path="/contact-us"
+              element={
+                <>
+                  <motion.div
+                    initial={pageTransition.initial}
+                    animate={pageTransition.animate}
+                    exit={pageTransition.exit}
+                  >
+                    <ContactUs />
                     <Footer />
                   </motion.div>
                 </>

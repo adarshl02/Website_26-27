@@ -4,6 +4,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -22,16 +23,16 @@ const Footer = () => {
             <span className='text-sm' >clubpratibimb.sgsits@gmail.com</span>
           </p>
           {/* Social Icons */}
-          
+
         </div>
 
         {/* Middle Section: Discover */}
         <div className="space-y-4">
           <h3 className="text-lg font-semibold">Discover</h3>
           <ul className="space-y-2">
-            <li><a href="/" className="hover:underline">Home</a></li>
-            <li><a href="/" className="hover:underline">About</a></li>
-            <li><a href="/" className="hover:underline">Contact</a></li>
+            <li><Link to="/" className="hover:underline">Home</Link></li>
+            <li><Link to="/" className="hover:underline">About Us</Link></li>
+            <li><Link to="/contact-us" className="hover:underline">Contact Us</Link></li>
           </ul>
           <div className="flex space-x-4 mt-4">
             <a href="https://bit.ly/3Mu4CN2" target="_blank" rel="noreferrer">
@@ -49,9 +50,9 @@ const Footer = () => {
         <div className="space-y-4">
           <h3 className="text-lg font-semibold">Past Events</h3>
           <ul className="space-y-2">
-            <li><a href="/" className="hover:underline">Sepia</a></li>
-            <li><a href="/" className="hover:underline">Streetscape</a></li>
-            <li><a href="/" className="hover:underline">Fabrica</a></li>
+            <li><Link to="/" className="hover:underline">Sepia</Link></li>
+            <li><Link to="/" className="hover:underline">Streetscape</Link></li>
+            <li><Link to="/" className="hover:underline">Fabrica</Link></li>
           </ul>
         </div>
 
@@ -59,9 +60,9 @@ const Footer = () => {
         <div className="space-y-4">
           <h3 className="text-lg font-semibold">For you</h3>
           <ul className="space-y-2">
-            <li><a href="/profile" className="hover:underline">Certificate</a></li>
-            <li><a href="/profile" className="hover:underline">Sponsorship</a></li>
-            <li><a href="/profile" className="hover:underline">Membership</a></li>
+            <li><Link to="/profile" className="hover:underline">Certificate</Link></li>
+            <li><Link to="/profile" className="hover:underline">Sponsorship</Link></li>
+            <li><Link to="/profile" className="hover:underline">Membership</Link></li>
           </ul>
         </div>
       </div>

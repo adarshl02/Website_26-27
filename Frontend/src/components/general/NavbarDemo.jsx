@@ -21,6 +21,7 @@ import Badge from "@mui/material/Badge";
 import {
   motion,
 } from "framer-motion";
+import PolicyIcon from '@mui/icons-material/Policy';
 
 import { getAuth, signOut } from "firebase/auth";
 
@@ -349,6 +350,25 @@ function Navbar({ className, scrollToCarousel }) {
           Your Profile&nbsp;&nbsp;
           <AccountCircleIcon />
         </MenuItem>
+        
+
+        <Divider />
+
+        <MenuItem
+          onClick={() => navigate("/terms-and-conditions")}
+          sx={{
+            color: "gray",
+            borderRadius: "8px",
+            padding: "8px 16px",
+            "&:hover": {
+              backgroundColor: "rgba(0, 0, 0, 0.08)",
+            },
+          }}
+        >
+          Our Policies&nbsp;&nbsp;
+          <PolicyIcon/>
+        </MenuItem>
+        
 
         <Divider />
 
