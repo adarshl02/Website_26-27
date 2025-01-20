@@ -94,7 +94,26 @@ const registerEvents = async (req, res) => {
         );
     }
 
-    const amount = 10 * 100;
+    // Check if the user has already registered for the event
+    const existingAttendee = await db("attendees")
+      .where({ event_id, attendee_email: email })
+      .first();
+    if (existingAttendee) {
+      if (existingAttendee.payment_status === "APPROVED") {
+        return res
+          .status(400)
+          .send(
+            errorHandler(
+              400,
+              "Already Registered",
+              "User has already registered and paid for this event."
+            )
+          );
+      } 
+    }
+
+
+    const amount = 5* 100;
 
     const options = {
       amount: amount,
@@ -247,7 +266,9 @@ const getEventTicket = async (req, res) => {
     }
     let selection = await db("attendees").select("*").where({
       attendee_email: email,
+       payment_status: "APPROVED",
     });
+    
     if (selection.length == 0) {
       return res
         .status(204)

@@ -79,7 +79,7 @@ const RegistrationForm = ({ event_id , setOpen }) => {
     }
 
     const options = {
-      key: "rzp_live_jgWi5msqZ2nMVU", // Replace with your Razorpay key
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID ,
       amount,
       currency: "INR",
       order_id,

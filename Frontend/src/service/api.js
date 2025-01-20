@@ -4,7 +4,8 @@ const URL = import.meta.env.VITE_URL;
 
 
 const handleApiError = (error, apiName) => {
-  const errorMsg = error.response?.data?.message || error.message || 'An unexpected error occurred';
+  const errorMsg = error.response?.data?.errors.detail || error.message || 'An unexpected error occurred';
+ 
   return { success: false, message: errorMsg, status: error.response?.status };
 };
 
@@ -130,8 +131,7 @@ export const getEventTicket = async (data,token) => {
     if (response.status === 204) {
       return { success: false, message: "User is not registered for the event.", status: 204 };
     }
-    
-    return { success: true, data: response.data.response.data };
+        return { success: true, data: response.data.response.data };
   } catch (error) {
     return handleApiError(error, 'Get event ticket API');
   }
