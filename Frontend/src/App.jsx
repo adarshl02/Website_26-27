@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import Home from "./pages/Home";
@@ -23,7 +23,8 @@ import TermsAndConditions from "./pages/TermsAndConditions";
 import { useSelector } from "react-redux";
 import ContactUs from "./components/general/ContactUs";
 
-const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef,setBackdropOpen}) => {
+const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef,setBackdropOpen, deferredPrompt,
+  showInstallPrompt }) => {
   const location = useLocation(); 
   const { currentUser } = useSelector((state) => state.user);
   const isAuthenticated = !!currentUser;
@@ -35,6 +36,14 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef,s
 
   return (
     <>
+     {deferredPrompt && (
+        <button 
+          onClick={showInstallPrompt} 
+          style={{ position: 'fixed', bottom: '20px', right: '20px', padding: '10px 20px', backgroundColor: 'blue', color: 'white', border: 'none', borderRadius: '5px' }}
+        >
+          Install App
+        </button>
+      )}
       {location.pathname !== "/sign-up" && isAuthenticated && (
        <>
           <Navigation />
@@ -240,6 +249,40 @@ function App() {
   const latestRef = useRef(null);
   const carouselRef = useRef(null);
 
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();  // Prevent default browser install banner
+      setDeferredPrompt(e);
+
+      // Show the install prompt after a short delay
+      setTimeout(() => {
+        showInstallPrompt();
+      }, 3000); // Show after 3 seconds (adjustable)
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const showInstallPrompt = () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the install prompt');
+        } else {
+          console.log('User dismissed the install prompt');
+        }
+        setDeferredPrompt(null);
+      });
+    }
+  };
+
   const scrollToLatest = () => {
     if (latestRef.current) {
       const yOffset = -80; // Adjust this value according to your navbar's height
@@ -274,6 +317,8 @@ function App() {
           latestRef={latestRef}
           carouselRef={carouselRef}
           setBackdropOpen={setBackdropOpen}
+          deferredPrompt={deferredPrompt}
+          showInstallPrompt={showInstallPrompt}
         />
       </BrowserRouter>
       
