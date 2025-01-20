@@ -169,14 +169,20 @@ export default function Profile() {
             <p className="text-xs md:text-lg text-slate-400  relative">
               {user.email}
             </p>
-            <p className="text-xs md:text-lg text-slate-400  relative">
+            {/* <p className="text-xs md:text-lg text-slate-400  relative">
               Batch: {user.batch}
             </p>
             <p className="text-xs md:text-lg text-slate-400 relative mb-1">
               Branch: {user.branch}
-            </p>
-            <div className="flex md:flex-col space-x-4 md:space-x-0 text-xs md:text-lg relative">
+            </p> */}
+            <div className="flex md:flex-col space-x-4 md:space-x-0 text-xs md:text-lg relative mt-6">
               <div className="text-slate-700 md:mb-1">
+              {user.is_member ? (
+                  <button className=" bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white px-2 md:px-4 md:py-1 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl">
+                    Member
+                  </button>
+                ) : (
+                  <>
                 <span className="bg-slate-300 px-1 md:px-3 md:py-1 rounded-full">
                   Non-Member
                 </span>
@@ -187,6 +193,7 @@ export default function Profile() {
                   Claim your membership now
                   <ArrowForwardIcon />
                 </button>
+                </> )}
               </div>
 
               <div className="flex  text-slate-700">

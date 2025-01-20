@@ -94,7 +94,7 @@ const registerEvents = async (req, res) => {
         );
     }
 
-    const amount = 200 * 100;
+    const amount = 10 * 100;
 
     const options = {
       amount: amount,
