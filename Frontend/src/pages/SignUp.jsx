@@ -55,8 +55,7 @@ export default function SignUp({ setBackdropOpen }) {
   }, []);
 
   const showInstallPrompt = () => {
-    console.log("hi");
-
+   
     if (deferredPrompt) {
       deferredPrompt.prompt();
       deferredPrompt.userChoice.then((choiceResult) => {
@@ -220,7 +219,7 @@ export default function SignUp({ setBackdropOpen }) {
         <motion.button
           whileTap={{ scale: 0.95 }}
           onClick={showInstallPrompt}
-          className="fixed bottom-28 md:bottom-20 left-1/2 transform -translate-x-1/2 my-2 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 
+          className="fixed bottom-28 md:bottom-20  my-2 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 
              text-white py-1 md:py-2 md:px-6 px-4 rounded-full shadow-lg text-sm font-poppins 
              transition duration-300 hover:opacity-90 hover:shadow-2xl flex items-center justify-center z-50"
         >
