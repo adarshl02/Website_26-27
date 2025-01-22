@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import GoogleIcon from "@mui/icons-material/Google";
-import { CircularProgress, IconButton, Tooltip } from "@mui/material";
-import HelpIcon from "@mui/icons-material/Help";
+import { CircularProgress } from "@mui/material";
+import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import {
   signInFailure,
@@ -213,20 +213,25 @@ export default function SignUp({ setBackdropOpen }) {
         className={`absolute inset-0 bg-black ${isMobile ? "opacity-10" : "opacity-40"
           }`}
       ></div>
+
       {deferredPrompt && (
-        <button
+        <motion.button
+          whileTap={{ scale: 0.95 }}
           onClick={showInstallPrompt}
-          className={`fixed bottom-24 right-5 flex items-center justify-center bg-gray-200 py-1 md:py-2 rounded-lg 
-                hover:bg-gray-300 transition duration-300 text-base text-slate-800 w-full max-w-xs`}
+          className="fixed bottom-28 md:bottom-20 left-1/2 transform -translate-x-1/2 my-2 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 
+             text-white py-1 md:py-2 md:px-6 px-4 rounded-full shadow-lg text-sm font-poppins 
+             transition duration-300 hover:opacity-90 hover:shadow-2xl flex items-center justify-center"
         >
-          <GetAppIcon className="mr-2 text-slate-800" />
           Install App
-        </button>
+          <GetAppIcon className="ml-2 text-white" />
+        </motion.button>
       )}
 
       <div className="absolute inset-0 text-xl font-poppins flex justify-center items-end mb-16 md:mb-12 text-slate-300 md:text-white">
         Version 1.0.0
       </div>
+
+
 
 
       <CardContainer className="inter-var z-10">
