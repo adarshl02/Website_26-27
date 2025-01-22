@@ -19,6 +19,7 @@ import {
 } from "../service/api";
 import { toast } from "sonner";
 import { adminLogin } from '../service/api2';
+import GetAppIcon from '@mui/icons-material/GetApp';
 
 export default function SignUp({ setBackdropOpen }) {
   const { loading } = useSelector((state) => state.user);
@@ -31,9 +32,43 @@ export default function SignUp({ setBackdropOpen }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [adminLoading,setAdminLoading]=useState(false);
+  const [adminLoading, setAdminLoading] = useState(false);
 
-  const handleAdminLogin = async()=>{
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();  // Prevent default browser install banner
+      setDeferredPrompt(e);
+
+      // Show the install prompt after a short delay
+      setTimeout(() => {
+        showInstallPrompt();
+      }, 3000); // Show after 3 seconds (adjustable)
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const showInstallPrompt = () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the install prompt');
+        } else {
+          console.log('User dismissed the install prompt');
+        }
+        setDeferredPrompt(null);
+      });
+    }
+  };
+
+  const handleAdminLogin = async () => {
     try {
       // Validate enrollment number
       if (!formData2.username || !formData2.password) {
@@ -46,24 +81,24 @@ export default function SignUp({ setBackdropOpen }) {
 
 
       const response = await adminLogin(formData2);
-     
-     if(response.success){
-      dispatch(signInSuccess(response.data));
-      navigate("/");
-      toast.success(response.message);
-     }else{
-      toast.error(response.message);
-     }
-    }catch(error){
+
+      if (response.success) {
+        dispatch(signInSuccess(response.data));
+        navigate("/");
+        toast.success(response.message);
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error) {
       toast.error(error.message);
-    }finally{
+    } finally {
       setAdminLoading(false);
     }
   }
 
   const handleGoogleSignUp = async () => {
     try {
-     
+
       // Configure Google provider
       const provider = new GoogleAuthProvider();
       provider.setCustomParameters({ prompt: "select_account" });
@@ -103,9 +138,9 @@ export default function SignUp({ setBackdropOpen }) {
       [e.target.id]: e.target.value,
     });
     if (err2) {
-      setErr2(""); 
+      setErr2("");
     }
-    
+
   };
 
   const handleGoogleLogin = async () => {
@@ -134,7 +169,7 @@ export default function SignUp({ setBackdropOpen }) {
     } catch (error) {
       dispatch(signInFailure(response?.message));
       toast.error("Could not sign up with Google. Please try again later.");
-    }finally{
+    } finally {
       setLoading2(false);
     }
   };
@@ -175,13 +210,24 @@ export default function SignUp({ setBackdropOpen }) {
     >
       {/* Dark Overlay */}
       <div
-        className={`absolute inset-0 bg-black ${
-          isMobile ? "opacity-10" : "opacity-40"
-        }`}
+        className={`absolute inset-0 bg-black ${isMobile ? "opacity-10" : "opacity-40"
+          }`}
       ></div>
+      {deferredPrompt && (
+        <button
+          onClick={showInstallPrompt}
+          className={`fixed bottom-24 right-5 flex items-center justify-center bg-gray-200 py-1 md:py-2 rounded-lg 
+                hover:bg-gray-300 transition duration-300 text-base text-slate-800 w-full max-w-xs`}
+        >
+          <GetAppIcon className="mr-2 text-slate-800" />
+          Install App
+        </button>
+      )}
+
       <div className="absolute inset-0 text-xl font-poppins flex justify-center items-end mb-16 md:mb-12 text-slate-300 md:text-white">
         Version 1.0.0
       </div>
+
 
       <CardContainer className="inter-var z-10">
         <CardBody className="text-black shadow-lg relative group/card  border-white/[0.1] w-[22rem] sm:w-[30rem] h-auto rounded-xl p-6">
@@ -199,44 +245,16 @@ export default function SignUp({ setBackdropOpen }) {
                 </div>
 
                 <form>
-                  {/* <div className="mb-4">
-                    <label
-                      htmlFor="enrollment"
-                      className="block text-left font-medium"
-                    >
-                      Enrollment Number
-                      <Tooltip
-                        title="Pratibimb will not disclose your identity to anyone"
-                        placement="right"
-                      >
-                        <IconButton>
-                          <HelpIcon
-                            className="text-slate-800"
-                            fontSize="small"
-                          />
-                        </IconButton>
-                      </Tooltip>
-                    </label>
-                    <input
-                      type="text"
-                      id="enrollment"
-                      name="enrollment"
-                      onChange={handleEnrollmentChange}
-                      className="md:mt-1 w-full px-4 py-2 ring ring-blue-200  text-slate-800   rounded-lg  text-base focus:ring focus:ring-blue-400 focus:outline-none"
-                      placeholder="0801XXXXXXXX"
-                    />
-                  </div> */}
-                  
+
                   <div className="text-center text-xs md:text-sm text-gray-600 mb-4">
-                 One Time Registration
+                    One Time Registration
                   </div>
                   <button
                     type="button"
                     onClick={handleGoogleSignUp}
                     disabled={loading}
-                    className={`bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 text-slate-100 w-full flex items-center justify-center bg-blue-800 py-1 md:py-2 rounded-lg hover:bg-blue-700 transition duration-300 text-base ${
-                      loading ? "opacity-70 cursor-not-allowed" : ""
-                    }`}
+                    className={`bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 text-slate-100 w-full flex items-center justify-center bg-blue-800 py-1 md:py-2 rounded-lg hover:bg-blue-700 transition duration-300 text-base ${loading ? "opacity-70 cursor-not-allowed" : ""
+                      }`}
                   >
                     {loading ? (
                       <CircularProgress size={24} color="inherit" />
@@ -265,33 +283,26 @@ export default function SignUp({ setBackdropOpen }) {
 
                 <div className="text-center text-sm text-gray-600">
                   <div className="mb-2 text-xs md:text-sm" >
-                  Already Have an Account? Login with{" "}
+                    Already Have an Account? Login with{" "}
                   </div>
                   <div>
-                  {/* <button
-                    onClick={handleGoogleLogin}
-                    className="md:ml-2 w-8 md:w-10 h-8 md:h-10 items-center justify-center rounded-full bg-violet-100 text-violet-950 hover:bg-violet-200 focus:outline-none focus:ring-2 focus:ring-violet-400 transition duration-200"
-                  >
-                    <GoogleIcon className="w-5 h-5" />
-                  </button> */}
                     <button
-                    type="button"
-                    onClick={handleGoogleLogin}
-                    disabled={loading2}
-                    className={`text-sm w-full flex items-center justify-center bg-gray-200 py-1 md:py-2 rounded-lg hover:bg-gray-300  transition duration-300 text-base text-slate-800 ${
-                      loading2 ? "opacity-70 cursor-not-allowed" : ""
-                    }`}
-                  >
-                  {loading2 ? (
-                      <CircularProgress size={24} color="inherit" />
-                    ) : (
-                      <>
-                        <GoogleIcon className="w-5 h-5 mr-2" />
-                        <span>Login with Google</span>
-                      </>
-                    )}
+                      type="button"
+                      onClick={handleGoogleLogin}
+                      disabled={loading2}
+                      className={`text-sm w-full flex items-center justify-center bg-gray-200 py-1 md:py-2 rounded-lg hover:bg-gray-300  transition duration-300 text-base text-slate-800 ${loading2 ? "opacity-70 cursor-not-allowed" : ""
+                        }`}
+                    >
+                      {loading2 ? (
+                        <CircularProgress size={24} color="inherit" />
+                      ) : (
+                        <>
+                          <GoogleIcon className="w-5 h-5 mr-2" />
+                          <span>Login with Google</span>
+                        </>
+                      )}
 
-                  </button>
+                    </button>
                   </div>
                 </div>
 
@@ -322,7 +333,7 @@ export default function SignUp({ setBackdropOpen }) {
                       className="md:mt-1 w-full px-4 py-2 ring ring-blue-200  text-slate-800   rounded-lg  text-base focus:ring focus:ring-blue-400 focus:outline-none"
                       placeholder="admin@example.com"
                       onChange={handleAdminChange}
-                      
+
                     />
                   </div>
 
@@ -341,10 +352,10 @@ export default function SignUp({ setBackdropOpen }) {
                       placeholder="Enter your password"
                     />
                     {err2 && (
-                    <div className="text-red-500 text-xs flex justify-start mt-2">{err2}</div>
-                  )}
+                      <div className="text-red-500 text-xs flex justify-start mt-2">{err2}</div>
+                    )}
                   </div>
-                  
+
 
                   <div className="flex justify-between items-center mb-2">
                     <div
@@ -361,10 +372,10 @@ export default function SignUp({ setBackdropOpen }) {
                       className="w-[6rem] px-6 py-2 bg-blue-700 text-slate-50 rounded-lg hover:bg-blue-600 focus:outline-none transition duration-300"
                     >
                       {adminLoading ? (
-                      <CircularProgress size={18} color="inherit" />
-                    ) : (
-                      "Submit"
-                    )}
+                        <CircularProgress size={18} color="inherit" />
+                      ) : (
+                        "Submit"
+                      )}
                     </button>
                   </div>
                 </form>
