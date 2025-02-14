@@ -131,12 +131,6 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
 
   return (
     <div>
-      <Helmet>
-        <title>Home | Pratibimb</title>
-        <meta name="description" content="Explore the latest from PRATIBIMB at SGSITS, Indore. Discover our network, About Us, Mentors, and the creative team behind it all." />
-        <link rel="canonical" href="https://www.clubpratibimb.com" />
-      </Helmet>
-
       <div ref={carouselRef} className="bg-slate-900">
         <ImagesSlider className="min-h-screen" images={images}>
           <motion.div
