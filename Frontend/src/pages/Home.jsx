@@ -25,7 +25,7 @@ const people = [
     name: "Vibhuti Baldva",
     designation: "UI Designer",
     image:
-      "/vibhuti.jpg",
+      "https://res.cloudinary.com/dhy548whh/image/upload/v1739046848/vibhuti_xnur6n.jpg",
   },
 
   {
@@ -96,12 +96,12 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
       avatarSrc: "",
     },
     {
-      target: 3536,
+      target: 3551,
       avatarSrc:
         "https://res.cloudinary.com/dhy548whh/image/upload/v1733923563/tpuqqhg73ccx2cbs6ccq.png",
     },
-    { target: 3167, avatarSrc: "/facebook.png" },
-    { target: 537, avatarSrc: "/linkedin.png" },
+    { target: 3167, avatarSrc: "https://res.cloudinary.com/dhy548whh/image/upload/v1739046840/facebook_gndrmo.png" },
+    { target: 537, avatarSrc: "https://res.cloudinary.com/dhy548whh/image/upload/v1739046840/linkedin_pvjomm.png" },
     {
       target: 113,
       avatarSrc:

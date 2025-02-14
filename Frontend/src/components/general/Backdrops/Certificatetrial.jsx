@@ -10,7 +10,7 @@ export default function Certificatetrial() {
       </div>
       <div className="w-1/2" >
       <img
-        src="/404-error.png"
+        src="https://res.cloudinary.com/dhy548whh/image/upload/v1739046844/404-error_umfluy.png"
         alt="image"
         className="md:mt-4 h-36 md:h-48"
       />

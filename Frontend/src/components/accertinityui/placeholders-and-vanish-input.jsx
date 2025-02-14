@@ -199,6 +199,7 @@ export function PlaceholdersAndVanishInput({ placeholders, onChange, onSubmit })
     "w-full relative text-sm sm:text-base z-20 border-none text-slate-800 bg-transparent  h-full rounded-full focus:outline-none focus:ring-0 pl-4 sm:pl-10 pr-20",
     animating && "text-transparent "
   )}
+  maxLength={50}
 />
 
       <button

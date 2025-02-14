@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /sign-up
+Disallow: /admin-dashboard
+Allow: /
+
+Sitemap: https://clubpratibimb.com/sitemap.txt

@@ -32,7 +32,7 @@ const LatestOfPratibimb = ({ handleOpen,handleOpen2 }) => {
       {/* Card 1 */}
       <div className="bg-gray-900 p-4 md:p-6 rounded-lg shadow-2xl border-2 border-gradient-to-r from-blue-500 via-purple-600 to-pink-500 flex flex-col items-center text-center">
         <img
-          src="pixshala_poster.png"
+          src="https://res.cloudinary.com/dhy548whh/image/upload/v1739046845/pixshala_poster_w5ziuc.png"
           alt="Upcoming Event"
           className="w-44 h-44 object-cover rounded-md mb-4 shadow-lg"
         />

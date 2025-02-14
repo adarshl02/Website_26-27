@@ -60,7 +60,7 @@ export default function ArtCommunityPage() {
   return (
     <div className="p-4 md:p-6 flex flex-col justify-center items-center mt-14">
       <Helmet>
-        <title>Art Community</title>
+        <title>Art Community | Pratibimb</title>
         <meta name="description" content="Join PRATIBIMB's art community at SGSITS, Indore. Connect with fellow artists, share your passion for Fine Arts and Photography, and let your creativity shine." />
         <link rel="canonical" href="https://www.clubpratibimb.com/art-community" />
       </Helmet>
