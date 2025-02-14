@@ -18,6 +18,8 @@ import UpcomingEventNotReleased from "./../components/general/UpcomingEventNotRe
 import ModernCarousel from "../components/general/ModernCarousel";
 import SocialHandles from "../components/general/SocialHandles";
 import { countUsers } from "../service/api";
+import { Helmet } from "react-helmet-async";
+import { toast } from "sonner";
 
 const people = [
   {
@@ -67,11 +69,11 @@ const images = [
 export default function Home({ carouselRef, latestRef, scrollToLatest }) {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
-  const [websiteUserTarget, setWebsiteUserTarget] = useState(0); 
+  const [websiteUserTarget, setWebsiteUserTarget] = useState(0);
   const { token } = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {
-    
+
     const fetchUserCount = async () => {
       if (!token) {
         console.error("No token found. Please authenticate.");
@@ -80,9 +82,10 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
       const response = await countUsers(token);
       
       if (response.success) {
-          setWebsiteUserTarget(response.data); 
-          
+        setWebsiteUserTarget(response.data);
+
       } else {
+        toast.error(response?.message);
         console.error("Failed to fetch user count:", response.error);
       }
     };
@@ -128,6 +131,12 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
 
   return (
     <div>
+      <Helmet>
+        <title>Home | Pratibimb</title>
+        <meta name="description" content="Explore the latest from PRATIBIMB at SGSITS, Indore. Discover our network, About Us, Mentors, and the creative team behind it all." />
+        <link rel="canonical" href="https://www.clubpratibimb.com" />
+      </Helmet>
+
       <div ref={carouselRef} className="bg-slate-900">
         <ImagesSlider className="min-h-screen" images={images}>
           <motion.div
@@ -261,7 +270,7 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
       </div>
       <div className="mt-2  text-sm mx-12 md:text-base text-slate-500 text-center">
         Crafted with love and some coffee and constantly improved by @teampratibimb
-       
+
       </div>
       <div className="fixed bottom-4 right-4 hidden md:block">
         <CoolMode>
@@ -281,8 +290,8 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
         onClick={handleClose}
       >
         <div onClick={(e) => e.stopPropagation()}>
-          <VolunteerForm setOpen={setOpen} />
-          {/* <VolunteerFormClosed /> */}
+          {/* <VolunteerForm setOpen={setOpen} /> */}
+          <VolunteerFormClosed />
         </div>
       </Backdrop>
 
@@ -295,7 +304,6 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
         onClick={handleClose2}
       >
         <div onClick={(e) => e.stopPropagation()}>
-          {/* <VolunteerForm setOpen={setOpen} /> */}
           <UpcomingEventNotReleased />
         </div>
       </Backdrop>

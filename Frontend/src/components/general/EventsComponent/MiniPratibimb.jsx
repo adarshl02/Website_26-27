@@ -70,7 +70,7 @@ export default function MiniPratibimb() {
       </div>
       <div className="flex flex-col md:flex-row w-full justify-between">
         <div className="flex-1 flex justify-center">
-          <img src="/mini3_1.png" alt="image" className="w-[40%] rounded-xl" />
+          <img src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1739537257/mini3_1_ihgakt.png" alt="image" className="w-[40%] rounded-xl" />
         </div>
         <div className="flex-1 my-auto text-center md:text-left m-12 md:mr-24 text-base md:text-neutral-700 md:text-lg opacity-70">
           <span className="hidden md:block">
