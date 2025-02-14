@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import { Scanner } from "@yudiel/react-qr-scanner"; // Corrected import
 import { markAttendee } from "../service/api2"
 import { toast } from "sonner";
+import { useSelector } from "react-redux";
 
 const QRCodeAttendance = () => {
   const [scanResult, setScanResult] = useState("");
   const [message, setMessage] = useState("");
   const [attendee, setAttendee] = useState(null);
+
+  const {token} = useSelector((state)=>state.user.currentUser);
 
   // Handle QR Code Scan
   const handleScan = async (data) => {
@@ -18,7 +21,7 @@ const QRCodeAttendance = () => {
         const data={
             qrCodeData: razorpay_order_id,
         }
-        const res = await markAttendee(data)
+        const res = await markAttendee(data,token)
 
         setMessage(res.data.message);
         
@@ -54,7 +57,7 @@ const QRCodeAttendance = () => {
 
       {
         scanResult==="" && 
-        <div className="text-center px-2 py-2">
+        <div className="text-center px-2 py-2 mt-16">
         <div className="mt-2 flex flex-col gap-4 font-poppins text-base md:text-lg">
           <div className="bg-slate-200 px-4 py-2 rounded-2xl">
             <div className="text-slate-700 font-medium">

@@ -20,11 +20,17 @@ const handleApiError = (error, apiName) => {
     }
   };
 
-  export const markAttendee = async (data) => {
-    try { 
-      const response = await axios.post(`${URL}/api/admin/mark-attendance`, data, { withCredentials: true }); 
-      return { success: true, data: response.data, message:"Welcome" };
+  export const markAttendee = async (data, token) => {
+    try {
+      const response = await axios.post(`${URL}/api/admin/mark-attendance`, data, {
+        headers: {
+          "Authorization": token,
+        },
+        withCredentials: true,
+      });
+      return { success: true, data: response.data, message: "Welcome" };
     } catch (error) {
       return handleApiError(error, 'Google Login API');
     }
   };
+  

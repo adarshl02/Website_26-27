@@ -81,7 +81,7 @@ const loginAdmin = async (req, res) => {
       { id: admin.id, username: admin.username },
       process.env.JWT_SECRET,
       {
-        expiresIn: "1h",
+        expiresIn: "5h",
       }
     );
     const { username: _, password: __, ...rest } = admin;
