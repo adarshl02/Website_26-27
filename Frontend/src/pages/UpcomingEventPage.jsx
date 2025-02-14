@@ -62,7 +62,7 @@ const UpcomingEventPage = () => {
         {/* Event Image */}
         <div className="flex justify-center">
           <img
-            src="pixshala_poster.png"
+            src="https://res.cloudinary.com/dhy548whh/image/upload/v1739046845/pixshala_poster_w5ziuc.png"
             alt="Upcoming Event Poster"
             className="w-64 max-w-sm object-cover rounded-lg shadow-lg"
           />

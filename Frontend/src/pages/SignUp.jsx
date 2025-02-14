@@ -295,7 +295,7 @@ export default function SignUp({ setBackdropOpen }) {
                       type="button"
                       onClick={handleGoogleLogin}
                       disabled={loading2}
-                      className={`text-sm w-full flex items-center justify-center bg-gray-200 py-1 md:py-2 rounded-lg hover:bg-gray-300  transition duration-300 text-base text-slate-800 ${loading2 ? "opacity-70 cursor-not-allowed" : ""
+                      className={`text-sm w-full flex items-center justify-center bg-gray-200 py-1 md:py-2 rounded-lg hover:bg-gray-300  transition duration-300  text-slate-800 ${loading2 ? "opacity-70 cursor-not-allowed" : ""
                         }`}
                     >
                       {loading2 ? (

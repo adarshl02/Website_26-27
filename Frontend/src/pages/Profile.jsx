@@ -19,6 +19,7 @@ import { signOutFailure, signOutStart, signOutSuccess } from "../redux/user/user
 import { deleteEvents } from "../redux/events/eventsSlice";
 import { getAuth, signOut } from "firebase/auth";
 import { toast } from "sonner";
+import { Helmet } from "react-helmet-async";
 
 export default function Profile() {
   const { rest: user, token } = useSelector((state) => state.user.currentUser); // Assuming user data is stored in the redux state
@@ -107,7 +108,7 @@ export default function Profile() {
       const response = await logoutUser();
 
       // Check if the API call was successful
-      if (!response.success){
+      if (!response.success) {
         dispatch(signOutFailure(response.message));
         toast.error(response.message);
         return;
@@ -136,408 +137,413 @@ export default function Profile() {
         const response = await getEventTicket(data, token);
 
         if (response.success) {
-          setEventTicketData(response.data.selection[0]);  
-        }else if (response.status === 204){
-          
+          setEventTicketData(response.data.selection[0]);
+        } else if (response.status === 204) {
+
         }
       } catch (error) {
         console.log(error);
-        
+
       }
     };
-     getTicket();
+    getTicket();
   }, []);
 
   return (
     <div className="md:px-10 ">
+      <Helmet>
+        <title>Profile | Pratibimb</title>
+        <meta name="description" content="Manage your PRATIBIMB profile at SGSITS, Indore. Access your event tickets, certificates, personal info, and membership details." />
+        <link rel="canonical" href="https://www.clubpratibimb.com/profile" />
+      </Helmet>
       <div className='py-1 md:mt-16 text-center bg-white md:bg-azure rounded-2xl fixed md:static top-0 w-full z-40' >
-      <div className=" py-2  bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-7xl font-poppins">
-       My Profile 
-      </div>
+        <div className=" py-2  bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-7xl font-poppins">
+          My Profile
+        </div>
       </div>
 
       {/* Profile Section */}
       {/* Profile Card */}
       <div className="p-4" >
-      <div className="relative w-full mt-14 md:mt-0 mb-4 md:mb-0">
-        <div className="py-2 md:py-4 relative md:max-w-4xl md:mx-auto shadow-xl bg-gray-900 border rounded-full border-gray-800 flex justify-between items-center text-white overflow-hidden">
-          <div className="pl-10 md:pl-24">
-            {" "}
-            <p className="text-sm font-poppins md:text-2xl font-medium  relative">
-              {user.name}
-            </p>
-            <p className="text-xs md:text-lg text-slate-400  relative">
-              {user.email}
-            </p>
-            {/* <p className="text-xs md:text-lg text-slate-400  relative">
+        <div className="relative w-full mt-14 md:mt-0 mb-4 md:mb-0">
+          <div className="py-2 md:py-4 relative md:max-w-4xl md:mx-auto shadow-xl bg-gray-900 border rounded-full border-gray-800 flex justify-between items-center text-white overflow-hidden">
+            <div className="pl-10 md:pl-24">
+              {" "}
+              <p className="text-sm font-poppins md:text-2xl font-medium  relative">
+                {user.name}
+              </p>
+              <p className="text-xs md:text-lg text-slate-400  relative">
+                {user.email}
+              </p>
+              {/* <p className="text-xs md:text-lg text-slate-400  relative">
               Batch: {user.batch}
             </p>
             <p className="text-xs md:text-lg text-slate-400 relative mb-1">
               Branch: {user.branch}
             </p> */}
-            <div className="flex md:flex-col space-x-4 md:space-x-0 text-xs md:text-lg relative mt-6">
-              <div className="text-slate-700 md:mb-1">
-              {user.is_member ? (
-                  <button className=" bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white px-2 md:px-4 md:py-1 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl">
-                    Member
-                  </button>
-                ) : (
-                  <>
-                <span className="bg-slate-300 px-1 md:px-3 md:py-1 rounded-full">
-                  Non-Member
-                </span>
-                <button
-                  onClick={scrollToPerks}
-                  className="hidden md:inline-flex text-xs items-center px-2 py-1 bg-yellow-400 text-slate-800 font-poppins rounded-2xl hover:bg-yellow-300 ml-2"
-                >
-                  Claim your membership now
-                  <ArrowForwardIcon />
-                </button>
-                </> )}
-              </div>
+              <div className="flex md:flex-col space-x-4 md:space-x-0 text-xs md:text-lg relative mt-6">
+                <div className="text-slate-700 md:mb-1">
+                  {user.is_member ? (
+                    <button className=" bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white px-2 md:px-4 md:py-1 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl">
+                      Member
+                    </button>
+                  ) : (
+                    <>
+                      <span className="bg-slate-300 px-1 md:px-3 md:py-1 rounded-full">
+                        Non-Member
+                      </span>
+                      <button
+                        onClick={scrollToPerks}
+                        className="hidden md:inline-flex text-xs items-center px-2 py-1 bg-yellow-400 text-slate-800 font-poppins rounded-2xl hover:bg-yellow-300 ml-2"
+                      >
+                        Claim your membership now
+                        <ArrowForwardIcon />
+                      </button>
+                    </>)}
+                </div>
 
-              <div className="flex  text-slate-700">
-                {user.is_artist ? (
-                  <button className=" bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white px-2 md:px-4 md:py-1 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl">
-                    Artist
-                  </button>
-                ) : (
-                  <span className="bg-slate-300 px-1 md:px-3 md:py-1 rounded-full">
-                    Non-Artist
-                  </span>
-                )}
+                <div className="flex  text-slate-700">
+                  {user.is_artist ? (
+                    <button className=" bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white px-2 md:px-4 md:py-1 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl">
+                      Artist
+                    </button>
+                  ) : (
+                    <span className="bg-slate-300 px-1 md:px-3 md:py-1 rounded-full">
+                      Non-Artist
+                    </span>
+                  )}
 
-                {!user.is_artist && (
-                  <button
-                    onClick={() => navigate("/art-community")}
-                    className="hidden md:inline-flex text-xs items-center px-2 py-1 bg-yellow-400 text-slate-800 font-poppins rounded-2xl hover:bg-yellow-300 ml-7"
-                  >
-                    Become an Artist
-                    <ArrowForwardIcon />
-                  </button>
-                )}
+                  {!user.is_artist && (
+                    <button
+                      onClick={() => navigate("/art-community")}
+                      className="hidden md:inline-flex text-xs items-center px-2 py-1 bg-yellow-400 text-slate-800 font-poppins rounded-2xl hover:bg-yellow-300 ml-7"
+                    >
+                      Become an Artist
+                      <ArrowForwardIcon />
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="pr-4 md:pr-10">
-            <img
-              src={user.avatar}
-              alt={user.name}
-              className="w-24 h-24 md:w-44 md:h-44 rounded-full border-4 border-gray-700 shadow-md"
-            />
-          </div>
+            <div className="pr-4 md:pr-10">
+              <img
+                src={user.avatar}
+                alt={user.name}
+                className="w-24 h-24 md:w-44 md:h-44 rounded-full border-4 border-gray-700 shadow-md"
+              />
+            </div>
 
-          {/* Meaty part - Meteor effect */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <Meteors number={20} />
+            {/* Meaty part - Meteor effect */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              <Meteors number={20} />
+            </div>
           </div>
         </div>
-      </div>
 
-      {
-        user.email==="teampratibimb@admin.com" &&(
-          <motion.button
-          whileTap={{ scale: 0.95 }}
-          onClick={() => navigate("/admin-dashboard")}
-          className="w-full  bg-red-500 text-white py-1 px-2 rounded-xl text-sm shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
-        >
-          Go to Admin Routes
+        {
+          user.email === "teampratibimb@admin.com" && (
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              onClick={() => navigate("/admin-dashboard")}
+              className="w-full  bg-red-500 text-white py-1 px-2 rounded-xl text-sm shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
+            >
+              Go to Admin Routes
 
-        </motion.button>
-        )
-      }
+            </motion.button>
+          )
+        }
 
-      <div className="md:hidden mt-2 flex justify-between px-2 gap-2">
-        <div>
-          <button
-            onClick={scrollToPerks}
-            className="text-xs px-2 py-1 md:px-4 md:py-2 bg-yellow-400 text-slate-800  rounded-2xl hover:bg-yellow-300"
-          >
-            Claim your membership now
-            <ArrowForwardIcon />
-          </button>
-        </div>
-        {!user.is_artist && (
+        <div className="md:hidden mt-2 flex justify-between px-2 gap-2">
           <div>
             <button
-              onClick={() => navigate("/art-community")}
-              className="text-xs px-2 py-1 md:px-4 md:py-2 bg-yellow-400 text-slate-800 rounded-2xl hover:bg-yellow-300"
+              onClick={scrollToPerks}
+              className="text-xs px-2 py-1 md:px-4 md:py-2 bg-yellow-400 text-slate-800  rounded-2xl hover:bg-yellow-300"
             >
-              Become an Artist
+              Claim your membership now
               <ArrowForwardIcon />
             </button>
           </div>
-        )}
-      </div>
-
-      <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
-
-      <div className="mt-4 px-2 py-2">
-        <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins">
-          Your Event Ticket
+          {!user.is_artist && (
+            <div>
+              <button
+                onClick={() => navigate("/art-community")}
+                className="text-xs px-2 py-1 md:px-4 md:py-2 bg-yellow-400 text-slate-800 rounded-2xl hover:bg-yellow-300"
+              >
+                Become an Artist
+                <ArrowForwardIcon />
+              </button>
+            </div>
+          )}
         </div>
-        {Object.keys(eventTicketData).length === 0 || eventTicketData?.payment_status === "PENDING" ? (
-          <>
-            <div className="mt-2 text-slate-500 text-xs md:text-xl px-4 font-poppins">
-              Visit the event Page to register for a event.
-              <br />
-              {/* <Link to='/terms-and-conditions' >
+
+        <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
+
+        <div className="mt-4 px-2 py-2">
+          <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins">
+            Your Event Ticket
+          </div>
+          {Object.keys(eventTicketData).length === 0 || eventTicketData?.payment_status === "PENDING" ? (
+            <>
+              <div className="mt-2 text-slate-500 text-xs md:text-xl px-4 font-poppins">
+                Visit the event Page to register for a event.
+                <br />
+                {/* <Link to='/terms-and-conditions' >
               <div className="mt-2 text-slate-500 text-xs md:text-lg hover:underline font-poppins">
                 Our Terms and Conditions
               </div>
               </Link> */}
-              <motion.button
-                whileTap={{ scale: 0.95 }}
-                // onClick={handleOpen}
-                onClick={() => navigate("/upcoming-event-page")}
-                className="mt-2 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-1 md:py-2 px-2 md:px-4 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
+                <motion.button
+                  whileTap={{ scale: 0.95 }}
+                  // onClick={handleOpen}
+                  onClick={() => navigate("/upcoming-event-page")}
+                  className="mt-2 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-1 md:py-2 px-2 md:px-4 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
+                >
+                  Go to Event Page
+                </motion.button>
+              </div>
+              <img
+                src="https://res.cloudinary.com/dhy548whh/image/upload/v1739046843/ticket_md08pw.png"
+                className="mt-4 blur-sm w-[80%] md:w-[60%] mx-auto"
+                alt="image"
+              />
+            </>
+          ) : (
+            <>
+              <Ticket eventTicketData={eventTicketData} />
+              <div className="flex justify-center">
+                <button
+                  onClick={downloadTicket}
+                  className="w-36 font-bold bg-gradient-to-r from-slate-600 to-slate-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-500 transition"
+                  disabled={loading2}
+                >
+                  {loading2 ? (
+                    <CircularProgress size={18} color="inherit" />
+                  ) : (
+                    <span>
+                      Download <FileDownloadIcon />
+                    </span>
+                  )}
+                </button>
+              </div>
+
+              <div
+                id="ticket"
+                style={{
+                  position: "absolute",
+                  top: "-9999px", // Move it far off-screen
+                  left: "-9999px",
+                }}
               >
-                Go to Event Page
-              </motion.button>
-            </div>
-            <img
-              src="/ticket.png"
-              className="mt-4 blur-sm w-[80%] md:w-[60%] mx-auto"
-              alt="image"
-            />
-          </>
-        ) : (
-          <>
-            <Ticket eventTicketData={eventTicketData} />
-            <div className="flex justify-center">
-              <button
-                onClick={downloadTicket}
-                className="w-36 font-bold bg-gradient-to-r from-slate-600 to-slate-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-500 transition"
-                disabled={loading2}
-              >
-                {loading2 ? (
-                  <CircularProgress size={18} color="inherit" />
-                ) : (
-                  <span>
-                    Download <FileDownloadIcon />
-                  </span>
-                )}
-              </button>
-            </div>
-
-            <div
-              id="ticket"
-              style={{
-                position: "absolute",
-                top: "-9999px", // Move it far off-screen
-                left: "-9999px",
-              }}
-            >
-              <Ticketorg eventTicketData={eventTicketData} />
-            </div>
-          </>
-        )}
-      </div>
-
-      <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
-
-      <div className="mt-4 px-2 py-2">
-        <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins">
-          Claim your Certificate
+                <Ticketorg eventTicketData={eventTicketData} />
+              </div>
+            </>
+          )}
         </div>
-        <div className="relative">
-          {/* Blurred Image */}
-          <img
-            src="/certificatetemplate.png"
-            alt="template"
-            className="mt-4 blur-sm w-[50%] md:w-[40%] mx-auto"
-          />
-          {/* Overlay Button */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            {Object.keys(eventTicketData).length === 0 ||eventTicketData.is_attended ===false ? (
-              <button
-                className="px-2 md:px-6 py-1 md:py-2 bg-slate-800 text-slate-200 rounded-xl text-sm "
-                onClick={handleOpen2}
-                disabled={loading}
-              >
-                {loading ? (
-                  <CircularProgress size={18} color="inherit" />
-                ) : (
-                  <span>
-                    Download <FileDownloadIcon />
-                  </span>
-                )}
-              </button>
-            ) : (
-              <button
-                className="w-36 px-2 md:px-6 py-1 md:py-2 bg-slate-800 text-slate-200 rounded-xl text-sm "
-                onClick={downloadCertificate}
-                disabled={loading}
-              >
-                {loading ? (
-                  <CircularProgress size={18} color="inherit" />
-                ) : (
-                  <span>
-                    Download <FileDownloadIcon />
-                  </span>
-                )}
-              </button>
-            )}
+
+        <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
+
+        <div className="mt-4 px-2 py-2">
+          <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins">
+            Claim your Certificate
+          </div>
+          <div className="relative">
+            {/* Blurred Image */}
+            <img
+              src="https://res.cloudinary.com/dhy548whh/image/upload/v1739046842/certificatetemplate_nvowmm.png"
+              alt="template"
+              className="mt-4 blur-sm w-[50%] md:w-[40%] mx-auto"
+            />
+            {/* Overlay Button */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              {Object.keys(eventTicketData).length === 0 || eventTicketData.is_attended === false ? (
+                <button
+                  className="px-2 md:px-6 py-1 md:py-2 bg-slate-800 text-slate-200 rounded-xl text-sm "
+                  onClick={handleOpen2}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <CircularProgress size={18} color="inherit" />
+                  ) : (
+                    <span>
+                      Download <FileDownloadIcon />
+                    </span>
+                  )}
+                </button>
+              ) : (
+                <button
+                  className="w-36 px-2 md:px-6 py-1 md:py-2 bg-slate-800 text-slate-200 rounded-xl text-sm "
+                  onClick={downloadCertificate}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <CircularProgress size={18} color="inherit" />
+                  ) : (
+                    <span>
+                      Download <FileDownloadIcon />
+                    </span>
+                  )}
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div
+            id="certificate"
+            style={{
+              position: "absolute",
+              top: "-9999px", // Move it far off-screen
+              left: "-9999px",
+            }}
+          >
+            <Certificate user={user} />
           </div>
         </div>
 
-        <div
-          id="certificate"
-          style={{
-            position: "absolute",
-            top: "-9999px", // Move it far off-screen
-            left: "-9999px",
-          }}
-        >
-          <Certificate user={user} />
+        <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
+
+        <div className="mt-4 px-2 py-2">
+          <div
+            ref={perks}
+            className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins"
+          >
+            Membership Perks
+          </div>
+
+          <div className="mt-4 px-4 py-1 bg-slate-900 rounded-lg md:px-8">
+            <ul className="mt-6 space-y-4 text-sm md:text-base text-slate-400 font-poppins ">
+              <li>
+                <span className="font-medium text-white">
+                  Lifetime Membership
+                </span>{" "}
+                – No renewals, valid forever!
+              </li>
+              <li>
+                <span className="font-medium text-white">Free Event Access</span>{" "}
+                – Participate in events without extra registration costs.
+              </li>
+              <li>
+                <span className="font-medium text-white">Auto Fee Deduction</span>{" "}
+                – Event/workshop fees are automatically discounted when registered
+                via the website.
+              </li>
+              <li>
+                <span className="font-medium text-white">Join the Club</span> –
+                First step to being recognized as a club member.
+              </li>
+              <li>
+                <span className="font-medium text-white">All for ₹150</span> –
+                One-time fee for lifelong benefits!
+              </li>
+            </ul>
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              onClick={handleOpen}
+              className="my-4 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-1 md:py-2 md:px-4 px-2 rounded-full shadow-lg text-sm font-poppins transition duration-300 hover:opacity-90 hover:shadow-2xl"
+            >
+              Become a Member
+              <ArrowForwardIcon />
+            </motion.button>
+          </div>
         </div>
-      </div>
 
-      <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
+        <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
 
-      <div className="mt-4 px-2 py-2">
-        <div
-          ref={perks}
-          className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins"
-        >
-          Membership Perks
+        <div className="mt-4 px-2 py-2 md:hidden">
+          <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins">
+            Our Terms and Conditions
+          </div>
+
+          <div className="mt-2 text-slate-500 text-xs md:text-xl px-4 font-poppins">
+            Visit the Terms and Conditions Page before registering for an event.
+            <br />
+            {/* <Link to='/terms-and-conditions' >
+              <div className="mt-2 text-slate-500 text-xs md:text-lg hover:underline font-poppins">
+                Our Terms and Conditions
+              </div>
+              </Link> */}
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+
+              onClick={() => navigate("/terms-and-conditions")}
+              className="mt-4 text-xs  bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-1 md:py-2 px-2 md:px-4 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl "
+            >
+              Go to Page
+            </motion.button>
+          </div>
+
+
+        </div>
+        <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
+
+        <div className="mt-4 px-2 py-2">
+          <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins">
+            Features in Next Version(1.1.0)
+          </div>
+          <div className="mt-2 flex flex-col gap-4 font-poppins text-base md:text-lg">
+            <div className="bg-slate-200 px-4 py-2 rounded-2xl">
+              <div className="text-slate-700 font-medium">
+                Website Access for all
+              </div>
+              <div className="text-slate-600 text-xs md:text-base">
+                The website will now be open to everyone, making it accessible to
+                a broader audience.
+              </div>
+            </div>
+
+            <div className="bg-slate-200 px-4 py-2 rounded-2xl">
+              <div className="text-slate-700 font-medium">
+                Online Membership Registration
+              </div>
+              <div className="text-slate-600 text-xs md:text-base">
+                Users can seamlessly register for membership directly through the
+                website, ensuring a smooth and hassle-free process.
+              </div>
+            </div>
+          </div>
+
+
         </div>
 
-        <div className="mt-4 px-4 py-1 bg-slate-900 rounded-lg md:px-8">
-          <ul className="mt-6 space-y-4 text-sm md:text-base text-slate-400 font-poppins ">
-            <li>
-              <span className="font-medium text-white">
-                Lifetime Membership
-              </span>{" "}
-              – No renewals, valid forever!
-            </li>
-            <li>
-              <span className="font-medium text-white">Free Event Access</span>{" "}
-              – Participate in events without extra registration costs.
-            </li>
-            <li>
-              <span className="font-medium text-white">Auto Fee Deduction</span>{" "}
-              – Event/workshop fees are automatically discounted when registered
-              via the website.
-            </li>
-            <li>
-              <span className="font-medium text-white">Join the Club</span> –
-              First step to being recognized as a club member.
-            </li>
-            <li>
-              <span className="font-medium text-white">All for ₹150</span> –
-              One-time fee for lifelong benefits!
-            </li>
-          </ul>
+
+
+        <div className="md:hidden px-10 mt-6" >
           <motion.button
             whileTap={{ scale: 0.95 }}
-            onClick={handleOpen}
-            className="my-4 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-1 md:py-2 md:px-4 px-2 rounded-full shadow-lg text-sm font-poppins transition duration-300 hover:opacity-90 hover:shadow-2xl"
+            onClick={handleLogout}
+            className="w-full  bg-red-500 text-white py-1 px-2 rounded-xl text-sm shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
           >
-            Become a Member
-            <ArrowForwardIcon />
+            Signout<Logout className="ml-2" />
+
           </motion.button>
         </div>
-      </div>
-
-      <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
-
-      <div className="mt-4 px-2 py-2 md:hidden">
-        <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins">
-         Our Terms and Conditions
-        </div>
-       
-        <div className="mt-2 text-slate-500 text-xs md:text-xl px-4 font-poppins">
-              Visit the Terms and Conditions Page before registering for an event.
-              <br/>
-              {/* <Link to='/terms-and-conditions' >
-              <div className="mt-2 text-slate-500 text-xs md:text-lg hover:underline font-poppins">
-                Our Terms and Conditions
-              </div>
-              </Link> */}
-              <motion.button
-                whileTap={{ scale: 0.95 }}
-                
-                onClick={() => navigate("/terms-and-conditions")}
-                className="mt-4 text-xs  bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-1 md:py-2 px-2 md:px-4 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl "
-              >
-                Go to Page
-              </motion.button>
-            </div>
 
 
-      </div>
-      <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
-
-      <div className="mt-4 px-2 py-2">
-        <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins">
-          Features in Next Version(1.1.0)
-        </div>
-        <div className="mt-2 flex flex-col gap-4 font-poppins text-base md:text-lg">
-          <div className="bg-slate-200 px-4 py-2 rounded-2xl">
-            <div className="text-slate-700 font-medium">
-              Website Access for all
-            </div>
-            <div className="text-slate-600 text-xs md:text-base">
-              The website will now be open to everyone, making it accessible to
-              a broader audience.
-            </div>
+        <Backdrop
+          sx={(theme) => ({
+            color: "#fff",
+            zIndex: theme.zIndex.drawer + 1,
+          })}
+          open={open}
+          onClick={handleClose}
+        >
+          <div onClick={(e) => e.stopPropagation()}>
+            <Membershiptrial />
           </div>
-
-          <div className="bg-slate-200 px-4 py-2 rounded-2xl">
-            <div className="text-slate-700 font-medium">
-              Online Membership Registration
-            </div>
-            <div className="text-slate-600 text-xs md:text-base">
-              Users can seamlessly register for membership directly through the
-              website, ensuring a smooth and hassle-free process.
-            </div>
+        </Backdrop>
+        <Backdrop
+          sx={(theme) => ({
+            color: "#fff",
+            zIndex: theme.zIndex.drawer + 1,
+          })}
+          open={open2}
+          onClick={handleClose2}
+        >
+          <div onClick={(e) => e.stopPropagation()}>
+            <Certificatetrial />
           </div>
-        </div>
-      
-
+        </Backdrop>
       </div>
-
-
-
-      <div className="md:hidden px-10 mt-6" >
-        <motion.button
-                whileTap={{ scale: 0.95 }}
-                onClick={handleLogout}
-                className="w-full  bg-red-500 text-white py-1 px-2 rounded-xl text-sm shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
-              >
-                Signout<Logout  className="ml-2" />
-
-              </motion.button>
-        </div>
-
-
-      <Backdrop
-        sx={(theme) => ({
-          color: "#fff",
-          zIndex: theme.zIndex.drawer + 1,
-        })}
-        open={open}
-        onClick={handleClose}
-      >
-        <div onClick={(e) => e.stopPropagation()}>
-          <Membershiptrial />
-        </div>
-      </Backdrop>
-      <Backdrop
-        sx={(theme) => ({
-          color: "#fff",
-          zIndex: theme.zIndex.drawer + 1,
-        })}
-        open={open2}
-        onClick={handleClose2}
-      >
-        <div onClick={(e) => e.stopPropagation()}>
-          <Certificatetrial />
-        </div>
-      </Backdrop>
-    </div>
     </div>
   );
 }

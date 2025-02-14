@@ -18,6 +18,8 @@ import UpcomingEventNotReleased from "./../components/general/UpcomingEventNotRe
 import ModernCarousel from "../components/general/ModernCarousel";
 import SocialHandles from "../components/general/SocialHandles";
 import { countUsers } from "../service/api";
+import { Helmet } from "react-helmet-async";
+import { toast } from "sonner";
 
 const people = [
   {
@@ -25,7 +27,7 @@ const people = [
     name: "Vibhuti Baldva",
     designation: "UI Designer",
     image:
-      "/vibhuti.jpg",
+      "https://res.cloudinary.com/dhy548whh/image/upload/v1739046848/vibhuti_xnur6n.jpg",
   },
 
   {
@@ -67,11 +69,11 @@ const images = [
 export default function Home({ carouselRef, latestRef, scrollToLatest }) {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
-  const [websiteUserTarget, setWebsiteUserTarget] = useState(0); 
+  const [websiteUserTarget, setWebsiteUserTarget] = useState(0);
   const { token } = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {
-    
+
     const fetchUserCount = async () => {
       if (!token) {
         console.error("No token found. Please authenticate.");
@@ -80,9 +82,10 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
       const response = await countUsers(token);
       
       if (response.success) {
-          setWebsiteUserTarget(response.data); 
-          
+        setWebsiteUserTarget(response.data);
+
       } else {
+        toast.error(response?.message);
         console.error("Failed to fetch user count:", response.error);
       }
     };
@@ -96,12 +99,12 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
       avatarSrc: "",
     },
     {
-      target: 3536,
+      target: 3551,
       avatarSrc:
         "https://res.cloudinary.com/dhy548whh/image/upload/v1733923563/tpuqqhg73ccx2cbs6ccq.png",
     },
-    { target: 3167, avatarSrc: "/facebook.png" },
-    { target: 537, avatarSrc: "/linkedin.png" },
+    { target: 3167, avatarSrc: "https://res.cloudinary.com/dhy548whh/image/upload/v1739046840/facebook_gndrmo.png" },
+    { target: 537, avatarSrc: "https://res.cloudinary.com/dhy548whh/image/upload/v1739046840/linkedin_pvjomm.png" },
     {
       target: 113,
       avatarSrc:
@@ -261,7 +264,7 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
       </div>
       <div className="mt-2  text-sm mx-12 md:text-base text-slate-500 text-center">
         Crafted with love and some coffee and constantly improved by @teampratibimb
-       
+
       </div>
       <div className="fixed bottom-4 right-4 hidden md:block">
         <CoolMode>
@@ -281,8 +284,8 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
         onClick={handleClose}
       >
         <div onClick={(e) => e.stopPropagation()}>
-          <VolunteerForm setOpen={setOpen} />
-          {/* <VolunteerFormClosed /> */}
+          {/* <VolunteerForm setOpen={setOpen} /> */}
+          <VolunteerFormClosed />
         </div>
       </Backdrop>
 
@@ -295,7 +298,6 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
         onClick={handleClose2}
       >
         <div onClick={(e) => e.stopPropagation()}>
-          {/* <VolunteerForm setOpen={setOpen} /> */}
           <UpcomingEventNotReleased />
         </div>
       </Backdrop>

@@ -15,7 +15,7 @@ const testimonials = [
     designation: "Mentor, Club Pratibimb",
   },
   {
-    src: "/paswan.jpg",
+    src: "https://res.cloudinary.com/dhy548whh/image/upload/v1739046842/paswan_uqsbom.jpg",
     quote: `Mentoring Club Pratibimb has been an incredibly fulfilling journey, witnessing the creativity and passion of its members grow.`,
     name: "Prof. Suresh Paswan",
     designation: "Mentor, Club Pratibimb",

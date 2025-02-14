@@ -64,13 +64,13 @@ export default function MiniPratibimb() {
         </div>
       </div>
 
-      <div className="mb-2 mt-6 bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-2xl text-center font-medium tracking-tight text-transparent md:text-4xl font-poppins">
+      <div className="mb-2 mt-6 bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-xl text-center font-medium tracking-tight text-transparent md:text-4xl font-poppins">
         Photography Workshop at <br /> Choithram School <br />{" "}
-        <span className="text-2xl font-sans"> 05.11.22</span>
+        <span className="text-lg md:text-2xl font-sans"> 05.11.22</span>
       </div>
       <div className="flex flex-col md:flex-row w-full justify-between">
         <div className="flex-1 flex justify-center">
-          <img src="/mini3_1.png" alt="image" className="w-[40%] rounded-xl" />
+          <img src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1739537257/mini3_1_ihgakt.png" alt="image" className="w-[40%] rounded-xl" />
         </div>
         <div className="flex-1 my-auto text-center md:text-left m-12 md:mr-24 text-base md:text-neutral-700 md:text-lg opacity-70">
           <span className="hidden md:block">

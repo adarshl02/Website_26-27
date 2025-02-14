@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import PastEvents from "../components/general/EventsComponent/PastEvents";
 import MiniPratibimb from "../components/general/EventsComponent/MiniPratibimb";
 import Flagship from './../components/general/EventsComponent/Flagship';
+import { Helmet } from "react-helmet-async";
 
 export default function Events() {
   const [selectedOption, setSelectedOption] = useState("Overnight Events");
@@ -16,6 +17,12 @@ export default function Events() {
 
   return (
     <div className="py-2 md:mt-20">
+      <Helmet>
+        <title>Events | Pratibimb</title>
+        <meta name="description" content="Explore PRATIBIMB's events at SGSITS, Indore: Overnight events, Past events, and MiniPratibimb with exciting aftermovies." />
+        <link rel="canonical" href="https://www.clubpratibimb.com/events" />
+      </Helmet>
+
       <div className="md:hidden text-center py-2  bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-4xl font-medium tracking-tight text-transparent  font-poppins">
         Archives
       </div>
@@ -35,11 +42,10 @@ export default function Events() {
               onChange={handleOptionChange}
             />
             <label
-              className={`btn font-bold text-sm md:text-base cursor-pointer px-2 md:px-4 py-1 md:py-2 rounded-lg flex items-center transition duration-300 ${
-                selectedOption === option
+              className={`btn font-bold text-sm md:text-base cursor-pointer px-2 md:px-4 py-1 md:py-2 rounded-lg flex items-center transition duration-300 ${selectedOption === option
                   ? "bg-cyan-500 text-white border-2 border-cyan-500"
                   : "bg-white text-cyan-800 border-2 border-opacity-50 border-cyan-500 hover:text-white hover:bg-cyan-500"
-              }`}
+                }`}
               htmlFor={option}
             >
               {option}

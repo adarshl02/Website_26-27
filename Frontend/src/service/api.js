@@ -4,8 +4,9 @@ const URL = import.meta.env.VITE_URL;
 
 
 const handleApiError = (error, apiName) => {
-  const errorMsg = error.response?.data?.errors.detail || error.message || 'An unexpected error occurred';
- 
+  
+  const errorMsg = error.response?.data?.errors?.detail ||  error.response?.data?.message || error?.message || 'An unexpected error occurred';
+  
   return { success: false, message: errorMsg, status: error.response?.status };
 };
 
@@ -57,7 +58,7 @@ export const registerEvent = async (data,token) => {
     const { event_id, ...payload } = data;
     const response = await axios.post(`${URL}/api/register?event_id=${event_id}`, payload, {
       headers: {
-       "Authorization": `${token}`,  // Include token in the headers
+       "Authorization": `${token}`, 
       },
     });
     return { success: true, data: response.data };

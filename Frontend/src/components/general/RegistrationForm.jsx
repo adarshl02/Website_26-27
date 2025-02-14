@@ -146,6 +146,7 @@ const RegistrationForm = ({ event_id , setOpen }) => {
               Team Lead Name
             </label>
             <input
+            maxLength={20}
               type="text"
               id="name"
               value={formData.name}
@@ -164,6 +165,8 @@ const RegistrationForm = ({ event_id , setOpen }) => {
             <input
               type="tel"
               id="phone"
+               pattern="^\d{10}$"
+              title="Phone number must be exactly 10 digits"
               value={formData.phone}
               className="w-full px-4 py-1.5 md:py-2 border-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 
               md:text-base text-sm"                  placeholder="Your Phone Number"
@@ -177,6 +180,7 @@ const RegistrationForm = ({ event_id , setOpen }) => {
               Team Name
             </label>
             <input
+            maxLength={20}
               type="text"
               id="teamName"
               value={formData.teamName}

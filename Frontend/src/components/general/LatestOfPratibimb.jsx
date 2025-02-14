@@ -32,7 +32,7 @@ const LatestOfPratibimb = ({ handleOpen,handleOpen2 }) => {
       {/* Card 1 */}
       <div className="bg-gray-900 p-4 md:p-6 rounded-lg shadow-2xl border-2 border-gradient-to-r from-blue-500 via-purple-600 to-pink-500 flex flex-col items-center text-center">
         <img
-          src="pixshala_poster.png"
+          src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1739539598/question_d5fw6u.jpg"
           alt="Upcoming Event"
           className="w-44 h-44 object-cover rounded-md mb-4 shadow-lg"
         />
@@ -47,8 +47,8 @@ const LatestOfPratibimb = ({ handleOpen,handleOpen2 }) => {
           </div>
           <motion.button
             whileTap={{ scale: 0.95 }}
-            // onClick={handleOpen2}
-            onClick={() => navigate("/upcoming-event-page")}
+            onClick={handleOpen2}
+            // onClick={() => navigate("/upcoming-event-page")}
             className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white py-2 px-4 rounded-full shadow-2xl font-bold transition duration-300 hover:opacity-90 hover:shadow-2xl"
           >
             Explore More <ArrowForwardIcon />
@@ -59,17 +59,17 @@ const LatestOfPratibimb = ({ handleOpen,handleOpen2 }) => {
       {/* Card 2 */}
       <div className="bg-gray-800 p-4 md:p-6 rounded-lg shadow-lg flex flex-col items-center text-center">
         <img
-          src="https://res.cloudinary.com/dhy548whh/image/upload/v1734195232/fnwxjpfe99cxoqvg4ri1.png"
+          src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1739537935/IQAC_POSTER_FINAL_a3ox4i.png"
           alt="Calling Volunteers"
           className="w-40 h-40 object-cover rounded-md mb-4"
         />
         <div className="text-xl font-bold mb-1 md:mb-2 font-display">
-          Calling Volunteers
+          IQAC Logo Competition
         </div>
         <div className="text-gray-400 text-sm mb-2 md:mb-4">
-          Join hands to bring the biggest Art event to life. <br />
+        Participate in the logo design competition and showcase your creativity. <br />
           <span className="text-slate-400 font-medium opacity-75">
-            Recruitment Date: 13 Dec, 2024
+             Date: 17 Jan, 2025
           </span>
           <br /> <br />
           <motion.button

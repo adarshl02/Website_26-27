@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { TeamCard } from "../components/general/TeamCard";
+import { Helmet } from "react-helmet-async";
 
 export default function Team() {
   const [selectedOption, setSelectedOption] = useState("Executives");
@@ -101,7 +102,7 @@ export default function Team() {
   const teamBatch2025 = [
     {
       name: "Abbas Ujjainwala",
-      image: "/Abbas_Sir.png",
+      image: "https://res.cloudinary.com/dhy548whh/image/upload/v1739046844/Abbas_Sir_vijbia.png",
     },
     {
       name: "Divyanshi Rawat",
@@ -344,39 +345,45 @@ export default function Team() {
 
   return (
     <div className="py-2 md:mt-20">
-      
-    <div className="md:hidden text-center py-2  bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-4xl font-medium tracking-tight text-transparent  font-poppins">
-     Our Team
-    </div>
+      <Helmet>
+        <title>Our Team | Pratibimb</title>
+        <meta name="description" content="Meet the team behind PRATIBIMB at SGSITS, Indore: Advisory Board, Executives, and Coordinators driving our art and photography community." />
+        <link rel="canonical" href="https://www.clubpratibimb.com/team" />
+      </Helmet>
 
-    {/* Radio Button Group */}
-    <div className=" flex w-full flex-wrap justify-center space-x-2 md:space-x-8 mb-4">
+
+      <div className="md:hidden text-center py-2  bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-4xl font-medium tracking-tight text-transparent  font-poppins">
+        Our Team
+      </div>
+
+      {/* Radio Button Group */}
+      <div className=" flex w-full flex-wrap justify-center space-x-2 md:space-x-8 mb-4">
       {["Advisory Board","Executives","Coordinators"].map((option) => (
-        <div key={option}>
-          <input
-            type="radio"
-            className="btn-check hidden"
-            name="eventOptions"
-            id={option}
-            value={option}
-            autoComplete="off"
-            checked={selectedOption === option}
-            onChange={handleOptionChange}
-          />
-          <label
+          <div key={option}>
+            <input
+              type="radio"
+              className="btn-check hidden"
+              name="eventOptions"
+              id={option}
+              value={option}
+              autoComplete="off"
+              checked={selectedOption === option}
+              onChange={handleOptionChange}
+            />
+            <label
             className={`btn font-bold text-sm md:text-base cursor-pointer px-2 md:px-4 py-1 md:py-2 rounded-lg flex items-center transition duration-300 ${
               selectedOption === option
-                ? "bg-cyan-500 text-white border-2 border-cyan-500"
-                : "bg-white text-cyan-800 border-2 border-opacity-50 border-cyan-500 hover:text-white hover:bg-cyan-500"
-            }`}
-            htmlFor={option}
-          >
-            {option}
-          </label>
-        </div>
-      ))}
-    </div>
-    
+                  ? "bg-cyan-500 text-white border-2 border-cyan-500"
+                  : "bg-white text-cyan-800 border-2 border-opacity-50 border-cyan-500 hover:text-white hover:bg-cyan-500"
+                }`}
+              htmlFor={option}
+            >
+              {option}
+            </label>
+          </div>
+        ))}
+      </div>
+
       {/* Scrollable Team Section */}
       <div className="pt-4 rounded-2xl pb-12 overflow-y-auto h-screen bg-gradient-to-r from-slate-950 to-slate-800">
         {selectedOption === "Advisory Board" && (
@@ -403,5 +410,5 @@ export default function Team() {
       </div>
     </div>
   );
-  
+
 }

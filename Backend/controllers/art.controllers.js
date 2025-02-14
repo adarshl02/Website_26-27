@@ -41,6 +41,12 @@ const artCommunity = async (req, res) => {
 
     await sendEmailForArtist(email, name);
 
+    const existingUser = await db("users").where({ email }).first();
+    
+    if (!existingUser.is_artist) {
+      await db("users").update({ is_artist: true }).where({ email });
+    }
+
     return res.status(200).json({
       message: "Image and details uploaded successfully",
       data: insertedData,

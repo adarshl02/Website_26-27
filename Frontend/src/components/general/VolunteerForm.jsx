@@ -99,6 +99,7 @@ const VolunteerForm = ({ setOpen }) => {
         <div className="text-gray-800">
           <label className="block  text-gray-600 mb-1">Name</label>
           <input
+          maxLength={20}
             type="text"
             name="name"
             value={formData.name}
@@ -110,6 +111,8 @@ const VolunteerForm = ({ setOpen }) => {
         <div className="text-gray-800 text-sm md:text-base">
           <label className="block text-gray-600 mb-1">Phone</label>
           <input
+           pattern="^\d{10}$"
+          title="Phone number must be exactly 10 digits"
             type="text"
             name="phone"
             value={formData.phone}
