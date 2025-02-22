@@ -165,6 +165,8 @@ const registerEvents = async (req, res) => {
       sixth_participant,
       seventh_participant,
       eight_participant,
+      order_id:order.id,
+      payment_status:"PENDING"
     };
 
     let insertion = await db("attendees").insert(data).returning("*");
@@ -245,22 +247,22 @@ const paymentVerification = async (req, res) => {
       .where({ order_id: razorpay_order_id })
       .update({ payment_status: "APPROVED" });
 
-    const qrCodeData = `Order id is : ${razorpay_order_id}`;
-    const qrCodeBuffer = await QRCode.toDataURL(qrCodeData);
+    // const qrCodeData = `Order id is : ${razorpay_order_id}`;
+    // const qrCodeBuffer = await QRCode.toDataURL(qrCodeData);
 
-    const uploadedResponse = await cloudinary.uploader.upload(qrCodeBuffer, {
-      folder: "qr_codes",
-      public_id: `qr_${razorpay_order_id}`,
-      overwrite: true,
-    });
+    // const uploadedResponse = await cloudinary.uploader.upload(qrCodeBuffer, {
+    //   folder: "qr_codes",
+    //   public_id: `qr_${razorpay_order_id}`,
+    //   overwrite: true,
+    // });
 
-    if (!uploadedResponse.secure_url) {
-      return res.status(500).json({ message: "QR code upload failed" });
-    }
+    // if (!uploadedResponse.secure_url) {
+    //   return res.status(500).json({ message: "QR code upload failed" });
+    // }
 
-    await db("attendees")
-      .where({ order_id: razorpay_order_id })
-      .update({ qr_code: uploadedResponse.secure_url });
+    // await db("attendees")
+    //   .where({ order_id: razorpay_order_id })
+    //   .update({ qr_code: uploadedResponse.secure_url });
 
     const event_date = new Date(event.start_date).toLocaleDateString("en-US", {
       year: "numeric",
@@ -275,14 +277,14 @@ const paymentVerification = async (req, res) => {
       event_date,
       event.event_name,
       event.location,
-      uploadedResponse.secure_url
+      // uploadedResponse.secure_url
     );
 
     res.status(200).json({
       message: "Payment verified successfully",
       razorpay_payment_id,
       razorpay_order_id,
-      qr_code_url: uploadedResponse.secure_url,
+      // qr_code_url: uploadedResponse.secure_url,
     });
   } catch (error) {
     console.error("Payment verification error:", error);

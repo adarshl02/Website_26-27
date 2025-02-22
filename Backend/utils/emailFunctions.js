@@ -18,7 +18,7 @@ const sendEmail = async (
   event_date,
   event_name,
   event_location,
-  qr_code
+  // qr_code
 ) => {
   try {
     const templatePath = path.join(
@@ -33,7 +33,7 @@ const sendEmail = async (
       .replace("{{event_name}}", event_name)
       .replace("{{event_date}}", event_date)
       .replace("{{event_location}}", event_location)
-      .replace("{{qr_code}}",qr_code)
+      // .replace("{{qr_code}}",qr_code)
 
     const mailOptions = {
       from: '"Club Pratibimb" <teampratibimb.sgsits@gmail.com>',
