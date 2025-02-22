@@ -10,7 +10,7 @@ require("dotenv").config();
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET ,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
 const getEvents = async (req, res) => {
@@ -58,13 +58,27 @@ const getEvents = async (req, res) => {
 const registerEvents = async (req, res) => {
   try {
     const { event_id } = req.query;
-    const { team_name, team_members, name, email, phone } = req.body;
+    const {
+      team_name,
+      team_size,
+      team_leader_name,
+      team_leader_phone,
+      team_leader_email,
+      team_leader_batch,
+      team_leader_branch,
+      sec_participant,
+      third_participant,
+      fourth_participant,
+      fifth_participant,
+      sixth_participant,
+      seventh_participant,
+      eight_participant,
+    } = req.body;
 
     if (!event_id) {
-      r;
       return res
         .status(400)
-        .send(errorHandler(400, "Not Found", "Mentioned Event not found"));
+        .send(errorHandler(400, "Invalid Request", "Please Enter The Event"));
     }
 
     const eventExists = await db("events").where({ event_id }).first();
@@ -82,7 +96,15 @@ const registerEvents = async (req, res) => {
       day: "numeric",
     });
 
-    if (!team_name || !team_members || !name || !email || !phone) {
+    if (
+      !team_name ||
+      !team_size ||
+      !team_leader_name ||
+      !team_leader_phone ||
+      !team_leader_email ||
+      !team_leader_batch ||
+      !team_leader_branch
+    ) {
       return res
         .status(400)
         .send(
@@ -94,9 +116,8 @@ const registerEvents = async (req, res) => {
         );
     }
 
-    // Check if the user has already registered for the event
     const existingAttendee = await db("attendees")
-      .where({ event_id, attendee_email: email })
+      .where({ event_id, team_leader_email: email })
       .first();
     if (existingAttendee) {
       if (existingAttendee.payment_status === "APPROVED") {
@@ -109,11 +130,10 @@ const registerEvents = async (req, res) => {
               "User has already registered and paid for this event."
             )
           );
-      } 
+      }
     }
 
-
-    const amount = 5* 100;
+    const amount = 5 * 100;
 
     const options = {
       amount: amount,
@@ -132,12 +152,19 @@ const registerEvents = async (req, res) => {
     let data = {
       event_id,
       team_name,
-      team_members,
-      attendee_name: name,
-      attendee_phone: phone,
-      attendee_email: email,
-      order_id: order.id,
-      payment_status: "PENDING",
+      team_size,
+      team_leader_name,
+      team_leader_phone,
+      team_leader_email,
+      team_leader_batch,
+      team_leader_branch,
+      sec_participant,
+      third_participant,
+      fourth_participant,
+      fifth_participant,
+      sixth_participant,
+      seventh_participant,
+      eight_participant,
     };
 
     let insertion = await db("attendees").insert(data).returning("*");
@@ -183,11 +210,19 @@ const paymentVerification = async (req, res) => {
       .digest("hex");
 
     if (hash !== razorpay_signature) {
-      return res.status(400).json({ message: "Payment verification failed" });
+      return res
+        .status(400)
+        .send(
+          errorHandler(
+            400,
+            "Request Failed",
+            "Payment Verification Request Failed"
+          )
+        );
     }
 
     const attendee = await db("attendees")
-      .select("attendee_email", "attendee_name", "team_name", "event_id")
+      .select("team_leader_email", "team_leader_name", "team_name", "event_id")
       .where({
         order_id: razorpay_order_id,
         payment_status: "PENDING",
@@ -210,8 +245,8 @@ const paymentVerification = async (req, res) => {
       .where({ order_id: razorpay_order_id })
       .update({ payment_status: "APPROVED" });
 
-      const qrCodeData = `Order id is : ${razorpay_order_id}`;
-      const qrCodeBuffer = await QRCode.toDataURL(qrCodeData);
+    const qrCodeData = `Order id is : ${razorpay_order_id}`;
+    const qrCodeBuffer = await QRCode.toDataURL(qrCodeData);
 
     const uploadedResponse = await cloudinary.uploader.upload(qrCodeBuffer, {
       folder: "qr_codes",
@@ -234,8 +269,8 @@ const paymentVerification = async (req, res) => {
     });
 
     await sendEmail(
-      attendee.attendee_email,
-      attendee.attendee_name,
+      attendee.team_leader_email,
+      attendee.team_leader_name,
       attendee.team_name,
       event_date,
       event.event_name,
@@ -247,7 +282,7 @@ const paymentVerification = async (req, res) => {
       message: "Payment verified successfully",
       razorpay_payment_id,
       razorpay_order_id,
-      qr_code_url: uploadedResponse.secure_url, 
+      qr_code_url: uploadedResponse.secure_url,
     });
   } catch (error) {
     console.error("Payment verification error:", error);
@@ -257,7 +292,6 @@ const paymentVerification = async (req, res) => {
 
 const getEventTicket = async (req, res) => {
   try {
-    
     const { email } = req.query;
     if (!email) {
       return res
@@ -265,14 +299,12 @@ const getEventTicket = async (req, res) => {
         .send(errorHandler(400, "Invalid Request", "Please enter the email"));
     }
     let selection = await db("attendees").select("*").where({
-      attendee_email: email,
-       payment_status: "APPROVED",
+      team_leader_email: email,
+      payment_status: "APPROVED",
     });
-    
+
     if (selection.length == 0) {
-      return res
-        .status(204)
-        .json({ message: "Not Registered for the event." });
+      return res.status(204).json({ message: "Not Registered for the event." });
     }
     return res.status(200).send({
       response: {
