@@ -21,6 +21,7 @@ exports.up = function (knex) {
       table.enum("payment_status", ["PENDING", "APPROVED"]);
       table.text("qr_code");
       table.boolean("is_attended").defaultTo(false);
+      
       table.timestamps(true, true);
     });
   };

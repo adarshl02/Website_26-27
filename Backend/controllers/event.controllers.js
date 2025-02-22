@@ -45,7 +45,7 @@ const getEvents = async (req, res) => {
     console.log("Error in fetching events", "---------------->", error);
     return res
       .status(500)
-      .json(
+      .send(
         errorHandler(
           500,
           "Internal Server Error",
@@ -321,9 +321,40 @@ const getEventTicket = async (req, res) => {
   }
 };
 
+const getAttendee = async (req, res) => {
+  try {
+    const { team_leader_email } = req.body;
+
+    if (!team_leader_email) {
+      return res.status(400).send(errorHandler(400, "Invalid Request", "Please Enter The Team Leader Email"));
+    }
+
+    const attendee = await db("attendees").where({ team_leader_email }).first();
+
+    if (!attendee) {
+      return res.status(404).send(errorHandler(404, "Not Found", "Team With The Following Credentials Not Found"));
+    }
+
+    const statusMessages = {
+      PENDING: { title: "Status Is Pending", message: "Please Wait, Your Artwork Is Under Review" },
+      REJECTED: { title: "Status Is Rejected", message: "Oh ho, Sorry Your Artwork Has Been Rejected By Our Experts" },
+      APPROVED: { title: "Status Is Approved", message: "Woho! Your Artwork Has Been Approved By Our Experts" },
+    };
+
+    return res.status(200).send({ response: statusMessages[attendee.team_status] });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send(errorHandler(500, "Internal Server Error", "Server Error While Fetching Attendees"));
+  }
+};
+
+
+
 module.exports = {
   getEvents,
   registerEvents,
   paymentVerification,
   getEventTicket,
+  getAttendee
 };

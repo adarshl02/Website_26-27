@@ -4,14 +4,16 @@ const {
   registerEvents,
   paymentVerification,
   getEventTicket,
+  getAttendee,
 } = require("../controllers/event.controllers.js");
 const { verifyToken } = require("../utils/verifyUser.js");
 
 const router = Router();
 
-router.route("/get/events").get(verifyToken,getEvents);
-router.route("/register/").post(verifyToken,registerEvents);
-router.route("/payment/verify").post(verifyToken,paymentVerification);
-router.route("/get/event-ticket").get(verifyToken,getEventTicket);
+router.route("/get/events").get(verifyToken, getEvents);
+router.route("/register/").post(verifyToken, registerEvents);
+router.route("/payment/verify").post(verifyToken, paymentVerification);
+router.route("/get/event-ticket").get(verifyToken, getEventTicket);
+router.route("/get/attendee").get(verifyToken, getAttendee);
 
 module.exports = router;
