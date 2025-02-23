@@ -215,6 +215,7 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef,s
                 </motion.div>
               }
             />
+            
           </Route>
   
           <Route
