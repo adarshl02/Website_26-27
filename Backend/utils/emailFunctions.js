@@ -111,7 +111,6 @@ const sendEmailForArtist = async (email, name) => {
 
 module.exports = {
   sendEmail,
-  sendEmailForVolunteering,
   sendWelcomeEmail,
   sendEmailForArtist,
   sendEmailForArtWork
