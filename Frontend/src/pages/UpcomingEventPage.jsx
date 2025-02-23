@@ -74,7 +74,7 @@ const UpcomingEventPage = () => {
           <img
             src="graffathon25poster.png"
             alt="Upcoming Event Poster"
-            className="w-full max-w-sm object-cover rounded-lg shadow-lg"
+            className="w-full object-cover rounded-lg shadow-lg"
           />
         </div>
 
@@ -90,7 +90,7 @@ const UpcomingEventPage = () => {
             <li>⏰ <b>Time:</b> <span className="text-gray-400">9 AM onwards</span></li>
             <li>📍 <b>Venue:</b> <span className="text-gray-400">Electrical and Mechanical Garden, SGSITS, Indore</span></li>
             <li>👥 <b>Team Size:</b> <span className="text-gray-400">6-8 members</span></li>
-            <li>💰 <b>Registration Fee:</b> <span className="text-gray-400">₹99 (Kit cost = ₹699)</span></li>
+            <li>💰 <b>Registration Fee:</b> <span className="text-gray-400">₹99 (excluding kit cost)</span></li>
           </ul>
 
           {/* Register Button */}
