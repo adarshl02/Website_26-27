@@ -34,10 +34,10 @@ const LatestOfPratibimb = ({ handleOpen,handleOpen2 }) => {
         <img
           src="graffathon25poster.png"
           alt="Upcoming Event"
-          className="w-44 h-48 object-cover rounded-md mb-4 shadow-lg"
+          className="w-44 h-52 object-cover rounded-md mb-4 shadow-lg"
         />
         <div className="text-xl font-extrabold mb-1 md:mb-2 font-display text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">
-          Upcoming Event
+          Graffathon'25
         </div>
   
         <div className="text-gray-300 text-sm mb-1 md:mb-2">

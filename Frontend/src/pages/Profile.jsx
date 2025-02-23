@@ -309,7 +309,7 @@ export default function Profile() {
           <>
             <div className="md:mx-20 my-5 p-4 bg-gradient-to-r from-slate-200 to-slate-300 border-none rounded-xl shadow-lg text-center">
               <h3 className="text-xl md:text-3xl font-medium bg-gradient-to-br from-slate-600 to-slate-800 bg-clip-text tracking-tight text-transparent font-poppins">
-                Thanks for Registering for Graffathon 25
+                Thanks for Registering for Graffathon'25
               </h3>
               <p className="mt-2 text-sm md:text-lg text-slate-700">
                 The event will commence in the following manner:
