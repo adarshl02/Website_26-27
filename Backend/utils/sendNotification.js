@@ -4,10 +4,10 @@ const path = require("path");
 require("dotenv").config();
 
 let transporter = nodemailer.createTransport({
-  service: "gmail", // or your email service, e.g., 'outlook', 'yahoo'
+  service: "gmail",
   auth: {
-    user: "teampratibimb.sgsits@gmail.com", // your email address
-    pass: "dmwklilobtttgksu", // your email password (or app-specific password)
+    user: "teampratibimb.sgsits@gmail.com", 
+    pass: "dmwklilobtttgksu", 
   },
 });
 

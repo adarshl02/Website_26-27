@@ -4,7 +4,7 @@ const cloudinary = require("../config/cloudinary");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const { errorHandler } = require("../utils/errorHandler");
-const { sendEmail } = require("../utils/emailFunctions.js");
+const { sendEmailForArtWork } = require("../utils/emailFunctions.js");
 
 require("dotenv").config();
 
@@ -246,22 +246,10 @@ const paymentVerification = async (req, res) => {
       .where({ order_id: razorpay_order_id })
       .update({ payment_status: "APPROVED" });
 
-
-    // const event_date = new Date(event.start_date).toLocaleDateString("en-US", {
-    //   year: "numeric",
-    //   month: "long",
-    //   day: "numeric",
-    // });
-
-    // await sendEmail(
-    //   attendee.team_leader_email,
-    //   attendee.team_leader_name,
-    //   attendee.team_name,
-    //   event_date,
-    //   event.event_name,
-    //   event.location,
-    //    uploadedResponse.secure_url
-    // );
+    await sendEmailForArtWork(
+      attendee.team_leader_name,
+      attendee.team_leader_email
+    );
 
     res.status(200).json({
       message: "Payment verified successfully",
@@ -305,7 +293,7 @@ const getEventTicket = async (req, res) => {
 
 const getAttendee = async (req, res) => {
   try {
-    const { team_leader_email } = req.query;    
+    const { team_leader_email } = req.query;
 
     if (!team_leader_email) {
       return res
@@ -326,9 +314,21 @@ const getAttendee = async (req, res) => {
     }
 
     const statusMessages = {
-      PENDING: { status : "PENDING",title: "Status Is Pending", message: "Please Wait, Your Artwork Is Under Review" },
-      REJECTED: { status : "REJECTED", title: "Status Is Rejected", message: "Oh ho, Sorry Your Artwork Has Been Rejected By Our Experts" },
-      APPROVED: { status: "APPROVED",title: "Status Is Approved", message: "Woho! Your Artwork Has Been Approved By Our Experts" },
+      PENDING: {
+        status: "PENDING",
+        title: "Status Is Pending",
+        message: "Please Wait, Your Artwork Is Under Review",
+      },
+      REJECTED: {
+        status: "REJECTED",
+        title: "Status Is Rejected",
+        message: "Oh ho, Sorry Your Artwork Has Been Rejected By Our Experts",
+      },
+      APPROVED: {
+        status: "APPROVED",
+        title: "Status Is Approved",
+        message: "Woho! Your Artwork Has Been Approved By Our Experts",
+      },
     };
 
     return res
