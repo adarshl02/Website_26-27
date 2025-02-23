@@ -31,7 +31,7 @@ const Footer = () => {
           <h3 className="text-lg font-semibold">Discover</h3>
           <ul className="space-y-2">
             <li><Link to="/" className="hover:underline">Home</Link></li>
-            <li><Link to="/" className="hover:underline">About Us</Link></li>
+            <li><Link to="/" className="hover:underline">About us</Link></li>
             <li><Link to="/contact-us" className="hover:underline">Contact Us</Link></li>
           </ul>
           <div className="flex space-x-4 mt-4">
