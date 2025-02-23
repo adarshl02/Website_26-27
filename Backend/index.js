@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const morgan = require("morgan");
 const cookieParser = require('cookie-parser');
 const eventsRouter = require("./routes/events.routes.js");
 const authRouter = require("./routes/auth.routes.js");
@@ -15,6 +16,7 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+app.use(morgan("dev"));
 
 const allowedOrigins = [
   'https://website-26-27-ten.vercel.app',

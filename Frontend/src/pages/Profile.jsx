@@ -11,7 +11,7 @@ import { jsPDF } from "jspdf";
 import Certificate from "./../components/general/Certificate";
 import html2canvas from "html2canvas";
 import Certificatetrial from "../components/general/Backdrops/Certificatetrial";
-import { getEventTicket, logoutUser } from "../service/api";
+import { getAttendeeStatus, getEventTicket, logoutUser } from "../service/api";
 import { Ticket } from "../components/general/Ticket";
 import { Ticketorg } from "../components/general/Ticketorg";
 import Logout from "@mui/icons-material/Logout";
@@ -29,6 +29,14 @@ export default function Profile() {
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [eventTicketData, setEventTicketData] = useState({});
+  const [register99, setRegister99] = useState({
+    success: false,
+    data: {
+      message: "",
+      status: "",
+      title: "",
+    },
+  });
 
   const handleClose = () => {
     setOpen(false);
@@ -127,26 +135,44 @@ export default function Profile() {
     }
   };
 
+  // useEffect(() => {
+  //   const getTicket = async () => {
+  //     try {
+  //       const data = {
+  //         email: user.email,
+  //       };
+
+  //       const response = await getEventTicket(data, token);
+
+  //       if (response.success) {
+  //         setEventTicketData(response.data.selection[0]);
+  //       } else if (response.status === 204) {
+
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+
+  //     }
+  //   };
+  //   getTicket();
+  // }, []);
+
   useEffect(() => {
-    const getTicket = async () => {
+    const getAttendee = async () => {
       try {
         const data = {
-          email: user.email,
+          team_leader_email: user.email,
         };
 
-        const response = await getEventTicket(data, token);
-
-        if (response.success) {
-          setEventTicketData(response.data.selection[0]);
-        } else if (response.status === 204) {
-
-        }
+        const response = await getAttendeeStatus(data, token);
+        setRegister99(response);
+       
       } catch (error) {
         console.log(error);
 
       }
     };
-    getTicket();
+    getAttendee();
   }, []);
 
   return (
@@ -278,6 +304,92 @@ export default function Profile() {
         </div>
 
         <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
+
+        {register99.data.status === "PENDING" && (
+          <>
+            <div className="md:mx-20 my-5 p-4 bg-gradient-to-r from-slate-200 to-slate-300 border-none rounded-xl shadow-lg text-center">
+              <h3 className="text-xl md:text-3xl font-medium bg-gradient-to-br from-slate-600 to-slate-800 bg-clip-text tracking-tight text-transparent font-poppins">
+                Thanks for Registering for Graffathon'25
+              </h3>
+              <p className="mt-2 text-sm md:text-lg text-slate-700">
+                The event will commence in the following manner:
+              </p>
+              <ul className="mt-3 text-sm md:text-lg text-slate-700 text-left px-4">
+                <li>
+                  <strong>i. </strong> Registration of participating teams starts from 23/02/2025 to 28/02/2025.
+                </li>
+                <li>
+                  <strong>ii. </strong> Each team must submit artwork on an A4-sized painted sheet by 3 March 2025.
+                </li>
+                <li>
+                  <strong>iii. </strong> Artworks should focus on one of the following themes:
+                  <ul className="mt-1 ml-4 list-disc">
+                    <li>Abstract Art</li>
+                    <li>Women Empowerment</li>
+                    <li>Science-Fiction</li>
+                  </ul>
+                </li>
+              </ul>
+              <p className="mt-3 text-sm md:text-lg text-slate-600">
+                <b>Club Room Address:</b> SGSITS 23, M. Visvesvaraya Marg, Indore, Madhya Pradesh, 452003.
+              </p>
+            </div>
+            <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
+          </>
+        )}
+
+        {register99.data.status === "REJECTED" && (
+          <>
+            <div className="md:mx-20 my-5 p-4 bg-gradient-to-r from-red-700 to-red-800 rounded-xl shadow-lg border border-red-700 text-center">
+              <h3 className="text-lg md:text-2xl font-semibold text-slate-200 tracking-wide">
+                Sorry, Your Artwork Submission Was Not Approved
+              </h3>
+              <p className="mt-2 text-sm md:text-lg text-slate-300">
+                Unfortunately, your artwork did not meet the selection criteria. We appreciate your effort and encourage you to participate in future events.
+              </p>
+            </div>
+            <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
+          </>
+        )}
+
+        {register99.data.status === "APPROVED" && (
+          <>
+            <div className="md:mx-20  my-5 p-4 bg-gradient-to-r from-green-600 to-green-700 rounded-xl shadow-lg  border-green-700 text-center">
+              <h3 className="text-xl font-bold md:text-3xl bg-gradient-to-br from-slate-200 to-slate-300 bg-clip-text tracking-tight text-transparent font-poppins">
+                Your Artwork Has Been Approved
+              </h3>
+              <p className="mt-2 text-sm md:text-lg text-slate-200">
+                We are happy to have you at the event. Here are the next steps:
+              </p>
+              <ul className="mt-3 text-sm md:text-lg text-slate-200 text-left px-4">
+                <li>
+                  <strong>i.</strong> The selected teams will be assigned their respective wall slots by 10:00 AM on 08 March 2025.
+                </li>
+                <li>
+                  <strong>ii.</strong> All required items for wall painting will be provided at a cost of ₹699 per team. <b>(MANDATORY)</b>
+                </li>
+                <li>
+                  <strong>iii.</strong> Participants must report by 9:00 AM on 8th March 2025. Details will be emailed to the team leader.
+                </li>
+              </ul>
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                // onClick={() => navigate("/upcoming-event-page")}
+                className="mt-2 text-sm bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-1 md:py-2 px-3 md:px-4 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
+                >
+                Pay ₹699 for Kit
+              </motion.button>
+
+
+            </div>
+            <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
+          </>
+        )}
+
+
+
+
+
 
         <div className="mt-4 px-2 py-2">
           <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins">

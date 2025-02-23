@@ -17,8 +17,8 @@ const sendEmail = async (
   team_name,
   event_date,
   event_name,
-  event_location,
-  qr_code
+  event_location
+  // qr_code
 ) => {
   try {
     const templatePath = path.join(
@@ -32,8 +32,8 @@ const sendEmail = async (
       .replace("{{team_name}}", team_name)
       .replace("{{event_name}}", event_name)
       .replace("{{event_date}}", event_date)
-      .replace("{{event_location}}", event_location)
-      .replace("{{qr_code}}",qr_code)
+      .replace("{{event_location}}", event_location);
+    // .replace("{{qr_code}}",qr_code)
 
     const mailOptions = {
       from: '"Club Pratibimb" <teampratibimb.sgsits@gmail.com>',
@@ -49,32 +49,19 @@ const sendEmail = async (
   }
 };
 
-const sendEmailForVolunteering = async (
-  email,
-  name,
-  phone,
-  domain,
-  branch,
-  batch
-) => {
+const sendEmailForArtWork = async (user_name, email) => {
   try {
     let templatePath = path.join(
       __dirname,
-      "../templates/volunteersTemplate.html"
+      "../templates/notificationTemplate.html"
     );
     let emailTemplate = fs.readFileSync(templatePath, "utf-8");
-    emailTemplate = emailTemplate
-      .replace("{{name}}", name)
-      .replace("{{email}}", email)
-      .replace("{{phone}}", phone)
-      .replace("{{domain}}", domain)
-      .replace("{{branch}}", branch)
-      .replace("{{batch}}", batch);
+    emailTemplate = emailTemplate.replace("{{user_name}}", user_name);
 
     await transporter.sendMail({
       from: '"Club Pratibimb" <team@clubpratibimb.com>',
       to: email,
-      subject: "Thank You For Filling Volunteering Form!",
+      subject: "Welcome to Graffathon '25 - Going beyond Rituals",
       html: emailTemplate,
     });
 
@@ -124,7 +111,7 @@ const sendEmailForArtist = async (email, name) => {
 
 module.exports = {
   sendEmail,
-  sendEmailForVolunteering,
   sendWelcomeEmail,
   sendEmailForArtist,
+  sendEmailForArtWork
 };
