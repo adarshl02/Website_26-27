@@ -307,7 +307,10 @@ const getAttendee = async (req, res) => {
         );
     }
 
-    const attendee = await db("attendees").where({ team_leader_email }).first();
+    const attendee = await db("attendees")
+    .where({ team_leader_email, payment_status: "APPROVED" })
+    .first();
+  
 
     if (!attendee) {
       return res.status(204).send();
