@@ -117,7 +117,7 @@ const registerEvents = async (req, res) => {
     }
 
     const existingAttendee = await db("attendees")
-      .where({ event_id, team_leader_email: email })
+      .where({ event_id, team_leader_email })
       .first();
     if (existingAttendee) {
       if (existingAttendee.payment_status === "APPROVED") {
@@ -264,21 +264,21 @@ const paymentVerification = async (req, res) => {
     //   .where({ order_id: razorpay_order_id })
     //   .update({ qr_code: uploadedResponse.secure_url });
 
-    const event_date = new Date(event.start_date).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
+    // const event_date = new Date(event.start_date).toLocaleDateString("en-US", {
+    //   year: "numeric",
+    //   month: "long",
+    //   day: "numeric",
+    // });
 
-    await sendEmail(
-      attendee.team_leader_email,
-      attendee.team_leader_name,
-      attendee.team_name,
-      event_date,
-      event.event_name,
-      event.location,
-      // uploadedResponse.secure_url
-    );
+    // await sendEmail(
+    //   attendee.team_leader_email,
+    //   attendee.team_leader_name,
+    //   attendee.team_name,
+    //   event_date,
+    //   event.event_name,
+    //   event.location,
+    //    uploadedResponse.secure_url
+    // );
 
     res.status(200).json({
       message: "Payment verified successfully",
@@ -323,7 +323,7 @@ const getEventTicket = async (req, res) => {
 
 const getAttendee = async (req, res) => {
   try {
-    const { team_leader_email } = req.body;
+    const { team_leader_email } = req.query;    
 
     if (!team_leader_email) {
       return res.status(400).send(errorHandler(400, "Invalid Request", "Please Enter The Team Leader Email"));
@@ -332,13 +332,13 @@ const getAttendee = async (req, res) => {
     const attendee = await db("attendees").where({ team_leader_email }).first();
 
     if (!attendee) {
-      return res.status(404).send(errorHandler(404, "Not Found", "Team With The Following Credentials Not Found"));
+      return res.status(204).send();
     }
 
     const statusMessages = {
-      PENDING: { title: "Status Is Pending", message: "Please Wait, Your Artwork Is Under Review" },
-      REJECTED: { title: "Status Is Rejected", message: "Oh ho, Sorry Your Artwork Has Been Rejected By Our Experts" },
-      APPROVED: { title: "Status Is Approved", message: "Woho! Your Artwork Has Been Approved By Our Experts" },
+      PENDING: { status : "PENDING",title: "Status Is Pending", message: "Please Wait, Your Artwork Is Under Review" },
+      REJECTED: { status : "REJECTED", title: "Status Is Rejected", message: "Oh ho, Sorry Your Artwork Has Been Rejected By Our Experts" },
+      APPROVED: { status: "APPROVED",title: "Status Is Approved", message: "Woho! Your Artwork Has Been Approved By Our Experts" },
     };
 
     return res.status(200).send({ response: statusMessages[attendee.team_status] });

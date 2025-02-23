@@ -61,6 +61,8 @@ export const registerEvent = async (data,token) => {
        "Authorization": `${token}`, 
       },
     });
+    console.log(response);
+    
     return { success: true, data: response.data };
   } catch (error) {
     return handleApiError(error, 'Event Registration API');
@@ -133,6 +135,32 @@ export const getEventTicket = async (data,token) => {
       return { success: false, message: "User is not registered for the event.", status: 204 };
     }
         return { success: true, data: response.data.response.data };
+  } catch (error) {
+    return handleApiError(error, 'Get event ticket API');
+  }
+};
+
+export const getAttendeeStatus = async (data,token) => {
+  try {
+    
+    const response = await axios.get(`${URL}/api/get/attendee`,{
+      params: data,
+      headers: {
+       "Authorization": `${token}`,  // Include token in the headers
+      },
+    });  
+    
+    if (response.status === 204) {
+      return {
+        success: false,
+        data: {
+          status:"NOTREGISTERED",
+          title: "Status Update",
+          message: "User is not registered for the event.",
+        },
+      };
+    }    
+    return { success: true, data: response.data.response };
   } catch (error) {
     return handleApiError(error, 'Get event ticket API');
   }
