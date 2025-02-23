@@ -149,19 +149,31 @@ const markAttendance = async (req, res) => {
   }
 };
 
-const getAttendeeByEmail = async (req, res) => {
+const getAttendeeCount = async (req, res) => {
   try {
-    const { team_leader_email } = req.query;
-    if (!team_leader_email) {
-      return res
-        .status(400)
-        .send(
-          errorHandler(400, "Invalid Request", "Please Enter Team Leader Email")
-        );
-    }
-    let attendee = await db("attendees").select("*").where({
-      team_leader_email,
+    const countResult = await knex("attendees").count("attendee_id as total");
+
+    const totalAttendees = countResult[0].total;
+
+    res.status(200).json({
+      success: true,
+      message: "Total attendees fetched successfully",
+      totalAttendees,
     });
+  } catch (error) {
+    console.error("Error fetching attendees count:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching attendees count",
+      error: error.message,
+    });
+  }
+};
+
+const getAttendeeDetails = async (req, res) => {
+  try {
+    
+    let attendee = await db("attendees").select("*");
     if (!attendee) {
       return res
         .status(400)
@@ -209,7 +221,7 @@ const updateTeamStatus = async (req, res) => {
         );
     }
 
-    const validStatuses = ["PENDING", "REJECTED", "APPROVED"];
+    const validStatuses = ["REJECTED", "APPROVED"];
     if (!validStatuses.includes(team_status)) {
       return res
         .status(400)
@@ -259,5 +271,6 @@ module.exports = {
   loginAdmin,
   markAttendance,
   updateTeamStatus,
-  getAttendeeByEmail,
+  getAttendeeDetails,
+  getAttendeeCount
 };
