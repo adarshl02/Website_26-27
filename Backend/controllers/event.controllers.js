@@ -165,8 +165,8 @@ const registerEvents = async (req, res) => {
       sixth_participant,
       seventh_participant,
       eight_participant,
-      order_id:order.id,
-      payment_status:"PENDING"
+      order_id: order.id,
+      payment_status: "PENDING",
     };
 
     let insertion = await db("attendees").insert(data).returning("*");
@@ -222,7 +222,6 @@ const paymentVerification = async (req, res) => {
           )
         );
     }
-
     const attendee = await db("attendees")
       .select("team_leader_email", "team_leader_name", "team_name", "event_id")
       .where({
@@ -247,22 +246,6 @@ const paymentVerification = async (req, res) => {
       .where({ order_id: razorpay_order_id })
       .update({ payment_status: "APPROVED" });
 
-    // const qrCodeData = `Order id is : ${razorpay_order_id}`;
-    // const qrCodeBuffer = await QRCode.toDataURL(qrCodeData);
-
-    // const uploadedResponse = await cloudinary.uploader.upload(qrCodeBuffer, {
-    //   folder: "qr_codes",
-    //   public_id: `qr_${razorpay_order_id}`,
-    //   overwrite: true,
-    // });
-
-    // if (!uploadedResponse.secure_url) {
-    //   return res.status(500).json({ message: "QR code upload failed" });
-    // }
-
-    // await db("attendees")
-    //   .where({ order_id: razorpay_order_id })
-    //   .update({ qr_code: uploadedResponse.secure_url });
 
     // const event_date = new Date(event.start_date).toLocaleDateString("en-US", {
     //   year: "numeric",
@@ -284,7 +267,6 @@ const paymentVerification = async (req, res) => {
       message: "Payment verified successfully",
       razorpay_payment_id,
       razorpay_order_id,
-      // qr_code_url: uploadedResponse.secure_url,
     });
   } catch (error) {
     console.error("Payment verification error:", error);
@@ -326,7 +308,15 @@ const getAttendee = async (req, res) => {
     const { team_leader_email } = req.query;    
 
     if (!team_leader_email) {
-      return res.status(400).send(errorHandler(400, "Invalid Request", "Please Enter The Team Leader Email"));
+      return res
+        .status(400)
+        .send(
+          errorHandler(
+            400,
+            "Invalid Request",
+            "Please Enter The Team Leader Email"
+          )
+        );
     }
 
     const attendee = await db("attendees").where({ team_leader_email }).first();
@@ -341,20 +331,27 @@ const getAttendee = async (req, res) => {
       APPROVED: { status: "APPROVED",title: "Status Is Approved", message: "Woho! Your Artwork Has Been Approved By Our Experts" },
     };
 
-    return res.status(200).send({ response: statusMessages[attendee.team_status] });
-
+    return res
+      .status(200)
+      .send({ response: statusMessages[attendee.team_status] });
   } catch (error) {
     console.error(error);
-    return res.status(500).send(errorHandler(500, "Internal Server Error", "Server Error While Fetching Attendees"));
+    return res
+      .status(500)
+      .send(
+        errorHandler(
+          500,
+          "Internal Server Error",
+          "Server Error While Fetching Attendees"
+        )
+      );
   }
 };
-
-
 
 module.exports = {
   getEvents,
   registerEvents,
   paymentVerification,
   getEventTicket,
-  getAttendee
+  getAttendee,
 };
