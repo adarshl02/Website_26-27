@@ -10,5 +10,4 @@ const responseHandler = (res, options) => {
     });
   };
   
-  module.exports = { responseHandler };
-  
+  export default responseHandler

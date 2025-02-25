@@ -1,12 +1,17 @@
-const { Router } = require("express");
-const {
+import { Router } from "express";
+import {
   getEvents,
   registerEvents,
   paymentVerification,
   getEventTicket,
   getAttendee,
-} = require("../controllers/event.controllers.js");
-const { verifyToken } = require("../utils/verifyUser.js");
+} from "../controllers/event.controllers.js";
+import {
+  registerForFinalRound,
+  verifyFinalPayment,
+  scanQr,
+} from "../controllers/final-round.js";
+import { verifyToken } from "../utils/verifyUser.js";
 
 const router = Router();
 
@@ -15,5 +20,8 @@ router.route("/register/").post(verifyToken, registerEvents);
 router.route("/payment/verify").post(verifyToken, paymentVerification);
 router.route("/get/event-ticket").get(verifyToken, getEventTicket);
 router.route("/get/attendee").get(verifyToken, getAttendee);
+router.route("/register-final-round").post(registerForFinalRound);
+router.route("/verify-final-round").post(verifyFinalPayment);
+router.route("/get-team-details").get(scanQr);
 
-module.exports = router;
+export default router;

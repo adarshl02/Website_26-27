@@ -1,8 +1,9 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const db = require("../config/db/index.js");
-const { errorHandler } = require("../utils/errorHandler");
-require("dotenv").config();
+import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken";
+import db from "../config/db/index.js"
+import errorHandler from "../utils/errorHandler.js";
+import "dotenv/config";
+
 
 const registerAdmin = async (req, res) => {
   try {
@@ -265,8 +266,7 @@ const updateTeamStatus = async (req, res) => {
       );
   }
 };
-
-module.exports = {
+export {
   registerAdmin,
   loginAdmin,
   markAttendance,

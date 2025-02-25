@@ -1,8 +1,8 @@
-const express = require("express");
-const db = require("../config/db/index.js");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
-const { sendWelcomeEmail } = require("../utils/emailFunctions.js");
+import express from "express";
+import db from "../config/db/index.js";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import { sendWelcomeEmail } from "../utils/emailFunctions.js";
 
 const router = express.Router();
 
@@ -13,11 +13,6 @@ router.post("/auth/google/signup", async (req, res, next) => {
     if (!name || !email || !uid || !avatar) {
       return res.status(400).json({ message: "All fields are required." });
     }
-    // if (!enrollment || enrollment.length !== 12) {
-    //   return res
-    //     .status(404)
-    //     .json({ message: "Enrollment must be of size 12 fields." });
-    // }
 
     const existingUser = await db("users").where({ email }).first();
     if (existingUser) {
@@ -27,17 +22,15 @@ router.post("/auth/google/signup", async (req, res, next) => {
     }
 
     const hashedUid = await bcrypt.hash(uid, 10);
-    // let branch = enrollment.slice(4, 6).toUpperCase();
-    // let batch = enrollment.slice(6, 8);
 
     const newUser = {
       name,
       email,
       uid: hashedUid,
       avatar,
-      batch:"batch",
-      branch:"branch",
-      enrollment:"enrollment",
+      batch: "batch",
+      branch: "branch",
+      enrollment: "enrollment",
     };
 
     const [insertedUser] = await db("users").insert(newUser).returning("*");
@@ -65,7 +58,7 @@ router.post("/auth/google/signup", async (req, res, next) => {
       }
     }
   } catch (error) {
-    console.error("Signun error:", error.message);
+    console.error("Signup error:", error.message);
     return res.status(500).json({ message: "Internal server error." });
   }
 });
@@ -95,8 +88,8 @@ router.post("/auth/google/signin", async (req, res, next) => {
     return res.status(200).send({
       response: {
         data: { rest, token },
-        title: "Login Successfull",
-        message: "Logged In Successfull Redirecting To The Home Page",
+        title: "Login Successful",
+        message: "Logged In Successfully Redirecting To The Home Page",
       },
     });
   } catch (error) {
@@ -114,4 +107,4 @@ router.get("/auth/signout", (req, res, next) => {
   }
 });
 
-module.exports = router;
+export default router;

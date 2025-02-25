@@ -1,7 +1,9 @@
-const nodemailer = require("nodemailer");
-const fs = require("fs");
-const path = require("path");
-require("dotenv").config();
+import nodemailer from "nodemailer";
+import fs from "fs";
+import path from "path";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -22,8 +24,8 @@ const sendEmail = async (
 ) => {
   try {
     const templatePath = path.join(
-      __dirname,
-      "../templates/emailTemplate.html"
+      process.cwd(),
+      "templates/emailTemplate.html"
     );
     const emailTemplate = fs.readFileSync(templatePath, "utf-8");
 
@@ -33,7 +35,7 @@ const sendEmail = async (
       .replace("{{event_name}}", event_name)
       .replace("{{event_date}}", event_date)
       .replace("{{event_location}}", event_location);
-    // .replace("{{qr_code}}",qr_code)
+    // .replace("{{qr_code}}", qr_code)
 
     const mailOptions = {
       from: '"Club Pratibimb" <teampratibimb.sgsits@gmail.com>',
@@ -51,9 +53,9 @@ const sendEmail = async (
 
 const sendEmailForArtWork = async (user_name, email) => {
   try {
-    let templatePath = path.join(
-      __dirname,
-      "../templates/notificationTemplate.html"
+    const templatePath = path.join(
+      process.cwd(),
+      "templates/notificationTemplate.html"
     );
     let emailTemplate = fs.readFileSync(templatePath, "utf-8");
     emailTemplate = emailTemplate.replace("{{user_name}}", user_name);
@@ -70,11 +72,12 @@ const sendEmailForArtWork = async (user_name, email) => {
     console.error("Error sending email for volunteers:", error);
   }
 };
+
 const sendWelcomeEmail = async (email, name) => {
   try {
-    let templatePath = path.join(
-      __dirname,
-      "../templates/welcomeTemplate.html"
+    const templatePath = path.join(
+      process.cwd(),
+      "templates/welcomeTemplate.html"
     );
     let emailTemplate = fs.readFileSync(templatePath, "utf-8");
     emailTemplate = emailTemplate.replace("{{name}}", name);
@@ -94,7 +97,7 @@ const sendWelcomeEmail = async (email, name) => {
 
 const sendEmailForArtist = async (email, name) => {
   try {
-    let templatePath = path.join(__dirname, "../templates/artTemplate.html");
+    const templatePath = path.join(process.cwd(), "templates/artTemplate.html");
     let emailTemplate = fs.readFileSync(templatePath, "utf-8");
     emailTemplate = emailTemplate.replace("{{name}}", name);
 
@@ -109,9 +112,4 @@ const sendEmailForArtist = async (email, name) => {
   }
 };
 
-module.exports = {
-  sendEmail,
-  sendWelcomeEmail,
-  sendEmailForArtist,
-  sendEmailForArtWork
-};
+export { sendEmail, sendWelcomeEmail, sendEmailForArtist, sendEmailForArtWork };

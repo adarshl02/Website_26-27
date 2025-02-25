@@ -1,12 +1,12 @@
-const express = require("express");
-const multer = require("multer");
-const {
+import express from "express"
+import multer from "multer"
+import {
   artCommunity,
   imAnArtist,
   getUserAndArtCommunityDetails,
   countArtist
-} = require("../controllers/art.controllers.js");
-const { verifyToken } = require("../utils/verifyUser.js");
+} from "../controllers/art.controllers.js"
+import { verifyToken } from "../utils/verifyUser.js";
 
 const router = express.Router();
 
@@ -22,4 +22,4 @@ router.post("/enroll-artist", verifyToken, imAnArtist);
 router.get("/user-art-details", verifyToken, getUserAndArtCommunityDetails);
 router.get("/get-artists", verifyToken, countArtist);
 
-module.exports = router;
+export default router;

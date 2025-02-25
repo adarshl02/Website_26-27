@@ -9,6 +9,4 @@ const errorHandler = (status, title, detail) => {
     };
   };
 
-module.exports = {
-  errorHandler
-}
+export default errorHandler

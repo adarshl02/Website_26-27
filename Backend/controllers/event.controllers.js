@@ -1,12 +1,10 @@
-const QRCode = require("qrcode");
-const db = require("../config/db/index.js");
-const cloudinary = require("../config/cloudinary");
-const Razorpay = require("razorpay");
-const crypto = require("crypto");
-const { errorHandler } = require("../utils/errorHandler");
-const { sendEmailForArtWork } = require("../utils/emailFunctions.js");
-
-require("dotenv").config();
+import db from "../config/db/index.js";
+import Razorpay from "razorpay";
+import crypto from "crypto";
+import errorHandler from "../utils/errorHandler.js";
+import { sendEmailForArtWork } from "../utils/emailFunctions.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -308,9 +306,8 @@ const getAttendee = async (req, res) => {
     }
 
     const attendee = await db("attendees")
-    .where({ team_leader_email, payment_status: "APPROVED" })
-    .first();
-  
+      .where({ team_leader_email, payment_status: "APPROVED" })
+      .first();
 
     if (!attendee) {
       return res.status(204).send();
@@ -351,7 +348,7 @@ const getAttendee = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   getEvents,
   registerEvents,
   paymentVerification,
