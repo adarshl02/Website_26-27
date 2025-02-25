@@ -3,7 +3,7 @@ const {
   registerAdmin,
   loginAdmin,
   markAttendance,
-  getAttendeeByEmail,
+  getAttendeeDetails,
   updateTeamStatus,
   getAttendeeCount,
 } = require("../controllers/admin.controllers.js");
@@ -14,7 +14,7 @@ const router = express.Router();
 // router.post("/register", registerAdmin);
 router.post("/login", loginAdmin);
 router.post("/mark-attendance", authMiddleware, markAttendance);
-router.get("/get-attendee", authMiddleware, getAttendeeByEmail);
+router.get("/get-attendee", authMiddleware, getAttendeeDetails);
 router.post("/update-status", authMiddleware, updateTeamStatus);
 router.get("/count-attendee", authMiddleware, getAttendeeCount);
 
