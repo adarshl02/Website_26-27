@@ -263,7 +263,6 @@ const markAttendance = async (req, res) => {
     const currentTime = new Date();
 
     if (!order[attended_1_field]) {
-      // Marking attendance_1
       await db("attendee_documents")
         .where({ order_id })
         .update({
@@ -277,7 +276,6 @@ const markAttendance = async (req, res) => {
       });
     }
 
-    // Check if 4 hours have passed since attendance_1 was marked
     const attended_1_time = new Date(order[attended_1_time_field]);
     const fourHoursLater = new Date(
       attended_1_time.getTime() + 4 * 60 * 60 * 1000
@@ -290,7 +288,6 @@ const markAttendance = async (req, res) => {
     }
 
     if (!order[attended_2_field]) {
-      // Marking attendance_2
       await db("attendee_documents")
         .where({ order_id })
         .update({
