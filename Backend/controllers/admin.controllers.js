@@ -151,7 +151,7 @@ const markAttendance = async (req, res) => {
 
 const getAttendeeCount = async (req, res) => {
   try {
-    const countResult = await knex("attendees").count("attendee_id as total");
+    const countResult = await db("attendees").count("attendee_id as total");
 
     const totalAttendees = countResult[0].total;
 
@@ -221,7 +221,7 @@ const updateTeamStatus = async (req, res) => {
         );
     }
 
-    const validStatuses = ["REJECTED", "APPROVED"];
+    const validStatuses = ["REJECTED", "APPROVED","PENDING"];
     if (!validStatuses.includes(team_status)) {
       return res
         .status(400)
