@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: "adarsh.landge10604@gmail.com",
-    pass: process.env.NODEMAILER_ADMIN
+    pass: process.env.NODEMAILER_ADMIN,
   },
 });
 
@@ -110,7 +110,46 @@ const getAllAdmins = async (req, res) => {
         message: "Admins Fetched Successfully",
       },
     });
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to fetch admins" });
+  }
+};
+
+const logoutAdmin = async (req, res) => {
+  try {
+    const { name } = req.body;
+
+    // Check if admin exists in active_admins
+    let search = await db("active_admins").where({ name }).first(); // `.first()` ensures a single object instead of an array
+
+    if (!search) {
+      return res.status(404).json({
+        error: "Not Found",
+        message: `Admin not found with name ${name}`,
+      });
+    }
+
+    // Delete the admin from active_admins
+    let deletion = await db("active_admins").where({ name }).del();
+
+    if (deletion) {
+      return res.status(200).json({
+        response: {
+          title: "Logout Successful",
+          message: `Logout successful for user ${name}`,
+        },
+      });
+    } else {
+      return res.status(500).json({
+        error: "Logout Failed",
+        message: "Failed to remove admin from active list",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 };
 
 const markAttendance = async (req, res) => {
@@ -276,5 +315,6 @@ export {
   updateTeamStatus,
   getAttendeeDetails,
   getAttendeeCount,
-  getAllAdmins
+  getAllAdmins,
+  logoutAdmin
 };
