@@ -10,6 +10,7 @@ import {
   registerForFinalRound,
   verifyFinalPayment,
   scanQr,
+  markAttendance,
 } from "../controllers/final-round.js";
 import { verifyToken } from "../utils/verifyUser.js";
 
@@ -23,5 +24,6 @@ router.route("/get/attendee").get(verifyToken, getAttendee);
 router.route("/register-final-round").post(registerForFinalRound);
 router.route("/verify-final-round").post(verifyFinalPayment);
 router.route("/get-team-details").get(scanQr);
+router.route("/mark-attendance").post(markAttendance);
 
 export default router;

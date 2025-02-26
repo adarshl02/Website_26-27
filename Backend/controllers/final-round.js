@@ -1,4 +1,5 @@
 import db from "../config/db/index.js";
+import cloudinary from "../config/cloudinary/index.js";
 import Razorpay from "razorpay";
 import crypto from "crypto";
 import errorHandler from "../utils/errorHandler.js";
@@ -65,6 +66,13 @@ const registerForFinalRound = async (req, res) => {
     await db("attendee_documents").insert({
       attendee_id: attendee.attendee_id,
       team_leader_name: attendee.team_leader_name,
+      sec_participant_name: attendee.sec_participant,
+      third_participant_name: attendee.third_participant,
+      fourth_participant_name: attendee.fourth_participant,
+      fifth_participant_name: attendee.fifth_participant,
+      sixth_participant_name: attendee.sixth_participant,
+      seventh_participant_name: attendee.seventh_participant,
+      eighth_participant_name: attendee.eight_participant,
       team_leader_email,
       team_leader_phone: phoneNumbers.team_leader,
       sec_participant_phone: phoneNumbers.sec_participant,
@@ -126,7 +134,7 @@ const verifyFinalPayment = async (req, res) => {
         );
     }
 
-    const attendee = await db("attendees")
+    const attendee = await db("attendee_documents")
       .where({ order_id: razorpay_order_id, payment_status: "PENDING" })
       .first();
 
@@ -137,13 +145,26 @@ const verifyFinalPayment = async (req, res) => {
     const qrCodeData = `Order ID: ${attendee.order_id}, Team Leader: ${attendee.team_leader_name}`;
     const qrCodeImage = await QRCode.toDataURL(qrCodeData);
 
-    await db("attendees")
+    const uploadResponse = await cloudinary.uploader.upload(qrCodeImage, {
+      folder: "qr_codes",
+      public_id: `qr_${razorpay_order_id}`,
+      overwrite: true,
+    });
+
+    if (!uploadResponse.secure_url) {
+      return res.status(500).json({ message: "QR Code upload failed" });
+    }
+
+    await db("attendees_documents")
       .where({ order_id: razorpay_order_id })
-      .update({ payment_status: "APPROVED", qr_code: qrCodeImage });
+      .update({
+        payment_status: "APPROVED",
+        qr_code_link: uploadResponse.secure_url,
+      });
 
     return res.status(200).json({
       message: "Payment verified successfully",
-      qr_code: qrCodeImage,
+      qr_code: uploadResponse.secure_url,
       razorpay_payment_id,
       razorpay_order_id,
     });
@@ -166,7 +187,7 @@ const scanQr = async (req, res) => {
     const attendee = await db("attendee_documents")
       .where({
         order_id,
-        payment_status: "APPROVED",
+        payment_status: "PENDING",
       })
       .first();
     if (!attendee) {
@@ -199,4 +220,95 @@ const scanQr = async (req, res) => {
   }
 };
 
-export { registerForFinalRound, verifyFinalPayment, scanQr };
+const markAttendance = async (req, res) => {
+  try {
+    const { order_id, participant_phone } = req.body;
+
+    if (!order_id || !participant_phone) {
+      return res.status(400).send({
+        message: "Please provide order_id and participant phone number",
+      });
+    }
+
+    const order = await db("attendee_documents").where({ order_id }).first();
+
+    if (!order) {
+      return res.status(404).send({ message: "Order not found" });
+    }
+
+    const participantFields = {
+      [order.team_leader_phone]: "team_leader",
+      [order.sec_participant_phone]: "sec_participant",
+      [order.third_participant_phone]: "third_participant",
+      [order.fourth_participant_phone]: "fourth_participant",
+      [order.fifth_participant_phone]: "fifth_participant",
+      [order.sixth_participant_phone]: "sixth_participant",
+      [order.seventh_participant_phone]: "seventh_participant",
+      [order.eighth_participant_phone]: "eighth_participant",
+    };
+
+    const participantKey = participantFields[participant_phone];
+
+    if (!participantKey) {
+      return res
+        .status(400)
+        .json({ message: "Participant not found in this order" });
+    }
+
+    const attended_1_field = `${participantKey}_attended_1`;
+    const attended_2_field = `${participantKey}_attended_2`;
+    const attended_1_time_field = `${participantKey}_attended_1_at`;
+    const attended_2_time_field = `${participantKey}_attended_2_at`;
+
+    const currentTime = new Date();
+
+    if (!order[attended_1_field]) {
+      // Marking attendance_1
+      await db("attendee_documents")
+        .where({ order_id })
+        .update({
+          [attended_1_field]: true,
+          [attended_1_time_field]: currentTime,
+        });
+
+      return res.json({
+        message: "Attendance 1 marked successfully",
+        participant_phone,
+      });
+    }
+
+    // Check if 4 hours have passed since attendance_1 was marked
+    const attended_1_time = new Date(order[attended_1_time_field]);
+    const fourHoursLater = new Date(
+      attended_1_time.getTime() + 4 * 60 * 60 * 1000
+    );
+
+    if (currentTime < fourHoursLater) {
+      return res.status(400).json({
+        message: `You can mark attendance 2 only after ${fourHoursLater.toLocaleTimeString()}`,
+      });
+    }
+
+    if (!order[attended_2_field]) {
+      // Marking attendance_2
+      await db("attendee_documents")
+        .where({ order_id })
+        .update({
+          [attended_2_field]: true,
+          [attended_2_time_field]: currentTime,
+        });
+
+      return res.json({
+        message: "Attendance 2 marked successfully",
+        participant_phone,
+      });
+    }
+
+    return res.status(400).json({ message: "Attendance already marked" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export { registerForFinalRound, verifyFinalPayment, scanQr, markAttendance };

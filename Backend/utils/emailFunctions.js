@@ -9,7 +9,7 @@ const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: "teampratibimb.sgsits@gmail.com",
-    pass: "dmwklilobtttgksu",
+    pass: process.env.NODEMAILER_PASSWORD_1
   },
 });
 
@@ -19,8 +19,8 @@ const sendEmail = async (
   team_name,
   event_date,
   event_name,
-  event_location
-  // qr_code
+  event_location,
+  qr_code
 ) => {
   try {
     const templatePath = path.join(
@@ -34,8 +34,8 @@ const sendEmail = async (
       .replace("{{team_name}}", team_name)
       .replace("{{event_name}}", event_name)
       .replace("{{event_date}}", event_date)
-      .replace("{{event_location}}", event_location);
-    // .replace("{{qr_code}}", qr_code)
+      .replace("{{event_location}}", event_location)
+      .replace("{{qr_code}}", qr_code);
 
     const mailOptions = {
       from: '"Club Pratibimb" <teampratibimb.sgsits@gmail.com>',

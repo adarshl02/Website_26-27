@@ -13,13 +13,16 @@ const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: "teampratibimb.sgsits@gmail.com",
-    pass: "dmwklilobtttgksu",
+    pass: process.env.NODEMAILER_PASSWORD_1,
   },
 });
 
 export const sendEventNotificationEmail = async (recipientEmail) => {
   try {
-    const templatePath = path.join(__dirname, "../templates/welcomeTemplate.html");
+    const templatePath = path.join(
+      __dirname,
+      "../templates/welcomeTemplate.html"
+    );
     const emailTemplate = fs.readFileSync(templatePath, "utf-8");
 
     const mailOptions = {
@@ -39,7 +42,9 @@ export const sendEventNotificationEmail = async (recipientEmail) => {
 export const sendNotificationsToAllUsers = async (userEmails) => {
   console.log("Sending notifications...");
 
-  const emailPromises = userEmails.map(email => sendEventNotificationEmail(email));
+  const emailPromises = userEmails.map((email) =>
+    sendEventNotificationEmail(email)
+  );
 
   await Promise.all(emailPromises);
 
@@ -49,7 +54,7 @@ export const sendNotificationsToAllUsers = async (userEmails) => {
 // Example usage:
 const userEmails_1 = [
   "adarshl10604@gmail.com",
-  "eklavyasinghparihar7875@gmail.com"
+  "eklavyasinghparihar7875@gmail.com",
 ];
 
 sendNotificationsToAllUsers(userEmails_1);
