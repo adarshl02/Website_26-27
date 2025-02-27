@@ -106,7 +106,7 @@ const RegistrationForm = ({ event_id, setOpen }) => {
       };
 
       const response = await registerEvent(payload, token);
-
+      
       if (response.success) {
         toast.info("Redirecting to Payment Page");
         setOpen(false);
@@ -141,7 +141,7 @@ const RegistrationForm = ({ event_id, setOpen }) => {
       toast.error("Razorpay SDK failed to load. Please check your connection.");
       return;
     }
-
+  
     const options = {
       key: import.meta.env.VITE_RAZORPAY_KEY_ID, // Replace with your Razorpay key
       amount,
@@ -149,23 +149,21 @@ const RegistrationForm = ({ event_id, setOpen }) => {
       order_id,
       name: "Event Booking",
       description: "Payment for event booking",
-      handler: (response) => verifyPaymentHandler(response),
       prefill: {
         name: formData.name,
-        email: currentUser.email,
+        email: currentUser.rest.email,
         contact: formData.phone,
       },
-      theme: {
-        color: "#F37254",
-      },
+      theme: { color: "#F37254" },
     };
-
+  
     const rzp = new window.Razorpay(options);
     rzp.open();
   };
+  
 
   const verifyPaymentHandler = async (response) => {
-    try {
+    try {      
       const verificationResponse = await verifyPayment({
         razorpay_order_id: response.razorpay_order_id,
         razorpay_payment_id: response.razorpay_payment_id,

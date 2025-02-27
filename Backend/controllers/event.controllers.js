@@ -76,19 +76,14 @@ const registerEvents = async (req, res) => {
     } = req.body;
 
     if (!event_id) {
-      return res
-        .status(400)
-        .send(errorHandler(400, "Invalid Request", "Please Enter The Event"));
+      return res.status(400).send(errorHandler(400, "Invalid Request", "Please enter the event"));
     }
 
     const eventExists = await db("events").where({ event_id }).first();
     if (!eventExists) {
-      return res
-        .status(404)
-        .send(
-          errorHandler(404, "Not Found", "Event not found in the database")
-        );
+      return res.status(404).send(errorHandler(404, "Not Found", "Event not found in the database"));
     }
+    
     const { event_name, start_date, location: event_location } = eventExists;
     const event_date = new Date(start_date).toLocaleDateString("en-US", {
       year: "numeric",
@@ -96,57 +91,25 @@ const registerEvents = async (req, res) => {
       day: "numeric",
     });
 
-    if (
-      !team_name ||
-      !team_size ||
-      !team_leader_name ||
-      !team_leader_phone ||
-      !team_leader_email ||
-      !team_leader_batch ||
-      !team_leader_branch
-    ) {
-      return res
-        .status(400)
-        .send(
-          errorHandler(
-            400,
-            "Invalid Request",
-            "Please fill all required fields"
-          )
-        );
+    if (!team_name || !team_size || !team_leader_name || !team_leader_phone || !team_leader_email || !team_leader_batch || !team_leader_branch) {
+      return res.status(400).send(errorHandler(400, "Invalid Request", "Please fill all required fields"));
     }
 
-    const existingAttendee = await db("attendees")
-      .where({ event_id, team_leader_email })
-      .first();
-    if (existingAttendee) {
-      if (existingAttendee.payment_status === "APPROVED") {
-        return res
-          .status(400)
-          .send(
-            errorHandler(
-              400,
-              "Already Registered",
-              "User has already registered and paid for this event."
-            )
-          );
-      }
+    const existingAttendee = await db("attendees").where({ event_id, team_leader_email }).first();
+    if (existingAttendee && existingAttendee.payment_status === "APPROVED") {
+      return res.status(400).send(errorHandler(400, "Already Registered", "User has already registered and paid for this event."));
     }
 
     const amount = 99 * 100;
 
-    const options = {
+    const order = await razorpay.orders.create({
       amount: amount,
       currency: "INR",
       receipt: `receipt_order_${Date.now()}`,
-    };
-    const order = await razorpay.orders.create(options);
+    });
+
     if (!order) {
-      return res
-        .status(500)
-        .send(
-          errorHandler(500, "Order Error", "Failed to create Razorpay order")
-        );
+      return res.status(500).send(errorHandler(500, "Order Error", "Failed to create Razorpay order"));
     }
 
     let data = {
@@ -172,93 +135,58 @@ const registerEvents = async (req, res) => {
     let insertion = await db("attendees").insert(data).returning("*");
 
     if (!insertion) {
-      return res
-        .status(400)
-        .send(
-          errorHandler(400, "Error Occurred", "Error while making booking")
-        );
+      return res.status(400).send(errorHandler(400, "Error Occurred", "Error while making booking"));
     }
 
     return res.status(200).send({
       response: {
         data: { insertion, amount },
-        title: "Booking Successful",
-        message: "Booking Successful for the event",
+        title: "Inserted Attendee",
+        message: "Inserted Attendee but payment verification required",
       },
     });
   } catch (error) {
     console.error("Error while making booking:", error);
-    return res
-      .status(500)
-      .send(
-        errorHandler(
-          500,
-          "Internal Server Error",
-          "Error in booking the ticket"
-        )
-      );
+    return res.status(500).send(errorHandler(500, "Internal Server Error", "Error in booking the ticket"));
   }
 };
 
-const paymentVerification = async (req, res) => {
+// Razorpay Webhook for Payment Verification
+const razorpayWebhook = async (req, res) => {
   try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
-      req.body;
-
-    const secret = process.env.RAZORPAY_KEY_SECRET;
-    const hash = crypto
-      .createHmac("sha256", secret)
-      .update(razorpay_order_id + "|" + razorpay_payment_id)
+    const webhookSecret = process.env.RAZORPAY_KEY_ID;
+    const receivedSignature = req.headers["x-razorpay-signature"];
+    
+    const expectedSignature = crypto.createHmac("sha256", webhookSecret)
+      .update(JSON.stringify(req.body))
       .digest("hex");
 
-    if (hash !== razorpay_signature) {
-      return res
-        .status(400)
-        .send(
-          errorHandler(
-            400,
-            "Request Failed",
-            "Payment Verification Request Failed"
-          )
-        );
-    }
-    const attendee = await db("attendees")
-      .select("team_leader_email", "team_leader_name", "team_name", "event_id")
-      .where({
-        order_id: razorpay_order_id,
-        payment_status: "PENDING",
-      })
-      .first();
-
-    if (!attendee) {
-      return res.status(404).json({ message: "Attendee not found" });
+    if (receivedSignature !== expectedSignature) {
+      return res.status(400).json({ message: "Invalid webhook signature" });
     }
 
-    const event = await db("events")
-      .select("event_name", "start_date", "location")
-      .where({ event_id: attendee.event_id })
-      .first();
+    const event = req.body.event;
+    const payload = req.body.payload.payment.entity;
 
-    if (!event) {
-      return res.status(404).json({ message: "Event not found" });
+    if (event === "payment.captured") {
+      await db("attendees").where({ order_id: payload.order_id }).update({ payment_status: "APPROVED" });
+
+      const attendee = await db("attendees")
+        .select("team_leader_email", "team_leader_name")
+        .where({ order_id: payload.order_id })
+        .first();
+
+      if (attendee) {
+        await sendEmailForArtWork(attendee.team_leader_name, attendee.team_leader_email);
+      }
+
+      return res.status(200).json({ message: "Payment verified successfully" });
     }
-    await db("attendees")
-      .where({ order_id: razorpay_order_id })
-      .update({ payment_status: "APPROVED" });
 
-    await sendEmailForArtWork(
-      attendee.team_leader_name,
-      attendee.team_leader_email
-    );
-
-    res.status(200).json({
-      message: "Payment verified successfully",
-      razorpay_payment_id,
-      razorpay_order_id,
-    });
+    return res.status(200).json({ message: "Webhook received" });
   } catch (error) {
-    console.error("Payment verification error:", error);
-    res.status(500).json({ message: "Internal Server Error", error });
+    console.error("Webhook error:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -354,7 +282,8 @@ const getAttendee = async (req, res) => {
 module.exports = {
   getEvents,
   registerEvents,
-  paymentVerification,
+  // paymentVerification,
+  razorpayWebhook,
   getEventTicket,
   getAttendee,
 };
