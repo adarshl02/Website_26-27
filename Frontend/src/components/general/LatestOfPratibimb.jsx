@@ -47,8 +47,8 @@ const LatestOfPratibimb = ({ handleOpen,handleOpen2 }) => {
           </div>
           <motion.button
             whileTap={{ scale: 0.95 }}
-            // onClick={handleOpen2}
-             onClick={() => navigate("/upcoming-event-page")}
+            onClick={handleOpen2}
+            //  onClick={() => navigate("/upcoming-event-page")}
             className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white py-2 px-4 rounded-full shadow-2xl font-bold transition duration-300 hover:opacity-90 hover:shadow-2xl"
           >
             Explore More <ArrowForwardIcon />
