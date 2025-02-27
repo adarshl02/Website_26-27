@@ -305,7 +305,7 @@ export default function Profile() {
 
         <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
 
-        {register99.data.status === "PENDING" && (
+        {register99?.data?.status === "PENDING" && (
           <>
             <div className="md:mx-20 my-5 p-4 bg-gradient-to-r from-slate-200 to-slate-300 border-none rounded-xl shadow-lg text-center">
               <h3 className="text-xl md:text-3xl font-medium bg-gradient-to-br from-slate-600 to-slate-800 bg-clip-text tracking-tight text-transparent font-poppins">
@@ -338,7 +338,7 @@ export default function Profile() {
           </>
         )}
 
-        {register99.data.status === "REJECTED" && (
+        {register99?.data?.status === "REJECTED" && (
           <>
             <div className="md:mx-20 my-5 p-4 bg-gradient-to-r from-red-700 to-red-800 rounded-xl shadow-lg border border-red-700 text-center">
               <h3 className="text-lg md:text-2xl font-semibold text-slate-200 tracking-wide">
@@ -352,7 +352,7 @@ export default function Profile() {
           </>
         )}
 
-        {register99.data.status === "APPROVED" && (
+        {register99?.data?.status === "APPROVED" && (
           <>
             <div className="md:mx-20  my-5 p-4 bg-gradient-to-r from-green-600 to-green-700 rounded-xl shadow-lg  border-green-700 text-center">
               <h3 className="text-xl font-bold md:text-3xl bg-gradient-to-br from-slate-200 to-slate-300 bg-clip-text tracking-tight text-transparent font-poppins">

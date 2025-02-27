@@ -9,10 +9,10 @@ export function TimelineDemo() {
         <div>
           <div className=" md:mb-3 bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-5xl font-poppins">
             Streetscape{" "}
-            <span className="hidden md:block text-neutral-300 text-lg md:text-3xl opacity-70">
+            <span className="hidden md:block text-neutral-300 text-lg md:text-2xl opacity-70">
               A tint Avenue
             </span>
-            <div className="block md:hidden text-neutral-300 text-lg md:text-3xl opacity-70">
+            <div className="block md:hidden text-neutral-300 text-base md:text-3xl opacity-70">
               A tint Avenue
             </div>
           </div>
@@ -70,10 +70,10 @@ export function TimelineDemo() {
         <div>
           <div className="md:mb-3 bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-5xl font-poppins">
             Graffathon{" "}
-            <span className="hidden md:block text-neutral-300 text-lg md:text-3xl opacity-70">
+            <span className="hidden md:block text-neutral-300 text-lg md:text-2xl opacity-70">
               Back to Rituals
             </span>
-            <div className="block md:hidden text-neutral-300 text-lg md:text-3xl opacity-70">
+            <div className="block md:hidden text-neutral-300 text-base md:text-3xl opacity-70">
               Back to Rituals
             </div>
           </div>
@@ -176,10 +176,10 @@ export function TimelineDemo() {
         <div>
           <div className=" md:mb-3 bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-5xl font-poppins">
             Graffathon{" "}
-            <span className="hidden md:block text-neutral-300 text-lg md:text-3xl opacity-70">
+            <span className="hidden md:block text-neutral-300 text-lg md:text-xl opacity-70">
               India Book of Records
             </span>
-            <div className="block md:hidden text-neutral-300 text-lg md:text-3xl opacity-70">
+            <div className="block md:hidden text-neutral-300 text-base md:text-3xl opacity-70">
               India Book of Records
             </div>
           </div>
@@ -223,10 +223,10 @@ export function TimelineDemo() {
         <div>
           <div className=" md:mb-3 bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-5xl font-poppins">
             Graffitti{" "}
-            <span className="hidden md:block text-neutral-300 text-lg md:text-3xl opacity-70">
+            <span className="hidden md:block text-neutral-300 text-lg md:text-xl opacity-70">
               Limca Book of Records
             </span>
-            <div className="block md:hidden text-neutral-300 text-lg md:text-3xl opacity-70">
+            <div className="block md:hidden text-neutral-300 text-base md:text-3xl opacity-70">
               Limca Book of Records
             </div>
           </div>
