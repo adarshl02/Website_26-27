@@ -143,7 +143,7 @@ const RegistrationForm = ({ event_id, setOpen }) => {
     }
   
     const options = {
-      key: import.meta.env.VITE_RAZORPAY_KEY_ID, // Replace with your Razorpay key
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
       amount,
       currency: "INR",
       order_id,
@@ -155,11 +155,40 @@ const RegistrationForm = ({ event_id, setOpen }) => {
         contact: formData.phone,
       },
       theme: { color: "#F37254" },
+  
+      handler: async function (response) {
+        setFormData({
+          name: "",
+          phone: "",
+          teamName: "",
+          teamMembers: "",
+          teamLeaderBatch: "",
+          teamLeaderBranch: "",
+          participant_2: "",
+          participant_3: "",
+          participant_4: "",
+          participant_5: "",
+          participant_6: "",
+          participant_7: "",
+          participant_8: "",
+        });
+  
+        dispatch(loadingEndsSuccess());
+        toast.info("Check Your Mail for confirmation");
+        navigate("/profile");
+      },
+  
+      modal: {
+        ondismiss: function () {
+          dispatch(loadingEndsSuccess());
+        },
+      },
     };
   
     const rzp = new window.Razorpay(options);
     rzp.open();
   };
+  
   
 
   const verifyPaymentHandler = async (response) => {
