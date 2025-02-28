@@ -61,7 +61,6 @@ export const registerEvent = async (data,token) => {
        "Authorization": `${token}`, 
       },
     });
-    console.log(response);
     
     return { success: true, data: response.data };
   } catch (error) {

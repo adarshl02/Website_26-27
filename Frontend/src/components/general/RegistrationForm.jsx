@@ -289,7 +289,7 @@ const RegistrationForm = ({ event_id, setOpen }) => {
                     id="teamLeaderBatch"
                     value={formData.teamLeaderBatch}
                     className="w-full px-4 py-1.5 md:py-2 border-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 
-                md:text-base text-sm"                  placeholder="Your Batch"
+                md:text-base text-sm"                  placeholder="Your Batch (Eg. 2026)"
                     onChange={handleChange}
                     required
                   />
@@ -304,7 +304,7 @@ const RegistrationForm = ({ event_id, setOpen }) => {
                     id="teamLeaderBranch"
                     value={formData.teamLeaderBranch}
                     className="w-full px-4 py-1.5 md:py-2 border-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 
-                md:text-base text-sm"                  placeholder="Your Branch"
+                md:text-base text-sm"                  placeholder="Your Branch (Eg. IT)"
                     onChange={handleChange}
                     required
                   />
