@@ -10,6 +10,7 @@ export default function PreRegistration() {
   const [loading, setLoading] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [confirmDialog, setConfirmDialog] = useState({ open: false, email: "", status: "", initialStatus: "" });
+  const [filterApproved, setFilterApproved] = useState(false);
 
   const { token } = useSelector((state) => state.user.currentUser);
 
@@ -18,7 +19,9 @@ export default function PreRegistration() {
       setLoading(true);
       try {
         const attendeeData = await fetchAttendees(token);
-        if (attendeeData.success) setAttendees(attendeeData.data);
+        if (attendeeData.success) {
+          setAttendees(attendeeData.data);
+        }
       } catch (error) {
         console.error("Error loading attendees:", error);
         toast.error("Error fetching attendees");
@@ -36,7 +39,9 @@ export default function PreRegistration() {
       toast[response.success ? "success" : "error"](response.message);
       if (response.success) {
         const attendeeData = await fetchAttendees(token);
-        if (attendeeData.success) setAttendees(attendeeData.data);
+        if (attendeeData.success) {
+          setAttendees(attendeeData.data);
+        }
       }
     } catch (error) {
       console.error("Error updating status:", error);
@@ -55,6 +60,7 @@ export default function PreRegistration() {
     await handleStatusUpdate(confirmDialog.email, confirmDialog.status);
   };
 
+  const filteredAttendees = filterApproved ? attendees.filter(a => a.payment_status === "APPROVED") : attendees;
 
   return (
     <div className="pt-2 max-w-md mx-auto">
@@ -64,8 +70,14 @@ export default function PreRegistration() {
         className="bg-slate-700 text-white p-1 rounded-lg shadow-md text-center mb-2"
       >
         <h2 className="text-base font-semibold">Total Pre-Registrations</h2>
-        <p className="text-2xl font-bold">{attendees.length}</p>
+        <p className="text-2xl font-bold">{attendees.filter(a => a.payment_status === "APPROVED").length}</p>
       </motion.div>
+
+      <div className="flex justify-end mb-2">
+        <button className="px-2 py-1 bg-gray-300 rounded-lg"  onClick={() => setFilterApproved(!filterApproved)}>
+          {filterApproved ? "Show All" : "Show Approved"}
+        </button>
+      </div>
 
       {loading ? (
         <div className="flex justify-center py-4">
@@ -73,12 +85,22 @@ export default function PreRegistration() {
         </div>
       ) : (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4 mb-16">
-          {attendees.map((attendee) => (
+          {filteredAttendees.map((attendee) => (
             <div key={attendee.attendee_id} className="bg-white p-4 rounded-lg shadow-md">
               <h3 className="text-lg font-semibold">{attendee.team_name}</h3>
               <p className="text-gray-600 text-sm">Leader: {attendee.team_leader_name} ({attendee.team_leader_phone})</p>
+              <p className="text-gray-600 text-sm">Email: {attendee.team_leader_email}</p>
               <p className="text-gray-600 text-sm">Batch: {attendee.team_leader_batch}</p>
               <p className="text-gray-600 text-sm">Branch: {attendee.team_leader_branch}</p>
+              <p className="text-gray-600 text-sm">Participants: {[
+                attendee.sec_participant,
+                attendee.third_participant,
+                attendee.fourth_participant,
+                attendee.fifth_participant,
+                attendee.sixth_participant,
+                attendee.seventh_participant,
+                attendee.eight_participant
+              ].filter(name => name).join(", ")}</p>
               <p className="text-gray-600 text-sm">
                 Status: <span className={`font-medium ${attendee.team_status === "APPROVED" ? "text-green-600" : attendee.team_status === "REJECTED" ? "text-red-600" : "text-yellow-600"}`}>{attendee.team_status}</span>
               </p>
@@ -100,7 +122,6 @@ export default function PreRegistration() {
               </Select>
             </div>
           ))}
-
         </motion.div>
       )}
 
