@@ -35,7 +35,7 @@ export default function AdminHeader({ activeTab, setActiveTab }) {
           }`}
           onClick={() => setActiveTab("LoggedInAccounts")}
         >
-          LoggedIn Account
+          Active Admins
         </button>
       </div>
     </div>

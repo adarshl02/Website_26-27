@@ -19,7 +19,7 @@ export default function AdminDashboard() {
       
         {activeTab === "QR Scanner" && <QRCodeAttendance />}
         {activeTab === "PreRegistration" && <PreRegistration />}
-        {activeTab === "LoggedInAccounts" && <PreRegistration />}
+        {activeTab === "ActiveAdmins" && <PreRegistration />}
         </div>
     </div>
   )
