@@ -78,13 +78,13 @@ export default function PreRegistration() {
         size="small"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        className="bg-gray-200"
+        className="mb-2"
       />
 
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-slate-700 text-white p-1 rounded-lg shadow-md text-center my-4"
+        className="bg-slate-700 text-white p-1 rounded-lg shadow-md text-center mb-2 my-4"
       >
         <h2 className="text-base font-semibold">Total Pre-Registrations</h2>
         <p className="text-2xl font-bold">{attendees.filter(a => a.payment_status === "APPROVED").length}</p>
@@ -109,6 +109,21 @@ export default function PreRegistration() {
               <p className="text-gray-600 text-sm">Email: {attendee.team_leader_email}</p>
               <p className="text-gray-600 text-sm">Batch: {attendee.team_leader_batch}</p>
               <p className="text-gray-600 text-sm">Branch: {attendee.team_leader_branch}</p>
+              <p className="text-gray-600 text-sm">Participants: {[
+                attendee.sec_participant,
+                attendee.third_participant,
+                attendee.fourth_participant,
+                attendee.fifth_participant,
+                attendee.sixth_participant,
+                attendee.seventh_participant,
+                attendee.eight_participant
+              ].filter(name => name).join(", ")}</p>
+              <p className="text-gray-600 text-sm">
+                Status: <span className={`font-medium ${attendee.team_status === "APPROVED" ? "text-green-600" : attendee.team_status === "REJECTED" ? "text-red-600" : "text-yellow-600"}`}>{attendee.team_status}</span>
+              </p>
+              <p className="text-gray-600 text-sm">
+                Payment: <span className={`font-medium ${attendee.payment_status === "APPROVED" ? "text-green-600" : "text-red-600"}`}>{attendee.payment_status}</span>
+              </p>
               <Select
                 value={attendee.team_status}
                 onChange={(e) => openConfirmDialog(attendee.team_leader_email, e.target.value, attendee.team_status)}
