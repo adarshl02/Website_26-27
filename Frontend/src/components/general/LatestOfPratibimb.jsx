@@ -47,8 +47,8 @@ const LatestOfPratibimb = ({ handleOpen, handleOpen2 }) => {
             </div>
             <motion.button
               whileTap={{ scale: 0.95 }}
-              // onClick={handleOpen2}
-              onClick={() => navigate("/upcoming-event-page")}
+               onClick={handleOpen2}
+              // onClick={() => navigate("/upcoming-event-page")}
               className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white py-2 px-4 rounded-full shadow-2xl font-bold transition duration-300 hover:opacity-90 hover:shadow-2xl"
             >
               Explore More <ArrowForwardIcon />
@@ -69,12 +69,13 @@ const LatestOfPratibimb = ({ handleOpen, handleOpen2 }) => {
           <div className="text-gray-400 text-sm mb-2 md:mb-4">
             Aayam Face Painting Competition <br />
             <span className="text-slate-400 font-medium opacity-75">
-              Date: 08 March , 2025
+              Date: 01 March , 2025
             </span>
             <br /> <br />
             <motion.button
               whileTap={{ scale: 0.95 }}
-              onClick={() => window.open("https://forms.gle/Je1TaEksBSRpkpdc8", "_blank")}
+              onClick={handleOpen}
+              // onClick={() => window.open("https://forms.gle/Je1TaEksBSRpkpdc8", "_blank")}
               className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-2 px-4 rounded-full shadow-lg font-bold transition duration-300 hover:opacity-90 hover:shadow-2xl"
             >
               Register Here
