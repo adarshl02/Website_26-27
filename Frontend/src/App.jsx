@@ -185,8 +185,8 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef,s
                 </>
               }
             />
-            {/* <Route
-              path="/upcoming-event-page"
+            <Route
+              path="/asdfghjkl"
               element={
                 <>
                   <motion.div
@@ -199,7 +199,7 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef,s
                   </motion.div>
                 </>
               }
-            /> */}
+            />
           </Route>
   
           <Route element={<AdminRoute />}>

@@ -4,6 +4,7 @@ import { CircularProgress, MenuItem, Select, Dialog, DialogActions, DialogConten
 import { fetchAttendees, updateStatus } from "@/service/api2";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
+import dayjs from "dayjs";
 
 export default function PreRegistration() {
   const [attendees, setAttendees] = useState([]);
@@ -67,7 +68,7 @@ export default function PreRegistration() {
     Object.values(a).some((value) =>
       value?.toString().toLowerCase().includes(searchQuery.toLowerCase())
     )
-  );
+  );  
 
   return (
     <div className="pt-2 max-w-md mx-auto">
@@ -109,6 +110,7 @@ export default function PreRegistration() {
               <p className="text-gray-600 text-sm">Email: {attendee.team_leader_email}</p>
               <p className="text-gray-600 text-sm">Batch: {attendee.team_leader_batch}</p>
               <p className="text-gray-600 text-sm">Branch: {attendee.team_leader_branch}</p>
+              <p className="text-gray-600 text-sm">Registered: <span className="text-slate-700 font-bold" >{dayjs(attendee.created_at).format("MMM D, YYYY - h:mm A")}</span> </p>
               <p className="text-gray-600 text-sm">Participants: {[
                 attendee.sec_participant,
                 attendee.third_participant,
