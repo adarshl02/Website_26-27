@@ -46,6 +46,11 @@ const registerForFinalRound = async (req, res) => {
     }
 
     await db("attendees").where({ attendee_id: attendee.attendee_id }).update({
+      team_name: teamDetails.team_name,
+      team_leader_name: teamDetails.team_leader_name,
+      team_leader_phone: teamDetails.team_leader_phone,
+      team_leader_batch: teamDetails.team_leader_batch,
+      team_leader_branch: teamDetails.team_leader_branch,
       sec_participant: teamDetails.sec_participant,
       third_participant: teamDetails.third_participant,
       fourth_participant: teamDetails.fourth_participant,
@@ -77,7 +82,8 @@ const registerForFinalRound = async (req, res) => {
 
     await db("attendee_documents").insert({
       attendee_id: attendee.attendee_id,
-      team_leader_name: attendee.team_leader_name,
+      team_name: teamDetails.team_name,
+      team_leader_name: teamDetails.team_leader_name,
       sec_participant_name: teamDetails.sec_participant,
       third_participant_name: teamDetails.third_participant,
       fourth_participant_name: teamDetails.fourth_participant,

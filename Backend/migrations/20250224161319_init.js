@@ -13,6 +13,8 @@ export async function up(knex) {
     table.string("qr_code_link");
     table.enu("payment_status", ["PENDING", "APPROVED", "FAILED"]).defaultTo("PENDING");
 
+    table.string("team_name")
+
     // Team Leader Details
     table.string("team_leader_name");
     table.string("team_leader_phone");
