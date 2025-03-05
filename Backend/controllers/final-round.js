@@ -3,6 +3,7 @@ import cloudinary from "../config/cloudinary/index.js";
 import Razorpay from "razorpay";
 import crypto from "crypto";
 import errorHandler from "../utils/errorHandler.js";
+import { sendEmail } from "../utils/emailFunctions.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -135,6 +136,7 @@ const registerForFinalRound = async (req, res) => {
 
 const verifyFinalPayment = async (req, res) => {
   try {
+    const { email } = req.body;
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
       req.body;
 
@@ -153,14 +155,14 @@ const verifyFinalPayment = async (req, res) => {
     }
 
     const attendee = await db("attendee_documents")
-      .where({ order_id: razorpay_order_id, payment_status: "PENDING" })
+      .where({ order_id: razorpay_order_id, payment_status: "" })
       .first();
 
     if (!attendee) {
       return res.status(404).json({ message: "Attendee not found" });
     }
 
-    const qrCodeData = `Order ID: ${attendee.order_id}, Team Leader: ${attendee.team_leader_name}`;
+    const qrCodeData = `${attendee.order_id}`;
     const qrCodeImage = await QRCode.toDataURL(qrCodeData);
 
     const uploadResponse = await cloudinary.uploader.upload(qrCodeImage, {
@@ -168,6 +170,8 @@ const verifyFinalPayment = async (req, res) => {
       public_id: `qr_${razorpay_order_id}`,
       overwrite: true,
     });
+
+    const qr_code_link = uploadResponse.secure_url;
 
     if (!uploadResponse.secure_url) {
       return res.status(500).json({ message: "QR Code upload failed" });
@@ -179,6 +183,22 @@ const verifyFinalPayment = async (req, res) => {
         payment_status: "APPROVED",
         qr_code_link: uploadResponse.secure_url,
       });
+
+    let data = {
+      event_date: "08/03/2025 - 09/03/2025",
+      event_name: "GRAFFATHON",
+      event_location: "Director Office Rd,SGSITS,Indore(M.P.)",
+    };
+
+    await sendEmail(
+      email,
+      attendee.team_leader_name,
+      attendee.team_name,
+      data.event_date,
+      data.event_name,
+      data.event_location,
+      qr_code_link
+    );
 
     return res.status(200).json({
       message: "Payment verified successfully",
