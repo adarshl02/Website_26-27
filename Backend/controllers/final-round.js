@@ -14,7 +14,8 @@ const razorpay = new Razorpay({
 const registerForFinalRound = async (req, res) => {
   try {
     const { event_id } = req.query;
-    const { team_leader_email, phoneNumbers, driveLinks } = req.body;
+    const { team_leader_email, phoneNumbers, driveLinks, teamDetails } =
+      req.body;
 
     if (!event_id || !team_leader_email) {
       return res
@@ -27,6 +28,7 @@ const registerForFinalRound = async (req, res) => {
           )
         );
     }
+
     const attendee = await db("attendees")
       .where({ event_id, team_leader_email, team_status: "PENDING" })
       .first();
@@ -42,6 +44,16 @@ const registerForFinalRound = async (req, res) => {
           )
         );
     }
+
+    await db("attendees").where({ attendee_id: attendee.attendee_id }).update({
+      sec_participant: teamDetails.sec_participant,
+      third_participant: teamDetails.third_participant,
+      fourth_participant: teamDetails.fourth_participant,
+      fifth_participant: teamDetails.fifth_participant,
+      sixth_participant: teamDetails.sixth_participant,
+      seventh_participant: teamDetails.seventh_participant,
+      eight_participant: teamDetails.eighth_participant,
+    });
 
     const amount = 699 * 100;
     const options = {
@@ -66,13 +78,13 @@ const registerForFinalRound = async (req, res) => {
     await db("attendee_documents").insert({
       attendee_id: attendee.attendee_id,
       team_leader_name: attendee.team_leader_name,
-      sec_participant_name: attendee.sec_participant,
-      third_participant_name: attendee.third_participant,
-      fourth_participant_name: attendee.fourth_participant,
-      fifth_participant_name: attendee.fifth_participant,
-      sixth_participant_name: attendee.sixth_participant,
-      seventh_participant_name: attendee.seventh_participant,
-      eighth_participant_name: attendee.eight_participant,
+      sec_participant_name: teamDetails.sec_participant,
+      third_participant_name: teamDetails.third_participant,
+      fourth_participant_name: teamDetails.fourth_participant,
+      fifth_participant_name: teamDetails.fifth_participant,
+      sixth_participant_name: teamDetails.sixth_participant,
+      seventh_participant_name: teamDetails.seventh_participant,
+      eighth_participant_name: teamDetails.eighth_participant,
       team_leader_email,
       team_leader_phone: phoneNumbers.team_leader,
       sec_participant_phone: phoneNumbers.sec_participant,
