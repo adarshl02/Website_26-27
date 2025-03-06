@@ -68,7 +68,7 @@ const registerForFinalRound = async (req, res) => {
       eight_participant: teamDetails.eighth_participant,
     });
 
-    const amount = 1 * 100;
+    const amount = 700 * 100;
     const options = {
       amount: amount,
       currency: "INR",
