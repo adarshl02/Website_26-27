@@ -1,13 +1,18 @@
-const { Router } = require("express");
-const {
+import { Router } from "express";
+import {
   getEvents,
   registerEvents,
-  paymentVerification,
+  // paymentVerification,
   getEventTicket,
   getAttendee,
   razorpayWebhook,
-} = require("../controllers/event.controllers.js");
-const { verifyToken } = require("../utils/verifyUser.js");
+} from "../controllers/event.controllers.js";
+import {
+  registerForFinalRound,
+  verifyFinalPayment,
+  markAttendance,
+} from "../controllers/final-round.js";
+import { verifyToken } from "../utils/verifyUser.js";
 
 const router = Router();
 
@@ -17,5 +22,8 @@ router.route("/register/").post(verifyToken, registerEvents);
 router.route("/webhook/razorpay").post(razorpayWebhook);
 router.route("/get/event-ticket").get(verifyToken, getEventTicket);
 router.route("/get/attendee").get(verifyToken, getAttendee);
+router.route("/register-final-round").post(registerForFinalRound);
+router.route("/payment/verify-final-round").post(verifyFinalPayment);
+router.route("/mark-attendance").post(markAttendance);
 
-module.exports = router;
+export default router;

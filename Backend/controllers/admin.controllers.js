@@ -1,116 +1,162 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const db = require("../config/db/index.js");
-const { errorHandler } = require("../utils/errorHandler");
-require("dotenv").config();
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import db from "../config/db/index.js";
+import errorHandler from "../utils/errorHandler.js";
+import nodemailer from "nodemailer";
+import "dotenv/config";
+import { response } from "express";
 
-const registerAdmin = async (req, res) => {
+const generateOTP = () =>
+  Math.floor(100000 + Math.random() * 900000).toString();
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "adarsh.landge10604@gmail.com",
+    pass: process.env.NODEMAILER_ADMIN,
+  },
+});
+
+const sendOtp = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { name } = req.body;
 
-    if (!username || !password) {
-      return res
-        .status(404)
-        .send(
-          errorHandler(
-            404,
-            "Invalid Request",
-            "Please Enter Username And Password"
-          )
-        );
+    const existingUser = await db("active_admins").where({ name }).first();
+    if (existingUser) {
+      return res.status(404).json({ message: "Admin Already Exists" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const otp = generateOTP();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 mins expiry
 
-    const defaultName = "Admin";
-    const defaultEmail = `${username}@admin.com`; // Assuming you generate email based on username
-    const defaultAvatar =
-      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
-    const defaultBatch = "2025";
-    const defaultBranch = "ADMIN";
+    await db("access_otp_log").insert({ name, otp, expires_at: expiresAt });
 
-    await db("admins").insert({
-      username,
-      password: hashedPassword,
-      name: defaultName,
-      email: defaultEmail,
-      avatar: defaultAvatar,
-      batch: defaultBatch,
-      branch: defaultBranch,
-      is_member: false,
-      is_artist: false,
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: "teampratibimb.sgsits@gmail.com",
+      subject: "Your OTP for Login",
+      text: `Your OTP is: ${otp}. It will expire in 10 minutes.OTP is requested by ${name}`,
     });
 
-    res.status(201).json({ message: "Admin registered successfully" });
+    res.status(200).json({ message: "OTP sent successfully" });
   } catch (error) {
-    if (error.code === "23505") {
-      return res
-        .status(404)
-        .send(
-          errorHandler(
-            404,
-            "Already Exists",
-            "Username or Email Already Exists"
-          )
-        );
-    } else {
-      return res
-        .status(500)
-        .json(
-          errorHandler(
-            500,
-            "Internal Server Error",
-            "Server Error While Creating Admin"
-          )
-        );
-    }
+    console.error(error);
+    res.status(500).json({ message: "Failed to send OTP" });
   }
 };
-
-const loginAdmin = async (req, res) => {
-  const { username, password } = req.body;
-
-  if (!username || !password) {
-    return res
-      .status(400)
-      .json({ error: "Username and password are required" });
-  }
-
+const verifyOtp = async (req, res) => {
   try {
-    const admin = await db("admins").where({ username }).first();
-    if (!admin) {
-      return res.status(204).json({ error: "Invalid credentials" });
+    const { name, otp } = req.body;
+
+    const otpData = await db("access_otp_log").where({ name }).first();
+    if (!otpData) {
+      return res.status(400).json({ message: "Invalid OTP request" });
+    }
+    if (otpData.otp != otp) {
+      return res.status(400).send(errorHandler(400, "Bad Request", "Fuck Off"));
     }
 
-    const isPasswordValid = await bcrypt.compare(password, admin.password);
-    if (!isPasswordValid) {
-      return res.status(204).json({ message: "Invalid credentials" });
+    if (new Date() > new Date(otpData.expires_at)) {
+      return res.status(400).json({ message: "OTP expired" });
+    }
+    if (otpData.is_verified) {
+      return res
+        .status(400)
+        .send(errorHandler(400, "Bad Request", "OTP is already been verified"));
+    }
+
+    const user = await db("active_admins").insert({
+      name,
+    });
+    if (user) {
+      await db("access_otp_log")
+        .update({
+          is_verified: true,
+        })
+        .where({
+          otp,
+          name,
+        });
     }
 
     const token = jwt.sign(
-      { id: admin.id, username: admin.username },
+      { id: user.id, email: user.email },
       process.env.JWT_SECRET,
       {
         expiresIn: "5d",
       }
     );
-    const { username: _, password: __, ...rest } = admin;
 
+    res.status(200).json({
+      message: "OTP verified successfully. Login successful.",
+      token,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to verify OTP" });
+  }
+};
+
+const getAllAdmins = async (req, res) => {
+  try {
+    let admins = await db("active_admins").select("*");
+    if (!admins) {
+      return res
+        .status(400)
+        .send(errorHandler(400, "Not Found", "No Admins Found"));
+    }
     return res.status(200).send({
       response: {
-        data: { rest, token },
-        title: "Login Successful",
-        message: "Logged In Successfully. Redirecting to the Home Page",
+        data: { admins },
+        title: "Admins Fetched",
+        message: "Admins Fetched Successfully",
       },
     });
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    console.error(error);
+    res.status(500).json({ message: "Failed to fetch admins" });
+  }
+};
+
+const logoutAdmin = async (req, res) => {
+  try {
+    const { name } = req.body;
+
+    // Check if admin exists in active_admins
+    let search = await db("active_admins").where({ name }).first(); // `.first()` ensures a single object instead of an array
+
+    if (!search) {
+      return res.status(404).json({
+        error: "Not Found",
+        message: `Admin not found with name ${name}`,
+      });
+    }
+
+    // Delete the admin from active_admins
+    let deletion = await db("active_admins").where({ name }).del();
+
+    if (deletion) {
+      return res.status(200).json({
+        response: {
+          title: "Logout Successful",
+          message: `Logout successful for user ${name}`,
+        },
+      });
+    } else {
+      return res.status(500).json({
+        error: "Logout Failed",
+        message: "Failed to remove admin from active list",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
 const markAttendance = async (req, res) => {
   try {
-    const { qrCodeData } = req.body;
+    const { qrCodeData } = req.params;
 
     const razorpay_order_id = qrCodeData;
     const attendee = await db("attendees")
@@ -149,6 +195,52 @@ const markAttendance = async (req, res) => {
   }
 };
 
+const scanQr = async (req, res) => {
+  try {
+    const { order_id } = req.query;
+    if (!order_id) {
+      return res
+        .status(400)
+        .send(
+          errorHandler(400, "Invalid Request", "Please Provide The Order ID")
+        );
+    }
+    const attendee = await db("attendee_documents")
+      .where({
+        order_id,
+        payment_status: "APPROVED",
+      })
+      .first();
+    if (!attendee) {
+      return res
+        .status(404)
+        .send(errorHandler(404, "Not Found", "Attendee Not Found"));
+    } else {
+      let attendee_data = await db("attendee_documents").select("*").where({
+        order_id,
+      });
+      return res.status(200).send({
+        response: {
+          data: { attendee_data },
+          title: "Data Fetched",
+          message: `Team Details With ${order_id} successfully fetched`,
+        },
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .send(
+        errorHandler(
+          500,
+          "Internal Server Error",
+          "Internal Server Error While Fetching Team Details"
+        )
+      );
+  }
+};
+
 const getAttendeeCount = async (req, res) => {
   try {
     const countResult = await db("attendees").count("attendee_id as total");
@@ -172,8 +264,8 @@ const getAttendeeCount = async (req, res) => {
 
 const getAttendeeDetails = async (req, res) => {
   try {
-    
     let attendee = await db("attendees").select("*");
+    
     if (!attendee) {
       return res
         .status(400)
@@ -266,11 +358,57 @@ const updateTeamStatus = async (req, res) => {
   }
 };
 
-module.exports = {
-  registerAdmin,
-  loginAdmin,
+const loginAdmin = async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res
+      .status(400)
+      .json({ error: "Username and password are required" });
+  }
+
+  try {
+    const admin = await db("admins").where({ username }).first();
+    if (!admin) {
+      return res.status(204).json({ error: "Invalid credentials" });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, admin.password);
+    if (!isPasswordValid) {
+      return res.status(204).json({ message: "Invalid credentials" });
+    }
+
+    const token = jwt.sign(
+      { id: admin.id, username: admin.username },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "5d",
+      }
+    );
+    const { username: _, password: __, ...rest } = admin;
+
+    return res.status(200).send({
+      response: {
+        data: { rest, token },
+        title: "Login Successful",
+        message: "Logged In Successfully. Redirecting to the Home Page",
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+export {
+  sendOtp,
+  verifyOtp,
   markAttendance,
   updateTeamStatus,
   getAttendeeDetails,
-  getAttendeeCount
+  getAttendeeCount,
+  getAllAdmins,
+  logoutAdmin,
+  scanQr,
+  loginAdmin
 };

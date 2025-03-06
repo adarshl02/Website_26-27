@@ -1,13 +1,13 @@
-const { errorHandler } = require("./errorHandler");
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
+import  errorHandler  from "./errorHandler.js";
 
-const verifyToken = (req, res, next) => {
+export const verifyToken = (req, res, next) => {
   const token = req.headers.authorization;
 
   if (!token) {
     return res
       .status(401)
-      .send(errorHandler(401, "Unauthorized", "User is unauthorised"));
+      .send(errorHandler(401, "Unauthorized", "User is unauthorized"));
   }
 
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
@@ -17,9 +17,6 @@ const verifyToken = (req, res, next) => {
         .send(errorHandler(403, "Invalid token", "Token is invalid"));
     }
     req.user = user;
-
     next();
   });
 };
-
-module.exports = { verifyToken };

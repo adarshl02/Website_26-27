@@ -68,6 +68,23 @@ export const registerEvent = async (data,token) => {
   }
 };
 
+export const finalregisterEvent = async (data,token) => {
+  try {
+    
+    const { event_id, ...payload } = data;
+    const response = await axios.post(`${URL}/api/register-final-round?event_id=${event_id}`, payload, {
+      headers: {
+       "Authorization": `${token}`, 
+      },
+    });
+    
+   return { success: true, data: response.data.response.data };
+   
+  } catch (error) {
+    return handleApiError(error, 'Event Registration API');
+  }
+};
+
 export const registerVolunteer = async (data,token) => {
   try {
     const response = await axios.post(`${URL}/api/register/volunteer`, data, {
@@ -149,6 +166,7 @@ export const getAttendeeStatus = async (data,token) => {
       },
     });  
     
+    
     if (response.status === 204) {
       return {
         success: false,
@@ -159,7 +177,7 @@ export const getAttendeeStatus = async (data,token) => {
         },
       };
     }    
-    return { success: true, data: response.data.response };
+    return { success: true, data: response.data };
   } catch (error) {
     return handleApiError(error, 'Get event ticket API');
   }
@@ -172,6 +190,19 @@ export const verifyPayment = async (data,token) => {
         "Authorization": `${token}`,  // Include token in the headers
       },
     });
+    return { success: true, data: response.data };
+  } catch (error) {
+    return handleApiError(error, 'Payment Verification API');
+  }
+};
+
+export const finalverifyPayment = async (data,token) => {
+  try {
+    const response = await axios.post(`${URL}/api/payment/verify-final-round`, data, {
+      headers: {
+        "Authorization": `${token}`,  // Include token in the headers
+      },
+    });    
     return { success: true, data: response.data };
   } catch (error) {
     return handleApiError(error, 'Payment Verification API');

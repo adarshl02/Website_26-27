@@ -1,215 +1,219 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Your Event Ticket</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #333333;
-            margin: 0;
-            padding: 0;
-            color: #f4f4f4;
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #333333;
+        margin: 0;
+        padding: 0;
+        color: #f4f4f4;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .email-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #2a2a2a;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .email-content {
+        padding: 20px;
+      }
+
+      .logo {
+        text-align: center;
+        padding: 10px 0;
+      }
+
+      .logo img {
+        max-width: 120px;
+      }
+
+      .divider {
+        border-top: 2px solid #444444;
+        margin: 10px 0;
+      }
+
+      .title {
+        font-size: 22px;
+        text-align: center;
+        margin: 10px 0;
+        color: #f4f4f4;
+      }
+
+      .ticket-container {
+        background-color: white;
+        color: #333;
+        font-size: 14px;
+        border-radius: 8px;
+        overflow: hidden;
+        text-align: center;
+      }
+
+      .ticket-left {
+        background-color: #fecd01;
+        text-align: center;
+        padding: 10px;
+        font-weight: bold;
+        font-size: 16px;
+      }
+
+      .ticket-body {
+        padding: 15px;
+      }
+
+      .ticket-body .header {
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      .qr-container {
+        padding: 15px;
+      }
+
+      .qr-container img {
+        width: 200px;
+        height: 200px;
+      }
+
+      .btn {
+        display: block;
+        width: 90%;
+        max-width: 200px;
+        margin: 20px auto;
+        padding: 10px;
+        text-align: center;
+        background-color: #2a374b;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        font-size: 14px;
+      }
+
+      .footer {
+        text-align: center;
+        font-size: 12px;
+        padding: 20px 0;
+        color: white;
+      }
+
+      .social-icons img {
+        width: 24px;
+        margin: 5px;
+      }
+
+      .copyright {
+        font-size: 11px;
+        color: #aaaaaa;
+      }
+
+      /* Mobile Responsive */
+      @media (max-width: 600px) {
+        .qr-container img {
+          width: 180px;
+          height: 180px;
         }
 
-        .email-container {
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 20px;
-            background-color: #2a2a2a;
-            border-radius: 15px;
-            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
-            color: #f4f4f4;
-        }
-
-        .logo {
-            text-align: center;
-        }
-
-        .logo img {
-            display: block;
-            margin: 0 auto;
-            max-width: 150px;
-        }
-
-        .divider {
-            border-top: 2px solid #444444;
-            margin: 20px 0;
-        }
-
-        .title {
-            font-size: 26px;
-            text-align: center;
-            margin-top: 20px;
-            color: #f3f3f3;
-        }
-
-        .ticket-container {
-            width: 100%;
-            background-color: white;
-            display: flex;
-            flex-direction: row;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            color: #333;
-            font-size: 14px;
-        }
-
-        .ticket-left {
-            background-color: #fecd01;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 10px;
-            font-size: 12px;
-            font-weight: bold;
-            writing-mode: vertical-rl;
-            transform: rotate(180deg);
-        }
-
-        .ticket-center {
-            padding: 10px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .ticket-body {
-            margin-bottom: 10px;
-            font-size: 12px;
-        }
-        .ticket-body .header {
-            margin-bottom: 8px;
-            font-size: 16px;
-        }
-
-        .ticket-right {
-            display: flex;
-            align-items: center;
-            justify-content:end;    
-            padding: 10px;
-        }
-        .ticket-right .qr-code img {
-            width: 80px;
-            height: 80px;
-        }
         .btn {
-            display: inline-block;
-            padding: 10px 15px;
-            margin-top: 20px;
-            background-color: #2a374b;
-            color: #ffffff;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            font-size: 14px;
+          width: 80%;
         }
-
-        .btn:hover {
-            background-color: #3c495c;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-            color: #f4f4f4;
-        }
-
-        .footer a {
-            color: #67778e;
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-        .social-icons {
-            margin-top: 20px;
-        }
-
-        .social-icons img {
-            width: 30px;
-            margin: 0 8px;
-            vertical-align: middle;
-        }
-
-        .copyright {
-            text-align: center;
-            margin-top: 30px;
-            font-size: 12px;
-            color: #aaaaaa;
-        }
+      }
     </style>
-</head>
-<body>
-    <div class="email-container">
-        <div class="logo">
-            <img src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1733825280/uqfmoxybdavba23awyjg.png" alt="Club Pratibimb Logo">
-        </div>
-        <div class="divider"></div>
+  </head>
 
-        <h1 class="title">Your Event Ticket</h1>
+  <body>
+    <table>
+      <tr>
+        <td align="center">
+          <div class="email-container">
+            <div class="email-content">
+              <div class="logo">
+                <img
+                  src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1733825280/uqfmoxybdavba23awyjg.png"
+                  alt="Club Pratibimb Logo"
+                />
+              </div>
 
-        <p style="font-size: 14px; text-align: center; color: #e0e0e0;">
-            Thank you for registering for the event! We are excited to have you join us.
-        </p>
+              <div class="divider"></div>
 
-        <div class="ticket-container">
-            <div class="ticket-left">CLUB PRATIBIMB</div>
-            <div class="ticket-center">
-                
+              <h1 class="title">Your Event Ticket</h1>
+
+              <p style="text-align: center; font-size: 14px; color: #f4f4f4;">
+                Thank you for registering! We are excited to have you join us.
+              </p>
+
+              <div class="ticket-container">
+                <div class="ticket-left">CLUB PRATIBIMB</div>
+
                 <div class="ticket-body">
-                    <div class="header" >
-                        <b>{{event_name}}</b>
-                    </div>
-                    <div>
-                        <b>Team Name:</b> {{team_name}}
-                    </div>
-                    <div>
-                        <b>Date:</b> {{event_date}}
-                    </div>
-                    <div>
-                        <b>Event Location:</b> {{event_location}}
-                    </div>
+                  <div class="header">{{event_name}} 25</div>
+                  <div><b>Team Name:</b> {{team_name}}</div>
+                  <div><b>Date:</b> {{event_date}}</div>
+                  <div><b>Event Location:</b> {{event_location}}</div>
                 </div>
-                
-            </div>
-            {% comment %} <div class="ticket-right">
-                <div class="qr-code">
-                    <img src="{{qr_code}}" alt="QR Code">
+
+                <div class="qr-container">
+                  <img src="{{qr_code}}" alt="QR Code" />
                 </div>
-            </div> {% endcomment %}
-        </div>
+              </div>
 
-        <a href="https://clubpratibimb.com" class="btn">Visit Event Page</a>
+              <a href="https://clubpratibimb.com" class="btn">Visit Event Page</a>
 
-        <div class="footer">
-            <p>Stay connected with us:</p>
-            <div class="social-icons">
-                <a href="https://bit.ly/3Mu4CN2" target="_blank"><img src="https://res.cloudinary.com/dhy548whh/image/upload/v1733923563/tpuqqhg73ccx2cbs6ccq.png" alt="Instagram"></a>
-                <a href="https://chat.whatsapp.com/Lo2YDqUGt9vDgxhtjQqe43" target="_blank"><img src="https://res.cloudinary.com/dhy548whh/image/upload/v1733924392/wkes107z9zx08debjfa3.png" alt="WhatsApp"></a>
-                <a href="https://youtube.com/@pratibimb_sgsits?si=BLxqIAt6U6Sxn-l3" target="_blank"><img src="https://res.cloudinary.com/dhy548whh/image/upload/v1733923562/ph251e5rkfoteorw38ug.png" alt="YouTube"></a>
+              <div class="footer">
+                <p>Stay connected with us:</p>
+                <div class="social-icons">
+                  <a href="https://bit.ly/3Mu4CN2" target="_blank"
+                    ><img
+                      src="https://res.cloudinary.com/dhy548whh/image/upload/v1733923563/tpuqqhg73ccx2cbs6ccq.png"
+                      alt="Instagram"
+                  /></a>
+                  <a
+                    href="https://chat.whatsapp.com/Lo2YDqUGt9vDgxhtjQqe43"
+                    target="_blank"
+                    ><img
+                      src="https://res.cloudinary.com/dhy548whh/image/upload/v1733924392/wkes107z9zx08debjfa3.png"
+                      alt="WhatsApp"
+                  /></a>
+                  <a
+                    href="https://youtube.com/@pratibimb_sgsits?si=BLxqIAt6U6Sxn-l3"
+                    target="_blank"
+                    ><img
+                      src="https://res.cloudinary.com/dhy548whh/image/upload/v1733923562/ph251e5rkfoteorw38ug.png"
+                      alt="YouTube"
+                  /></a>
+                </div>
+
+                <p>
+                  Have questions? Email us at
+                  <a href="mailto:clubpratibimb.sgsits@gmail.com"
+                    >clubpratibimb.sgsits@gmail.com</a
+                  >
+                </p>
+
+                <p>
+                  If you wish to unsubscribe, click
+                  <a href="{{unsubscribe_link}}">here</a>.
+                </p>
+
+                <div class="copyright">
+                  <p>© 2024 Pratibimb. All rights reserved.</p>
+                </div>
+              </div>
             </div>
-            <p>Thank you for your time and dedication!</p>
-            
-            <p>
-                Have questions? Email us at
-                <a href="mailto:clubpratibimb.sgsits@gmail.com">clubpratibimb.sgsits@gmail.com</a>
-            </p>
-            <p>
-                If you wish to unsubscribe from our emails, click
-                <a href="{{unsubscribe_link}}">here</a>.
-            </p>
-            <div class="copyright">
-                <p>© 2024 Pratibimb. All rights reserved.</p>
-            </div>
-        </div>
-    </div>
-</body>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </body>
 </html>

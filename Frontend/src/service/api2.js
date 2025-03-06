@@ -20,15 +20,17 @@ export const adminLogin = async (data) => {
   }
 };
 
-export const markAttendee = async (data, token) => {
+export const getTeamDetails = async (order_id, token) => {
   try {
-    const response = await axios.post(`${URL}/api/admin/mark-attendance`, data, {
+    const response = await axios.get(`${URL}/api/admin/get-team-details`, {
+      params:{order_id} ,
       headers: {
         "Authorization": token,
       },
       withCredentials: true,
     });
-    return { success: true, data: response.data, message: "Welcome" };
+    
+     return { success: true, data: response.data.response.data.attendee_data[0], message: "Welcome" };
   } catch (error) {
     return handleApiError(error, 'Google Login API');
   }
@@ -54,6 +56,7 @@ export const fetchAttendees = async (token) => {
       headers: { "Authorization": token },
       withCredentials: true,
     });
+    
     return { success: true, data: response.data.response.data.attendee, message: response.data.response.message }
   } catch (error) {
     return handleApiError(error);

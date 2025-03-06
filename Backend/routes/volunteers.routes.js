@@ -1,11 +1,9 @@
-const { Router } = require("express");
-const {
-  applyForVolunteering,
-} = require("../controllers/volunteers.controllers.js");
-const { verifyToken } = require("../utils/verifyUser.js");
+import { Router } from "express";
+import { applyForVolunteering } from "../controllers/volunteers.controllers.js";
+import { verifyToken } from "../utils/verifyUser.js";
 
 const router = Router();
 
-router.route("/register/volunteer").post(verifyToken,applyForVolunteering);
+router.route("/register/volunteer").post(verifyToken, applyForVolunteering);
 
-module.exports = router;
+export default router;

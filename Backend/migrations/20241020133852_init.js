@@ -1,4 +1,4 @@
-exports.up = function (knex) {
+export async function up(knex) {
   return knex.schema.createTable("attendees", (table) => {
     table.increments("attendee_id").primary();
     table.integer("event_id").notNullable();
@@ -29,6 +29,6 @@ exports.up = function (knex) {
   });
 };
 
-exports.down = function (knex) {
+export async function down(knex) {
   return knex.schema.dropTable("attendees");
 };

@@ -1,7 +1,7 @@
-const cloudinary = require("../config/cloudinary");
-const db = require("../config/db");
-const { sendEmailForArtist } = require("../utils/emailFunctions.js");
-const { errorHandler } = require("../utils/errorHandler");
+import cloudinary from "../config/cloudinary/index.js";
+import db from "../config/db/index.js"
+import {sendEmailForArtist } from "../utils/emailFunctions.js";
+import errorHandler from "../utils/errorHandler.js";
 
 const artCommunity = async (req, res) => {
   try {
@@ -149,7 +149,7 @@ const countArtist = async (req, res) => {
 };
 
 
-module.exports = {
+export {
   artCommunity,
   imAnArtist,
   getUserAndArtCommunityDetails,

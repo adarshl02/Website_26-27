@@ -1,4 +1,4 @@
-const nodemailer = require("nodemailer");
+import nodemailer from "nodemailer"
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.office365.com', // Microsoft 365 SMTP server

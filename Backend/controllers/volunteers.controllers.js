@@ -1,6 +1,6 @@
-const db = require("../config/db/index.js");
-const { sendEmailForVolunteering } = require("../utils/emailFunctions.js");
-const { errorHandler } = require("../utils/errorHandler");
+import db from "../config/db/index.js"
+// import { sendEmailForVolunteering } from "../utils/emailFunctions.js"
+import  errorHandler  from "../utils/errorHandler.js"
 
 const applyForVolunteering = async (req, res) => {
   try {
@@ -57,7 +57,7 @@ const applyForVolunteering = async (req, res) => {
 
     let insertion = await db("volunteers").insert(data).returning("*");
 
-    await sendEmailForVolunteering(email, name, phone, domain, branch, batch);
+    // await sendEmailForVolunteering(email, name, phone, domain, branch, batch);
 
     if (insertion) {
       return res.status(200).send({
@@ -83,6 +83,6 @@ const applyForVolunteering = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   applyForVolunteering,
 };

@@ -1,12 +1,10 @@
-const QRCode = require("qrcode");
-const db = require("../config/db/index.js");
-const cloudinary = require("../config/cloudinary");
-const Razorpay = require("razorpay");
-const crypto = require("crypto");
-const { errorHandler } = require("../utils/errorHandler");
-const { sendEmailForArtWork } = require("../utils/emailFunctions.js");
-
-require("dotenv").config();
+import db from "../config/db/index.js";
+import Razorpay from "razorpay";
+import crypto from "crypto";
+import errorHandler from "../utils/errorHandler.js";
+import { sendEmailForArtWork } from "../utils/emailFunctions.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -57,7 +55,7 @@ const getEvents = async (req, res) => {
 
 const registerEvents = async (req, res) => {
   try {
-    const { event_id } = req.query;
+    const  event_id =3;
     const {
       team_name,
       team_size,
@@ -198,7 +196,7 @@ const getEventTicket = async (req, res) => {
         .status(400)
         .send(errorHandler(400, "Invalid Request", "Please enter the email"));
     }
-    let selection = await db("attendees").select("*").where({
+    let selection = await db("attendee_documents").select("*").where({
       team_leader_email: email,
       payment_status: "APPROVED",
     });
@@ -236,9 +234,8 @@ const getAttendee = async (req, res) => {
     }
 
     const attendee = await db("attendees")
-    .where({ team_leader_email, payment_status: "APPROVED" })
-    .first();
-  
+      .where({ team_leader_email, payment_status: "APPROVED" })
+      .first();
 
     if (!attendee) {
       return res.status(204).send();
@@ -262,9 +259,10 @@ const getAttendee = async (req, res) => {
       },
     };
 
-    return res
-      .status(200)
-      .send({ response: statusMessages[attendee.team_status] });
+    return res.status(200).send({
+      response: statusMessages[attendee.team_status] || {},
+      attendee, 
+    });
   } catch (error) {
     console.error(error);
     return res
@@ -279,7 +277,7 @@ const getAttendee = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   getEvents,
   registerEvents,
   // paymentVerification,

@@ -3,10 +3,10 @@
  * @returns { Promise<void> }
  */
 export async function up(knex) {
-    return knex.schema.createTable('feedback',(table)=>{
+    return knex.schema.createTable("active_admins",(table)=>{
         table.increments('id').primary()
-        table.string('name').notNullable()
-        table.text('feedback').notNullable()
+        table.string('name')
+        table.timestamps(true,true)
     })
   
 };
@@ -16,6 +16,6 @@ export async function up(knex) {
  * @returns { Promise<void> }
  */
 export async function down(knex) {
-    return knex.schema.dropTable('feedback')
+    return knex.schema.dropTable("active_admins")
   
 };

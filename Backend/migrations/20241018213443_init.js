@@ -1,7 +1,7 @@
-// migrations/20240101010101_create_users_table.js (the timestamp will vary)
+// migrations/20240101010101_create_users_table.mjs (the timestamp will vary)
 
-exports.up = function (knex) {
-  return knex.schema.createTable("users", (table) => {
+export async function up(knex) {
+  await knex.schema.createTable("users", (table) => {
     table.increments("id").primary(); // Primary key
     table.string("name").notNullable();
     table.string("email").notNullable().unique();
@@ -18,8 +18,8 @@ exports.up = function (knex) {
     table.boolean("is_artist").defaultTo(false);
     table.timestamps(true, true);
   });
-};
+}
 
-exports.down = function (knex) {
-  return knex.schema.dropTableIfExists("users"); // Drop users table if it exists
-};
+export async function down(knex) {
+  await knex.schema.dropTableIfExists("users"); // Drop users table if it exists
+}

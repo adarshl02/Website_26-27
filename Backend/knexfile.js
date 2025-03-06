@@ -1,9 +1,12 @@
-// knexfile.js
-const fs = require("fs");
-const path = require("path");
-require("dotenv").config();
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import dotenv from "dotenv";
 
-module.exports = {
+dotenv.config();
+
+
+export default {
   development: {
     client: "pg",
     connection: {
@@ -13,7 +16,7 @@ module.exports = {
       port: 21137,
       database: process.env.DATABASE,
       ssl: {
-        rejectUnauthorized: process.env.REJECTUNAUTHORIZED,
+        rejectUnauthorized: process.env.REJECTUNAUTHORIZED === "true",
         ca: `-----BEGIN CERTIFICATE-----
 MIIEQTCCAqmgAwIBAgIUL1h4g12ph1bFMFbnLcorMKvqc2wwDQYJKoZIhvcNAQEM
 BQAwOjE4MDYGA1UEAwwvMTM3YTg0MDMtMDA3Mi00NmY5LTg2NzgtZTllYWJjMjRk
@@ -47,6 +50,7 @@ JEymGwxVOupIGTcxGegY9qPUwAUfnQDA+2X9pKkp4QVVM4eFnA==
   },
 };
 
+
 // module.exports = {
 //   development: {
 //     client: "pg",
@@ -67,4 +71,3 @@ JEymGwxVOupIGTcxGegY9qPUwAUfnQDA+2X9pKkp4QVVM4eFnA==
 //     },
 //   },
 // };
-

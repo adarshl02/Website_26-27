@@ -1,5 +1,5 @@
-const db = require("../config/db/index.js");
-const { errorHandler } = require("../utils/errorHandler");
+import db from "../config/db/index.js";
+import errorHandler from "../utils/errorHandler.js";
 
 const changeEnrollment = async (req, res) => {
   try {
@@ -126,7 +126,7 @@ const giveFeedback = async (req, res) => {
   }
 };
 
-module.exports = {
+export  {
   changeEnrollment,
   countUsers,
   giveFeedback,
