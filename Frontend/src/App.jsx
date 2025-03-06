@@ -186,7 +186,7 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef,s
               }
             />
             <Route
-              path="/upcoming-event-page"
+              path="/asdfghjkl"
               element={
                 <>
                   <motion.div

@@ -106,7 +106,7 @@ const RegistrationForm = ({ event_id, setOpen }) => {
       };
 
       const response = await registerEvent(payload, token);
-
+      
       if (response.success) {
         toast.info("Redirecting to Payment Page");
         setOpen(false);
@@ -141,31 +141,59 @@ const RegistrationForm = ({ event_id, setOpen }) => {
       toast.error("Razorpay SDK failed to load. Please check your connection.");
       return;
     }
-
+  
     const options = {
-      key: import.meta.env.VITE_RAZORPAY_KEY_ID, // Replace with your Razorpay key
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
       amount,
       currency: "INR",
       order_id,
       name: "Event Booking",
       description: "Payment for event booking",
-      handler: (response) => verifyPaymentHandler(response),
       prefill: {
         name: formData.name,
-        email: currentUser.email,
+        email: currentUser.rest.email,
         contact: formData.phone,
       },
-      theme: {
-        color: "#F37254",
+      theme: { color: "#F37254" },
+      handler: (response) => verifyPaymentHandler(response),
+      // handler: async function (response) {
+      //   setFormData({
+      //     name: "",
+      //     phone: "",
+      //     teamName: "",
+      //     teamMembers: "",
+      //     teamLeaderBatch: "",
+      //     teamLeaderBranch: "",
+      //     participant_2: "",
+      //     participant_3: "",
+      //     participant_4: "",
+      //     participant_5: "",
+      //     participant_6: "",
+      //     participant_7: "",
+      //     participant_8: "",
+      //   });
+  
+      //   dispatch(loadingEndsSuccess());
+      //   toast.info("Check Your Mail for confirmation");
+      //   navigate("/profile");
+      // },
+      modal: {
+        ondismiss: function () {
+          dispatch(loadingEndsSuccess());
+        },
       },
     };
-
+  
     const rzp = new window.Razorpay(options);
     rzp.open();
   };
+  
+  
 
   const verifyPaymentHandler = async (response) => {
-    try {
+    try {      
+      console.log(response);
+      
       const verificationResponse = await verifyPayment({
         razorpay_order_id: response.razorpay_order_id,
         razorpay_payment_id: response.razorpay_payment_id,
@@ -262,7 +290,7 @@ const RegistrationForm = ({ event_id, setOpen }) => {
                     id="teamLeaderBatch"
                     value={formData.teamLeaderBatch}
                     className="w-full px-4 py-1.5 md:py-2 border-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 
-                md:text-base text-sm"                  placeholder="Your Batch"
+                md:text-base text-sm"                  placeholder="Your Batch (Eg. 2026)"
                     onChange={handleChange}
                     required
                   />
@@ -277,7 +305,7 @@ const RegistrationForm = ({ event_id, setOpen }) => {
                     id="teamLeaderBranch"
                     value={formData.teamLeaderBranch}
                     className="w-full px-4 py-1.5 md:py-2 border-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 
-                md:text-base text-sm"                  placeholder="Your Branch"
+                md:text-base text-sm"                  placeholder="Your Branch (Eg. IT)"
                     onChange={handleChange}
                     required
                   />

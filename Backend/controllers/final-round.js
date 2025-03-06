@@ -5,6 +5,7 @@ import crypto from "crypto";
 import errorHandler from "../utils/errorHandler.js";
 import { sendEmail } from "../utils/emailFunctions.js";
 import dotenv from "dotenv";
+import QRCode from "qrcode";
 dotenv.config();
 
 const razorpay = new Razorpay({
@@ -31,7 +32,7 @@ const registerForFinalRound = async (req, res) => {
     }
 
     const attendee = await db("attendees")
-      .where({ event_id, team_leader_email, team_status: "PENDING" })
+      .where({ event_id, team_leader_email, team_status: "APPROVED" })
       .first();
 
     if (!attendee) {
@@ -44,6 +45,12 @@ const registerForFinalRound = async (req, res) => {
             "You are not approved for the final round"
           )
         );
+    }
+    const existingAttendee = await db("attendee_documents").where({team_leader_email,payment_status:"APPROVED" }).first();
+    console.log(existingAttendee);
+    
+    if (existingAttendee) {
+      return res.status(400).send(errorHandler(400, "Already Registered", "User has already registered and paid for this event."));
     }
 
     await db("attendees").where({ attendee_id: attendee.attendee_id }).update({
@@ -61,7 +68,7 @@ const registerForFinalRound = async (req, res) => {
       eight_participant: teamDetails.eighth_participant,
     });
 
-    const amount = 699 * 100;
+    const amount = 1 * 100;
     const options = {
       amount: amount,
       currency: "INR",
@@ -77,9 +84,9 @@ const registerForFinalRound = async (req, res) => {
         );
     }
 
-    await db("attendees")
-      .where({ attendee_id: attendee.attendee_id })
-      .update({ order_id: order.id, payment_status: "PENDING" });
+    // await db("attendees")
+    //   .where({ attendee_id: attendee.attendee_id })
+    //   .update({ order_id: order.id, payment_status: "PENDING" });
 
     await db("attendee_documents").insert({
       attendee_id: attendee.attendee_id,
@@ -136,8 +143,7 @@ const registerForFinalRound = async (req, res) => {
 
 const verifyFinalPayment = async (req, res) => {
   try {
-    const { email } = req.body;
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature,email } =
       req.body;
 
     const secret = process.env.RAZORPAY_KEY_SECRET;
@@ -155,7 +161,7 @@ const verifyFinalPayment = async (req, res) => {
     }
 
     const attendee = await db("attendee_documents")
-      .where({ order_id: razorpay_order_id, payment_status: "" })
+      .where({ order_id: razorpay_order_id, payment_status: "PENDING" })
       .first();
 
     if (!attendee) {
@@ -177,7 +183,7 @@ const verifyFinalPayment = async (req, res) => {
       return res.status(500).json({ message: "QR Code upload failed" });
     }
 
-    await db("attendees_documents")
+    await db("attendee_documents")
       .where({ order_id: razorpay_order_id })
       .update({
         payment_status: "APPROVED",

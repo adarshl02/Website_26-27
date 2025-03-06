@@ -4,7 +4,7 @@ const config = {
     connection: {
       database: "pratibimb_local",
       user: "postgres",
-      password: "tanurt@123",
+      password: "cricket@10604",
     },
     pool: {
       min: 2,
