@@ -396,7 +396,7 @@ export default function Profile() {
             onClick={handleOpen3}
             className="mt-2 text-sm bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-1 md:py-2 px-3 md:px-4 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
           >
-            Pay ₹699 for Kit
+            Pay ₹700 for Kit
           </motion.button>
         </div>
         <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
