@@ -10,6 +10,8 @@ import userRouter from "./routes/user.routes.js";
 import artRouter from "./routes/art.routes.js";
 import volunteerRouter from "./routes/volunteers.routes.js";
 import adminRouter from "./routes/admin.routes.js";
+import recruitmentsRouter from "./routes/recruitments.routes.js";
+
 
 dotenv.config();
 
@@ -52,6 +54,7 @@ app.use("/api", userRouter);
 app.use("/api", volunteerRouter);
 app.use("/api", artRouter);
 app.use("/api/admin", adminRouter);
+app.use("/api", recruitmentsRouter);
 
 process.on("SIGTERM", gracefulShutDown);
 process.on("SIGINT", gracefulShutDown);

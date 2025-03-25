@@ -55,7 +55,7 @@ const getEvents = async (req, res) => {
 
 const registerEvents = async (req, res) => {
   try {
-    const  event_id =3;
+    const event_id = 3;
     const {
       team_name,
       team_size,
@@ -74,14 +74,20 @@ const registerEvents = async (req, res) => {
     } = req.body;
 
     if (!event_id) {
-      return res.status(400).send(errorHandler(400, "Invalid Request", "Please enter the event"));
+      return res
+        .status(400)
+        .send(errorHandler(400, "Invalid Request", "Please enter the event"));
     }
 
     const eventExists = await db("events").where({ event_id }).first();
     if (!eventExists) {
-      return res.status(404).send(errorHandler(404, "Not Found", "Event not found in the database"));
+      return res
+        .status(404)
+        .send(
+          errorHandler(404, "Not Found", "Event not found in the database")
+        );
     }
-    
+
     const { event_name, start_date, location: event_location } = eventExists;
     const event_date = new Date(start_date).toLocaleDateString("en-US", {
       year: "numeric",
@@ -89,13 +95,39 @@ const registerEvents = async (req, res) => {
       day: "numeric",
     });
 
-    if (!team_name || !team_size || !team_leader_name || !team_leader_phone || !team_leader_email || !team_leader_batch || !team_leader_branch) {
-      return res.status(400).send(errorHandler(400, "Invalid Request", "Please fill all required fields"));
+    if (
+      !team_name ||
+      !team_size ||
+      !team_leader_name ||
+      !team_leader_phone ||
+      !team_leader_email ||
+      !team_leader_batch ||
+      !team_leader_branch
+    ) {
+      return res
+        .status(400)
+        .send(
+          errorHandler(
+            400,
+            "Invalid Request",
+            "Please fill all required fields"
+          )
+        );
     }
 
-    const existingAttendee = await db("attendees").where({ event_id, team_leader_email }).first();
+    const existingAttendee = await db("attendees")
+      .where({ event_id, team_leader_email })
+      .first();
     if (existingAttendee && existingAttendee.payment_status === "APPROVED") {
-      return res.status(400).send(errorHandler(400, "Already Registered", "User has already registered and paid for this event."));
+      return res
+        .status(400)
+        .send(
+          errorHandler(
+            400,
+            "Already Registered",
+            "User has already registered and paid for this event."
+          )
+        );
     }
 
     const amount = 99 * 100;
@@ -107,7 +139,11 @@ const registerEvents = async (req, res) => {
     });
 
     if (!order) {
-      return res.status(500).send(errorHandler(500, "Order Error", "Failed to create Razorpay order"));
+      return res
+        .status(500)
+        .send(
+          errorHandler(500, "Order Error", "Failed to create Razorpay order")
+        );
     }
 
     let data = {
@@ -133,7 +169,11 @@ const registerEvents = async (req, res) => {
     let insertion = await db("attendees").insert(data).returning("*");
 
     if (!insertion) {
-      return res.status(400).send(errorHandler(400, "Error Occurred", "Error while making booking"));
+      return res
+        .status(400)
+        .send(
+          errorHandler(400, "Error Occurred", "Error while making booking")
+        );
     }
 
     return res.status(200).send({
@@ -145,17 +185,25 @@ const registerEvents = async (req, res) => {
     });
   } catch (error) {
     console.error("Error while making booking:", error);
-    return res.status(500).send(errorHandler(500, "Internal Server Error", "Error in booking the ticket"));
+    return res
+      .status(500)
+      .send(
+        errorHandler(
+          500,
+          "Internal Server Error",
+          "Error in booking the ticket"
+        )
+      );
   }
 };
 
-// Razorpay Webhook for Payment Verification
 const razorpayWebhook = async (req, res) => {
   try {
     const webhookSecret = process.env.RAZORPAY_KEY_ID;
     const receivedSignature = req.headers["x-razorpay-signature"];
-    
-    const expectedSignature = crypto.createHmac("sha256", webhookSecret)
+
+    const expectedSignature = crypto
+      .createHmac("sha256", webhookSecret)
       .update(JSON.stringify(req.body))
       .digest("hex");
 
@@ -167,7 +215,9 @@ const razorpayWebhook = async (req, res) => {
     const payload = req.body.payload.payment.entity;
 
     if (event === "payment.captured") {
-      await db("attendees").where({ order_id: payload.order_id }).update({ payment_status: "APPROVED" });
+      await db("attendees")
+        .where({ order_id: payload.order_id })
+        .update({ payment_status: "APPROVED" });
 
       const attendee = await db("attendees")
         .select("team_leader_email", "team_leader_name")
@@ -175,7 +225,10 @@ const razorpayWebhook = async (req, res) => {
         .first();
 
       if (attendee) {
-        await sendEmailForArtWork(attendee.team_leader_name, attendee.team_leader_email);
+        await sendEmailForArtWork(
+          attendee.team_leader_name,
+          attendee.team_leader_email
+        );
       }
 
       return res.status(200).json({ message: "Payment verified successfully" });
@@ -261,7 +314,7 @@ const getAttendee = async (req, res) => {
 
     return res.status(200).send({
       response: statusMessages[attendee.team_status] || {},
-      attendee, 
+      attendee,
     });
   } catch (error) {
     console.error(error);

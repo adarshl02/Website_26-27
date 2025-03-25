@@ -36,15 +36,7 @@ const applyForVolunteering = async (req, res) => {
         .status(400)
         .send(errorHandler(400, "Invalid Request", "Please enter the domain"));
     }
-    //FIXME:
-    // let emailExists = await db("volunteers").where({email}).first();
-    // console.log(emailExists);
-    // if (emailExists) {
-    //   return res
-    //     .status(400)
-    //     .send(errorHandler(400, "Email Exists", "This Email Already Exists"));
-    // }
-    // initial push
+    
 
     let data = {
       name,
