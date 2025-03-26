@@ -10,6 +10,7 @@ import userRouter from "./routes/user.routes.js";
 import artRouter from "./routes/art.routes.js";
 import volunteerRouter from "./routes/volunteers.routes.js";
 import adminRouter from "./routes/admin.routes.js";
+import recruitmentsRouter from "./routes/recruitments.routes.js";
 
 dotenv.config();
 

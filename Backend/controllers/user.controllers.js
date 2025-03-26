@@ -76,6 +76,31 @@ const countUsers = async (req, res) => {
   }
 };
 
+const getMember = async (req, res) => {
+  try {
+    
+    const {email} = req.query;
+ 
+   const user = await db("users").where({email}).first();
+    
+    return res.status(200).send({
+      response: {
+        data: user,
+        title: "Successfully Fetched",
+        message: "Users Successfully Fetched",
+        status: 200,
+      },
+    });
+  } catch (error) {
+    console.error("Error counting users:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to retrieve user count",
+      error: error.message,
+    });
+  }
+};
+
 const giveFeedback = async (req, res) => {
   try {
     const { name,feedback } = req.body;
@@ -130,4 +155,5 @@ export  {
   changeEnrollment,
   countUsers,
   giveFeedback,
+  getMember,
 };

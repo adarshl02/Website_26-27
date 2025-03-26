@@ -16,15 +16,16 @@ import PrivateRoute from "./components/general/PrivateRoute";
 import { ProtectedRoute } from "./components/general/ProtectedRoute";
 import { Backdrop, Typography, Box } from "@mui/material";
 import Navigation from "./components/general/Navigation";
-import { Toaster} from 'sonner';
+import { Toaster } from 'sonner';
 import AdminDashboard from "./adminPages/AdminDashboard";
 import AdminRoute from "./components/general/AdminRoute";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import { useSelector } from "react-redux";
 import ContactUs from "./components/general/ContactUs";
+import Membership from "./pages/Membership";
 
-const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef,setBackdropOpen }) => {
-  const location = useLocation(); 
+const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef, setBackdropOpen }) => {
+  const location = useLocation();
   const { currentUser } = useSelector((state) => state.user);
   const isAuthenticated = !!currentUser;
   const pageTransition = {
@@ -35,16 +36,16 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef,s
 
   return (
     <>
-   
+
       {location.pathname !== "/sign-up" && isAuthenticated && (
-       <>
+        <>
           <Navigation />
           <NavbarDemo scrollToCarousel={scrollToCarousel} />
-          </>
+        </>
       )}
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
-  
+
           <Route element={<PrivateRoute />}>
             <Route
               path="/"
@@ -200,8 +201,23 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef,s
                 </>
               }
             />
+            <Route
+              path="/membership"
+              element={
+                <>
+                  <motion.div
+                    initial={pageTransition.initial}
+                    animate={pageTransition.animate}
+                    exit={pageTransition.exit}
+                  >
+                    <Membership />
+                    <Footer />
+                  </motion.div>
+                </>
+              }
+            />
           </Route>
-  
+
           <Route element={<AdminRoute />}>
             <Route
               path="/admin-dashboard"
@@ -215,9 +231,9 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef,s
                 </motion.div>
               }
             />
-            
+
           </Route>
-  
+
           <Route
             path="/sign-up"
             element={
@@ -269,7 +285,7 @@ function App() {
 
   return (
     <>
-    <Toaster richColors position="top-right" expand={true} />
+      <Toaster richColors position="top-right" expand={true} />
       <BrowserRouter>
         <AppContent
           scrollToCarousel={scrollToCarousel}
@@ -279,7 +295,7 @@ function App() {
           setBackdropOpen={setBackdropOpen}
         />
       </BrowserRouter>
-      
+
       <Backdrop
         open={backdropOpen}
         onClick={() => setBackdropOpen(false)}

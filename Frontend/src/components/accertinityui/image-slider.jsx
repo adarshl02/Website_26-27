@@ -48,16 +48,33 @@ export const ImagesSlider = ({
         <div className={cn("absolute inset-0 bg-black/60 z-40", overlayClassName)} />
       )}
       <AnimatePresence>
-        <motion.img
-          key={currentIndex}
-          src={images[currentIndex]}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          variants={slideVariants}
-          className="image h-full w-full absolute inset-0 object-cover object-center"
-        />
-      </AnimatePresence>
+  {images[currentIndex].endsWith(".mp4") ? (
+    <motion.video
+      key={currentIndex}
+      src={images[currentIndex]}
+      autoPlay
+      loop
+      muted
+      playsInline
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      variants={slideVariants}
+      className="h-full w-full absolute inset-0 object-cover"
+    />
+  ) : (
+    <motion.img
+      key={currentIndex}
+      src={images[currentIndex]}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      variants={slideVariants}
+      className="h-full w-full absolute inset-0 object-cover"
+    />
+  )}
+</AnimatePresence>
+
     </div>
   );
 };

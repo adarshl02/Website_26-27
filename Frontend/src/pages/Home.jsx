@@ -55,6 +55,9 @@ const people = [
 ];
 
 const images = [
+  "graffathonvideo.mp4",
+  "https://res.cloudinary.com/dhy548whh/image/upload/v1742982956/bhjdmfg9qkwnkfwiyuxs.png",
+  "https://res.cloudinary.com/dhy548whh/image/upload/v1742983685/rlzog1rtfnknegppuick.png",
   "https://res.cloudinary.com/dhy548whh/image/upload/f_auto,q_auto/v1729783423/rjcrohc5kjered7k9e0u.heic?http2=false",
   "https://res.cloudinary.com/dhy548whh/image/upload/f_auto,q_auto/v1729783443/wx9b0fqtjbrefbutytk2.jpg",
   "https://res.cloudinary.com/dhy548whh/image/upload/f_auto,q_auto/v1729783451/muc91zcge8ieu73wcv92.heic?http2=false",

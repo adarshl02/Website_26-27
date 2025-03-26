@@ -190,7 +190,6 @@ const RegistrationForm = ({ event_id, setOpen }) => {
   };
   
   
-
   const verifyPaymentHandler = async (response) => {
     try {      
       const verificationResponse = await verifyPayment({

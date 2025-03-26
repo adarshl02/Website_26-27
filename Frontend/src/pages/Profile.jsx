@@ -11,7 +11,7 @@ import { jsPDF } from "jspdf";
 import Certificate from "./../components/general/Certificate";
 import html2canvas from "html2canvas";
 import Certificatetrial from "../components/general/Backdrops/Certificatetrial";
-import { getAttendeeStatus, getEventTicket, logoutUser } from "../service/api";
+import { getAttendeeStatus, getEventTicket, isMember, logoutUser } from "../service/api";
 import { Ticket } from "../components/general/Ticket";
 import { Ticketorg } from "../components/general/Ticketorg";
 import Logout from "@mui/icons-material/Logout";
@@ -20,28 +20,18 @@ import { deleteEvents } from "../redux/events/eventsSlice";
 import { getAuth, signOut } from "firebase/auth";
 import { toast } from "sonner";
 import { Helmet } from "react-helmet-async";
-import KitForm from "@/components/general/KitForm";
+import UpcomingEventNotReleased from "@/components/general/UpcomingEventNotReleased";
 
 export default function Profile() {
   const { rest: user, token } = useSelector((state) => state.user.currentUser); // Assuming user data is stored in the redux state
   const perks = useRef(null);
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
-  const [open3, setOpen3] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [loading2, setLoading2] = useState(false);
   const [eventTicketData, setEventTicketData] = useState({});
   const [refresh, setRefresh] = useState(false);
-
-  const [register99, setRegister99] = useState({
-    success: false,
-    data: {
-      message: "",
-      status: "",
-      title: "",
-    },
-  });
-  const [attendee,setAttendee]=useState({});
+  const [downloadcerificate,setDownloadcerificate] = useState(false);
+  const [member,setMember] = useState(false);
 
   const handleClose = () => {
     setOpen(false);
@@ -57,12 +47,6 @@ export default function Profile() {
     setOpen2(true);
   };
 
-  const handleClose3 = () => {
-    setOpen3(false);
-  };
-  const handleOpen3 = () => {
-    setOpen3(true);
-  };
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -100,25 +84,25 @@ export default function Profile() {
       toast.success("Certificate downloaded!")
     });
   };
-  const downloadTicket = () => {
-    setLoading2(true);
-    const input = document.getElementById("ticket");
+  // const downloadTicket = () => {
+  //   setLoading2(true);
+  //   const input = document.getElementById("ticket");
 
-    html2canvas(input, {
-      scrollX: 0,
-      scrollY: 0,
-      useCORS: true, // Allow cross-origin images
-      scale: 2, // High-quality rendering
-    }).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("l", "px", [1100, 500]); // Match dimensions of the certificate
+  //   html2canvas(input, {
+  //     scrollX: 0,
+  //     scrollY: 0,
+  //     useCORS: true, // Allow cross-origin images
+  //     scale: 2, // High-quality rendering
+  //   }).then((canvas) => {
+  //     const imgData = canvas.toDataURL("image/png");
+  //     const pdf = new jsPDF("l", "px", [1100, 500]); // Match dimensions of the certificate
 
-      pdf.addImage(imgData, "PNG", 0, 0, 1100, 500); // No margins
-      pdf.save(`${user.name}_Event_Ticket.pdf`);
-      setLoading2(false);
-      toast.success("Ticket downloaded!");
-    });
-  };
+  //     pdf.addImage(imgData, "PNG", 0, 0, 1100, 500); // No margins
+  //     pdf.save(`${user.name}_Event_Ticket.pdf`);
+  //     setLoading2(false);
+  //     toast.success("Ticket downloaded!");
+  //   });
+  // };
 
   const handleLogout = async () => {
     try {
@@ -147,6 +131,7 @@ export default function Profile() {
       toast.error("Logout error: " + error.message);
     }
   };
+  
 
   useEffect(() => {
     const getTicket = async () => {
@@ -158,7 +143,7 @@ export default function Profile() {
         const response = await getEventTicket(data, token);
 
         if (response.success) {
-          setEventTicketData(response.data.selection[0]);
+          setEventTicketData(response.data);
         } else if (response.status === 204) {
 
         }
@@ -169,27 +154,30 @@ export default function Profile() {
     };
     getTicket();
   }, [refresh]);
-  
 
   useEffect(() => {
-    const getAttendee = async () => {
+    const isMemberfunction = async () => {
       try {
         const data = {
-          team_leader_email: user.email,
+          email: user.email,
         };
 
-        const response = await getAttendeeStatus(data, token);
-        setAttendee(response.data.attendee);
-        
-        setRegister99(response.data.response);
-       
+        const response = await isMember(data, token);
+
+        if (response.success) {
+          
+          setMember(response.data);
+        } else if (response.status === 204) {
+
+        }
       } catch (error) {
         console.log(error);
 
       }
     };
-    getAttendee();
+    isMemberfunction();
   }, []);
+  
 
   
   return (
@@ -226,7 +214,7 @@ export default function Profile() {
             </p> */}
               <div className="flex md:flex-col space-x-4 md:space-x-0 text-xs md:text-lg relative mt-6">
                 <div className="text-slate-700 md:mb-1">
-                  {user.is_member ? (
+                  {member.is_member ? (
                     <button className=" bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white px-2 md:px-4 md:py-1 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl">
                       Member
                     </button>
@@ -246,7 +234,7 @@ export default function Profile() {
                 </div>
 
                 <div className="flex  text-slate-700">
-                  {user.is_artist ? (
+                  {member.is_artist ? (
                     <button className=" bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white px-2 md:px-4 md:py-1 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl">
                       Artist
                     </button>
@@ -322,92 +310,54 @@ export default function Profile() {
 
         <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
 
-        {!eventTicketData?.qr_code_link && (
+    
+   {eventTicketData?.status === "Attended" && (
   <>
-    {register99?.status === "PENDING" && (
-      <>
-        <div className="md:mx-20 my-5 p-4 bg-gradient-to-r from-slate-200 to-slate-300 border-none rounded-xl shadow-lg text-center">
-          <h3 className="text-xl md:text-3xl font-medium bg-gradient-to-br from-slate-600 to-slate-800 bg-clip-text tracking-tight text-transparent font-poppins">
-            Thanks for Registering for Graffathon'25
-          </h3>
-          <p className="mt-2 text-sm md:text-lg text-slate-700">
-            The event will commence in the following manner:
-          </p>
-          <ul className="mt-3 text-sm md:text-lg text-slate-700 text-left px-4">
-            <li>
-              <strong>i. </strong> Registration of participating teams starts from 23/02/2025 to 28/02/2025.
-            </li>
-            <li>
-              <strong>ii. </strong> Each team must submit artwork on an A4-sized painted sheet by 3 March 2025.
-            </li>
-            <li>
-              <strong>iii. </strong> Artworks should focus on one of the following themes:
-              <ul className="mt-1 ml-4 list-disc">
-                <li>Abstract Art</li>
-                <li>Women Empowerment</li>
-                <li>Science-Fiction</li>
-              </ul>
-            </li>
-          </ul>
-          <p className="mt-3 text-sm md:text-lg text-slate-600">
-            <b>Club Room Address:</b> SGSITS 23, M. Visvesvaraya Marg, Indore, Madhya Pradesh, 452003.
-          </p>
-        </div>
-        <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
-      </>
-    )}
-
-    {register99?.status === "REJECTED" && (
-      <>
-        <div className="md:mx-20 my-5 p-4 bg-gradient-to-r from-red-700 to-red-800 rounded-xl shadow-lg border border-red-700 text-center">
-          <h3 className="text-lg md:text-2xl font-semibold text-slate-200 tracking-wide">
-            Sorry, Your Artwork Submission Was Not Approved
-          </h3>
-          <p className="mt-2 text-sm md:text-lg text-slate-300">
-            Unfortunately, your artwork did not meet the selection criteria. We appreciate your effort and encourage you to participate in future events.
-          </p>
-        </div>
-        <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
-      </>
-    )}
-
-    {register99?.status === "APPROVED" && (
-      <>
-        <div className="md:mx-20  my-5 p-4 bg-gradient-to-r from-green-600 to-green-700 rounded-xl shadow-lg border-green-700 text-center">
-          <h3 className="text-xl font-bold md:text-3xl bg-gradient-to-br from-slate-200 to-slate-300 bg-clip-text tracking-tight text-transparent font-poppins">
-            Your Artwork Has Been Approved
-          </h3>
-          <p className="mt-2 text-sm md:text-lg text-slate-200">
-            We are happy to have you at the event. Here are the next steps:
-          </p>
-          <ul className="mt-3 text-sm md:text-lg text-slate-200 text-left px-4">
-            <li>
-              <strong>i.</strong> The selected teams will be assigned their respective wall slots by 10:00 AM on 08 March 2025.
-            </li>
-            <li>
-              <strong>ii.</strong> All required items for wall painting will be provided at a cost of ₹699 per team. <b>(MANDATORY)</b>
-            </li>
-            <li>
-              <strong>iii.</strong> Participants must report by 9:00 AM on 8th March 2025. Details will be emailed to the team leader.
-            </li>
-          </ul>
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={handleOpen3}
-            className="mt-2 text-sm bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-1 md:py-2 px-3 md:px-4 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
-          >
-            Pay ₹700 for Kit
-          </motion.button>
-        </div>
-        <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
-      </>
-    )}
+    <div className="md:mx-20 my-5 p-4 bg-gradient-to-r from-slate-200 to-slate-300 border-none rounded-xl shadow-lg text-center">
+      <h3 className="text-xl md:text-3xl font-medium bg-gradient-to-br from-slate-600 to-slate-800 bg-clip-text tracking-tight text-transparent font-poppins">
+        Thank You for Being a Part of Graffathon'25!
+      </h3>
+      <p className="mt-2 text-sm md:text-lg text-slate-700">
+        We truly appreciate your participation and enthusiasm in making this event a success!
+      </p>
+      <p className="mt-2 text-sm md:text-lg text-slate-700">
+        We hope your Graffathon experience was nothing short of amazing. This is just the beginning—many more incredible events await!
+      </p>
+      <p className="mt-3 text-sm md:text-lg text-slate-600">
+        Stay connected with us for more exciting opportunities.
+      </p>
+      <p className="mt-3 text-sm md:text-lg text-slate-600 font-semibold">
+        P.S.: Your participation certificates will be available soon!
+      </p>
+    </div>
+    <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
   </>
 )}
 
+{member.is_member && (
+  <>
+    <div className="md:mx-20 my-5 p-4 bg-gradient-to-r from-slate-200 to-slate-300 border-none rounded-xl shadow-lg text-center">
+      <h3 className="text-xl md:text-3xl font-medium bg-gradient-to-br from-slate-600 to-slate-800 bg-clip-text tracking-tight text-transparent font-poppins">
+        Congratulations on getting Pratibimb Club Membership!
+      </h3>
+      <p className="mt-2 text-sm md:text-lg text-slate-700">
+       Further details of 1st round of Recruitment will be shared in whatsapp group. 
+      </p>
+      <p className="mt-2 text-sm md:text-lg text-slate-700">
+      🖼 Portfolio Submission: Carry a physical/offline portfolio showcasing your best work.
 
-
-
+      </p>
+      <p className="mt-3 text-sm md:text-lg text-slate-600">
+        
+      </p>
+      <p className="mt-3 text-sm md:text-lg text-slate-600 font-semibold">
+        P.S.: Join Whatsapp group: <a  target="_blank" 
+    rel="noopener noreferrer" href="https://chat.whatsapp.com/FcXCTHRyHjK2Sb4cFHodX1" className="text-blue-500" >Click here</a>
+      </p>
+    </div>
+    <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
+  </>
+)}
 
 
 
@@ -415,7 +365,6 @@ export default function Profile() {
           <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins">
             Your Event Ticket
           </div>
-          {Object.keys(eventTicketData).length === 0 || eventTicketData?.payment_status === "PENDING" ? (
             <>
               <div className="mt-2 text-slate-500 text-xs md:text-xl px-4 font-poppins">
                 Visit the event Page to register for a event.
@@ -427,8 +376,8 @@ export default function Profile() {
               </Link> */}
                 <motion.button
                   whileTap={{ scale: 0.95 }}
-                  // onClick={handleOpen}
-                  onClick={() => navigate("/upcoming-event-page")}
+                  onClick={handleOpen}
+                  // onClick={() => navigate("/upcoming-event-page")}
                   className="mt-2 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-1 md:py-2 px-2 md:px-4 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
                 >
                   Go to Event Page
@@ -440,37 +389,7 @@ export default function Profile() {
                 alt="image"
               />
             </>
-          ) : (
-            <>
-              <Ticket eventTicketData={eventTicketData} />
-              <div className="flex justify-center">
-                <button
-                  onClick={downloadTicket}
-                  className="w-36 font-bold bg-gradient-to-r from-slate-600 to-slate-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-500 transition"
-                  disabled={loading2}
-                >
-                  {loading2 ? (
-                    <CircularProgress size={18} color="inherit" />
-                  ) : (
-                    <span>
-                      Download <FileDownloadIcon />
-                    </span>
-                  )}
-                </button>
-              </div>
 
-              <div
-                id="ticket"
-                style={{
-                  position: "absolute",
-                  top: "-9999px", // Move it far off-screen
-                  left: "-9999px",
-                }}
-              >
-                <Ticketorg eventTicketData={eventTicketData} />
-              </div>
-            </>
-          )}
         </div>
 
         <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
@@ -488,7 +407,7 @@ export default function Profile() {
             />
             {/* Overlay Button */}
             <div className="absolute inset-0 flex items-center justify-center">
-              {Object.keys(eventTicketData).length === 0 || eventTicketData.team_leader_attended_1_at === null ? (
+              {!downloadcerificate ? (
                 <button
                   className="px-2 md:px-6 py-1 md:py-2 bg-slate-800 text-slate-200 rounded-xl text-sm "
                   onClick={handleOpen2}
@@ -564,13 +483,13 @@ export default function Profile() {
                 First step to being recognized as a club member.
               </li>
               <li>
-                <span className="font-medium text-white">All for ₹150</span> –
+                <span className="font-medium text-white">All for ₹99</span> –
                 One-time fee for lifelong benefits!
               </li>
             </ul>
             <motion.button
               whileTap={{ scale: 0.95 }}
-              onClick={handleOpen}
+              onClick={()=>navigate('/membership')}
               className="my-4 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-1 md:py-2 md:px-4 px-2 rounded-full shadow-lg text-sm font-poppins transition duration-300 hover:opacity-90 hover:shadow-2xl"
             >
               Become a Member
@@ -660,7 +579,7 @@ export default function Profile() {
           onClick={handleClose}
         >
           <div onClick={(e) => e.stopPropagation()}>
-            <Membershiptrial />
+            <UpcomingEventNotReleased />
           </div>
         </Backdrop>
         <Backdrop
@@ -675,18 +594,6 @@ export default function Profile() {
             <Certificatetrial />
           </div>
         </Backdrop>
-        <Backdrop
-                sx={(theme) => ({
-                  color: "#fff",
-                  zIndex: theme.zIndex.drawer + 1,
-                })}
-                open={open3}
-                onClick={handleClose3}
-              >
-                <div onClick={(e) => e.stopPropagation()}>
-                  <KitForm setOpen3={setOpen3} attendee={attendee} setRefresh={setRefresh} />
-                </div>
-              </Backdrop>
         
       </div>
     </div>

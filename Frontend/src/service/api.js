@@ -150,7 +150,26 @@ export const getEventTicket = async (data,token) => {
     if (response.status === 204) {
       return { success: false, message: "User is not registered for the event.", status: 204 };
     }
-        return { success: true, data: response.data.response.data };
+        return { success: true, data: response?.data?.response };
+  } catch (error) {
+    return handleApiError(error, 'Get event ticket API');
+  }
+};
+
+export const isMember = async (data,token) => {
+  try {
+    
+    const response = await axios.get(`${URL}/api/get/member`,{
+      params: data,
+      headers: {
+       "Authorization": `${token}`,  // Include token in the headers
+      },
+    });  
+    
+    if (response.status === 204) {
+      return { success: false, message: "User is not a member.", status: 204 };
+    }
+        return { success: true, data: response?.data?.response?.data };
   } catch (error) {
     return handleApiError(error, 'Get event ticket API');
   }
@@ -190,6 +209,33 @@ export const verifyPayment = async (data,token) => {
         "Authorization": `${token}`,  // Include token in the headers
       },
     });
+    return { success: true, data: response.data };
+  } catch (error) {
+    return handleApiError(error, 'Payment Verification API');
+  }
+};
+
+export const registerForRecruitment = async (data,token) => {
+  try {
+    const response = await axios.post(`${URL}/api/recruitment/register`, data, {
+      headers: {
+        "Authorization": `${token}`,  // Include token in the headers
+      },
+    });
+        
+    return { success: true, data: response.data.response.data };
+  } catch (error) {
+    return handleApiError(error, 'Payment Verification API');
+  }
+};
+
+export const verifyPaymentForRecruitment = async (data,token) => {
+  try {
+    const response = await axios.post(`${URL}/api/recruitment/payment-verify`, data, {
+      headers: {
+        "Authorization": `${token}`,  // Include token in the headers
+      },
+    });    
     return { success: true, data: response.data };
   } catch (error) {
     return handleApiError(error, 'Payment Verification API');

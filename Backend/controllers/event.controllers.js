@@ -206,7 +206,8 @@ const getEventTicket = async (req, res) => {
     }
     return res.status(200).send({
       response: {
-        data: { selection },
+        // data: { selection },
+        status:"Attended",
         title: "Successfully Fetched",
         message: "Event Ticket Successfully Fetched",
       },
