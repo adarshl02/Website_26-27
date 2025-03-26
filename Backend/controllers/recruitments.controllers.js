@@ -1,8 +1,10 @@
 import db from "../config/db/index.js";
 import Razorpay from "razorpay";
 import crypto from "crypto";
+import cloudinary from "../config/cloudinary/index.js";
 import errorHandler from "../utils/errorHandler.js";
-import { sendEmailForArtWork } from "../utils/emailFunctions.js";
+import QRCode from "qrcode";
+import { sendEmailForRecruitments } from "../utils/emailFunctions.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -14,10 +16,27 @@ const razorpay = new Razorpay({
 
 const registerRecruitment = async (req, res) => {
   try {
+    const {
+      name,
+      phone,
+      email,
+      branch,
+      batch,
+      domain,
+      experience,
+      otherClubMembership,
+    } = req.body;
 
-    const { name, phone, email, branch, batch, domain, experience, otherClubMembership } = req.body;
-
-    if (!name || !phone || !email || !branch || !batch || !domain || !experience || !otherClubMembership) {
+    if (
+      !name ||
+      !phone ||
+      !email ||
+      !branch ||
+      !batch ||
+      !domain ||
+      !experience ||
+      !otherClubMembership
+    ) {
       return res
         .status(400)
         .send(
@@ -35,11 +54,16 @@ const registerRecruitment = async (req, res) => {
       .first();
 
     if (existingApplicant) {
-      return res.status(400).send(
-        errorHandler(400, "Already Registered", "User has already registered and paid.")
-      );
+      return res
+        .status(400)
+        .send(
+          errorHandler(
+            400,
+            "Already Registered",
+            "User has already registered and paid."
+          )
+        );
     }
-
 
     const amount = 99 * 100;
 
@@ -97,9 +121,12 @@ const registerRecruitment = async (req, res) => {
 
 const verifyRecruitmentPayment = async (req, res) => {
   try {
-
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, email } =
-      req.body;
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+      email,
+    } = req.body;
 
     const secret = process.env.RAZORPAY_KEY_SECRET;
     const hash = crypto
@@ -115,7 +142,6 @@ const verifyRecruitmentPayment = async (req, res) => {
         );
     }
 
-
     const registeredRecruitment = await db("applicants")
       .where({ order_id: razorpay_order_id, payment_status: "PENDING" })
       .first();
@@ -124,32 +150,50 @@ const verifyRecruitmentPayment = async (req, res) => {
       return res.status(404).json({ message: "Attendee not found" });
     }
 
-    await db("users")
-      .where({ email })
-      .update({
-        is_member: true,
-      });
+    await db("users").where({ email }).update({
+      is_member: true,
+    });
 
+    await db("applicants").where({ order_id: razorpay_order_id }).update({
+      payment_status: "APPROVED",
+    });
 
-    await db("applicants")
-      .where({ order_id: razorpay_order_id })
-      .update({
-        payment_status: "APPROVED",
-      });
-
-    // await sendEmail(
-    //   email,
-    //   attendee.team_leader_name,
-    //   attendee.team_name,
-    //   data.event_date,
-    //   data.event_name,
-    //   data.event_location,
-    //   qr_code_link
-    // );
+    const applicant = await db("applicants").select("*").where({
+      order_id: razorpay_order_id,
+    });
+    
+    if (applicant.length === 0) {
+      return res.status(404).json({ message: "Applicant not found" });
+    }
+    
+    const qrCodeData = `${applicant[0].order_id}`;
+    const qrCodeImage = await QRCode.toDataURL(qrCodeData);
+    
+    const uploadResponse = await cloudinary.uploader.upload(qrCodeImage, {
+      folder: "qr_codes",
+      public_id: `qr_${razorpay_order_id}`,
+      overwrite: true,
+    });
+    
+    const qr_code_link = uploadResponse.secure_url;
+    
+    if (!qr_code_link) {
+      return res.status(500).json({ message: "QR Code upload failed" });
+    }
+    
+    sendEmailForRecruitments(
+      email,
+      applicant[0].order_id,
+      applicant[0].name,
+      applicant[0].batch,
+      applicant[0].branch,
+      qr_code_link
+    );
+    
 
     return res.status(200).json({
       message: "Payment verified successfully",
-      status: "VerifiedPayment"
+      status: "VerifiedPayment",
     });
   } catch (error) {
     console.error("Final Payment Verification Error:", error);

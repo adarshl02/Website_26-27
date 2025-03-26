@@ -3,7 +3,7 @@ import cloudinary from "../config/cloudinary/index.js";
 import Razorpay from "razorpay";
 import crypto from "crypto";
 import errorHandler from "../utils/errorHandler.js";
-import { sendEmail } from "../utils/emailFunctions.js";
+// import { sendEmail } from "../utils/emailFunctions.js";
 import dotenv from "dotenv";
 import QRCode from "qrcode";
 dotenv.config();

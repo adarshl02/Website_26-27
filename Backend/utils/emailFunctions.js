@@ -13,34 +13,32 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendEmail = async (
+const sendEmailForRecruitments = async (
   email,
-  name,
-  team_name,
-  event_date,
-  event_name,
-  event_location,
+  membership_number,
+  member_name,
+  batch,
+  branch,
   qr_code
 ) => {
   try {
     const templatePath = path.join(
       process.cwd(),
-      "templates/emailTemplate.html"
+      "templates/recruitmentsTemplate.html"
     );
     const emailTemplate = fs.readFileSync(templatePath, "utf-8");
 
     const emailContent = emailTemplate
-      .replace("{{name}}", name)
-      .replace("{{team_name}}", team_name)
-      .replace("{{event_name}}", event_name)
-      .replace("{{event_date}}", event_date)
-      .replace("{{event_location}}", event_location)
+      .replace("{{membership_number}}", membership_number)
+      .replace("{{member_name}}", member_name)
+      .replace("{{batch}}", batch)
+      .replace("{{branch}}", branch)
       .replace("{{qr_code}}", qr_code);
 
     const mailOptions = {
       from: '"Club Pratibimb" <teampratibimb.sgsits@gmail.com>',
       to: email,
-      subject: "Your Event Ticket",
+      subject: "You Membership Card",
       html: emailContent,
     };
 
@@ -112,4 +110,4 @@ const sendEmailForArtist = async (email, name) => {
   }
 };
 
-export { sendEmail, sendWelcomeEmail, sendEmailForArtist, sendEmailForArtWork };
+export { sendEmailForRecruitments, sendWelcomeEmail, sendEmailForArtist, sendEmailForArtWork };
