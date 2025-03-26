@@ -7,7 +7,7 @@ import { fetchEventsByStatus } from "../service/api";
 import { loadingEndsSuccess } from "../redux/loadinganderror/loadinganderrorSlice";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import MembershipForm from "@/components/general/MemberShipForm";
+import MembershipForm from "@/components/general/MembershipForm";
 
 const Membership = () => {
     const [open, setOpen] = useState(false);
