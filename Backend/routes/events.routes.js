@@ -5,7 +5,6 @@ import {
   // paymentVerification,
   getEventTicket,
   getAttendee,
-  razorpayWebhook,
 } from "../controllers/event.controllers.js";
 import {
   registerForFinalRound,
@@ -19,7 +18,6 @@ const router = Router();
 router.route("/get/events").get(verifyToken, getEvents);
 router.route("/register/").post(verifyToken, registerEvents);
 // router.route("/payment/verify").post(verifyToken, paymentVerification);
-router.route("/webhook/razorpay").post(razorpayWebhook);
 router.route("/get/event-ticket").get(verifyToken, getEventTicket);
 router.route("/get/attendee").get(verifyToken, getAttendee);
 router.route("/register-final-round").post(registerForFinalRound);

@@ -150,44 +150,6 @@ const registerEvents = async (req, res) => {
 };
 
 // Razorpay Webhook for Payment Verification
-const razorpayWebhook = async (req, res) => {
-  try {
-    const webhookSecret = process.env.RAZORPAY_KEY_ID;
-    const receivedSignature = req.headers["x-razorpay-signature"];
-    
-    const expectedSignature = crypto.createHmac("sha256", webhookSecret)
-      .update(JSON.stringify(req.body))
-      .digest("hex");
-
-    if (receivedSignature !== expectedSignature) {
-      return res.status(400).json({ message: "Invalid webhook signature" });
-    }
-
-    const event = req.body.event;
-    const payload = req.body.payload.payment.entity;
-
-    if (event === "payment.captured") {
-      await db("attendees").where({ order_id: payload.order_id }).update({ payment_status: "APPROVED" });
-
-      const attendee = await db("attendees")
-        .select("team_leader_email", "team_leader_name")
-        .where({ order_id: payload.order_id })
-        .first();
-
-      if (attendee) {
-        await sendEmailForArtWork(attendee.team_leader_name, attendee.team_leader_email);
-      }
-
-      return res.status(200).json({ message: "Payment verified successfully" });
-    }
-
-    return res.status(200).json({ message: "Webhook received" });
-  } catch (error) {
-    console.error("Webhook error:", error);
-    return res.status(500).json({ message: "Internal server error" });
-  }
-};
-
 const getEventTicket = async (req, res) => {
   try {
     const { email } = req.query;
@@ -282,7 +244,6 @@ export {
   getEvents,
   registerEvents,
   // paymentVerification,
-  razorpayWebhook,
   getEventTicket,
   getAttendee,
 };
