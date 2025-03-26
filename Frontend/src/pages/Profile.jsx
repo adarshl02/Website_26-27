@@ -234,7 +234,7 @@ export default function Profile() {
                 </div>
 
                 <div className="flex  text-slate-700">
-                  {member.is_artist ? (
+                  {member?.is_artist ? (
                     <button className=" bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white px-2 md:px-4 md:py-1 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl">
                       Artist
                     </button>
