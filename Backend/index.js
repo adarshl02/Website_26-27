@@ -51,6 +51,7 @@ app.use("/api", eventsRouter);
 app.use("/api", authRouter);
 app.use("/api", userRouter);
 app.use("/api", volunteerRouter);
+app.use("/api", recruitmentsRouter);
 app.use("/api", artRouter);
 app.use("/api/admin", adminRouter);
 
