@@ -214,7 +214,7 @@ export default function Profile() {
             </p> */}
               <div className="flex md:flex-col space-x-4 md:space-x-0 text-xs md:text-lg relative mt-6">
                 <div className="text-slate-700 md:mb-1">
-                  {member.is_member ? (
+                  {member?.is_member ? (
                     <button className=" bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white px-2 md:px-4 md:py-1 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl">
                       Member
                     </button>
@@ -334,7 +334,7 @@ export default function Profile() {
   </>
 )}
 
-{member.is_member && (
+{member?.is_member && (
   <>
     <div className="md:mx-20 my-5 p-4 bg-gradient-to-r from-slate-200 to-slate-300 border-none rounded-xl shadow-lg text-center">
       <h3 className="text-xl md:text-3xl font-medium bg-gradient-to-br from-slate-600 to-slate-800 bg-clip-text tracking-tight text-transparent font-poppins">
