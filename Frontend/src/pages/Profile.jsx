@@ -30,8 +30,8 @@ export default function Profile() {
   const [loading, setLoading] = useState(false);
   const [eventTicketData, setEventTicketData] = useState({});
   const [refresh, setRefresh] = useState(false);
-  const [downloadcerificate,setDownloadcerificate] = useState(false);
-  const [member,setMember] = useState(false);
+  const [downloadcerificate, setDownloadcerificate] = useState(false);
+  const [member, setMember] = useState(false);
 
   const handleClose = () => {
     setOpen(false);
@@ -308,56 +308,60 @@ export default function Profile() {
           )}
         </div>
 
-        <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
+        <div className="w-4/5 mx-auto my-5 border-t border-slate-400"></div>
 
-    
-   {eventTicketData?.status === "Attended" && (
-  <>
-    <div className="md:mx-20 my-5 p-4 bg-gradient-to-r from-slate-200 to-slate-300 border-none rounded-xl shadow-lg text-center">
-      <h3 className="text-xl md:text-3xl font-medium bg-gradient-to-br from-slate-600 to-slate-800 bg-clip-text tracking-tight text-transparent font-poppins">
-        Thank You for Being a Part of Graffathon'25!
-      </h3>
-      <p className="mt-2 text-sm md:text-lg text-slate-700">
-        We truly appreciate your participation and enthusiasm in making this event a success!
-      </p>
-      <p className="mt-2 text-sm md:text-lg text-slate-700">
-        We hope your Graffathon experience was nothing short of amazing. This is just the beginning—many more incredible events await!
-      </p>
-      <p className="mt-3 text-sm md:text-lg text-slate-600">
-        Stay connected with us for more exciting opportunities.
-      </p>
-      <p className="mt-3 text-sm md:text-lg text-slate-600 font-semibold">
-        P.S.: Your participation certificates will be available soon!
-      </p>
-    </div>
-    <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
-  </>
-)}
 
-{member?.is_member && (
-  <>
-    <div className="md:mx-20 my-5 p-4 bg-gradient-to-r from-slate-200 to-slate-300 border-none rounded-xl shadow-lg text-center">
-      <h3 className="text-xl md:text-3xl font-medium bg-gradient-to-br from-slate-600 to-slate-800 bg-clip-text tracking-tight text-transparent font-poppins">
-        Congratulations on getting Pratibimb Club Membership!
-      </h3>
-      <p className="mt-2 text-sm md:text-lg text-slate-700">
-       Further details of 1st round of Recruitment will be shared in whatsapp group. 
-      </p>
-      <p className="mt-2 text-sm md:text-lg text-slate-700">
-      🖼 Portfolio Submission: Carry a physical/offline portfolio showcasing your best work.
+        {member?.is_member && (
+          <>
+            <div className="md:mx-20 my-5 p-4 bg-gradient-to-r from-slate-200 to-slate-300 border-none rounded-xl shadow-lg text-center">
+              <h3 className="text-xl md:text-3xl font-medium bg-gradient-to-br from-slate-600 to-slate-800 bg-clip-text tracking-tight text-transparent font-poppins">
+                Congratulations on getting Pratibimb Club Membership!
+              </h3>
+              <p className="mt-2 text-sm md:text-lg text-slate-700">
+                Further details of 1st round of Recruitment will be shared in whatsapp group.
+              </p>
+              <p className="mt-2 text-sm md:text-lg text-slate-700">
+                🖼 Portfolio Submission: Carry a physical/offline portfolio showcasing your best work.
 
-      </p>
-      <p className="mt-3 text-sm md:text-lg text-slate-600">
-        
-      </p>
-      <p className="mt-3 text-sm md:text-lg text-slate-600 font-semibold">
-        P.S.: Join Whatsapp group: <a  target="_blank" 
-    rel="noopener noreferrer" href="https://chat.whatsapp.com/FcXCTHRyHjK2Sb4cFHodX1" className="text-blue-500" >Click here</a>
-      </p>
-    </div>
-    <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
-  </>
-)}
+              </p>
+              <p className="mt-3 text-sm md:text-lg text-slate-600">
+
+              </p>
+              <p className="mt-3 text-sm md:text-lg text-slate-600 font-semibold">
+                P.S.: Join Whatsapp group: <a target="_blank"
+                  rel="noopener noreferrer" href="https://chat.whatsapp.com/FcXCTHRyHjK2Sb4cFHodX1" className="text-blue-500" >Click here</a>
+              </p>
+            </div>
+            <div className="w-4/5 mx-auto my-5 border-t border-slate-400"></div>
+
+          </>
+        )}
+
+        {eventTicketData?.status === "Attended" && (
+          <>
+            <div className="md:mx-20 my-5 p-4 bg-gradient-to-r from-slate-200 to-slate-300 border-none rounded-xl shadow-lg text-center">
+              <h3 className="text-xl md:text-3xl font-medium bg-gradient-to-br from-slate-600 to-slate-800 bg-clip-text tracking-tight text-transparent font-poppins">
+                Thank You for Being a Part of Graffathon'25!
+              </h3>
+              <p className="mt-2 text-sm md:text-lg text-slate-700">
+                We truly appreciate your participation and enthusiasm in making this event a success!
+              </p>
+              <p className="mt-2 text-sm md:text-lg text-slate-700">
+                We hope your Graffathon experience was nothing short of amazing. This is just the beginning—many more incredible events await!
+              </p>
+              <p className="mt-3 text-sm md:text-lg text-slate-600">
+                Stay connected with us for more exciting opportunities.
+              </p>
+              <p className="mt-3 text-sm md:text-lg text-slate-600 font-semibold">
+                P.S.: Your participation certificates will be available soon!
+              </p>
+            </div>
+            <div className="w-4/5 mx-auto my-5 border-t border-slate-400"></div>
+
+          </>
+        )}
+
+
 
 
 
@@ -365,30 +369,30 @@ export default function Profile() {
           <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins">
             Your Event Ticket
           </div>
-            <>
-              <div className="mt-2 text-slate-500 text-xs md:text-xl px-4 font-poppins">
-                Visit the event Page to register for a event.
-                <br />
-                {/* <Link to='/terms-and-conditions' >
+          <>
+            <div className="mt-2 text-slate-500 text-xs md:text-xl px-4 font-poppins">
+              Visit the event Page to register for a event.
+              <br />
+              {/* <Link to='/terms-and-conditions' >
               <div className="mt-2 text-slate-500 text-xs md:text-lg hover:underline font-poppins">
                 Our Terms and Conditions
               </div>
               </Link> */}
-                <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  onClick={handleOpen}
-                  // onClick={() => navigate("/upcoming-event-page")}
-                  className="mt-2 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-1 md:py-2 px-2 md:px-4 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
-                >
-                  Go to Event Page
-                </motion.button>
-              </div>
-              <img
-                src="https://res.cloudinary.com/dhy548whh/image/upload/v1739046843/ticket_md08pw.png"
-                className="mt-4 blur-sm w-[80%] md:w-[60%] mx-auto"
-                alt="image"
-              />
-            </>
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={handleOpen}
+                // onClick={() => navigate("/upcoming-event-page")}
+                className="mt-2 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-1 md:py-2 px-2 md:px-4 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
+              >
+                Go to Event Page
+              </motion.button>
+            </div>
+            <img
+              src="https://res.cloudinary.com/dhy548whh/image/upload/v1739046843/ticket_md08pw.png"
+              className="mt-4 blur-sm w-[80%] md:w-[60%] mx-auto"
+              alt="image"
+            />
+          </>
 
         </div>
 
@@ -489,7 +493,7 @@ export default function Profile() {
             </ul>
             <motion.button
               whileTap={{ scale: 0.95 }}
-              onClick={()=>navigate('/membership')}
+              onClick={() => navigate('/membership')}
               className="my-4 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-1 md:py-2 md:px-4 px-2 rounded-full shadow-lg text-sm font-poppins transition duration-300 hover:opacity-90 hover:shadow-2xl"
             >
               Become a Member
