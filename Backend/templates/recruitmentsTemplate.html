@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pratibimb Membership Card</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+      
+      body {
+        font-family: 'Montserrat', Arial, sans-serif;
+        background-color: #121212;
+        margin: 0;
+        padding: 20px;
+        color: #f4f4f4;
+        line-height: 1.6;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .email-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: #1e1e1e;
+        border-radius: 20px;
+        box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.6);
+        overflow: hidden;
+        position: relative;
+      }
+
+      .email-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 8px;
+        background: linear-gradient(90deg, #fecd01, #ff9d00, #fecd01);
+        z-index: 5;
+      }
+
+      .header-banner {
+        background: url('https://res.cloudinary.com/dgc7xsrcx/image/upload/v1733825280/uqfmoxybdavba23awyjg.png') no-repeat center center, 
+                    linear-gradient(135deg, #222222, #111111);
+        background-size: 80px, cover;
+        height: 120px;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+
+      .header-banner::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at center, rgba(254, 205, 1, 0.3) 0%, rgba(30, 30, 30, 0.9) 70%);
+      }
+
+      .header-banner::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjMjIyIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDVMNSAwWk02IDRMNCA2Wk0tMSAxTDEgLTFaIiBzdHJva2U9IiMzMzMiIHN0cm9rZS13aWR0aD0iMSI+PC9wYXRoPgo8L3N2Zz4=');
+        opacity: 0.3;
+      }
+
+      .header-text {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        font-weight: 800;
+        font-size: 28px;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+      }
+
+      .email-content {
+        padding: 30px;
+        position: relative;
+      }
+
+      .logo {
+        text-align: center;
+        padding: 0 0 20px;
+        position: relative;
+      }
+
+      .logo img {
+        max-width: 120px;
+        filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+        transition: transform 0.3s ease, filter 0.3s ease;
+      }
+
+      .logo img:hover {
+        transform: scale(1.05) rotate(2deg);
+        filter: drop-shadow(0 8px 20px rgba(0,0,0,0.4)) brightness(1.1);
+      }
+
+      .divider {
+        height: 3px;
+        background: linear-gradient(90deg, rgba(254,205,1,0), rgba(254,205,1,1), rgba(254,205,1,0));
+        margin: 15px 0 25px;
+        border-radius: 3px;
+        position: relative;
+      }
+
+      .divider::before, .divider::after {
+        content: '★';
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #fecd01;
+        font-size: 12px;
+      }
+
+      .divider::before {
+        left: 30%;
+      }
+
+      .divider::after {
+        right: 30%;
+      }
+
+      .membership-card {
+        background: linear-gradient(145deg, #ffffff, #f0f0f0);
+        color: #333;
+        font-size: 14px;
+        border-radius: 16px;
+        overflow: hidden;
+        text-align: center;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        margin: 10px 0 30px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        z-index: 1;
+      }
+
+      .membership-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: conic-gradient(
+          transparent, 
+          rgba(254, 205, 1, 0.1), 
+          transparent 30%
+        );
+        animation: rotate 10s linear infinite;
+        z-index: -1;
+      }
+
+      @keyframes rotate {
+        100% {
+          transform: rotate(1turn);
+        }
+      }
+
+      .membership-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      }
+
+      .membership-header {
+        background: linear-gradient(90deg, #fecd01, #ffd700);
+        text-align: center;
+        padding: 18px 15px;
+        font-weight: 800;
+        font-size: 18px;
+        color: #111;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      }
+
+      .membership-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        animation: shine 3s infinite;
+      }
+
+      @keyframes shine {
+        0% { left: -100%; }
+        20% { left: 100%; }
+        100% { left: 100%; }
+      }
+
+      .membership-details {
+        padding: 25px 20px 15px;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        font-size: 15px;
+        position: relative;
+      }
+
+      .membership-details::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 15%;
+        width: 70%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
+      }
+
+      .membership-details div {
+        padding: 8px 0;
+        border-bottom: 1px dashed rgba(0,0,0,0.1);
+        position: relative;
+      }
+
+      .membership-details div:last-child {
+        border-bottom: none;
+        margin-top: 5px;
+        font-weight: 600;
+        color: #111;
+        background: linear-gradient(90deg, rgba(254,205,1,0.1), rgba(254,205,1,0.3), rgba(254,205,1,0.1));
+        padding: 8px;
+        border-radius: 20px;
+        display: inline-block;
+      }
+
+      .membership-details b {
+        font-weight: 700;
+        color: #111;
+        margin-right: 5px;
+      }
+
+      .qr-container {
+        padding: 10px 15px 25px;
+        position: relative;
+      }
+
+      .qr-container::before {
+        content: 'SCAN ME';
+        position: absolute;
+        top: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #fecd01;
+        color: #111;
+        padding: 4px 15px;
+        border-radius: 15px;
+        font-size: 12px;
+        font-weight: 700;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        letter-spacing: 1px;
+      }
+
+      .qr-container img {
+        width: 200px;
+        height: 200px;
+        border: 8px solid white;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        transition: transform 0.3s ease;
+      }
+
+      .qr-container img:hover {
+        transform: scale(1.05);
+      }
+
+      .disclaimer {
+        background-color: rgba(254, 205, 1, 0.1);
+        border-left: 3px solid #fecd01;
+        padding: 12px 15px;
+        margin: 20px 0;
+        font-size: 13px;
+        color: #ddd;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .disclaimer strong {
+        color: #fecd01;
+        font-weight: 600;
+      }
+
+      .instructions {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        padding: 15px;
+        margin: 20px 0;
+        position: relative;
+      }
+
+      .instructions-title {
+        position: absolute;
+        top: -10px;
+        left: 15px;
+        background-color: #fecd01;
+        color: #111;
+        padding: 2px 15px;
+        border-radius: 15px;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .instructions ul {
+        margin: 10px 0 0;
+        padding-left: 20px;
+        color: #ccc;
+      }
+
+      .instructions li {
+        margin-bottom: 8px;
+        position: relative;
+      }
+
+      .instructions li::marker {
+        color: #fecd01;
+      }
+
+      .footer {
+        text-align: center;
+        font-size: 14px;
+        padding: 25px 0 10px;
+        color: #e0e0e0;
+        position: relative;
+      }
+
+      .footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 50%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      }
+
+      .footer p {
+        margin: 10px 0;
+      }
+
+      .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin: 20px 0;
+      }
+
+      .social-icon {
+        display: inline-block;
+        background-color: #333;
+        padding: 12px;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      }
+
+      .social-icon:hover {
+        transform: translateY(-5px) rotate(5deg);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+      }
+
+      .social-icon.instagram:hover {
+        background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+      }
+
+      .social-icon.whatsapp:hover {
+        background-color: #25D366;
+      }
+
+      .social-icon.youtube:hover {
+        background-color: #FF0000;
+      }
+
+      .social-icon img {
+        width: 24px;
+        height: 24px;
+        vertical-align: middle;
+        filter: brightness(1.2);
+      }
+
+      .contact-email {
+        color: #fecd01;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        padding: 3px 10px;
+        border-radius: 4px;
+      }
+
+      .contact-email:hover {
+        color: #111;
+        background-color: #fecd01;
+        text-decoration: none;
+      }
+
+      .copyright {
+        font-size: 12px;
+        color: #777;
+        margin-top: 25px;
+        padding-top: 15px;
+        border-top: 1px solid #333;
+      }
+
+      @media (max-width: 600px) {
+        body {
+          padding: 10px;
+        }
+        
+        .email-content {
+          padding: 20px 15px;
+        }
+        
+        .qr-container img {
+          width: 180px;
+          height: 180px;
+        }
+        
+        .membership-details {
+          font-size: 14px;
+        }
+        
+        .header-text {
+          font-size: 22px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <table>
+      <tr>
+        <td align="center">
+          <div class="email-container">
+           
+            
+            <div class="email-content">
+              <div class="logo">
+                <img
+                  src="https://res.cloudinary.com/dgc7xsrcx/image/upload/v1733825280/uqfmoxybdavba23awyjg.png"
+                  alt="Club Pratibimb Logo"
+                />
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="membership-card">
+                <div class="membership-header">OFFICIAL MEMBERSHIP</div>
+                <div class="membership-details">
+                  <div><b>Membership No:</b> {{membership_number}}</div>
+                  <div><b>Name:</b> {{member_name}}</div>
+                  <div><b>Batch:</b> {{batch}}</div>
+                  <div><b>Branch:</b> {{branch}}</div>
+                  <div>Lifetime Validity</div>
+                </div>
+
+                <div class="qr-container">
+                  <img src="{{qr_code}}" alt="QR Code" />
+                </div>
+              </div>
+              
+              <div class="disclaimer">
+                <strong>IMPORTANT:</strong> Club Pratibimb reserves all rights to revoke this membership at any time without prior notice if the member violates club policies or engages in inappropriate conduct.
+              </div>
+              
+              <div class="instructions">
+                <div class="instructions-title">Instructions</div>
+                <ul>
+                  <li>Keep this membership card accessible on your device for club events</li>
+                  <li>Present the QR code when requested for verification</li>
+                  <li>This membership grants you exclusive access to Pratibimb events and workshops</li>
+                  <li>For special member benefits, follow our social media channels</li>
+                </ul>
+              </div>
+
+              <div class="footer">
+                <p>Stay connected with us:</p>
+                <div class="social-icons">
+                  <a href="https://bit.ly/3Mu4CN2" target="_blank" class="social-icon instagram">
+                    <img
+                      src="https://res.cloudinary.com/dhy548whh/image/upload/v1733923563/tpuqqhg73ccx2cbs6ccq.png"
+                      alt="Instagram"
+                    />
+                  </a>
+                  <a
+                    href="https://chat.whatsapp.com/Lo2YDqUGt9vDgxhtjQqe43"
+                    target="_blank"
+                    class="social-icon whatsapp"
+                  >
+                    <img
+                      src="https://res.cloudinary.com/dhy548whh/image/upload/v1733924392/wkes107z9zx08debjfa3.png"
+                      alt="WhatsApp"
+                    />
+                  </a>
+                  <a
+                    href="https://youtube.com/@pratibimb_sgsits?si=BLxqIAt6U6Sxn-l3"
+                    target="_blank"
+                    class="social-icon youtube"
+                  >
+                    <img
+                      src="https://res.cloudinary.com/dhy548whh/image/upload/v1733923562/ph251e5rkfoteorw38ug.png"
+                      alt="YouTube"
+                    />
+                  </a>
+                </div>
+
+                <p>
+                  Have questions? Email us at
+                  <a href="mailto:clubpratibimb.sgsits@gmail.com" class="contact-email"
+                    >clubpratibimb.sgsits@gmail.com</a
+                  >
+                </p>
+
+                <div class="copyright">
+                  <p>© 2024 Pratibimb. All rights reserved.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

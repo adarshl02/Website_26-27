@@ -2,8 +2,10 @@ import db from "../config/db/index.js";
 import Razorpay from "razorpay";
 import crypto from "crypto";
 import errorHandler from "../utils/errorHandler.js";
-import { sendEmailForArtWork } from "../utils/emailFunctions.js";
+import { sendEmailForRecruitments } from "../utils/emailFunctions.js";
+import cloudinary from "../config/cloudinary/index.js";
 import dotenv from "dotenv";
+import QRCode from "qrcode";
 
 dotenv.config();
 
@@ -137,15 +139,37 @@ const verifyRecruitmentPayment = async (req, res) => {
         payment_status: "APPROVED",
       });
 
-    // await sendEmail(
-    //   email,
-    //   attendee.team_leader_name,
-    //   attendee.team_name,
-    //   data.event_date,
-    //   data.event_name,
-    //   data.event_location,
-    //   qr_code_link
-    // );
+      const applicant = await db("applicants").select("*").where({
+        order_id: razorpay_order_id,
+      });
+      
+      if (applicant.length === 0) {
+        return res.status(404).json({ message: "Applicant not found" });
+      }
+      
+      const qrCodeData = `${applicant[0].order_id}`;
+      const qrCodeImage = await QRCode.toDataURL(qrCodeData);
+      
+      const uploadResponse = await cloudinary.uploader.upload(qrCodeImage, {
+        folder: "qr_codes",
+        public_id: `qr_${razorpay_order_id}`,
+        overwrite: true,
+      });
+      
+      const qr_code_link = uploadResponse.secure_url;
+      
+      if (!qr_code_link) {
+        return res.status(500).json({ message: "QR Code upload failed" });
+      }
+      
+      sendEmailForRecruitments(
+        email,
+        applicant[0].order_id,
+        applicant[0].name,
+        applicant[0].batch,
+        applicant[0].branch,
+        qr_code_link
+      );
 
     return res.status(200).json({
       message: "Payment verified successfully",

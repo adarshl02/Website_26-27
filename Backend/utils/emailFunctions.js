@@ -2,8 +2,12 @@ import nodemailer from "nodemailer";
 import fs from "fs";
 import path from "path";
 import dotenv from "dotenv";
+import { fileURLToPath } from "url";
 
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -75,10 +79,7 @@ const sendEmailForArtWork = async (user_name, email) => {
 
 const sendWelcomeEmail = async (email, name) => {
   try {
-    const templatePath = path.join(
-      process.cwd(),
-      "templates/welcomeTemplate.html"
-    );
+    const templatePath = path.join(__dirname, "..", "templates", "welcomeTemplate.html");
     let emailTemplate = fs.readFileSync(templatePath, "utf-8");
     emailTemplate = emailTemplate.replace("{{name}}", name);
 
@@ -112,4 +113,37 @@ const sendEmailForArtist = async (email, name) => {
   }
 };
 
-export { sendEmail, sendWelcomeEmail, sendEmailForArtist, sendEmailForArtWork };
+const sendEmailForRecruitments = async (
+  email,
+  membership_number,
+  member_name,
+  batch,
+  branch,
+  qr_code
+) => {
+  try {
+    const templatePath = path.join(__dirname, "..", "templates", "recruitmentsTemplate.html");
+    let emailTemplate = fs.readFileSync(templatePath, "utf-8");
+
+    const emailContent = emailTemplate
+      .replace("{{membership_number}}", membership_number)
+      .replace("{{member_name}}", member_name)
+      .replace("{{batch}}", batch)
+      .replace("{{branch}}", branch)
+      .replace("{{qr_code}}", qr_code);
+
+    const mailOptions = {
+      from: '"Club Pratibimb" <teampratibimb.sgsits@gmail.com>',
+      to: email,
+      subject: "Your Membership Card",
+      html: emailContent,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log(`Email sent successfully to ${email}`);
+  } catch (error) {
+    console.error(" Error in sending email:", error);
+  }
+};
+
+export { sendEmail, sendWelcomeEmail, sendEmailForArtist, sendEmailForArtWork , sendEmailForRecruitments };

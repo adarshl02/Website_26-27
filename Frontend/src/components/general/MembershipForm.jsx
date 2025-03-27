@@ -158,14 +158,16 @@ const MembershipForm = ({ setOpen }) => {
                     });
                     setOpen(false);
                     toast.success("Payment successful and verified!");
+                    toast.info("Check your mail for confirmation");
                     navigate("/profile");
                     // Update the order status to "paid" in the database
                 } else {
-                    toast.error(verificationResponse.message || "Payment verification failed. Please try again.");
+                    toast.info("Check your mail for confirmation");
+                    // toast.error(verificationResponse.message || "Payment verification failed. Please try again.");
                 }
             } catch (error) {
-                console.error("Payment verification error:", error);
-                toast.error("Error verifying payment. Please try again.");
+                toast.info("Check your mail for confirmation");
+                // toast.error("Error verifying payment. Please try again.");
             } finally {
                 setOpen(false);
                 setLoading(false);

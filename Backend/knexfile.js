@@ -45,6 +45,7 @@ JEymGwxVOupIGTcxGegY9qPUwAUfnQDA+2X9pKkp4QVVM4eFnA==
         `,
       },
     },
+    pool: { min: 2, max: 10 },
     migrations: { directory: "./migrations" },
     seeds: { directory: "./seeds" },
   },
