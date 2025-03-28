@@ -22,6 +22,8 @@ router.post("/auth/google/signup", async (req, res, next) => {
     }
 
     const hashedUid = await bcrypt.hash(uid, 10);
+    console.log(name,email,hashedUid,avatar);
+    
 
     const newUser = {
       name,
