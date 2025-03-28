@@ -330,16 +330,22 @@ export default function SignUp({ setBackdropOpen }) {
                       htmlFor="username"
                       className="block text-left font-medium text-black mb-2"
                     >
-                      Admin Username
+                      Admin name
                     </label>
+                    <div className="flex w-[80%]" >
+                      <div className="" >
                     <input
                       type="text"
                       id="username"
                       className="md:mt-1 w-full px-4 py-2 ring ring-blue-200  text-slate-800   rounded-lg  text-base focus:ring focus:ring-blue-400 focus:outline-none"
-                      placeholder="admin@example.com"
+                      placeholder="imAdmin"
                       onChange={handleAdminChange}
-
                     />
+                    </div>
+                    <div>
+                      <button>Get OTP</button>
+                    </div>
+                    </div>
                   </div>
 
                   <div className="mb-4">
