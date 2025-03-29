@@ -222,8 +222,15 @@ export const registerForRecruitment = async (data,token) => {
         "Authorization": `${token}`,  // Include token in the headers
       },
     });
-        
-    return { success: true, data: response.data.response.data };
+
+    if(response.status===204){
+      return {
+        success :true,
+        data:"Already Registered",
+      }
+    }
+    
+    return { success: true, data: response.data.response };
   } catch (error) {
     return handleApiError(error, 'Payment Verification API');
   }

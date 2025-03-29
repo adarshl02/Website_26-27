@@ -54,7 +54,7 @@ const MembershipForm = ({ setOpen }) => {
     };
 
     const handleSubmit = async () => {
-        
+
         if (
             !formData.name ||
             !formData.phone ||
@@ -68,27 +68,40 @@ const MembershipForm = ({ setOpen }) => {
             toast.error("Please fill in all fields and select at least one domain.");
             return;
         }
-        
+
 
         setLoading(true);
 
         try {
             const response = await registerForRecruitment(formData, currentUser.token);
-            if (response.success) {
-                           toast.info("Redirecting to Payment Page");
-                           
-                           const { amount, order_id } = response.data;
-                           handlePayment(order_id, amount);
-                       } else {
-                           toast.error(response.message);
-                           setLoading(false);
-            setOpen(false);
-                       }
+            if (response.success && response.data !=="Already Registered") {
+                toast.success("Successfully registered for recruitments");
+                // toast.info("Check your mail for confirmation");
+                toast.info("Check your profile section");
+                navigate("/profile");
+            }else if(response.data==="Already Registered"){
+                toast.info("User is already registered for recruitments");
+            }
+             else {
+                toast.info("Check your profile section");
+            }
         } catch (error) {
             toast.error(error.message || "Failed to register. Please try again.");
+           
+        }finally{
             setLoading(false);
             setOpen(false);
-        } 
+            setFormData({
+                name: currentUser.rest.name,
+                phone: "",
+                email: currentUser.rest.email,
+                branch: "Bachelor of Pharmacy",
+                batch: "2028",
+                domain: [],
+                experience: "",
+                otherClubMembership: "",
+            });
+        }
     };
 
     const loadRazorpayScript = () => {
@@ -101,78 +114,78 @@ const MembershipForm = ({ setOpen }) => {
         });
     };
 
-      const handlePayment = async (order_id, amount) => {
-            const isRazorpayLoaded = await loadRazorpayScript();
-            if (!isRazorpayLoaded) {
-                toast.error("Razorpay SDK failed to load. Please check your connection.");
-                return;
-            }
-    
-            const options = {
-                key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-                amount,
-                currency: "INR",
-                order_id,
-                name: "Membership Campaign",
-                description: "Payment for Membership Campaign",
-                prefill: {
-                    name: formData.name,
-                    email: currentUser.rest.email,
-                    contact: formData.phone,
-                },
-                theme: { color: "#F37254" },
-                handler: (response) => verifyPaymentHandler(response),
-               
-                modal: {
-                    ondismiss: function () {
-                        setLoading(false);
-                        setOpen(false);
-                    },
-                },
-            };
-    
-            const rzp = new window.Razorpay(options);
-            rzp.open();
-        };
+    const handlePayment = async (order_id, amount) => {
+        const isRazorpayLoaded = await loadRazorpayScript();
+        if (!isRazorpayLoaded) {
+            toast.error("Razorpay SDK failed to load. Please check your connection.");
+            return;
+        }
 
+        const options = {
+            key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+            amount,
+            currency: "INR",
+            order_id,
+            name: "Membership Campaign",
+            description: "Payment for Membership Campaign",
+            prefill: {
+                name: formData.name,
+                email: currentUser.rest.email,
+                contact: formData.phone,
+            },
+            theme: { color: "#F37254" },
+            handler: (response) => verifyPaymentHandler(response),
 
-        const verifyPaymentHandler = async (response) => {
-            try {
-                const verificationResponse = await verifyPaymentForRecruitment({
-                    razorpay_order_id: response.razorpay_order_id,
-                    razorpay_payment_id: response.razorpay_payment_id,
-                    razorpay_signature: response.razorpay_signature,
-                    email: currentUser.rest.email,
-                }, currentUser.token);
-    
-                if (verificationResponse.success) {
-                    setFormData({
-                        name: currentUser.rest.name,
-                        phone: "",
-                        email: currentUser.rest.email,
-                        branch: "Bachelor of Pharmacy",
-                        batch: "2028",
-                        domain: [],
-                        experience: "",
-                        otherClubMembership: "",
-                    });
+            modal: {
+                ondismiss: function () {
+                    setLoading(false);
                     setOpen(false);
-                    toast.success("Payment successful and verified!");
-                    toast.info("Check your mail for confirmation");
-                    navigate("/profile");
-                    // Update the order status to "paid" in the database
-                } else {
-                    toast.info("Check your mail for confirmation");
-                    // toast.error(verificationResponse.message || "Payment verification failed. Please try again.");
-                }
-            } catch (error) {
-                toast.info("Check your mail for confirmation");
-                // toast.error("Error verifying payment. Please try again.");
-            } finally {
-                setOpen(false);
-                setLoading(false);
-            }
+                },
+            },
         };
+
+        const rzp = new window.Razorpay(options);
+        rzp.open();
+    };
+
+
+    const verifyPaymentHandler = async (response) => {
+        try {
+            const verificationResponse = await verifyPaymentForRecruitment({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                email: currentUser.rest.email,
+            }, currentUser.token);
+
+            if (verificationResponse.success) {
+                setFormData({
+                    name: currentUser.rest.name,
+                    phone: "",
+                    email: currentUser.rest.email,
+                    branch: "Bachelor of Pharmacy",
+                    batch: "2028",
+                    domain: [],
+                    experience: "",
+                    otherClubMembership: "",
+                });
+                setOpen(false);
+                toast.success("Payment successful and verified!");
+                toast.info("Check your mail for confirmation");
+                navigate("/profile");
+                // Update the order status to "paid" in the database
+            } else {
+                toast.info("Check your mail for confirmation");
+                // toast.error(verificationResponse.message || "Payment verification failed. Please try again.");
+            }
+        } catch (error) {
+            toast.info("Check your mail for confirmation");
+            // toast.error("Error verifying payment. Please try again.");
+        } finally {
+            setOpen(false);
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="bg-white rounded-lg shadow-lg m-4 p-4 md:p-8 max-w-80 md:max-w-lg mx-auto">
@@ -180,7 +193,7 @@ const MembershipForm = ({ setOpen }) => {
                 Membership Registration
             </h2>
             <form className="space-y-2 md:space-y-4 text-sm md:text-base overflow-y-auto max-h-[70vh] md:max-h-[80vh] custom-scrollbar px-2">
-            <div className="text-gray-800">
+                <div className="text-gray-800">
                     <label className="block text-gray-600 mb-1">Name</label>
                     <input
                         maxLength={20}
@@ -308,7 +321,7 @@ const MembershipForm = ({ setOpen }) => {
                 <div className="w-full flex justify-between">
                     <button
                         type="button"
-                        onClick={() => {setLoading(false);  setOpen(false);}}
+                        onClick={() => { setLoading(false); setOpen(false); }}
                         className="bg-gray-300 text-gray-800 py-2 px-4 rounded-lg shadow transition w-1/2 mr-2"
                     >
                         Cancel
@@ -319,7 +332,7 @@ const MembershipForm = ({ setOpen }) => {
                         disabled={loading}
                         onClick={handleSubmit}
                     >
-                        {loading ? <CircularProgress size={18} color="inherit" /> : "Pay Now"}
+                        {loading ? <CircularProgress size={18} color="inherit" /> : "Submit"}
                     </button>
                 </div>
 

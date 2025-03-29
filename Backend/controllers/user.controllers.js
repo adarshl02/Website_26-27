@@ -78,11 +78,10 @@ const countUsers = async (req, res) => {
 
 const getMember = async (req, res) => {
   try {
-    
-    const {email} = req.query;
- 
-   const user = await db("users").where({email}).first();
-    
+    const { email } = req.query;
+
+    const user = await db("applicants").where({ email }).first() || "";
+
     return res.status(200).send({
       response: {
         data: user,
@@ -100,6 +99,7 @@ const getMember = async (req, res) => {
     });
   }
 };
+
 
 const giveFeedback = async (req, res) => {
   try {

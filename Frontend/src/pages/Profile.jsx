@@ -31,7 +31,7 @@ export default function Profile() {
   const [eventTicketData, setEventTicketData] = useState({});
   const [refresh, setRefresh] = useState(false);
   const [downloadcerificate, setDownloadcerificate] = useState(false);
-  const [member, setMember] = useState(false);
+  const [member, setMember] = useState("");
 
   const handleClose = () => {
     setOpen(false);
@@ -311,11 +311,37 @@ export default function Profile() {
         <div className="w-4/5 mx-auto my-5 border-t border-slate-400"></div>
 
 
-        {member?.is_member && (
+        {member !== "" && member?.order_id !== "FREE" && (
           <>
             <div className="md:mx-20 my-5 p-4 bg-gradient-to-r from-slate-200 to-slate-300 border-none rounded-xl shadow-lg text-center">
               <h3 className="text-xl md:text-3xl font-medium bg-gradient-to-br from-slate-600 to-slate-800 bg-clip-text tracking-tight text-transparent font-poppins">
                 Congratulations on getting Pratibimb Club Membership!
+              </h3>
+              <p className="mt-2 text-sm md:text-lg text-slate-700">
+                Further details of 1st round of Recruitment will be shared in whatsapp group.
+              </p>
+              <p className="mt-2 text-sm md:text-lg text-slate-700">
+                🖼 Portfolio Submission: Carry a physical/offline portfolio showcasing your best work.
+
+              </p>
+              <p className="mt-3 text-sm md:text-lg text-slate-600">
+
+              </p>
+              <p className="mt-3 text-sm md:text-lg text-slate-600 font-semibold">
+                P.S.: Join Whatsapp group: <a target="_blank"
+                  rel="noopener noreferrer" href="https://chat.whatsapp.com/FcXCTHRyHjK2Sb4cFHodX1" className="text-blue-500" >Click here</a>
+              </p>
+            </div>
+            <div className="w-4/5 mx-auto my-5 border-t border-slate-400"></div>
+
+          </>
+        )}
+
+        {member?.order_id === "FREE" && (
+          <>
+            <div className="md:mx-20 my-5 p-4 bg-gradient-to-r from-slate-200 to-slate-300 border-none rounded-xl shadow-lg text-center">
+              <h3 className="text-xl md:text-3xl font-medium bg-gradient-to-br from-slate-600 to-slate-800 bg-clip-text tracking-tight text-transparent font-poppins">
+                Thanks for registering for recruitments!
               </h3>
               <p className="mt-2 text-sm md:text-lg text-slate-700">
                 Further details of 1st round of Recruitment will be shared in whatsapp group.

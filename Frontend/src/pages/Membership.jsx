@@ -72,7 +72,8 @@ const Membership = () => {
                         <li>📅 <b>Date:</b> <span className="text-gray-400"> 30th March 2025</span></li>
                         <li>⏰ <b>Time:</b> <span className="text-gray-400">10 AM onwards</span></li>
                         <li>📍 <b>Venue:</b> <span className="text-gray-400">LT 002</span></li>
-                        <li>💰 <b>Membership Fee:</b> <span className="text-gray-400">₹99</span></li>
+                        <li>💰 <b>Membership Fee:</b> <span className="text-gray-500 line-through">₹99</span>&nbsp; ₹0</li>
+
                     </ul>
 
                     {/* Register Button */}
@@ -88,7 +89,7 @@ const Membership = () => {
 
                     {/* Additional Info */}
                     <ul className="list-disc pl-5 text-sm md:text-lg text-gray-400 mt-6 space-y-2 w-full max-w-md md:max-w-none text-left ml-8 md:ml-0 ">
-                        <li> <span className="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent text-lg" >
+                        {/* <li> <span className="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent text-lg" >
                             Membership Perks</span>
                             <button
                                 onClick={() => setPerks(!perks)}
@@ -96,9 +97,9 @@ const Membership = () => {
                             >
                                 {perks ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                             </button>
-                        </li>
+                        </li> */}
 
-                        <AnimatePresence>
+                        {/* <AnimatePresence>
                             {perks && (
                                 <motion.ul
                                     initial={{ opacity: 0, height: 0 }}
@@ -116,10 +117,10 @@ const Membership = () => {
                                     </li>
                                 </motion.ul>
                             )}
-                        </AnimatePresence>
+                        </AnimatePresence> */}
 
-                        <li>Here are the guideness: <a  target="_blank" 
-    rel="noopener noreferrer" href="https://docs.google.com/document/d/1-CbmO8_jjMOlIZSfkGLyuedy1R3kuoT5I1ftmY4Xemk/edit?usp=sharing" className="text-blue-400" >Click here </a> </li>
+                        {/* <li>Here are the guideness: <a  target="_blank" 
+    rel="noopener noreferrer" href="https://docs.google.com/document/d/1-CbmO8_jjMOlIZSfkGLyuedy1R3kuoT5I1ftmY4Xemk/edit?usp=sharing" className="text-blue-400" >Click here </a> </li> */}
                         <li>Last Date to register : 29th March, 2025</li>
                         <li>Open only for 2028 Batch of SGSITS</li>
                         <li>For queries, DM us or contact: 883-9830466, 88788 06294</li>

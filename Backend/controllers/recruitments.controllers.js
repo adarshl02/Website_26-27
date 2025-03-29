@@ -14,88 +14,88 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
-const registerRecruitment = async (req, res) => {
-  try {
+// const registerRecruitment = async (req, res) => {
+//   try {
 
-    const { name, phone, email, branch, batch, domain, experience, otherClubMembership } = req.body;
+//     const { name, phone, email, branch, batch, domain, experience, otherClubMembership } = req.body;
 
-    if (!name || !phone || !email || !branch || !batch || !domain || !experience || !otherClubMembership) {
-      return res
-        .status(400)
-        .send(
-          errorHandler(
-            400,
-            "Invalid Request",
-            "Please fill all required fields"
-          )
-        );
-    }
+//     if (!name || !phone || !email || !branch || !batch || !domain || !experience || !otherClubMembership) {
+//       return res
+//         .status(400)
+//         .send(
+//           errorHandler(
+//             400,
+//             "Invalid Request",
+//             "Please fill all required fields"
+//           )
+//         );
+//     }
 
-    const existingApplicant = await db("applicants")
-      .where({ email })
-      .andWhere("payment_status", "APPROVED")
-      .first();
+//     const existingApplicant = await db("applicants")
+//       .where({ email })
+//       .andWhere("payment_status", "APPROVED")
+//       .first();
 
-    if (existingApplicant) {
-      return res.status(400).send(
-        errorHandler(400, "Already Registered", "User has already registered and paid.")
-      );
-    }
+//     if (existingApplicant) {
+//       return res.status(400).send(
+//         errorHandler(400, "Already Registered", "User has already registered and paid.")
+//       );
+//     }
 
 
-    const amount = 99 * 100;
+//     const amount = 99 * 100;
 
-    const order = await razorpay.orders.create({
-      amount: amount,
-      currency: "INR",
-      receipt: `receipt_order_${Date.now()}`,
-    });
+//     const order = await razorpay.orders.create({
+//       amount: amount,
+//       currency: "INR",
+//       receipt: `receipt_order_${Date.now()}`,
+//     });
 
-    if (!order) {
-      return res
-        .status(500)
-        .send(
-          errorHandler(500, "Order Error", "Failed to create Razorpay order")
-        );
-    }
+//     if (!order) {
+//       return res
+//         .status(500)
+//         .send(
+//           errorHandler(500, "Order Error", "Failed to create Razorpay order")
+//         );
+//     }
 
-    let data = {
-      name,
-      phone,
-      email,
-      branch,
-      batch,
-      domain,
-      experience,
-      otherClubMembership,
-      order_id: order.id,
-      payment_status: "PENDING",
-    };
+//     let data = {
+//       name,
+//       phone,
+//       email,
+//       branch,
+//       batch,
+//       domain,
+//       experience,
+//       otherClubMembership,
+//       order_id: order.id,
+//       payment_status: "PENDING",
+//     };
 
-    let insertion = await db("applicants").insert(data).returning("*");
+//     let insertion = await db("applicants").insert(data).returning("*");
 
-    if (!insertion) {
-      return res
-        .status(400)
-        .send(errorHandler(400, "Error Occurred", "Error while registering"));
-    }
+//     if (!insertion) {
+//       return res
+//         .status(400)
+//         .send(errorHandler(400, "Error Occurred", "Error while registering"));
+//     }
 
-    return res.status(200).send({
-      response: {
-        data: { order_id: order.id, amount },
-        title: "Inserted Applicant",
-        message: "Registration successful but payment verification required",
-      },
-    });
-  } catch (error) {
-    console.error("Error while registering applicant:", error);
-    return res
-      .status(500)
-      .send(
-        errorHandler(500, "Internal Server Error", "Error in registration")
-      );
-  }
-};
+//     return res.status(200).send({
+//       response: {
+//         data: { order_id: order.id, amount },
+//         title: "Inserted Applicant",
+//         message: "Registration successful but payment verification required",
+//       },
+//     });
+//   } catch (error) {
+//     console.error("Error while registering applicant:", error);
+//     return res
+//       .status(500)
+//       .send(
+//         errorHandler(500, "Internal Server Error", "Error in registration")
+//       );
+//   }
+// };
 
 const verifyRecruitmentPayment = async (req, res) => {
   try {
@@ -178,6 +178,70 @@ const verifyRecruitmentPayment = async (req, res) => {
   } catch (error) {
     console.error("Final Payment Verification Error:", error);
     return res.status(500).json({ message: "Internal Server Error", error });
+  }
+};
+
+const registerRecruitment = async (req, res) => {
+  try {
+
+    const { name, phone, email, branch, batch, domain, experience, otherClubMembership } = req.body;
+
+    if (!name || !phone || !email || !branch || !batch || !domain || !experience || !otherClubMembership) {
+      return res
+        .status(400)
+        .send(
+          errorHandler(
+            400,
+            "Invalid Request",
+            "Please fill all required fields"
+          )
+        );
+    }
+
+    const existingApplicant = await db("applicants")
+      .where({ email })
+      .first();
+
+    if (existingApplicant) {
+      return res.status(204).send(
+        errorHandler(204, "Already Registered", "User has already registered for recruitments")
+      );
+    }
+
+    let data = {
+      name,
+      phone,
+      email,
+      branch,
+      batch,
+      domain,
+      experience,
+      otherClubMembership,
+      order_id: "FREE",
+      payment_status: "PENDING",
+    };
+
+    let insertion = await db("applicants").insert(data).returning("*");
+
+    if (!insertion) {
+      return res
+        .status(400)
+        .send(errorHandler(400, "Error Occurred", "Error while registering"));
+    }
+
+    return res.status(200).send({
+      response: {
+        title: "Inserted Applicant",
+        message: "Registration successful but payment verification required",
+      },
+    });
+  } catch (error) {
+    console.error("Error while registering applicant:", error);
+    return res
+      .status(500)
+      .send(
+        errorHandler(500, "Internal Server Error", "Error in registration")
+      );
   }
 };
 

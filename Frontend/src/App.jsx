@@ -282,6 +282,7 @@ function App() {
   };
 
   const [backdropOpen, setBackdropOpen] = useState(false);
+  const [backdropOpen2, setBackdropOpen2] = useState(true);
 
   return (
     <>
@@ -362,6 +363,30 @@ function App() {
           </Typography>
         </Box>
       </Backdrop>
+      <Backdrop
+  open={backdropOpen2}
+  onClick={() => setBackdropOpen2(false)}
+  className="z-[1200] flex items-center justify-center"
+>
+  <div className="bg-white/90 shadow-lg p-6 rounded-2xl text-center w-4/5 max-w-md animate-fadeIn">
+    <h3 className="text-2xl font-bold text-gray-800 font-cinzel">
+      Free Registration for Recruitments
+    </h3>
+    <ul className="text-left text-gray-600 mt-4 list-disc pl-5 font-roboto">
+      <li><b>Date:</b> 30 March, 2025</li>
+      <li><b>Time:</b> 10:00 AM onwards</li>
+      <li><b>Venue:</b> LT 002</li>
+    </ul>
+    <button
+      onClick={() => (window.location.href = "/membership")}
+      className="mt-4 px-4 py-2 bg-blue-700 text-white font-bold rounded-lg cursor-pointer text-sm"
+    >
+      Register Now
+    </button>
+    <p className="text-gray-600 mt-2 font-roboto">Click outside to continue.</p>
+  </div>
+</Backdrop>
+
     </>
   );
 }
