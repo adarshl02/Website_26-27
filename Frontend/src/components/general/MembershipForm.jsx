@@ -77,7 +77,6 @@ const MembershipForm = ({ setOpen }) => {
             if (response.success && response.data !=="Already Registered") {
                 toast.success("Successfully registered for recruitments");
                 // toast.info("Check your mail for confirmation");
-                toast.info("Check your profile section");
                 navigate("/profile");
             }else if(response.data==="Already Registered"){
                 toast.info("User is already registered for recruitments");

@@ -186,7 +186,7 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef, 
                 </>
               }
             />
-            <Route
+            {/* <Route
               path="/asdfghjkl"
               element={
                 <>
@@ -200,8 +200,8 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef, 
                   </motion.div>
                 </>
               }
-            />
-            <Route
+            /> */}
+            {/* <Route
               path="/membership"
               element={
                 <>
@@ -215,7 +215,7 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef, 
                   </motion.div>
                 </>
               }
-            />
+            /> */}
           </Route>
 
           <Route element={<AdminRoute />}>
@@ -282,7 +282,7 @@ function App() {
   };
 
   const [backdropOpen, setBackdropOpen] = useState(false);
-  const [backdropOpen2, setBackdropOpen2] = useState(true);
+  // const [backdropOpen2, setBackdropOpen2] = useState(true);
 
   return (
     <>
@@ -363,7 +363,7 @@ function App() {
           </Typography>
         </Box>
       </Backdrop>
-      <Backdrop
+      {/* <Backdrop
   open={backdropOpen2}
   onClick={() => setBackdropOpen2(false)}
   className="z-[1200] flex items-center justify-center"
@@ -385,7 +385,7 @@ function App() {
     </button>
     <p className="text-gray-600 mt-2 font-roboto">Click outside to continue.</p>
   </div>
-</Backdrop>
+</Backdrop> */}
 
     </>
   );

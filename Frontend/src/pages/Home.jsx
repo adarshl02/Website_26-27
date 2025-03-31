@@ -301,7 +301,8 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
         onClick={handleClose2}
       >
         <div onClick={(e) => e.stopPropagation()}>
-          <UpcomingEventNotReleased />
+          {/* <UpcomingEventNotReleased /> */}
+          <VolunteerFormClosed />
         </div>
       </Backdrop>
     </div>
