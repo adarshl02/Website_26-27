@@ -37,6 +37,28 @@ export const logoutUser = async () => {
   }
 };
 
+export const deleteAccount = async (data, token) => {
+  try {
+   
+
+    const response = await axios.delete(`${URL}/api/auth/delete-account`, {
+      data, // this is how you pass body in DELETE
+      headers: {
+        "Authorization": `${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    return {
+      success: true,
+      data: response.data,
+      message: "Account Deleted Successfully!",
+    };
+  } catch (error) {
+    return handleApiError(error, "Delete Account API");
+  }
+};
+
+
 export const fetchEventsByStatus = async (status,token) => {
   try {
     

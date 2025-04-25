@@ -11,7 +11,7 @@ import { jsPDF } from "jspdf";
 import Certificate from "./../components/general/Certificate";
 import html2canvas from "html2canvas";
 import Certificatetrial from "../components/general/Backdrops/Certificatetrial";
-import { getAttendeeStatus, getEventTicket, isMember, logoutUser } from "../service/api";
+import { deleteAccount, getAttendeeStatus, getEventTicket, isMember, logoutUser } from "../service/api";
 import { Ticket } from "../components/general/Ticket";
 import { Ticketorg } from "../components/general/Ticketorg";
 import Logout from "@mui/icons-material/Logout";
@@ -21,6 +21,7 @@ import { getAuth, signOut } from "firebase/auth";
 import { toast } from "sonner";
 import { Helmet } from "react-helmet-async";
 import UpcomingEventNotReleased from "@/components/general/UpcomingEventNotReleased";
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 export default function Profile() {
   const { rest: user, token } = useSelector((state) => state.user.currentUser); // Assuming user data is stored in the redux state
@@ -32,6 +33,8 @@ export default function Profile() {
   const [refresh, setRefresh] = useState(false);
   const [downloadcerificate, setDownloadcerificate] = useState(false);
   const [member, setMember] = useState("");
+  const [showpopup, setShowpopup] = useState(false);
+  const [loading2, setLoading2] = useState(false);
 
   const handleClose = () => {
     setOpen(false);
@@ -131,7 +134,29 @@ export default function Profile() {
       toast.error("Logout error: " + error.message);
     }
   };
-  
+
+  const handleDeleteAccount = async () => {
+    try {
+      setLoading2(true);
+      const data = {
+        email: user.email,
+      };
+      const response = await deleteAccount(data, token);
+      if (response.success) {
+        await handleLogout();
+        toast.success("Account deleted successfully!");
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Error deleting account: " + error.message);
+    } finally {
+      setLoading2(false);
+      setShowpopup(false);
+    }
+  }
+
 
   useEffect(() => {
     const getTicket = async () => {
@@ -165,7 +190,7 @@ export default function Profile() {
         const response = await isMember(data, token);
 
         if (response.success) {
-          
+
           setMember(response.data);
         } else if (response.status === 204) {
 
@@ -177,9 +202,9 @@ export default function Profile() {
     };
     isMemberfunction();
   }, []);
-  
 
-  
+
+
   return (
     <div className="md:px-10 ">
       <Helmet>
@@ -530,34 +555,64 @@ export default function Profile() {
 
         <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
 
-        <div className="mt-4 px-2 py-2 md:hidden">
-          <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins">
-            Our Terms and Conditions
-          </div>
+        <div className="mt-4 px-4 py-4">
+  {/* Dual Policy Section */}
+  <div className="flex flex-col md:flex-row gap-6">
+    {/* Terms and Conditions Card */}
+    <div className="flex-1 p-4 border border-slate-200 rounded-xl bg-white shadow-sm">
+      <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-4xl font-poppins">
+        Terms & Conditions
+      </div>
+      <div className="mt-2 text-slate-500 text-sm md:text-base px-1 font-poppins">
+        Review our policies before registering for events.
+      </div>
+      <motion.button
+        whileTap={{ scale: 0.95 }}
+        onClick={() => navigate("/terms-and-conditions")}
+        className="w-full mt-4 text-xs md:text-sm bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-2 px-4 rounded-full shadow-md hover:shadow-lg transition-all"
+      >
+        View Terms
+      </motion.button>
+    </div>
 
-          <div className="mt-2 text-slate-500 text-xs md:text-xl px-4 font-poppins">
-            Visit the Terms and Conditions Page before registering for an event.
-            <br />
-            {/* <Link to='/terms-and-conditions' >
-              <div className="mt-2 text-slate-500 text-xs md:text-lg hover:underline font-poppins">
-                Our Terms and Conditions
-              </div>
-              </Link> */}
-            <motion.button
-              whileTap={{ scale: 0.95 }}
+    {/* Vertical Divider - Desktop Only */}
+    {/* <div className="hidden md:block border-l border-slate-300 h-auto my-4"></div> */}
 
-              onClick={() => navigate("/terms-and-conditions")}
-              className="mt-4 text-xs  bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-1 md:py-2 px-2 md:px-4 rounded-full shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl "
-            >
-              Go to Page
-            </motion.button>
-          </div>
+    {/* Account Deletion Card */}
+    <div className="flex-1 p-4 border border-slate-200 rounded-xl bg-white shadow-sm">
+  <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-4xl font-poppins">
+    Account Deletion
+  </div>
 
+  <div className="mt-2 text-slate-500 text-sm md:text-base px-1 font-poppins">
+    Read our account deletion policy before proceeding.
+  </div>
 
-        </div>
-        <div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
+  <div className="mt-4 flex flex-col md:flex-row gap-2 md:items-center">
+    <motion.button
+      whileTap={{ scale: 0.95 }}
+      onClick={() => navigate("/delete-account")}
+      className="w-full md:w-1/2 text-xs md:text-sm bg-gradient-to-r from-purple-500 to-red-500 text-white py-2 px-4 rounded-full shadow-md hover:shadow-lg transition-all "
+    >
+      Deletion Policy
+    </motion.button>
 
-        <div className="mt-4 px-2 py-2">
+    <motion.button
+      whileTap={{ scale: 0.95 }}
+      onClick={() => setShowpopup(true)}
+      className="hidden md:inline-flex border-2  border-red-500 text-red-500 py-1 px-4 rounded-full text-sm transition duration-300 hover:opacity-90 w-1/2  items-center justify-center"
+    >
+      <span>Delete Account</span>
+      <DeleteOutlineIcon className="ml-2" />
+    </motion.button>
+  </div>
+</div>
+
+  </div>
+
+</div>
+<div className="w-4/5 ml-3 my-5 border-t border-slate-400"></div>
+        <div className="my-4 px-2 py-2">
           <div className="bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-2xl font-medium tracking-tight text-transparent md:text-6xl font-poppins">
             Features in Next Version(1.1.0)
           </div>
@@ -586,19 +641,62 @@ export default function Profile() {
 
         </div>
 
+        <div className="flex justify-between gap-2 px-2 mt-4">
 
-
-        <div className="md:hidden px-10 mt-6" >
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={handleLogout}
-            className="w-full  bg-red-500 text-white py-1 px-2 rounded-xl text-sm shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
+            className="w-full md:hidden  bg-red-500 text-white py-1 px-2 rounded-xl text-sm shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
           >
             Signout<Logout className="ml-2" />
 
           </motion.button>
+
+
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setShowpopup(true)}
+            className="w-full md:hidden border-2 border-red-500 text-red-500 py-1 px-2 rounded-xl text-sm  transition duration-300 hover:opacity-90 hover:shadow-2xl"
+          >
+            Delete Account<DeleteOutlineIcon className="ml-2" />
+
+          </motion.button>
+
         </div>
 
+        {
+          showpopup && (
+            <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 font-poppins min-w-32">
+              <div className="bg-white p-6 rounded-lg shadow-lg text-center">
+                <h2 className="text-xl font-semibold mb-4">Are you sure?</h2>
+                <p className="mb-4 ">This action cannot be undone.</p>
+                <div className="inline-flex justify-center gap-4">
+                  <button
+                    onClick={() => setShowpopup(false)}
+                    className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleDeleteAccount}
+                    className="text-sm bg-red-500 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 w-full sm:w-auto min-w-[10rem]"
+                    disabled={loading2}
+                  >
+                    {loading2 ? (
+                      <CircularProgress size={18} color="inherit" />
+                    ) : (
+                      <>
+                        <span>Delete Account</span>
+                        <DeleteOutlineIcon className="text-white" />
+                      </>
+                    )}
+                  </button>
+
+                </div>
+              </div>
+            </div>
+          )
+        }
 
         <Backdrop
           sx={(theme) => ({
@@ -624,7 +722,7 @@ export default function Profile() {
             <Certificatetrial />
           </div>
         </Backdrop>
-        
+
       </div>
     </div>
   );

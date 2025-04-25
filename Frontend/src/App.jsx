@@ -23,6 +23,7 @@ import TermsAndConditions from "./pages/TermsAndConditions";
 import { useSelector } from "react-redux";
 import ContactUs from "./components/general/ContactUs";
 import Membership from "./pages/Membership";
+import DeleteAccount from "./components/general/DeleteAccount";
 
 const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef, setBackdropOpen }) => {
   const location = useLocation();
@@ -181,6 +182,21 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef, 
                     exit={pageTransition.exit}
                   >
                     <ContactUs />
+                    <Footer />
+                  </motion.div>
+                </>
+              }
+            />
+             <Route
+              path="/delete-account"
+              element={
+                <>
+                  <motion.div
+                    initial={pageTransition.initial}
+                    animate={pageTransition.animate}
+                    exit={pageTransition.exit}
+                  >
+                    <DeleteAccount />
                     <Footer />
                   </motion.div>
                 </>

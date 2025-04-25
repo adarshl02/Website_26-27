@@ -3,6 +3,7 @@ import db from "../config/db/index.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { sendWelcomeEmail } from "../utils/emailFunctions.js";
+import { verifyToken } from "../utils/verifyUser.js";
 
 const router = express.Router();
 
@@ -108,5 +109,27 @@ router.get("/auth/signout", (req, res, next) => {
     next(error);
   }
 });
+
+router.delete("/auth/delete-account", verifyToken, async (req, res,next) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ success: false, message: "Email is required." });
+    }
+
+    const deleted = await db("users").where({ email }).del();
+
+    if (deleted === 0) {
+      return res.status(404).json({ success: false, message: "User not found." });
+    }
+
+    res.status(200).json({ success: true, message: "Account deleted successfully." });
+  } catch (error) {
+    console.error("Error deleting account:", error);
+   next(error);
+  }
+});
+
 
 export default router;
