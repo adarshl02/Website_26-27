@@ -1,0 +1,8 @@
+[{
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.clubpratibimb.twa",
+      "sha256_cert_fingerprints": ["80:8F:CF:0A:0D:82:85:7A:E6:FD:5F:D9:8B:48:96:8A:0A:23:95:2E:29:49:82:48:0C:6F:DF:C6:CA:ED:00:F7"]
+    }
+  }]
