@@ -157,7 +157,7 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef, 
                 </>
               }
             />
-            <Route
+            {/* <Route
               path="/terms-and-conditions"
               element={
                 <>
@@ -171,7 +171,7 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef, 
                   </motion.div>
                 </>
               }
-            />
+            /> */}
             <Route
               path="/contact-us"
               element={

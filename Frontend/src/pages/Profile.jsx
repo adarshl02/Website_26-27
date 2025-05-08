@@ -422,7 +422,7 @@ export default function Profile() {
           </div>
           <>
             <div className="mt-2 text-slate-500 text-xs md:text-xl px-4 font-poppins">
-              Visit the event Page to register for a event.
+              {/* Visit the event Page to register for a event. */}
               <br />
               {/* <Link to='/terms-and-conditions' >
               <div className="mt-2 text-slate-500 text-xs md:text-lg hover:underline font-poppins">
@@ -544,7 +544,7 @@ export default function Profile() {
             </ul>
             <motion.button
               whileTap={{ scale: 0.95 }}
-              onClick={() => navigate('/membership')}
+              onClick={() =>{}}
               className="my-4 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-1 md:py-2 md:px-4 px-2 rounded-full shadow-lg text-sm font-poppins transition duration-300 hover:opacity-90 hover:shadow-2xl"
             >
               Become a Member
@@ -564,11 +564,11 @@ export default function Profile() {
         Terms & Conditions
       </div>
       <div className="mt-2 text-slate-500 text-sm md:text-base px-1 font-poppins">
-        Review our policies before registering for events.
+        Review our policies .
       </div>
       <motion.button
         whileTap={{ scale: 0.95 }}
-        onClick={() => navigate("/terms-and-conditions")}
+        onClick={() => {}}
         className="w-full mt-4 text-xs md:text-sm bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-2 px-4 rounded-full shadow-md hover:shadow-lg transition-all"
       >
         View Terms

@@ -355,7 +355,7 @@ function Navbar({ className, scrollToCarousel }) {
         <Divider />
 
         <MenuItem
-          onClick={() => navigate("/terms-and-conditions")}
+          onClick={() => {}}
           sx={{
             color: "gray",
             borderRadius: "8px",
