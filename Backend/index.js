@@ -22,25 +22,27 @@ app.use(morgan("dev"));
 const allowedOrigins = [
   "https://website-26-27-ten.vercel.app",
   "https://www.clubpratibimb.com",
-  "http://localhost:5173"
+  "capacitor://localhost", // Required for Android
+  "http://localhost"       // Required for iOS
 ];
 
-if (process.env.NODE_ENV === "development") {
-  app.use(
-    cors({
-      origin: "http://localhost:5173", // Replace with your frontend URL
-      credentials: true, // Allow cookies to be sent and received
-    })
-  );
-} else {
-  app.use(
-    cors({
-      origin: allowedOrigins,
-      methods: ["GET", "POST", "PUT", "DELETE"],
-      credentials: true,
-    })
-  );
-}
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, Postman, etc.)
+    if (!origin) return callback(null, true);
+    
+    if (
+      process.env.NODE_ENV === "development" || 
+      allowedOrigins.includes(origin) ||
+      origin.includes("//localhost:") // For local dev
+    ) {
+      return callback(null, true);
+    }
+    callback(new Error("Not allowed by CORS"));
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"]
+}));
 
 app.get("/", (req, res) => {
   res.status(404).send({ message: "Not Found" });
