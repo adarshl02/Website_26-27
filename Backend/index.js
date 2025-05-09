@@ -22,6 +22,7 @@ app.use(morgan("dev"));
 const allowedOrigins = [
   "https://website-26-27-ten.vercel.app",
   "https://www.clubpratibimb.com",
+  "http://localhost:5173"
 ];
 
 if (process.env.NODE_ENV === "development") {
