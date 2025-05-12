@@ -49,10 +49,10 @@ export default function ContactUs() {
           <p className="mt-2 text-gray-600 text-sm md:text-base">
             <strong>Email:</strong>{" "}
             <a
-              href="mailto:clubpratibimb.sgsits@gmail.com"
+              href="mailto:teampratibimb.sgsits@gmail.com"
               className="text-blue-500 hover:underline"
             >
-              clubpratibimb.sgsits@gmail.com
+            teampratibimb.sgsits@gmail.com
             </a>
           </p>
           <p className="mt-2 text-gray-600 text-sm md:text-base">

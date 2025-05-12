@@ -24,6 +24,7 @@ import { useSelector } from "react-redux";
 import ContactUs from "./components/general/ContactUs";
 import Membership from "./pages/Membership";
 import DeleteAccount from "./components/general/DeleteAccount";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef, setBackdropOpen }) => {
   const location = useLocation();
@@ -157,7 +158,7 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef, 
                 </>
               }
             />
-            {/* <Route
+            <Route
               path="/terms-and-conditions"
               element={
                 <>
@@ -171,7 +172,22 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef, 
                   </motion.div>
                 </>
               }
-            /> */}
+            />
+            <Route
+              path="/privacy-policy"
+              element={
+                <>
+                  <motion.div
+                    initial={pageTransition.initial}
+                    animate={pageTransition.animate}
+                    exit={pageTransition.exit}
+                  >
+                    <PrivacyPolicy />
+                    <Footer />
+                  </motion.div>
+                </>
+              }
+            />
             <Route
               path="/contact-us"
               element={

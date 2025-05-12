@@ -92,10 +92,10 @@ const TermsAndConditions = () => {
             <p className="mt-2 text-gray-600 text-sm md:text-base">
               For issues related to transactions or platform use, contact Pratibimb's support team at 
               <a
-                href="mailto:clubpratibimb.sgsits@gmail.com"
+                href="mailto:teampratibimb.sgsits@gmail.com"
                 className="text-blue-500 hover:underline"
               >
-                &nbsp;clubpratibimb.sgsits@gmail.com
+                &nbsp;teampratibimb.sgsits@gmail.com
               </a>.
             </p>
           </div>
