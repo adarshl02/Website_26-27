@@ -261,7 +261,7 @@ const KitForm = ({ setOpen3, attendee,setRefresh }) => {
         }
 
         const options = {
-            key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+            key: "rzp_live_jgWi5msqZ2nMVU",
             amount,
             currency: "INR",
             order_id,

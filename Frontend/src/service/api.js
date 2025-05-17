@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const URL = import.meta.env.VITE_URL; 
+const URL ="https://praibimb-backend.vercel.app"; 
 
 
 const handleApiError = (error, apiName) => {

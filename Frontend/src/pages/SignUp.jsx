@@ -11,6 +11,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { app } from "../firebase";
+import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
 import { CardBody, CardContainer } from "../components/accertinityui/3d-card";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import {
@@ -97,40 +98,35 @@ export default function SignUp({ setBackdropOpen }) {
     }
   }
 
-  const handleGoogleSignUp = async () => {
-    try {
+const handleGoogleSignUp = async () => {
+  try {
+    dispatch(signInStart());
+    
+    // Native Google Sign-In
+     await new Promise(resolve => setTimeout(resolve, 1000)); 
+    const result = await FirebaseAuthentication.signInWithGoogle();
+    
+    if (!result.user) throw new Error('Sign-in cancelled');
 
-      // Configure Google provider
-      const provider = new GoogleAuthProvider();
-      provider.setCustomParameters({ prompt: "select_account" });
+    const response = await authenticateGoogleSignup({
+      name: result.user.displayName || '',
+      email: result.user.email || '',
+      avatar: result.user.photoUrl || '',
+      uid: result.user.uid
+    });
 
-      // Initialize Firebase authentication
-      const auth = getAuth(app);
-      const result = await signInWithPopup(auth, provider);
-
-      dispatch(signInStart());
-
-      const response = await authenticateGoogleSignup({
-        name: result.user.displayName,
-        email: result.user.email,
-        avatar: result.user.photoURL,
-        uid: result.user.uid,
-      });
-
-      if (response.success) {
-        dispatch(signInSuccess(response.data));
-        navigate("/");
-        setBackdropOpen(true);
-        toast.success(response.message);
-      } else {
-        dispatch(signInFailure(response.message));
-        toast.error(response.message);
-      }
-    } catch (error) {
-      dispatch(signInFailure(response.message));
-      toast.error("Could not sign up with google");
+    if (response.success) {
+      dispatch(signInSuccess(response.data));
+      navigate("/");
+      toast.success(response.message);
+    } else {
+      throw new Error(response.message);
     }
-  };
+  } catch (error) {
+    dispatch(signInFailure(error.message));
+    toast.error(error.message);
+  }
+};
 
 
   const handleAdminChange = (e) => {
@@ -144,36 +140,33 @@ export default function SignUp({ setBackdropOpen }) {
 
   };
 
-  const handleGoogleLogin = async () => {
-    setLoading2(true);
-    try {
-      const provider = new GoogleAuthProvider();
-      provider.setCustomParameters({ prompt: "select_account" });
-      const auth = getAuth(app);
-      const result = await signInWithPopup(auth, provider);
+const handleGoogleLogin = async () => {
+  setLoading2(true);
+  try {
+     await new Promise(resolve => setTimeout(resolve, 1000)); 
+    const result = await FirebaseAuthentication.signInWithGoogle();
+    
+    if (!result.user) throw new Error('Sign-in cancelled');
 
-      const response = await authenticateGoogleLogin({
-        email: result.user.email,
-        uid: result.user.uid,
-      });
+    const response = await authenticateGoogleLogin({
+      email: result.user.email,
+      uid: result.user.uid
+    });
 
-      if (response.success) {
-        dispatch(signInSuccess(response.data));
-        navigate("/");
-        toast.success(`Welcome back ${response.data.rest.name}`);
-      } else {
-        if (response.message === "Request failed with status code 404") {
-          toast.error("User not found");
-        } else toast.error(response.message || "Failed to sign in with Google");
-        dispatch(signInFailure(response.message));
-      }
-    } catch (error) {
-      dispatch(signInFailure(response?.message));
-      toast.error("Could not sign up with Google. Please try again later.");
-    } finally {
-      setLoading2(false);
+    if (response.success) {
+      dispatch(signInSuccess(response.data));
+      navigate("/");
+      toast.success(`Welcome back ${response.data.rest.name}`);
+    } else {
+      throw new Error(response.message);
     }
-  };
+  } catch (error) {
+    dispatch(signInFailure(error.message));
+    toast.error(error.message.includes('404') ? 'User not found' : error.message);
+  } finally {
+    setLoading2(false);
+  }
+};
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
