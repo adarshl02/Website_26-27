@@ -49,25 +49,7 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef, 
         <Routes location={location} key={location.pathname}>
 
           <Route element={<PrivateRoute />}>
-            <Route
-              path="/"
-              element={
-                <>
-                  <motion.div
-                    initial={pageTransition.initial}
-                    animate={pageTransition.animate}
-                    exit={pageTransition.exit}
-                  >
-                    <Home
-                      carouselRef={carouselRef}
-                      latestRef={latestRef}
-                      scrollToLatest={scrollToLatest}
-                    />
-                    <Footer />
-                  </motion.div>
-                </>
-              }
-            />
+            
             <Route
               path="/profile"
               element={
@@ -173,36 +155,7 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef, 
                 </>
               }
             />
-            <Route
-              path="/privacy-policy"
-              element={
-                <>
-                  <motion.div
-                    initial={pageTransition.initial}
-                    animate={pageTransition.animate}
-                    exit={pageTransition.exit}
-                  >
-                    <PrivacyPolicy />
-                    <Footer />
-                  </motion.div>
-                </>
-              }
-            />
-            <Route
-              path="/contact-us"
-              element={
-                <>
-                  <motion.div
-                    initial={pageTransition.initial}
-                    animate={pageTransition.animate}
-                    exit={pageTransition.exit}
-                  >
-                    <ContactUs />
-                    <Footer />
-                  </motion.div>
-                </>
-              }
-            />
+            
              <Route
               path="/delete-account"
               element={
@@ -249,6 +202,57 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef, 
               }
             /> */}
           </Route>
+
+          <Route
+              path="/"
+              element={
+                <>
+                  <motion.div
+                    initial={pageTransition.initial}
+                    animate={pageTransition.animate}
+                    exit={pageTransition.exit}
+                  >
+                    <Home
+                      carouselRef={carouselRef}
+                      latestRef={latestRef}
+                      scrollToLatest={scrollToLatest}
+                    />
+                    <Footer />
+                  </motion.div>
+                </>
+              }
+            />
+
+            <Route
+              path="/privacy-policy"
+              element={
+                <>
+                  <motion.div
+                    initial={pageTransition.initial}
+                    animate={pageTransition.animate}
+                    exit={pageTransition.exit}
+                  >
+                    <PrivacyPolicy />
+                    <Footer />
+                  </motion.div>
+                </>
+              }
+            />
+            <Route
+              path="/contact-us"
+              element={
+                <>
+                  <motion.div
+                    initial={pageTransition.initial}
+                    animate={pageTransition.animate}
+                    exit={pageTransition.exit}
+                  >
+                    <ContactUs />
+                    <Footer />
+                  </motion.div>
+                </>
+              }
+            />
 
           <Route element={<AdminRoute />}>
             <Route

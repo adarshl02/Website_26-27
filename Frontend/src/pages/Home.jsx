@@ -73,7 +73,7 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [websiteUserTarget, setWebsiteUserTarget] = useState(0);
-  const { token } = useSelector((state) => state.user.currentUser);
+    const  token  = useSelector((state) => state.user?.currentUser?.token);
 
   useEffect(() => {
 

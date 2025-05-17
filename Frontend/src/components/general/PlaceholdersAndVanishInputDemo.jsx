@@ -16,8 +16,7 @@ export function PlaceholdersAndVanishInputDemo() {
   ];
   
   const [feedback,setFeedback]= useState("");
-  const {token,rest:user} = useSelector((state)=>state.user.currentUser);
-
+const { token, ...user } = useSelector((state) => state.user.currentUser || {});
   const navigate = useNavigate();
 
   const handleChange = (e) => {
