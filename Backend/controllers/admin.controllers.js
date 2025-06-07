@@ -7,12 +7,12 @@ import "dotenv/config";
 import { response } from "express";
 
 const generateOTP = () =>
-  Math.floor(100000 + Math.random() * 900000).toString();
+  Math.floor(1000 + Math.random() * 9000).toString();
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "adarsh.landge10604@gmail.com",
+    user: "teampratibimb.sgsits@gmail.com",
     pass: process.env.NODEMAILER_ADMIN,
   },
 });
@@ -20,7 +20,6 @@ const transporter = nodemailer.createTransport({
 const sendOtp = async (req, res) => {
   try {
     const { name } = req.body;
-
     const existingUser = await db("active_admins").where({ name }).first();
     if (existingUser) {
       return res.status(404).json({ message: "Admin Already Exists" });
@@ -49,47 +48,48 @@ const verifyOtp = async (req, res) => {
     const { name, otp } = req.body;
 
     const otpData = await db("access_otp_log").where({ name }).first();
+
     if (!otpData) {
       return res.status(400).json({ message: "Invalid OTP request" });
     }
+
     if (otpData.otp != otp) {
-      return res.status(400).send(errorHandler(400, "Bad Request", "Fuck Off"));
+      return res
+        .status(400)
+        .send(errorHandler(400, "Bad Request", "Invalid OTP"));
     }
 
     if (new Date() > new Date(otpData.expires_at)) {
       return res.status(400).json({ message: "OTP expired" });
     }
+
     if (otpData.is_verified) {
       return res
         .status(400)
-        .send(errorHandler(400, "Bad Request", "OTP is already been verified"));
+        .send(errorHandler(400, "Bad Request", "OTP is already verified"));
     }
 
-    const user = await db("active_admins").insert({
-      name,
-    });
-    if (user) {
-      await db("access_otp_log")
-        .update({
-          is_verified: true,
-        })
-        .where({
-          otp,
-          name,
-        });
-    }
+    const [user] = await db("active_admins")
+      .insert({ name })
+      .returning(["id", "name", "email", "avatar", "batch", "branch", "is_member", "is_artist"]);
+
+    await db("access_otp_log")
+      .update({ is_verified: true })
+      .where({ otp, name });
 
     const token = jwt.sign(
-      { id: user.id, email: user.email },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "5d",
-      }
+      { id: user.id, name: user.name },
+      process.env.JWT_SECRET
     );
 
-    res.status(200).json({
-      message: "OTP verified successfully. Login successful.",
-      token,
+    let rest = user;
+
+    res.status(200).send({
+      response: {
+        data: { rest, token },
+        title: "Login Successful",
+        message: "Logged In Successfully. Redirecting to the Home Page",
+      },
     });
   } catch (error) {
     console.error(error);
@@ -97,14 +97,16 @@ const verifyOtp = async (req, res) => {
   }
 };
 
+
 const getAllAdmins = async (req, res) => {
   try {
-    let admins = await db("active_admins").select("*");
+     const admins = await db("active_admins").select("id","name", "created_at");
     if (!admins) {
       return res
         .status(400)
         .send(errorHandler(400, "Not Found", "No Admins Found"));
     }
+
     return res.status(200).send({
       response: {
         data: { admins },
@@ -133,9 +135,10 @@ const logoutAdmin = async (req, res) => {
     }
 
     // Delete the admin from active_admins
-    let deletion = await db("active_admins").where({ name }).del();
+    let deletion1 = await db("active_admins").where({ name }).del();
+    let deletion2 = await db("access_otp_log").where({ name }).del();
 
-    if (deletion) {
+    if (deletion1 && deletion2) {
       return res.status(200).json({
         response: {
           title: "Logout Successful",
@@ -265,7 +268,7 @@ const getAttendeeCount = async (req, res) => {
 const getAttendeeDetails = async (req, res) => {
   try {
     let attendee = await db("attendees").select("*");
-    
+
     if (!attendee) {
       return res
         .status(400)
@@ -313,7 +316,7 @@ const updateTeamStatus = async (req, res) => {
         );
     }
 
-    const validStatuses = ["REJECTED", "APPROVED","PENDING"];
+    const validStatuses = ["REJECTED", "APPROVED", "PENDING"];
     if (!validStatuses.includes(team_status)) {
       return res
         .status(400)
