@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import GoogleIcon from "@mui/icons-material/Google";
 import { CircularProgress } from "@mui/material";
 import { motion } from "framer-motion";
@@ -18,8 +18,9 @@ import {
   authenticateGoogleSignup,
 } from "../service/api";
 import { toast } from "sonner";
-import { adminLogin } from '../service/api2';
+import { adminLogin, sendOtpToAdmin, verifyAdminOtp } from '../service/api2';
 import GetAppIcon from '@mui/icons-material/GetApp';
+import { CheckCircleIcon, RotateCcw } from "lucide-react";
 
 export default function SignUp({ setBackdropOpen }) {
   const { loading } = useSelector((state) => state.user);
@@ -32,7 +33,148 @@ export default function SignUp({ setBackdropOpen }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // State management
+  const [username, setUsername] = useState('');
+  const [pin, setPin] = useState(['', '', '', '']);
+  const [otpSent, setOtpSent] = useState(false);
   const [adminLoading, setAdminLoading] = useState(false);
+  const [adminLoading2, setAdminLoading2] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
+  
+  const [resendCount, setResendCount] = useState(0);
+  const [error, setError] = useState('');
+  const pinRefs = useRef([]);
+
+
+  // Handle username input change
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
+    setError('');
+  };
+
+  // Handle sending OTP
+  const handleSendOtp = async () => {
+    if (!username) {
+      setError('Username is required');
+      return;
+    }
+
+    try {
+      setAdminLoading2(true);
+      // Replace with your actual API call to send OTP
+      const response = await sendOtpToAdmin(username);
+
+      if (response.success) {
+        setOtpSent(true);
+        setResendCount(0);
+        toast.success('OTP sent successfully');
+        // Focus the first OTP input
+        if (pinRefs.current[0]) {
+          pinRefs.current[0].focus();
+        }
+      } else {
+        toast.error(response.message || 'Failed to send OTP');
+      }
+    } catch (error) {
+      toast.error(error.message || 'Error sending OTP');
+    } finally {
+      setAdminLoading2(false);
+    }
+  };
+
+  const handlePinChange = (e, index) => {
+    const value = e.target.value;
+
+    // Only allow numeric input
+    if (value && !/^[0-9]$/.test(value)) {
+      return;
+    }
+
+    const newPin = [...pin];
+    newPin[index] = value;
+    setPin(newPin);
+
+    // Auto-focus next input when a digit is entered
+    if (value && index < 3) {
+      pinRefs.current[index + 1].focus();
+    }
+
+    // If last digit is entered, verify OTP automatically
+    if (index === 3 && value) {
+      handleVerifyOtp(newPin.join(''));
+    }
+  };
+
+  // Handle keyboard navigation in OTP inputs
+  const handlePinKeyDown = (e, index) => {
+    if (e.key === 'Backspace' && !pin[index] && index > 0) {
+      pinRefs.current[index - 1].focus();
+    }
+  };
+
+  // Verify OTP
+  const handleVerifyOtp = async (otp) => {
+    if (!otp || otp.length !== 4) {
+      setError('Please enter a valid 4-digit OTP');
+      return;
+    }
+
+    try {
+      setAdminLoading(true);
+      const data={
+        name:username,
+        otp 
+      }
+      // Replace with your actual API call to verify OTP
+      const response = await verifyAdminOtp(data);
+
+      if (response.success) {
+        dispatch(signInSuccess(response.data));
+        navigate("/");
+        toast.success(response.message);
+      } else {
+        toast.error('Invalid OTP');
+      }
+    } catch (error) {
+      toast.error(error.message || 'Error verifying OTP');
+    } finally {
+      setAdminLoading(false);
+    }
+  };
+
+  // Handle resend OTP
+  const handleResendOtp = async () => {
+    if (resendCount >= 3) {
+      toast.error('Maximum OTP resend attempts reached');
+      return;
+    }
+
+    try {
+      setResendLoading(true);
+      // Replace with your actual API call to resend OTP
+      const response = await sendOtpToAdmin(username);
+
+      if (response.success) {
+        setResendCount(prev => prev + 1);
+        setPin(['', '', '', '']);
+        toast.success(`New OTP sent (${resendCount + 1}/3)`);
+        if (pinRefs.current[0]) {
+          pinRefs.current[0].focus();
+        }
+      } else {
+        toast.error(response.message || 'Failed to resend OTP');
+      }
+    } catch (error) {
+      toast.error(error.message || 'Error resending OTP');
+    } finally {
+      setResendLoading(false);
+    }
+  };
+
+
+
+
+
 
   const [deferredPrompt, setDeferredPrompt] = useState(null);
 
@@ -55,7 +197,7 @@ export default function SignUp({ setBackdropOpen }) {
   }, []);
 
   const showInstallPrompt = () => {
-   
+
     if (deferredPrompt) {
       deferredPrompt.prompt();
       deferredPrompt.userChoice.then((choiceResult) => {
@@ -133,16 +275,6 @@ export default function SignUp({ setBackdropOpen }) {
   };
 
 
-  const handleAdminChange = (e) => {
-    setFormData2({
-      ...formData2,
-      [e.target.id]: e.target.value,
-    });
-    if (err2) {
-      setErr2("");
-    }
-
-  };
 
   const handleGoogleLogin = async () => {
     setLoading2(true);
@@ -192,6 +324,10 @@ export default function SignUp({ setBackdropOpen }) {
   const backgroundImage = isMobile
     ? "url('https://res.cloudinary.com/dgc7xsrcx/image/upload/v1734950871/dihacrqgg1bkzoip1vay.png')"
     : "url('https://res.cloudinary.com/dhy548whh/image/upload/v1734195829/q0zdzie6fbvodeypqq7u.png')";
+
+
+
+
 
   return (
     <div
@@ -325,61 +461,124 @@ export default function SignUp({ setBackdropOpen }) {
                   <h2 className="text-3xl font-bold text-black">Admin Login</h2>
                 </div>
                 <form>
-                  <div className="mb-4">
-                    <label
-                      htmlFor="username"
-                      className="block text-left font-medium text-black mb-2"
-                    >
-                      Admin Username
+                  <div className="space-y-2">
+                    <label htmlFor="username" className="block text-sm font-medium text-gray-700 text-left pl-2">
+                      Enter your name
                     </label>
-                    <input
-                      type="text"
-                      id="username"
-                      className="md:mt-1 w-full px-4 py-2 ring ring-blue-200  text-slate-800   rounded-lg  text-base focus:ring focus:ring-blue-400 focus:outline-none"
-                      placeholder="admin@example.com"
-                      onChange={handleAdminChange}
-
-                    />
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        id="username"
+                        value={username}
+                        className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                        placeholder="Enter username"
+                        onChange={handleUsernameChange}
+                        disabled={adminLoading}
+                      />
+                      <button
+                        type="button"
+                        onClick={handleSendOtp}
+                        disabled={adminLoading2 || !username || otpSent}
+                        className={`w-24 px-2 md:px-4 md:py-3 text-white rounded-lg text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors ${adminLoading2 || !username || otpSent
+                            ? 'bg-gray-400 cursor-not-allowed'
+                            : 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500'
+                          }`}
+                      >
+                        {adminLoading2 ? <CircularProgress size={20} color="inherit" /> : 'Send OTP'}
+                      </button>
+                    </div>
+                    {error && !otpSent && <p className="text-red-500 text-sm mt-1">{error}</p>}
                   </div>
 
-                  <div className="mb-4">
-                    <label
-                      htmlFor="password"
-                      className="block text-left font-medium text-black mb-2"
-                    >
-                      Password
-                    </label>
-                    <input
-                      type="password"
-                      id="password"
-                      className="md:mt-1 w-full px-4 py-2 ring ring-blue-200  text-slate-800   rounded-lg  text-base focus:ring focus:ring-blue-400 focus:outline-none"
-                      onChange={handleAdminChange}
-                      placeholder="Enter your password"
-                    />
-                    {err2 && (
-                      <div className="text-red-500 text-xs flex justify-start mt-2">{err2}</div>
+                  {/* OTP Field */}
+                  <div className="space-y-4 mt-4">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs md:text-sm font-medium text-gray-700 text-left">
+                        Enter 4-digit OTP
+                      </label>
+                      {otpSent && (
+                        <span className="text-xs text-right  text-green-600 flex items-center">
+                          <CheckCircleIcon className="h-4 w-4 mr-1" />
+                          OTP sent to your device
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex justify-between gap-3">
+                      {[0, 1, 2, 3].map((index) => (
+                        <div key={index} className="relative flex-1">
+                          <input
+                            ref={(el) => (pinRefs.current[index] = el)}
+                            type="password"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
+                            maxLength={1}
+                            value={pin[index]}
+                            onChange={(e) => handlePinChange(e, index)}
+                            onKeyDown={(e) => handlePinKeyDown(e, index)}
+                            disabled={!otpSent || adminLoading}
+                            className={`w-full h-14 text-center text-3xl font-medium rounded-lg
+                            focus:outline-none focus:ring-2 transition-all duration-200
+                            caret-transparent ${otpSent && !adminLoading
+                                ? 'text-gray-800 border border-gray-300 focus:border-blue-500 focus:ring-blue-200'
+                                : 'text-gray-400 border  cursor-not-allowed'
+                              }`}
+                            aria-label={`OTP digit ${index + 1}`}
+                            autoComplete="one-time-code"
+                          />
+                          {pin[index] && otpSent && (
+                            <div className="absolute bottom-1 left-1/2 w-5 h-1 bg-blue-500 
+                                transform -translate-x-1/2 rounded-full"></div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+
+                    {otpSent && (
+                      <div className="text-right">
+                        <button
+                          type="button"
+                          className={`text-xs md:text-sm flex items-center justify-end w-full ${resendCount >= 3
+                              ? 'text-gray-400 cursor-not-allowed'
+                              : 'text-blue-600 hover:text-blue-800'
+                            }`}
+                          onClick={handleResendOtp}
+                          disabled={resendCount >= 3 || resendLoading}
+                        >
+                          <RotateCcw  className="h-4 w-4 mr-1" />
+                          {resendCount >= 3 ? 'Max attempts reached' : (resendLoading?"loading...":"Resend OTP")}
+                        </button>
+                      </div>
                     )}
                   </div>
 
-
-                  <div className="flex justify-between items-center mb-2">
-                    <div
-                      className="cursor-pointer text-blue-800 hover:text-blue-900 transition duration-200"
-                      onClick={() => setAdminAuthenticate(false)}
-                    >
-                      User Login
-                      <ArrowCircleRightIcon className="ml-2" />
-                    </div>
+                  {/* Action Buttons */}
+                  <div className="flex items-center justify-between pt-4">
                     <button
                       type="button"
-                      onClick={handleAdminLogin}
+                      onClick={() => setAdminAuthenticate(false)}
                       disabled={adminLoading}
-                      className="w-[6rem] px-6 py-2 bg-blue-700 text-slate-50 rounded-lg hover:bg-blue-600 focus:outline-none transition duration-300"
+                      className="flex items-center text-blue-600 hover:text-blue-800 transition-colors disabled:text-gray-400"
+                    >
+                      <span>User Login</span>
+                      <ArrowCircleRightIcon className="ml-2 h-5 w-5" />
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleVerifyOtp(pin.join(''))}
+                      disabled={adminLoading || !otpSent || pin.join('').length !== 4}
+                      className={`w-36 px-6 py-2 md:py-2.5 text-white text-xs md:text-sm rounded-lg 
+                      focus:outline-none focus:ring-2 focus:ring-offset-2 
+                      transition-colors ${otpSent && pin.join('').length === 4 && !adminLoading
+                          ? 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500'
+                          : 'bg-gray-400 cursor-not-allowed'
+                        }`}
                     >
                       {adminLoading ? (
                         <CircularProgress size={18} color="inherit" />
                       ) : (
-                        "Submit"
+                        "Verify & Login"
                       )}
                     </button>
                   </div>

@@ -20,6 +20,32 @@ export const adminLogin = async (data) => {
   }
 };
 
+export const sendOtpToAdmin = async (data) => {
+  try {
+    
+    const response = await axios.post(`${URL}/api/admin/send-otp`, { name: data }, {
+  withCredentials: true,
+});
+
+    return { success: true, data: "", message: "OTP send successfully" };
+  } catch (error) {
+    return handleApiError(error, 'Google Login API');
+  }
+};
+
+export const verifyAdminOtp = async (data) => {
+  try {
+    
+    const response = await axios.post(`${URL}/api/admin/verify-otp`, data, {
+  withCredentials: true,
+});
+
+    return { success: true, data: response.data.response.data , message: "Admin verified" };
+  } catch (error) {
+    return handleApiError(error, 'Google Login API');
+  }
+};
+
 export const getTeamDetails = async (order_id, token) => {
   try {
     const response = await axios.get(`${URL}/api/admin/get-team-details`, {
@@ -73,6 +99,32 @@ export const updateStatus = async (email, status, token) => {
       withCredentials: true,
     });    
     return { success: true, message: response.data.response.message };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
+export const getAdmins = async (token) => {
+  try {
+    const response = await axios.get(`${URL}/api/admin/get-admins`, {
+      headers: { "Authorization": token },
+      withCredentials: true,
+    });    
+    return { success: true, data: response.data?.response?.data?.admins, message: response.data.response.message }
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
+export const logoutAdmin = async (name,token) => {
+  try {
+    const response = await axios.post(`${URL}/api/admin/logout-admin`,{
+      name
+    }, {
+      headers: { "Authorization": token },
+      withCredentials: true,
+    });    
+    return { success: true, data: "", message: "Admin logged out!" }
   } catch (error) {
     return handleApiError(error);
   }
