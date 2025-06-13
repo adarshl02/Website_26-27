@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import QRCodeAttendance from './../adminComponents/QRCodeAttendance';
 import PreRegistration from '@/adminComponents/PreRegistration';
 import AdminHeader from '@/adminComponents/AdminHeader';
+import ActiveAdmins from '@/adminComponents/ActiveAdmins';
 
 export default function AdminDashboard() {
 
@@ -19,7 +20,7 @@ export default function AdminDashboard() {
       
         {activeTab === "QR Scanner" && <QRCodeAttendance />}
         {activeTab === "PreRegistration" && <PreRegistration />}
-        {activeTab === "ActiveAdmins" && <PreRegistration />}
+        {activeTab === "LoggedInAccounts" && <ActiveAdmins />}
         </div>
     </div>
   )

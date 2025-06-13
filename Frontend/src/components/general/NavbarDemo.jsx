@@ -36,6 +36,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { deleteEvents } from "../../redux/events/eventsSlice.js";
 import { toast } from "sonner";
+import { logoutAdmin } from "@/service/api2.js";
 
 const navItems = [
   {
@@ -125,13 +126,18 @@ function Navbar({ className, scrollToCarousel }) {
     setOpen(newOpen);
   };
 
+  
+
   const handleLogout = async () => {
     try {
       // Start sign out process
       dispatch(signOutStart());
       dispatch(deleteEvents())
       // Call the logout API function
-      const response = await logoutUser();
+      if(currentUser?.rest?.email=="teampratibimb@admin.com"){
+        const response = await logoutAdmin();
+      }
+      const response = currentUser?.rest?.email=="teampratibimb@admin.com"?await logoutAdmin(currentUser?.rest?.name,currentUser?.token) :await logoutUser();
 
       // Check if the API call was successful
       if (!response.success){

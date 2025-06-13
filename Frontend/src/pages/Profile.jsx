@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { Helmet } from "react-helmet-async";
 import UpcomingEventNotReleased from "@/components/general/UpcomingEventNotReleased";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { logoutAdmin } from "@/service/api2";
 
 export default function Profile() {
   const { rest: user, token } = useSelector((state) => state.user.currentUser); // Assuming user data is stored in the redux state
@@ -49,7 +50,6 @@ export default function Profile() {
   const handleOpen2 = () => {
     setOpen2(true);
   };
-
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -113,7 +113,7 @@ export default function Profile() {
       dispatch(signOutStart());
       dispatch(deleteEvents())
       // Call the logout API function
-      const response = await logoutUser();
+      const response = user?.email=="teampratibimb@admin.com"?await logoutAdmin(user?.name,token) :await logoutUser();
 
       // Check if the API call was successful
       if (!response.success) {
@@ -299,14 +299,16 @@ export default function Profile() {
 
         {
           user.email === "teampratibimb@admin.com" && (
+            <div className="flex justify-center my-6 md:my-10">
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={() => navigate("/admin-dashboard")}
-              className="w-full  bg-red-500 text-white py-1 px-2 rounded-xl text-sm shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
+              className="px-10 bg-red-500 text-white py-1 rounded-xl text-sm shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
             >
               Go to Admin Routes
 
             </motion.button>
+            </div>
           )
         }
 
