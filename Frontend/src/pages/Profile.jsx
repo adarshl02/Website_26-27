@@ -305,7 +305,7 @@ export default function Profile() {
               onClick={() => navigate("/admin-dashboard")}
               className="px-10 bg-red-500 text-white py-1 rounded-xl text-sm shadow-md transition duration-300 hover:opacity-90 hover:shadow-2xl"
             >
-              Go to Admin Routes
+              Go to Admin routes
 
             </motion.button>
             </div>
