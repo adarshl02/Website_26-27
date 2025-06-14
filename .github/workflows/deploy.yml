@@ -6,6 +6,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./Frontend  # All steps run here
     steps:
       # 1. Checkout code
       - uses: actions/checkout@v4
