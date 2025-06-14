@@ -1,37 +1,49 @@
 name: Deploy to S3 & Invalidate CloudFront
 on:
   push:
-    branches: [ "main" ]  # Only trigger on main branch pushes
+    branches: [ "main" ]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      # 1. Checkout code
       - uses: actions/checkout@v4
 
-      - name: Change to Frontend Directory
-        run: cd Frontend  
+      # Single-line command (no pipe needed)
+      - name: Navigate to Frontend
+        run: |
+          cd Frontend
+          echo "Current directory: $(pwd)"
 
-      # 2. Set up Node.js (specify your version)
-      - uses: actions/setup-node@v4
+      # Setup Node with explicit cache path
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: '20'  # Change to your Node version
-          cache: 'npm'        # Auto-caches node_modules
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'Frontend/package-lock.json'
 
-      # 3. Install dependencies (faster with npm ci)
-      - run: npm ci           # Clean install from lockfile
-      
-      # 4. Build the project
-      - run: npm run build
+      # Multi-line commands use proper pipe syntax
+      - name: Install dependencies
+        run: |
+          cd Frontend
+          npm ci
 
-      # 5. Configure AWS credentials
+      - name: Build project
+        run: |
+          cd Frontend
+          npm run build
+
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-south-1  # Change to your region
+          aws-region: ap-south-1
 
-      # 6. Sync to S3 and invalidate CloudFront
-      - run: aws s3 sync ./dist s3://www.clubpratibimb.com --delete
-      - run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_ID }} --paths "/*"
+      - name: Deploy to S3
+        run: |
+          cd Frontend
+          aws s3 sync ./dist s3://www.clubpratibimb.com --delete
+
+      - name: Invalidate CloudFront
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_ID }} --paths "/*"
