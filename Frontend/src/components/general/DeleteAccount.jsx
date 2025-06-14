@@ -25,7 +25,6 @@ export default function DeleteAccount() {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-      const auth = getAuth();
 
   const handleLogout = async () => {
     try {
