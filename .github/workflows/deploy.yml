@@ -6,12 +6,12 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./Frontend  # All steps run here
     steps:
       # 1. Checkout code
       - uses: actions/checkout@v4
+
+      - name: Change to Frontend Directory
+        run: cd frontend  
 
       # 2. Set up Node.js (specify your version)
       - uses: actions/setup-node@v4
