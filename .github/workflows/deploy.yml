@@ -46,4 +46,7 @@ jobs:
           aws s3 sync ./dist s3://www.clubpratibimb.com --delete
 
       - name: Invalidate CloudFront
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_ID }} --paths "/*"
+        run: |
+         aws cloudfront create-invalidation \
+         --distribution-id ${{ secrets.CLOUDFRONT_ID }} \
+         --paths "/*"
