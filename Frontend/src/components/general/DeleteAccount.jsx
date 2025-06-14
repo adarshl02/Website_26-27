@@ -10,7 +10,6 @@ import { CircularProgress } from "@mui/material";
 import { signOutFailure, signOutStart, signOutSuccess } from "@/redux/user/userSlice";
 import { deleteEvents } from "@/redux/events/eventsSlice";
 import { logoutAdmin } from "@/service/api2";
-import { getAuth, signOut } from "firebase/auth";
 
 export default function DeleteAccount() {
 
@@ -44,7 +43,6 @@ export default function DeleteAccount() {
       }
 
       // Sign out from Firebase authentication
-      await signOut(auth);
 
       toast.success("You're Signed Out!");
       dispatch(signOutSuccess());
