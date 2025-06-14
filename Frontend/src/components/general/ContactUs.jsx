@@ -1,4 +1,6 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
 export default function ContactUs() {
@@ -8,8 +10,13 @@ export default function ContactUs() {
     window.scrollTo(0, 0);
   }, []);
 
+  const navigate = useNavigate();
+
   return (
     <div className="md:mt-6 px-6 md:px-8 lg:px-16">
+       <button  className="fixed z-50 top-14 left-2 md:top-6 md:left-10" onClick={() => navigate('/')}>
+      <div  ><ArrowBackIcon/></div>
+      </button>
       <div className="py-2 text-center md:bg-azure rounded-2xl fixed md:static top-0 left-0 w-full z-40 bg-white">
         <h1 className="text-center bg-gradient-to-br md:mt-12 from-slate-400 to-slate-800 bg-clip-text text-3xl font-extrabold text-transparent md:text-5xl font-poppins">
           Contact Us

@@ -3,7 +3,7 @@ import { PlaceholdersAndVanishInput } from '../accertinityui/placeholders-and-va
 import { toast } from "sonner";
 import { useSelector } from 'react-redux';
 import { submitfeedback } from '../../service/api';
-import { AnimatePresence, motion } from "framer-motion";
+
 import { useNavigate } from 'react-router-dom';
 
 export function PlaceholdersAndVanishInputDemo() {
@@ -61,22 +61,6 @@ const { token, ...user } = useSelector((state) => state.user.currentUser || {});
     <p className="mt-4 text-xs md:text-sm text-gray-500 text-center">
       We will revert back to your queries via mail.
     </p>
-
-   <div className=" mt-10 p-4 border border-slate-200 rounded-xl bg-white shadow-sm">
-      <div className="flex justify-center bg-gradient-to-br from-slate-400 to-slate-800 bg-clip-text text-3xl font-medium tracking-tight text-transparent md:text-5xl font-poppins">
-        Privacy and Policy
-      </div>
-      <div className="mt-2 text-slate-500 text-sm md:text-base px-1 font-poppins">
-        Review our policies of Pratibimb and how we handle your data.
-      </div>
-      <motion.button
-        whileTap={{ scale: 0.95 }}
-        onClick={() => navigate("/privacy-policy")}
-        className="w-full mt-4 text-xs md:text-sm bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-2 px-4 rounded-full shadow-md hover:shadow-lg transition-all"
-      >
-        View Polices
-      </motion.button>
-    </div>
   </div>
   
   );

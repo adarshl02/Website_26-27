@@ -20,6 +20,7 @@ import SocialHandles from "../components/general/SocialHandles";
 import { countUsers } from "../service/api";
 import { Helmet } from "react-helmet-async";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const people = [
   {
@@ -74,6 +75,8 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
   const [open2, setOpen2] = useState(false);
   const [websiteUserTarget, setWebsiteUserTarget] = useState(0);
     const  token  = useSelector((state) => state.user?.currentUser?.token);
+
+    const navigate = useNavigate();
 
   useEffect(() => {
 
@@ -132,6 +135,8 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
     window.scrollTo(0, 0);
   }, []);
 
+  
+
   return (
     <div>
       <div ref={carouselRef} className="bg-slate-900">
@@ -155,10 +160,16 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
             </motion.p>
             <button
               className="px-4 py-2 backdrop-blur-sm border bg-emerald-300/10 border-emerald-500/20 text-white mx-auto text-center rounded-full relative mt-4"
-              onClick={scrollToLatest}
+              onClick={()=>{
+                if (token) {
+                  scrollToLatest();
+                } else {
+                  navigate("/sign-up");
+              }}}
             >
               <span>
-                Featuring <ArrowForwardIcon />
+                {token?"Featuring":"Login Now"}
+                 <ArrowForwardIcon />
               </span>
               <div className="absolute inset-x-0 h-px -bottom-px bg-gradient-to-r w-3/4 mx-auto from-transparent via-emerald-500 to-transparent" />
             </button>

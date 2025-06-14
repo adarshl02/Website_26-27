@@ -10,7 +10,7 @@ import { verifyToken } from "../utils/verifyUser.js";
 const router = Router();
 
 router.route("/change-enrollment").post(verifyToken, changeEnrollment);
-router.route("/count-users").get(verifyToken, countUsers);
+router.route("/count-users").get(countUsers);
 router.route("/give-feedback").post(verifyToken, giveFeedback);
 router.route("/get/member").get(verifyToken, getMember);
 

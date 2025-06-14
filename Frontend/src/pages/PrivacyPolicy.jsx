@@ -1,15 +1,22 @@
 import React, { useEffect } from 'react';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useNavigate } from 'react-router-dom';
 
 export default function PrivacyPolicy() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  const navigate = useNavigate();
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <header className="mb-8 text-center">
+       <button  className="fixed z-50 top-14 left-2 md:top-6 md:left-10" onClick={() => navigate('/')}>
+      <div  ><ArrowBackIcon/></div>
+      </button>
+      <header className="mb-8 text-center mt-12">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">Privacy Policy for Pratibimb</h1>
-        <p className="text-gray-600">Last Updated: June 5, 2025</p>
+        <p className="text-gray-600">Last Updated: June 10, 2025</p>
       </header>
 
       <div className="prose prose-lg max-w-none">

@@ -156,21 +156,6 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef, 
               }
             />
             
-             <Route
-              path="/delete-account"
-              element={
-                <>
-                  <motion.div
-                    initial={pageTransition.initial}
-                    animate={pageTransition.animate}
-                    exit={pageTransition.exit}
-                  >
-                    <DeleteAccount />
-                    <Footer />
-                  </motion.div>
-                </>
-              }
-            />
             {/* <Route
               path="/asdfghjkl"
               element={
@@ -248,6 +233,21 @@ const AppContent = ({ scrollToCarousel, scrollToLatest, latestRef, carouselRef, 
                     exit={pageTransition.exit}
                   >
                     <ContactUs />
+                    <Footer />
+                  </motion.div>
+                </>
+              }
+            />
+            <Route
+              path="/delete-account"
+              element={
+                <>
+                  <motion.div
+                    initial={pageTransition.initial}
+                    animate={pageTransition.animate}
+                    exit={pageTransition.exit}
+                  >
+                    <DeleteAccount />
                     <Footer />
                   </motion.div>
                 </>
