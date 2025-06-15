@@ -252,7 +252,7 @@ export default function Profile() {
                         onClick={scrollToPerks}
                         className="hidden md:inline-flex text-xs items-center px-2 py-1 bg-yellow-400 text-slate-800 font-poppins rounded-2xl hover:bg-yellow-300 ml-2"
                       >
-                        Claim your Membership now
+                        Claim your membership now
                         <ArrowForwardIcon />
                       </button>
                     </>)}
