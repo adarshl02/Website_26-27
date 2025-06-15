@@ -1,0 +1,130 @@
+pipeline {
+    agent any
+
+    environment {
+        IMAGE_NAME         = "pratibimb-backend"
+        CONTAINER_NAME     = "pratibimb-container"
+        APP_PORT           = "3000"
+        HOST_DATA_DIR      = "/app/data"
+        
+        // ===== CREDENTIALS =====
+        // (All sensitive values injected via Jenkins credentials)
+        JWT_SECRET             = credentials('jwt-secret')
+        RAZORPAY_KEY_ID        = credentials('razorpay-key-id')
+        RAZORPAY_KEY_SECRET    = credentials('razorpay-key-secret')
+        NODEMAILER_PASSWORD    = credentials('nodemailer-password')
+        NODEMAILER_ADMIN       = credentials('nodemailer-admin')
+        DB_USER                = credentials('db-user')
+        DB_PASSWORD            = credentials('db-password')
+        DB_HOST                = credentials('db-host')
+        DB_PORT                = credentials('db-port')
+        DB_NAME                = credentials('db-name')
+        EMAIL_USER             = credentials('email-user')
+        
+        // ===== NON-SENSITIVE CONFIGS =====
+        NODE_ENV                   = "production"
+        NODE_TLS_REJECT_UNAUTHORIZED = "1"
+        REJECTUNAUTHORIZED         = "true"
+    }
+
+    stages {
+        // ===== STAGE 1: PREPARE =====
+        stage('Checkout & Setup') {
+            steps {
+                checkout scm
+                
+                // Create .env file from credentials
+                dir('Backend') {
+                    sh '''
+                        echo "JWT_SECRET=$JWT_SECRET" > .env
+                        echo "RAZORPAY_KEY_ID=$RAZORPAY_KEY_ID" >> .env
+                        echo "RAZORPAY_KEY_SECRET=$RAZORPAY_KEY_SECRET" >> .env
+                        echo "NODEMAILER_PASSWORD=$NODEMAILER_PASSWORD" >> .env
+                        echo "NODEMAILER_ADMIN=$NODEMAILER_ADMIN" >> .env
+                        echo "USER=$DB_USER" >> .env
+                        echo "PASSWORD=$DB_PASSWORD" >> .env
+                        echo "HOST=$DB_HOST" >> .env
+                        echo "PORT=$DB_PORT" >> .env
+                        echo "DATABASE=$DB_NAME" >> .env
+                        echo "EMAIL_USER=$EMAIL_USER" >> .env
+                        echo "NODE_ENV=$NODE_ENV" >> .env
+                        echo "NODE_TLS_REJECT_UNAUTHORIZED=$NODE_TLS_REJECT_UNAUTHORIZED" >> .env
+                        echo "REJECTUNAUTHORIZED=$REJECTUNAUTHORIZED" >> .env
+                        
+                        # Secure the .env file
+                        chmod 600 .env
+                    '''
+                }
+            }
+        }
+
+        // ===== STAGE 2: BUILD =====
+        stage('Build Docker Image') {
+            steps {
+                dir('Backend') {
+                    sh """
+                        docker build \
+                          -t ${env.IMAGE_NAME}:${env.BUILD_ID} \
+                          -t ${env.IMAGE_NAME}:latest \
+                          .
+                    """
+                }
+            }
+        }
+
+        stage('Clean Old Containers & Images') {
+            steps {
+                script {
+                    // Stop/remove old container
+                    sh """
+                        docker stop ${env.CONTAINER_NAME} || true
+                        docker rm ${env.CONTAINER_NAME} || true
+                    """
+                    
+                    // Remove dangling and old images (keep last 2 versions)
+                    sh """
+                        docker image prune -f --filter "until=24h"
+                        docker images \\
+                          --filter "reference=${env.IMAGE_NAME}" \\
+                          --format "{{.ID}} {{.Tag}}" \\
+                          | sort -rn -k2 \\
+                          | awk 'NR>2 {print \$1}' \\
+                          | xargs -r docker rmi -f || true
+                    """
+                }
+            }
+        }
+
+        // ===== STAGE 3: DEPLOY =====
+        stage('Deploy') {
+            steps {
+                script {
+                    sh """
+                        mkdir -p ${env.HOST_DATA_DIR}
+                        docker run -d \\
+                          --name ${env.CONTAINER_NAME} \\
+                          -p ${env.APP_PORT}:${env.APP_PORT} \\
+                          -v ${env.HOST_DATA_DIR}:/app/data \\
+                          --env-file ./Backend/.env \\
+                          ${env.IMAGE_NAME}:latest
+                    """
+                }
+            }
+        }
+
+    }
+
+    // ===== POST-ACTIONS =====
+   post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+        always {
+            echo 'Cleaning up workspace...'
+            cleanWs()
+        }
+    }
+}
