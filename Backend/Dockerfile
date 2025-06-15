@@ -1,21 +1,22 @@
-FROM node:22.9.0-alpine
-# Set working directory
+# Stage 1: Build
+FROM node:alpine AS builder
 WORKDIR /app
-
-# Copy package.json and package-lock.json
 COPY package*.json ./
-
-# Install dependencies
-RUN npm install
-
-# Copy rest of the project files
+RUN npm install --production && \
+    npm cache clean --force
 COPY . .
 
-# Expose the app port (adjust if needed)
+# Stage 2: Runtime
+FROM node:alpine
+WORKDIR /app
+
+# Copy only production dependencies
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app ./
+
+# Runtime configurations
 EXPOSE 3000
-
-# Set environment to production (optional)
 ENV NODE_ENV=production
-
-# Start the application
+USER node  # Run as non-root for security
 CMD ["node", "index.js"]
