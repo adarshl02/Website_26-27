@@ -6,12 +6,26 @@ pipeline {
         DOCKER_IMAGE = 'pratibimb-backend'
         CONTAINER_NAME = 'pratibimb-backend'
         PORT = '3000'
+
+        // Sensitive variables loaded from credentials
+        JWT_SECRET = credentials('jwt-secret')
+        RAZORPAY_KEY_ID = credentials('razorpay-key-id')
+        RAZORPAY_KEY_SECRET = credentials('razorpay-key-secret')
+        NODEMAILER_PASSWORD = credentials('nodemailer-password')
+        NODEMAILER_PASSWORD_1 = credentials('nodemailer-password-1')
+        DB_USER = credentials('db-user')
+        DB_PASSWORD = credentials('db-password')
+        DB_HOST = credentials('db-host')
+        DB_PORT = credentials('db-port')
+        DB_NAME = credentials('db-name')
+        EMAIL_USER = credentials('email-user')
+        NODEMAILER_ADMIN = credentials('nodemailer-admin')
     }
 
     stages {
         stage('Checkout') {
             steps {
-                checkout scm  // Checks out your GitHub repo
+                checkout scm
             }
         }
 
@@ -32,23 +46,23 @@ pipeline {
                 dir('Backend') {
                     // Write .env file using credentials
                     sh '''
-                         cat <<EOF > .env
-                            JWT_SECRET=asdfcjbhrfbrg
-                            RAZORPAY_KEY_ID=rzp_live_jgWi5msqZ2nMVU
-                            RAZORPAY_KEY_SECRET=YlHMEnETeIrokN6RAmhkuFW8
-                            NODEMAILER_PASSWORD=zlsbvbbdljxxgrdv
-                            NODEMAILER_PASSWORD_1=boztathibwfuuhdf
-                            NODE_TLS_REJECT_UNAUTHORIZED=1
-                            USER=avnadmin
-                            PASSWORD=AVNS_gOyT1twqiOhbA3k0Ch_
-                            HOST=pg-f13d087-teampratibimb-1cc2.f.aivencloud.com
-                            PORT=21137
-                            DATABASE=defaultdb
-                            REJECTUNAUTHORIZED=true
-                            NODE_ENV=development
-                            EMAIL_USER=adarsh.landge10604@gmail.com
-                            NODEMAILER_ADMIN=qgjwenhztvgqpqbo
-                            EOF
+                        cat <<EOF > .env
+                        JWT_SECRET=${JWT_SECRET}
+                        RAZORPAY_KEY_ID=${RAZORPAY_KEY_ID}
+                        RAZORPAY_KEY_SECRET=${RAZORPAY_KEY_SECRET}
+                        NODEMAILER_PASSWORD=${NODEMAILER_PASSWORD}
+                        NODEMAILER_PASSWORD_1=${NODEMAILER_PASSWORD_1}
+                        NODE_TLS_REJECT_UNAUTHORIZED=1
+                        USER=${DB_USER}
+                        PASSWORD=${DB_PASSWORD}
+                        HOST=${DB_HOST}
+                        PORT=${DB_PORT}
+                        DATABASE=${DB_NAME}
+                        REJECTUNAUTHORIZED=true
+                        NODE_ENV=development
+                        EMAIL_USER=${EMAIL_USER}
+                        NODEMAILER_ADMIN=${NODEMAILER_ADMIN}
+                        EOF
                     '''
 
                     // Build the Docker image
@@ -59,18 +73,16 @@ pipeline {
 
         stage('Deploy Container') {
             steps {
-                    // Run new container
-                    dir('Backend') {
-                        sh '''
-                            docker run -d \
-                                --name pratibimb-backend \
-                                -p 3000:3000 \
-                                --env-file .env \
-                                pratibimb-backend
-                        '''
-
+                dir('Backend') {
+                    sh '''
+                        docker run -d \
+                            --name pratibimb-backend \
+                            -p 3000:3000 \
+                            --env-file .env \
+                            pratibimb-backend
+                    '''
                     sh 'rm -f .env || true'
-                    }
+                }
             }
 
             post {
@@ -88,7 +100,6 @@ pipeline {
         always {
             // Verify deployment
             sh 'docker ps | grep pratibimb-backend || true'
-
             // Clean workspace
             cleanWs()
         }
