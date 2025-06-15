@@ -81,10 +81,7 @@ export default function Home({ carouselRef, latestRef, scrollToLatest }) {
   useEffect(() => {
 
     const fetchUserCount = async () => {
-      if (!token) {
-        console.error("No token found. Please authenticate.");
-        return;
-      }
+      
       const response = await countUsers(token);
       
       if (response.success) {
