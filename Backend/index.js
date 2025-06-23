@@ -45,7 +45,7 @@ app.use(cors({
 }));
 
 app.get("/", (req, res) => {
-  res.status(404).send({ message: "Healthy Route! Ready to serve" });
+  res.status(200).send({ message: "Healthy Route! Ready to serve" });
 });
 
 app.get("/favicon.ico", (req, res) => res.status(204).end());
