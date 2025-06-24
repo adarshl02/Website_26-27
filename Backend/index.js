@@ -20,29 +20,42 @@ app.use(cookieParser());
 app.use(morgan("dev"));
 
 const allowedOrigins = [
-  "https://website-26-27-ten.vercel.app",
   "https://www.clubpratibimb.com",
-  "capacitor://localhost", // Required for Android
-  "http://localhost"       // Required for iOS
 ];
 
-app.use(cors({
+// Middleware 1: API Key Check (Always Runs First)
+app.use((req, res, next) => {
+  const apiKey = req.headers["x-api-key"];
+  
+  if (apiKey !== process.env.API_KEY) {
+    return res.status(403).json({ error: "Invalid API key" });
+  }
+  next(); // Proceed to CORS check
+});
+
+// Middleware 2: CORS (Stricter in Production)
+const corsOptions = {
   origin: (origin, callback) => {
-    // Allow requests with no origin (mobile apps, Postman, etc.)
-    if (!origin) return callback(null, true);
-    
-    if (
-      process.env.NODE_ENV === "development" || 
-      allowedOrigins.includes(origin) ||
-      origin.includes("//localhost:") // For local dev
-    ) {
+    // Development: Allow no-origin (Postman) + localhost
+    if (process.env.NODE_ENV === "development") {
+      if (!origin || origin.startsWith("http://localhost:") || origin.startsWith("http://127.0.0.1:")) {
+        return callback(null, true);
+      }
+    }
+
+    // Production: Only allowedOrigins
+    if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
-    callback(new Error("Not allowed by CORS"));
+
+    callback(new Error(`Origin ${origin} not allowed by CORS`));
   },
   credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE"]
-}));
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-API-Key"], // Add X-API-Key
+};
+
+app.use(cors(corsOptions));
 
 app.get("/", (req, res) => {
   res.status(200).send({ message: "Healthy Route ! Ready to serve" });
