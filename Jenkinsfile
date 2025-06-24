@@ -20,6 +20,8 @@ pipeline {
         DB_NAME = credentials('db-name')
         EMAIL_USER = credentials('email-user')
         NODEMAILER_ADMIN = credentials('nodemailer-admin')
+        API_KEY = credentials('api-key')
+        NODE_ENV = credentials('node-env')
     }
 
     stages {
@@ -59,9 +61,10 @@ pipeline {
                         PORT=${DB_PORT}
                         DATABASE=${DB_NAME}
                         REJECTUNAUTHORIZED=true
-                        NODE_ENV=development
+                        NODE_ENV=${NODE_ENV}
                         EMAIL_USER=${EMAIL_USER}
                         NODEMAILER_ADMIN=${NODEMAILER_ADMIN}
+                        API_KEY=${API_KEY}
                         EOF
                     '''
 
