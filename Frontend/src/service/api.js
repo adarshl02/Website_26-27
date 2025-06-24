@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const URL = import.meta.env.VITE_URL; 
+const API_KEY = import.meta.env.VITE_API_KEY;
 
 
 const handleApiError = (error, apiName) => {
@@ -12,7 +13,11 @@ const handleApiError = (error, apiName) => {
 
 export const authenticateGoogleSignup = async (data) => {
   try {
-    const response = await axios.post(`${URL}/api/auth/google/signup`, data, { withCredentials: true });
+    const response = await axios.post(`${URL}/api/auth/google/signup`, data, { withCredentials: true,
+      headers: {
+        'X-API-Key': API_KEY,  
+      }
+     });
     return { success: true, data: response.data.response.data , message:"Signed Up Successfully!"};
   } catch (error) {
     return handleApiError(error, 'Google Login API');
@@ -21,7 +26,11 @@ export const authenticateGoogleSignup = async (data) => {
 
 export const authenticateGoogleLogin = async (data) => {
   try {
-    const response = await axios.post(`${URL}/api/auth/google/signin`, data, { withCredentials: true });
+    const response = await axios.post(`${URL}/api/auth/google/signin`, data, { withCredentials: true,
+      headers: {
+        'X-API-Key': API_KEY,  
+      }
+     });
     return { success: true, data: response.data.response.data };
   } catch (error) {
     return handleApiError(error, 'Google Login API');
@@ -30,8 +39,17 @@ export const authenticateGoogleLogin = async (data) => {
 
 export const logoutUser = async () => {
   try {
-    const response = await axios.get(`${URL}/api/auth/signout`); 
-    return { success: true, data: response.data ,message:"You're Signed Out!"};
+    const response = await axios.get(`${URL}/api/auth/signout`, {
+      headers: {
+        'X-API-Key': API_KEY
+      },
+      withCredentials: true
+    }); 
+    return { 
+      success: true, 
+      data: response.data,
+      message: "You're Signed Out!" 
+    };
   } catch (error) {
     return handleApiError(error, 'Logout API');
   }
@@ -46,6 +64,7 @@ export const deleteAccount = async (data, token) => {
       headers: {
         "Authorization": `${token}`,
         "Content-Type": "application/json",
+        'X-API-Key': API_KEY, 
       },
     });
     return {
@@ -66,6 +85,7 @@ export const fetchEventsByStatus = async (status,token) => {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `${token}`,  // Include token in the headers
+        'X-API-Key': API_KEY,
       },
     });
     return { success: true, data: response.data.response.data[0]};
@@ -81,6 +101,7 @@ export const registerEvent = async (data,token) => {
     const response = await axios.post(`${URL}/api/register?event_id=${event_id}`, payload, {
       headers: {
        "Authorization": `${token}`, 
+        'X-API-Key': API_KEY,
       },
     });
     
@@ -96,7 +117,8 @@ export const finalregisterEvent = async (data,token) => {
     const { event_id, ...payload } = data;
     const response = await axios.post(`${URL}/api/register-final-round?event_id=${event_id}`, payload, {
       headers: {
-       "Authorization": `${token}`, 
+       "Authorization": `${token}`,
+        'X-API-Key': API_KEY, 
       },
     });
     
@@ -112,6 +134,7 @@ export const registerVolunteer = async (data,token) => {
     const response = await axios.post(`${URL}/api/register/volunteer`, data, {
       headers: {
        "Authorization": `${token}`,  // Include token in the headers
+        'X-API-Key': API_KEY,
       },
     });
     return { success: true, data: response.data };
@@ -125,6 +148,7 @@ export const countUsers = async (token) => {
     const response = await axios.get(`${URL}/api/count-users`, {
       headers: {
        "Authorization": `${token}`,  // Include token in the headers
+        'X-API-Key': API_KEY,
       },
     });
     return { success: true, data: response.data.response.data };
@@ -138,6 +162,7 @@ export const countArtist = async (token) => {
     const response = await axios.get(`${URL}/api/get-artists`, {
       headers: {
        "Authorization": `${token}`,  // Include token in the headers
+        'X-API-Key': API_KEY,
       },
     });
     
@@ -151,6 +176,7 @@ export const fetchartcommunity = async (token) => {
     const response = await axios.get(`${URL}/api/user-art-details`, {
       headers: {
        "Authorization": `${token}`,  // Include token in the headers
+        'X-API-Key': API_KEY,
       },
     });
     
@@ -167,6 +193,7 @@ export const getEventTicket = async (data,token) => {
       params: data,
       headers: {
        "Authorization": `${token}`,  // Include token in the headers
+        'X-API-Key': API_KEY,
       },
     });  
     if (response.status === 204) {
@@ -185,6 +212,7 @@ export const isMember = async (data,token) => {
       params: data,
       headers: {
        "Authorization": `${token}`,  // Include token in the headers
+        'X-API-Key': API_KEY,
       },
     });  
     
@@ -204,6 +232,7 @@ export const getAttendeeStatus = async (data,token) => {
       params: data,
       headers: {
        "Authorization": `${token}`,  // Include token in the headers
+       'X-API-Key': API_KEY,
       },
     });  
     
@@ -229,6 +258,7 @@ export const verifyPayment = async (data,token) => {
     const response = await axios.post(`${URL}/api/payment/verify`, data, {
       headers: {
         "Authorization": `${token}`,  // Include token in the headers
+        'X-API-Key': API_KEY,
       },
     });
     return { success: true, data: response.data };
@@ -242,6 +272,7 @@ export const registerForRecruitment = async (data,token) => {
     const response = await axios.post(`${URL}/api/recruitment/register`, data, {
       headers: {
         "Authorization": `${token}`,  // Include token in the headers
+        'X-API-Key': API_KEY,
       },
     });
 
@@ -263,6 +294,7 @@ export const verifyPaymentForRecruitment = async (data,token) => {
     const response = await axios.post(`${URL}/api/recruitment/payment-verify`, data, {
       headers: {
         "Authorization": `${token}`,  // Include token in the headers
+        'X-API-Key': API_KEY,
       },
     });    
     return { success: true, data: response.data };
@@ -276,6 +308,7 @@ export const finalverifyPayment = async (data,token) => {
     const response = await axios.post(`${URL}/api/payment/verify-final-round`, data, {
       headers: {
         "Authorization": `${token}`,  // Include token in the headers
+        'X-API-Key': API_KEY,
       },
     });    
     return { success: true, data: response.data };
@@ -290,6 +323,7 @@ export const uploadArtCommunityDetails = async (formData,token) => {
       headers: {
         "Content-Type": "multipart/form-data", 
         "Authorization": `${token}`, 
+        'X-API-Key': API_KEY,
       },
     });
     return { success: true, data: response.data };
@@ -303,6 +337,7 @@ export const submitfeedback = async (data,token) => {
     const response = await axios.post(`${URL}/api/give-feedback`, data, {
       headers: {
         "Authorization": `${token}`, 
+        'X-API-Key': API_KEY,
       },
     });
     

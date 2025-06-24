@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const URL = import.meta.env.VITE_URL;
+const API_KEY = import.meta.env.VITE_API_KEY;
 
 const handleApiError = (error, apiName) => {
   const errorMsg = error.response?.data?.message || error.message || 'An unexpected error occurred';
@@ -10,7 +11,11 @@ const handleApiError = (error, apiName) => {
 
 export const adminLogin = async (data) => {
   try {
-    const response = await axios.post(`${URL}/api/admin/login`, data, { withCredentials: true });
+    const response = await axios.post(`${URL}/api/admin/login`, data, { withCredentials: true
+      ,headers: {
+        'X-API-Key': API_KEY,  
+      }
+     });
     if (response.status === 204) {
       return { success: false, message: "Invalid Credentials", status: 204 };
     }
@@ -25,6 +30,9 @@ export const sendOtpToAdmin = async (data) => {
     
     const response = await axios.post(`${URL}/api/admin/send-otp`, { name: data }, {
   withCredentials: true,
+  headers: {
+    'X-API-Key': API_KEY,
+  }
 });
 
     return { success: true, data: "", message: "OTP send successfully" };
@@ -38,6 +46,9 @@ export const verifyAdminOtp = async (data) => {
     
     const response = await axios.post(`${URL}/api/admin/verify-otp`, data, {
   withCredentials: true,
+  headers: {
+    'X-API-Key': API_KEY,
+  }
 });
 
     return { success: true, data: response.data.response.data , message: "Admin verified" };
@@ -52,6 +63,7 @@ export const getTeamDetails = async (order_id, token) => {
       params:{order_id} ,
       headers: {
         "Authorization": token,
+        'X-API-Key': API_KEY,
       },
       withCredentials: true,
     });
@@ -65,7 +77,9 @@ export const getTeamDetails = async (order_id, token) => {
 export const fetchAttendeeCount = async (token) => {
   try {
     const response = await axios.get(`${URL}/api/admin/count-attendee`, {
-      headers: { "Authorization": token },
+      headers: { "Authorization": token ,
+        'X-API-Key': API_KEY,
+       },
       withCredentials: true,
     });
 
@@ -79,7 +93,9 @@ export const fetchAttendeeCount = async (token) => {
 export const fetchAttendees = async (token) => {
   try {
     const response = await axios.get(`${URL}/api/admin/get-attendee`, {
-      headers: { "Authorization": token },
+      headers: { "Authorization": token ,
+        'X-API-Key': API_KEY,
+       },
       withCredentials: true,
     });
     
@@ -95,7 +111,9 @@ export const updateStatus = async (email, status, token) => {
       team_leader_email: email,
       team_status: status,
     }, {
-      headers: { "Authorization": token },
+      headers: { "Authorization": token ,
+        'X-API-Key': API_KEY,
+       },
       withCredentials: true,
     });    
     return { success: true, message: response.data.response.message };
@@ -107,7 +125,9 @@ export const updateStatus = async (email, status, token) => {
 export const getAdmins = async (token) => {
   try {
     const response = await axios.get(`${URL}/api/admin/get-admins`, {
-      headers: { "Authorization": token },
+      headers: { "Authorization": token ,
+        'X-API-Key': API_KEY,
+      },
       withCredentials: true,
     });    
     return { success: true, data: response.data?.response?.data?.admins, message: response.data.response.message }
@@ -121,7 +141,9 @@ export const logoutAdmin = async (name,token) => {
     const response = await axios.post(`${URL}/api/admin/logout-admin`,{
       name
     }, {
-      headers: { "Authorization": token },
+      headers: { "Authorization": token,
+        'X-API-Key': API_KEY,
+       },
       withCredentials: true,
     });    
     return { success: true, data: "", message: "Admin logged out!" }

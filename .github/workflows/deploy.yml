@@ -22,6 +22,7 @@ jobs:
           VITE_FIREBASE_APP_ID=${{ secrets.VITE_FIREBASE_APP_ID }}
           VITE_URL=${{ secrets.VITE_URL }}
           VITE_RAZORPAY_KEY_ID=${{ secrets.VITE_RAZORPAY_KEY_ID }}
+          VITE_API_KEY=${{ secrets.VITE_API_KEY }}
           EOF
 
       - name: Navigate to Frontend
