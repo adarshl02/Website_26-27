@@ -23,17 +23,6 @@ const allowedOrigins = [
   "https://www.clubpratibimb.com",
 ];
 
-// Middleware 1: API Key Check (Always Runs First)
-app.use((req, res, next) => {
-  const apiKey = req.headers["x-api-key"];
-  
-  if (apiKey !== process.env.API_KEY) {
-    return res.status(403).json({ error: "Invalid API key" });
-  }
-  next(); // Proceed to CORS check
-});
-
-// Middleware 2: CORS (Stricter in Production)
 const corsOptions = {
   origin: (origin, callback) => {
     // Development: Allow no-origin (Postman) + localhost
@@ -56,6 +45,25 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+app.options('*', cors(corsOptions)); 
+
+app.use((req, res, next) => {
+  // Skip API key check for OPTIONS preflight requests
+  if (req.method === 'OPTIONS') return next();
+  
+  const apiKey = req.headers["x-api-key"];
+  
+  if (!apiKey) {
+    return res.status(403).json({ error: "API key is required" });
+  }
+  
+  if (apiKey !== process.env.API_KEY) {
+    return res.status(403).json({ error: "Invalid API key" });
+  }
+  
+  next();
+});
 
 app.get("/", (req, res) => {
   res.status(200).send({ message: "Healthy Route ! Ready to serve" });
