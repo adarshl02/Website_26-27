@@ -52,7 +52,7 @@ const corsOptions = {
   },
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization", "X-API-Key"], // Add X-API-Key
+  allowedHeaders: ["Content-Type", "Authorization", "X-API-Key"], // Add X-API-Key to allowed headers
 };
 
 app.use(cors(corsOptions));
