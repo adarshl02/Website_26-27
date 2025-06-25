@@ -11,10 +11,26 @@ import artRouter from "./routes/art.routes.js";
 import volunteerRouter from "./routes/volunteers.routes.js";
 import adminRouter from "./routes/admin.routes.js";
 import recruitmentsRouter from "./routes/recruitments.routes.js";
+import rateLimit from "express-rate-limit";
+import helmet from "helmet";
 
 dotenv.config();
 
 const app = express();
+
+
+app.use(helmet()); // Security middleware to set various HTTP headers
+app.set("trust proxy", 1); // Still needed for production
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,      // limit each IP to 100 requests per windowMs
+  keyGenerator: (req) => req.ip // Limits by IP
+});
+
+app.use(limiter);
+
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
