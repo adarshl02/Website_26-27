@@ -36,7 +36,7 @@ app.use(cookieParser());
 app.use(morgan("dev"));
 
 app.get("/", (req, res) => {
-  res.status(200).send({ message: "Healthy Route! Ready to serve" });
+  res.status(200).send({ message: "Healthy Route ! Ready to serve" });
 });
 
 const allowedOrigins = [
