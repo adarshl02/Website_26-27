@@ -8,7 +8,7 @@ pipeline {
     }
 
     stages {
-        stage('Checkout & Stash Code') {
+        stage('Checkout Code') {
             agent { label 'built-in' }
             steps {
                 checkout scm
@@ -16,7 +16,14 @@ pipeline {
             }
         }
 
-        stage('Build & Deploy') {
+        stage('Unstash Code') {
+            agent { label 'pratibimb-backend-deployer' }
+            steps {
+                unstash 'backend-code'
+            }
+        }
+
+        stage('Create .env File') {
             agent { label 'pratibimb-backend-deployer' }
             environment {
                 JWT_SECRET = credentials('jwt-secret')
@@ -35,41 +42,76 @@ pipeline {
                 NODE_ENV = credentials('node-env')
             }
             steps {
-                unstash 'backend-code'
                 dir('Backend') {
                     sh '''
+                        set -ex
                         echo "Creating .env file"
                         cat <<EOF > .env
-                        JWT_SECRET=$JWT_SECRET
-                        RAZORPAY_KEY_ID=$RAZORPAY_KEY_ID
-                        RAZORPAY_KEY_SECRET=$RAZORPAY_KEY_SECRET
-                        NODEMAILER_PASSWORD=$NODEMAILER_PASSWORD
-                        NODEMAILER_PASSWORD_1=$NODEMAILER_PASSWORD_1
-                        NODE_TLS_REJECT_UNAUTHORIZED=1
-                        USER=$DB_USER
-                        PASSWORD=$DB_PASSWORD
-                        HOST=$DB_HOST
-                        PORT=$DB_PORT
-                        DATABASE=$DB_NAME
-                        REJECTUNAUTHORIZED=true
-                        NODE_ENV=$NODE_ENV
-                        EMAIL_USER=$EMAIL_USER
-                        NODEMAILER_ADMIN=$NODEMAILER_ADMIN
-                        API_KEY=$API_KEY
-                        EOF
+JWT_SECRET=$JWT_SECRET
+RAZORPAY_KEY_ID=$RAZORPAY_KEY_ID
+RAZORPAY_KEY_SECRET=$RAZORPAY_KEY_SECRET
+NODEMAILER_PASSWORD=$NODEMAILER_PASSWORD
+NODEMAILER_PASSWORD_1=$NODEMAILER_PASSWORD_1
+NODE_TLS_REJECT_UNAUTHORIZED=1
+USER=$DB_USER
+PASSWORD=$DB_PASSWORD
+HOST=$DB_HOST
+PORT=$DB_PORT
+DATABASE=$DB_NAME
+REJECTUNAUTHORIZED=true
+NODE_ENV=$NODE_ENV
+EMAIL_USER=$EMAIL_USER
+NODEMAILER_ADMIN=$NODEMAILER_ADMIN
+API_KEY=$API_KEY
+EOF
+                    '''
+                }
+            }
+        }
 
-                        echo "Cleaning up old container/image"
-                        docker stop $CONTAINER_NAME || true
-                        docker rm $CONTAINER_NAME || true
-                        docker rmi $DOCKER_IMAGE || true
+        stage('Cleanup Old Docker Resources') {
+            agent { label 'pratibimb-backend-deployer' }
+            steps {
+                sh '''
+                    set -ex
+                    echo "Stopping and removing old container/image if exists"
+                    docker stop $CONTAINER_NAME || true
+                    docker rm $CONTAINER_NAME || true
+                    docker rmi $DOCKER_IMAGE || true
+                '''
+            }
+        }
 
+        stage('Build Docker Image') {
+            agent { label 'pratibimb-backend-deployer' }
+            steps {
+                dir('Backend') {
+                    sh '''
+                        set -ex
                         echo "Building Docker image"
                         docker build -t $DOCKER_IMAGE .
+                    '''
+                }
+            }
+        }
 
-                        echo "Running container"
-                        docker run -d --name $CONTAINER_NAME -p $PORT:3000 --env-file .env $DOCKER_IMAGE
+        stage('Run Docker Container') {
+            agent { label 'pratibimb-backend-deployer' }
+            steps {
+                dir('Backend') {
+                    sh '''
+                        set -ex
+                        echo "Running Docker container"
+                        docker run -d \
+                            --name $CONTAINER_NAME \
+                            -p $PORT:3000 \
+                            --env-file .env \
+                            $DOCKER_IMAGE
 
+                        echo "Cleaning up .env file"
                         rm -f .env
+
+                        echo "Verifying running container"
                         docker ps | grep $CONTAINER_NAME || true
                     '''
                 }
