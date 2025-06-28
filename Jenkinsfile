@@ -41,29 +41,29 @@ pipeline {
                         set -ex
                         echo "Creating .env file"
                         cat <<EOF > .env
-JWT_SECRET=$JWT_SECRET
-RAZORPAY_KEY_ID=$RAZORPAY_KEY_ID
-RAZORPAY_KEY_SECRET=$RAZORPAY_KEY_SECRET
-NODEMAILER_PASSWORD=$NODEMAILER_PASSWORD
-NODEMAILER_PASSWORD_1=$NODEMAILER_PASSWORD_1
-NODE_TLS_REJECT_UNAUTHORIZED=1
-USER=$DB_USER
-PASSWORD=$DB_PASSWORD
-HOST=$DB_HOST
-PORT=$DB_PORT
-DATABASE=$DB_NAME
-REJECTUNAUTHORIZED=true
-NODE_ENV=$NODE_ENV
-EMAIL_USER=$EMAIL_USER
-NODEMAILER_ADMIN=$NODEMAILER_ADMIN
-API_KEY=$API_KEY
-EOF
+                            JWT_SECRET=$JWT_SECRET
+                            RAZORPAY_KEY_ID=$RAZORPAY_KEY_ID
+                            RAZORPAY_KEY_SECRET=$RAZORPAY_KEY_SECRET
+                            NODEMAILER_PASSWORD=$NODEMAILER_PASSWORD
+                            NODEMAILER_PASSWORD_1=$NODEMAILER_PASSWORD_1
+                            NODE_TLS_REJECT_UNAUTHORIZED=1
+                            USER=$DB_USER
+                            PASSWORD=$DB_PASSWORD
+                            HOST=$DB_HOST
+                            PORT=$DB_PORT
+                            DATABASE=$DB_NAME
+                            REJECTUNAUTHORIZED=true
+                            NODE_ENV=$NODE_ENV
+                            EMAIL_USER=$EMAIL_USER
+                            NODEMAILER_ADMIN=$NODEMAILER_ADMIN
+                            API_KEY=$API_KEY
+                        EOF
                     '''
                 }
             }
         }
 
-        stage('Zero Downtime Docker Deploy') {
+        stage('Build & Health Check') {
             agent { label 'pratibimb-backend-deployer' }
             steps {
                 dir('Backend') {
@@ -76,17 +76,41 @@ EOF
                         echo "Start temporary test container"
                         docker run -d --name test-container -p 3001:3000 --env-file .env pratibimb-backend-temp
 
-                        echo "Waiting for container to initialize..."
-                        sleep 10
-                        echo "Perform health check on temp container"
-                        curl --fail http://localhost:3001/ || {
-                        echo "❌ Health check failed. Cleaning up..."
-                        docker rm -f test-container || true
-                        docker rmi pratibimb-backend-temp || true
-                        rm -f .env || true
-                        exit 1
-                    }
+                        echo "Waiting up to 30s for container to start..."
+                        max_wait=30
+                        elapsed=0
+                        while [ "$(docker inspect -f '{{.State.Running}}' test-container 2>/dev/null)" != "true" ]; do
+                          sleep 1
+                          elapsed=$((elapsed + 1))
+                          if [ "$elapsed" -ge "$max_wait" ]; then
+                            echo "❌ Container failed to start."
+                            docker logs test-container || true
+                            docker rm -f test-container || true
+                            docker rmi pratibimb-backend-temp || true
+                            rm -f .env || true
+                            exit 1
+                          fi
+                        done
 
+                        echo "Perform health check"
+                        curl --fail http://localhost:3001/ || {
+                          echo "❌ Health check failed. Cleaning up..."
+                          docker rm -f test-container || true
+                          docker rmi pratibimb-backend-temp || true
+                          rm -f .env || true
+                          exit 1
+                        }
+                    '''
+                }
+            }
+        }
+
+        stage('Replace Running Container') {
+            agent { label 'pratibimb-backend-deployer' }
+            steps {
+                dir('Backend') {
+                    sh '''
+                        set -ex
 
                         echo "Stop & remove current running container"
                         docker stop pratibimb-backend || true
@@ -97,16 +121,29 @@ EOF
                         docker tag pratibimb-backend-temp pratibimb-backend
 
                         echo "Remove test container"
-                        docker rm -f test-container
+                        docker rm -f test-container || true
 
-                        echo "Run final container on port 3000"
+                        echo "Run final container"
                         docker run -d --name pratibimb-backend -p 3000:3000 --env-file .env pratibimb-backend
 
-                        echo "Cleanup temporary image and .env"
+                        echo "Cleanup temp image and .env"
                         docker rmi pratibimb-backend-temp || true
                         rm -f .env
                     '''
                 }
+            }
+        }
+
+        stage('Show Docker Status') {
+            agent { label 'pratibimb-backend-deployer' }
+            steps {
+                sh '''
+                    echo "✅ Docker containers:"
+                    docker ps
+
+                    echo "✅ Docker images:"
+                    docker images
+                '''
             }
         }
     }
