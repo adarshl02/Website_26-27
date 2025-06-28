@@ -76,10 +76,13 @@ EOF
                         echo "Start temporary test container"
                         docker run -d --name test-container -p 3001:3000 --env-file .env pratibimb-backend-temp
 
+                        echo "Waiting for container to initialize..."
+                        sleep 10
                         echo "Perform health check on temp container"
                         curl --fail http://localhost:3001/ || {
                         echo "❌ Health check failed. Cleaning up..."
-                      
+                        docker rm -f test-container || true
+                        docker rmi pratibimb-backend-temp || true
                         rm -f .env || true
                         exit 1
                     }
