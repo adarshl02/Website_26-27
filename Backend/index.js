@@ -35,6 +35,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
 
+app.get("/", (req, res) => {
+  res.status(200).send({ message: "Healthy Route! Ready to serve" });
+});
+
 const allowedOrigins = [
   "https://www.clubpratibimb.com",
 ];
@@ -81,9 +85,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", (req, res) => {
-  res.status(200).send({ message: "Healthy Route! Ready to serve" });
-});
 
 app.get("/favicon.ico", (req, res) => res.status(204).end());
 
