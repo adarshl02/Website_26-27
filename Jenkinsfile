@@ -121,7 +121,7 @@ pipeline {
             }
         }
 
-        stage('Show Docker Status') {
+        stage('Show Final Status') {
             agent { label 'pratibimb-backend-deployer' }
             steps {
                 sh '''
@@ -130,6 +130,9 @@ pipeline {
 
                     echo "✅ Docker images:"
                     docker images
+
+                    echo "✅ Curling http://localhost:3000/"
+                    curl --fail http://localhost:3000/ || echo "❌ Backend not responding on port 3000"
                 '''
             }
         }
