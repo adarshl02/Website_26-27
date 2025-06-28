@@ -15,16 +15,15 @@ pipeline {
                 
                 withCredentials([file(credentialsId: 'pratibimb-backend-env-file', variable: 'ENV_FILE')]) {
                     dir('Backend') {
-                        // Verify files exist before stashing
-                        script {
-                            def files = findFiles(glob: '**/*')
-                            if (files.isEmpty()) {
-                                error 'No files found in Backend directory to stash'
-                            }
-                            
-                            sh 'cp $ENV_FILE .env'
-                            stash includes: '**/*', name: 'backend-files', allowEmpty: false
-                        }
+                        // Simple file existence check instead of findFiles
+                        sh '''
+                            if [ ! -d . ]; then
+                                echo "Backend directory not found!"
+                                exit 1
+                            fi
+                            cp $ENV_FILE .env
+                        '''
+                        stash includes: '**/*', name: 'backend-files'
                     }
                 }
             }
