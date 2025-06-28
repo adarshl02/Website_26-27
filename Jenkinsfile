@@ -8,61 +8,69 @@ pipeline {
     }
 
     stages {
-        stage('Checkout & Prepare') {
+        stage('Checkout & Stash Code') {
             agent { label 'built-in' }
             steps {
                 checkout scm
-
-                withCredentials([file(credentialsId: 'pratibimb-backend-env-file', variable: 'ENV_FILE')]) {
-                    dir('Backend') {
-                        sh '''
-                            cp "$ENV_FILE" .env
-                            chmod 600 .env
-                        '''
-                        stash name: 'backend-code', includes: '**/*', excludes: '.env'
-                        stash name: 'env-file', includes: '.env'
-                    }
-                }
+                stash name: 'backend-code', includes: '**/*'
             }
         }
 
-        stage('Clean Old Deployment') {
+        stage('Build & Deploy') {
             agent { label 'pratibimb-backend-deployer' }
+            environment {
+                JWT_SECRET = credentials('jwt-secret')
+                RAZORPAY_KEY_ID = credentials('razorpay-key-id')
+                RAZORPAY_KEY_SECRET = credentials('razorpay-key-secret')
+                NODEMAILER_PASSWORD = credentials('nodemailer-password')
+                NODEMAILER_PASSWORD_1 = credentials('nodemailer-password-1')
+                DB_USER = credentials('db-user')
+                DB_PASSWORD = credentials('db-password')
+                DB_HOST = credentials('db-host')
+                DB_PORT = credentials('db-port')
+                DB_NAME = credentials('db-name')
+                EMAIL_USER = credentials('email-user')
+                NODEMAILER_ADMIN = credentials('nodemailer-admin')
+                API_KEY = credentials('api-key')
+                NODE_ENV = credentials('node-env')
+            }
             steps {
                 unstash 'backend-code'
                 dir('Backend') {
                     sh '''
-                        docker stop pratibimb-backend || true
-                        docker rm pratibimb-backend || true
-                        docker rmi pratibimb-backend || true
-                    '''
-                }
-            }
-        }
+                        echo "Creating .env file"
+                        cat <<EOF > .env
+                        JWT_SECRET=$JWT_SECRET
+                        RAZORPAY_KEY_ID=$RAZORPAY_KEY_ID
+                        RAZORPAY_KEY_SECRET=$RAZORPAY_KEY_SECRET
+                        NODEMAILER_PASSWORD=$NODEMAILER_PASSWORD
+                        NODEMAILER_PASSWORD_1=$NODEMAILER_PASSWORD_1
+                        NODE_TLS_REJECT_UNAUTHORIZED=1
+                        USER=$DB_USER
+                        PASSWORD=$DB_PASSWORD
+                        HOST=$DB_HOST
+                        PORT=$DB_PORT
+                        DATABASE=$DB_NAME
+                        REJECTUNAUTHORIZED=true
+                        NODE_ENV=$NODE_ENV
+                        EMAIL_USER=$EMAIL_USER
+                        NODEMAILER_ADMIN=$NODEMAILER_ADMIN
+                        API_KEY=$API_KEY
+                        EOF
 
-        stage('Build Image') {
-            agent { label 'pratibimb-backend-deployer' }
-            steps {
-                unstash 'env-file'
-                sh 'chmod 600 Backend/.env'
-                dir('Backend') {
-                    sh 'docker build -t pratibimb-backend .'
-                }
-            }
-        }
+                        echo "Cleaning up old container/image"
+                        docker stop $CONTAINER_NAME || true
+                        docker rm $CONTAINER_NAME || true
+                        docker rmi $DOCKER_IMAGE || true
 
-        stage('Run Container') {
-            agent { label 'pratibimb-backend-deployer' }
-            steps {
-                dir('Backend') {
-                    sh '''
-                        docker run -d \
-                            --name pratibimb-backend \
-                            -p 3000:3000 \
-                            --env-file .env \
-                            pratibimb-backend
+                        echo "Building Docker image"
+                        docker build -t $DOCKER_IMAGE .
+
+                        echo "Running container"
+                        docker run -d --name $CONTAINER_NAME -p $PORT:3000 --env-file .env $DOCKER_IMAGE
+
                         rm -f .env
-                        docker ps | grep pratibimb-backend || true
+                        docker ps | grep $CONTAINER_NAME || true
                     '''
                 }
             }
@@ -77,22 +85,14 @@ pipeline {
         }
         success {
             node('built-in') {
-                slackSend(
-                    color: 'good',
-                    channel: '#pratibimb-backend-cicd',
-                    tokenCredentialId: 'slack-token',
-                    message: "✅ SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
-                )
+                slackSend(color: 'good', channel: '#pratibimb-backend-cicd', tokenCredentialId: 'slack-token',
+                    message: "✅ SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}")
             }
         }
         failure {
             node('built-in') {
-                slackSend(
-                    color: 'danger',
-                    channel: '#pratibimb-backend-cicd',
-                    tokenCredentialId: 'slack-token',
-                    message: "❌ FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
-                )
+                slackSend(color: 'danger', channel: '#pratibimb-backend-cicd', tokenCredentialId: 'slack-token',
+                    message: "❌ FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}")
             }
         }
     }
