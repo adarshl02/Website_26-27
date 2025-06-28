@@ -1,52 +1,44 @@
 pipeline {
     agent none // Start with no default agent
     
-   environment {
-        // Global environment variables (non-sensitive)
-        DOCKER_IMAGE = 'pratibimb-backend'
-        CONTAINER_NAME = 'pratibimb-backend'
-        PORT = '3000'
-
-        // Single secret file containing all credentials
-        ENV_FILE = credentials('pratibimb-backend-env-file')
-    }
-
     stages {
         stage('Checkout') {
-            agent { label 'built-in' } // Run on Jenkins built-in
+            agent { label 'built-in' }
             steps {
-                checkout scm
-            }
-        }
-
-        stage('Prepare Build') {
-            agent { label 'built-in' } // Run on Jenkins built-in
-            steps {
-                dir('Backend') {
-                   // Copy the secret file to .env (it's automatically available at $ENV_FILE)
-                    sh 'cp $ENV_FILE .env'
+                withCredentials([file(credentialsId: 'pratibimb-backend-env-file', variable: 'ENV_FILE')]) {
+                    checkout scm
                     
-                    // Archive the files to transfer to agent
-                    stash includes: 'Backend/**', name: 'backend-files'
+                    // Store environment variables for other stages
+                    env.DOCKER_IMAGE = 'pratibimb-backend'
+                    env.CONTAINER_NAME = 'pratibimb-backend'
+                    env.PORT = '3000'
+                    
+                    dir('Backend') {
+                        // Copy the secret file to .env
+                        sh 'cp $ENV_FILE .env'
+                        
+                        // Archive the files to transfer to agent
+                        stash includes: 'Backend/**', name: 'backend-files'
+                    }
                 }
             }
         }
 
         stage('Cleanup Old Deployment') {
-            agent { label 'pratibimb-backend-deployer' } // Run on your second EC2 instance
+            agent { label 'pratibimb-backend-deployer' }
             steps {
                 script {
                     sh """
-                        docker stop ${CONTAINER_NAME} || true
-                        docker rm ${CONTAINER_NAME} || true
-                        docker rmi ${DOCKER_IMAGE} || true
+                        docker stop ${env.CONTAINER_NAME} || true
+                        docker rm ${env.CONTAINER_NAME} || true
+                        docker rmi ${env.DOCKER_IMAGE} || true
                     """
                 }
             }
         }
 
         stage('Build Docker Image') {
-            agent { label 'pratibimb-backend-deployer' } // Run on your second EC2 instance
+            agent { label 'pratibimb-backend-deployer' }
             steps {
                 // Unstash the files on the agent
                 unstash 'backend-files'
@@ -58,7 +50,7 @@ pipeline {
         }
 
         stage('Deploy Container') {
-            agent { label 'pratibimb-backend-deployer' } // Run on your second EC2 instance
+            agent { label 'pratibimb-backend-deployer' }
             steps {
                 dir('Backend') {
                     sh '''
@@ -69,24 +61,32 @@ pipeline {
                             pratibimb-backend
                     '''
                     sh 'rm -f .env || true'
+                    
+                    // Verify deployment directly on the agent
+                    sh 'docker ps | grep pratibimb-backend || true'
                 }
             }
         }
     }
 
-     post {
+    post {
         success {
-            slackSend color: 'good', message: "Deployed: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
+            node('built-in') {
+                slackSend color: 'good', 
+                         channel: '#pratibimb-backend-cicd',
+                         tokenCredentialId: 'slack-token',
+                         message: "Deployed: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
+                cleanWs()
+            }
         }
         failure {
-            slackSend color: 'danger', message: "Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
-        }
-        always {
             node('built-in') {
-                // Clean workspace on built-in
+                slackSend color: 'danger', 
+                         channel: '#pratibimb-backend-cicd',
+                         tokenCredentialId: 'slack-token',
+                         message: "Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
                 cleanWs()
             }
         }
     }
-
 }
