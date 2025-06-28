@@ -13,14 +13,14 @@ pipeline {
 
     stages {
         stage('Checkout') {
-            agent { label 'master' } // Run on Jenkins master
+            agent { label 'built-in' } // Run on Jenkins built-in
             steps {
                 checkout scm
             }
         }
 
         stage('Prepare Build') {
-            agent { label 'master' } // Run on Jenkins master
+            agent { label 'built-in' } // Run on Jenkins built-in
             steps {
                 dir('Backend') {
                    // Copy the secret file to .env (it's automatically available at $ENV_FILE)
@@ -82,8 +82,8 @@ pipeline {
             slackSend color: 'danger', message: "Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
         }
         always {
-            node('master') {
-                // Clean workspace on master
+            node('built-in') {
+                // Clean workspace on built-in
                 cleanWs()
             }
         }
