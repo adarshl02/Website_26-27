@@ -5,8 +5,6 @@ pipeline{
         stage('Build') {
             steps {
                 echo 'Building...'
-                sh 'pwd'
-                sh 'mkdir -p build'
                 // Add your build commands here
             }
         }
