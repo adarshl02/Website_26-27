@@ -74,7 +74,7 @@ pipeline {
         }
     }
 
-    post {
+     post {
         success {
             slackSend color: 'good', message: "Deployed: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
         }
@@ -82,9 +82,11 @@ pipeline {
             slackSend color: 'danger', message: "Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
         }
         always {
-            // Clean workspace
-            cleanWs()
+            node('master') {
+                // Clean workspace on master
+                cleanWs()
+            }
         }
     }
-    
+
 }
