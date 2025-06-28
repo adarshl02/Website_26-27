@@ -1,17 +1,19 @@
 pipeline {
-    agent none // Start with no default agent
+    agent none
     
+    environment {
+        // Global environment variables
+        DOCKER_IMAGE = 'pratibimb-backend'
+        CONTAINER_NAME = 'pratibimb-backend'
+        PORT = '3000'
+    }
+
     stages {
-        stage('Checkout') {
+        stage('Checkout and Prepare') {
             agent { label 'built-in' }
             steps {
                 withCredentials([file(credentialsId: 'pratibimb-backend-env-file', variable: 'ENV_FILE')]) {
                     checkout scm
-                    
-                    // Store environment variables for other stages
-                    env.DOCKER_IMAGE = 'pratibimb-backend'
-                    env.CONTAINER_NAME = 'pratibimb-backend'
-                    env.PORT = '3000'
                     
                     dir('Backend') {
                         // Copy the secret file to .env
@@ -40,11 +42,10 @@ pipeline {
         stage('Build Docker Image') {
             agent { label 'pratibimb-backend-deployer' }
             steps {
-                // Unstash the files on the agent
                 unstash 'backend-files'
                 
                 dir('Backend') {
-                    sh 'docker build -t pratibimb-backend .'
+                    sh 'docker build -t ${env.DOCKER_IMAGE} .'
                 }
             }
         }
@@ -53,17 +54,15 @@ pipeline {
             agent { label 'pratibimb-backend-deployer' }
             steps {
                 dir('Backend') {
-                    sh '''
+                    sh """
                         docker run -d \
-                            --name pratibimb-backend \
-                            -p 3000:3000 \
+                            --name ${env.CONTAINER_NAME} \
+                            -p ${env.PORT}:3000 \
                             --env-file .env \
-                            pratibimb-backend
-                    '''
+                            ${env.DOCKER_IMAGE}
+                    """
                     sh 'rm -f .env || true'
-                    
-                    // Verify deployment directly on the agent
-                    sh 'docker ps | grep pratibimb-backend || true'
+                    sh 'docker ps | grep ${env.CONTAINER_NAME} || true'
                 }
             }
         }
@@ -75,7 +74,7 @@ pipeline {
                 slackSend color: 'good', 
                          channel: '#pratibimb-backend-cicd',
                          tokenCredentialId: 'slack-token',
-                         message: "Deployed: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
+                         message: "SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER} deployed ${env.DOCKER_IMAGE}"
                 cleanWs()
             }
         }
@@ -84,7 +83,7 @@ pipeline {
                 slackSend color: 'danger', 
                          channel: '#pratibimb-backend-cicd',
                          tokenCredentialId: 'slack-token',
-                         message: "Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
+                         message: "FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER} - ${currentBuild.currentResult}"
                 cleanWs()
             }
         }
