@@ -76,22 +76,9 @@ pipeline {
                         echo "Start temporary test container"
                         docker run -d --name test-container -p 3001:3000 --env-file .env pratibimb-backend-temp
 
-                        echo "Waiting up to 30s for container to start..."
-                        max_wait=30
-                        elapsed=0
-                        while [ "$(docker inspect -f '{{.State.Running}}' test-container 2>/dev/null)" != "true" ]; do
-                          sleep 1
-                          elapsed=$((elapsed + 1))
-                          if [ "$elapsed" -ge "$max_wait" ]; then
-                            echo "❌ Container failed to start."
-                            docker logs test-container || true
-                            docker rm -f test-container || true
-                            docker rmi pratibimb-backend-temp || true
-                            rm -f .env || true
-                            exit 1
-                          fi
-                        done
-
+                        echo "Waiting up to 10s for container to start..."
+                        sleep 10
+                       
                         echo "Perform health check"
                         curl --fail http://localhost:3001/ || {
                           echo "❌ Health check failed. Cleaning up..."
