@@ -70,13 +70,13 @@ EOF
                     sh '''
                         set -ex
                         echo "Stopping previous containers (if any)"
-                        docker-compose down --rmi all || true
+                        docker compose down --rmi all || true
 
                         echo "Building and starting services with Docker Compose"
-                        docker-compose up -d --build
+                        docker compose up -d --build
 
                         echo "Verifying running container"
-                        docker-compose ps
+                        docker compose ps
                     '''
                 }
             }
