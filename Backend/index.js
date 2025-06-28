@@ -71,7 +71,7 @@ app.use((req, res, next) => {
   const apiKey = req.headers["x-api-key"];
   
   if (!apiKey) {
-    return res.status(403).json({ error: "API key is required" });
+    return res.status(403).json({ error: "API key is required " });
   }
   
   if (apiKey !== process.env.API_KEY) {
