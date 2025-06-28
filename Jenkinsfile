@@ -63,20 +63,46 @@ EOF
             }
         }
 
-        stage('Build & Run with Docker Compose') {
+        stage('Zero Downtime Docker Deploy') {
             agent { label 'pratibimb-backend-deployer' }
             steps {
                 dir('Backend') {
                     sh '''
                         set -ex
-                        echo "Stopping previous containers (if any)"
-                        docker compose down --rmi all || true
 
-                        echo "Building and starting services with Docker Compose"
-                        docker compose up -d --build
+                        echo "Build new image"
+                        docker build -t pratibimb-backend-temp .
 
-                        echo "Verifying running container"
-                        docker compose ps
+                        echo "Start temporary test container"
+                        docker run -d --name test-container -p 3001:3000 --env-file .env pratibimb-backend-temp
+
+                        echo "Perform health check on temp container"
+                        curl --fail http://localhost:3001/ || {
+                        echo "❌ Health check failed. Cleaning up..."
+                        docker rm -f test-container || true
+                        docker rmi pratibimb-backend-temp || true
+                        rm -f .env || true
+                        exit 1
+                    }
+
+
+                        echo "Stop & remove current running container"
+                        docker stop pratibimb-backend || true
+                        docker rm pratibimb-backend || true
+                        docker rmi pratibimb-backend || true
+
+                        echo "Tag new image as final"
+                        docker tag pratibimb-backend-temp pratibimb-backend
+
+                        echo "Remove test container"
+                        docker rm -f test-container
+
+                        echo "Run final container on port 3000"
+                        docker run -d --name pratibimb-backend -p 3000:3000 --env-file .env pratibimb-backend
+
+                        echo "Cleanup temporary image and .env"
+                        docker rmi pratibimb-backend-temp || true
+                        rm -f .env
                     '''
                 }
             }
