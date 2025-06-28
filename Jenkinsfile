@@ -2,7 +2,6 @@ pipeline {
     agent none
     
     environment {
-        // Global environment variables
         DOCKER_IMAGE = 'pratibimb-backend'
         CONTAINER_NAME = 'pratibimb-backend'
         PORT = '3000'
@@ -12,15 +11,20 @@ pipeline {
         stage('Checkout and Prepare') {
             agent { label 'built-in' }
             steps {
+                checkout scm
+                
                 withCredentials([file(credentialsId: 'pratibimb-backend-env-file', variable: 'ENV_FILE')]) {
-                    checkout scm
-                    
                     dir('Backend') {
-                        // Copy the secret file to .env
-                        sh 'cp $ENV_FILE .env'
-                        
-                        // Archive the files to transfer to agent
-                        stash includes: 'Backend/**', name: 'backend-files'
+                        // Verify files exist before stashing
+                        script {
+                            def files = findFiles(glob: '**/*')
+                            if (files.isEmpty()) {
+                                error 'No files found in Backend directory to stash'
+                            }
+                            
+                            sh 'cp $ENV_FILE .env'
+                            stash includes: '**/*', name: 'backend-files', allowEmpty: false
+                        }
                     }
                 }
             }
@@ -69,22 +73,29 @@ pipeline {
     }
 
     post {
+        always {
+            node('built-in') {
+                cleanWs()
+            }
+        }
         success {
             node('built-in') {
-                slackSend color: 'good', 
-                         channel: '#pratibimb-backend-cicd',
-                         tokenCredentialId: 'slack-token',
-                         message: "SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER} deployed ${env.DOCKER_IMAGE}"
-                cleanWs()
+                slackSend(
+                    color: 'good',
+                    channel: '#pratibimb-backend-cicd',
+                    tokenCredentialId: 'slack-token',
+                    message: "SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
+                )
             }
         }
         failure {
             node('built-in') {
-                slackSend color: 'danger', 
-                         channel: '#pratibimb-backend-cicd',
-                         tokenCredentialId: 'slack-token',
-                         message: "FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER} - ${currentBuild.currentResult}"
-                cleanWs()
+                slackSend(
+                    color: 'danger',
+                    channel: '#pratibimb-backend-cicd',
+                    tokenCredentialId: 'slack-token',
+                    message: "FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER} - ${currentBuild.currentResult}"
+                )
             }
         }
     }
