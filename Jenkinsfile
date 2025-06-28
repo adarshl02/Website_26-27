@@ -1,6 +1,7 @@
 pipeline{
 
-    agent any
+    agent { label 'pratibimb-backend-deployer'}
+
     stages {
         stage('Build') {
             steps {
