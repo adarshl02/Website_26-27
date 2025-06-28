@@ -1,0 +1,9 @@
+version: '3'
+services:
+  backend:
+    build: .
+    container_name: pratibimb-backend
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env

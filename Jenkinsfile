@@ -1,12 +1,6 @@
 pipeline {
     agent none
 
-    environment {
-        DOCKER_IMAGE = 'pratibimb-backend'
-        CONTAINER_NAME = 'pratibimb-backend'
-        PORT = '3000'
-    }
-
     stages {
         stage('Checkout Code') {
             agent { label 'built-in' }
@@ -69,50 +63,20 @@ EOF
             }
         }
 
-        stage('Cleanup Old Docker Resources') {
-            agent { label 'pratibimb-backend-deployer' }
-            steps {
-                sh '''
-                    set -ex
-                    echo "Stopping and removing old container/image if exists"
-                    docker stop $CONTAINER_NAME || true
-                    docker rm $CONTAINER_NAME || true
-                    docker rmi $DOCKER_IMAGE || true
-                '''
-            }
-        }
-
-        stage('Build Docker Image') {
+        stage('Build & Run with Docker Compose') {
             agent { label 'pratibimb-backend-deployer' }
             steps {
                 dir('Backend') {
                     sh '''
                         set -ex
-                        echo "Building Docker image"
-                        docker build -t $DOCKER_IMAGE .
-                    '''
-                }
-            }
-        }
+                        echo "Stopping previous containers (if any)"
+                        docker-compose down --rmi all || true
 
-        stage('Run Docker Container') {
-            agent { label 'pratibimb-backend-deployer' }
-            steps {
-                dir('Backend') {
-                    sh '''
-                        set -ex
-                        echo "Running Docker container"
-                        docker run -d \
-                            --name $CONTAINER_NAME \
-                            -p $PORT:3000 \
-                            --env-file .env \
-                            $DOCKER_IMAGE
-
-                        echo "Cleaning up .env file"
-                        rm -f .env
+                        echo "Building and starting services with Docker Compose"
+                        docker-compose up -d --build
 
                         echo "Verifying running container"
-                        docker ps | grep $CONTAINER_NAME || true
+                        docker-compose ps
                     '''
                 }
             }
