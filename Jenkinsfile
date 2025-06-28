@@ -55,7 +55,7 @@ pipeline {
                 script {
                     try {
                         unstash 'env-file'
-                        sh 'chmod 644 .env'  # Ensure permissions on target node
+                        sh 'chmod 644 .env'
                     } catch (Exception e) {
                         error "Failed to unstash .env file: ${e.message}"
                     }
