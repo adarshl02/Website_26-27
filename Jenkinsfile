@@ -79,8 +79,7 @@ EOF
                         echo "Perform health check on temp container"
                         curl --fail http://localhost:3001/ || {
                         echo "❌ Health check failed. Cleaning up..."
-                        docker rm -f test-container || true
-                        docker rmi pratibimb-backend-temp || true
+                      
                         rm -f .env || true
                         exit 1
                     }
