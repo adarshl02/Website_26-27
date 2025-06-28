@@ -1,6 +1,7 @@
 version: '3'
 services:
   backend:
+    image: pratibimb-backend  
     build: .
     container_name: pratibimb-backend
     ports:
