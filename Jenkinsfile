@@ -15,15 +15,19 @@ pipeline {
                 
                 withCredentials([file(credentialsId: 'pratibimb-backend-env-file', variable: 'ENV_FILE')]) {
                     dir('Backend') {
-                        // Simple file existence check
+                        // Create .env with proper permissions
                         sh '''
                             if [ ! -d . ]; then
                                 echo "Backend directory not found!"
                                 exit 1
                             fi
                             cp "$ENV_FILE" .env
+                            chmod 644 .env  # Ensure proper permissions
                         '''
-                        stash includes: '**/*', name: 'backend-files'
+                        // Stash without including .env to avoid permission issues
+                        stash includes: '**/*', excludes: '.env', name: 'backend-files'
+                        // Stash .env separately with different permissions
+                        stash includes: '.env', name: 'env-file'
                     }
                 }
             }
@@ -45,10 +49,19 @@ pipeline {
         stage('Build Docker Image') {
             agent { label 'pratibimb-backend-deployer' }
             steps {
+                // Unstash main files first
                 unstash 'backend-files'
+                // Then unstash .env with proper handling
+                script {
+                    try {
+                        unstash 'env-file'
+                        sh 'chmod 644 .env'  # Ensure permissions on target node
+                    } catch (Exception e) {
+                        error "Failed to unstash .env file: ${e.message}"
+                    }
+                }
                 
                 dir('Backend') {
-                    // Fixed docker build command - using double quotes for variable expansion
                     sh "docker build -t ${env.DOCKER_IMAGE} ."
                 }
             }
