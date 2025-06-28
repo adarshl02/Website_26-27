@@ -1,6 +1,6 @@
 pipeline {
     agent none
-    
+
     environment {
         DOCKER_IMAGE = 'pratibimb-backend'
         CONTAINER_NAME = 'pratibimb-backend'
@@ -8,78 +8,62 @@ pipeline {
     }
 
     stages {
-        stage('Checkout and Prepare') {
+        stage('Checkout & Prepare') {
             agent { label 'built-in' }
             steps {
                 checkout scm
-                
+
                 withCredentials([file(credentialsId: 'pratibimb-backend-env-file', variable: 'ENV_FILE')]) {
                     dir('Backend') {
-                        // Create .env with proper permissions
                         sh '''
-                            if [ ! -d . ]; then
-                                echo "Backend directory not found!"
-                                exit 1
-                            fi
                             cp "$ENV_FILE" .env
-                            chmod 644 .env  # Ensure proper permissions
+                            chmod 600 .env
                         '''
-                        // Stash without including .env to avoid permission issues
-                        stash includes: '**/*', excludes: '.env', name: 'backend-files'
-                        // Stash .env separately with different permissions
-                        stash includes: '.env', name: 'env-file'
+                        stash name: 'backend-code', includes: '**/*', excludes: '.env'
+                        stash name: 'env-file', includes: '.env'
                     }
                 }
             }
         }
 
-        stage('Cleanup Old Deployment') {
+        stage('Clean Old Deployment') {
             agent { label 'pratibimb-backend-deployer' }
             steps {
-                script {
-                    sh """
-                        docker stop ${env.CONTAINER_NAME} || true
-                        docker rm ${env.CONTAINER_NAME} || true
-                        docker rmi ${env.DOCKER_IMAGE} || true
-                    """
+                unstash 'backend-code'
+                dir('Backend') {
+                    sh '''
+                        docker stop pratibimb-backend || true
+                        docker rm pratibimb-backend || true
+                        docker rmi pratibimb-backend || true
+                    '''
                 }
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build Image') {
             agent { label 'pratibimb-backend-deployer' }
             steps {
-                // Unstash main files first
-                unstash 'backend-files'
-                // Then unstash .env with proper handling
-                script {
-                    try {
-                        unstash 'env-file'
-                        sh 'chmod 644 .env'
-                    } catch (Exception e) {
-                        error "Failed to unstash .env file: ${e.message}"
-                    }
-                }
-                
+                unstash 'env-file'
+                sh 'chmod 600 Backend/.env'
                 dir('Backend') {
-                    sh "docker build -t ${env.DOCKER_IMAGE} ."
+                    sh 'docker build -t pratibimb-backend .'
                 }
             }
         }
 
-        stage('Deploy Container') {
+        stage('Run Container') {
             agent { label 'pratibimb-backend-deployer' }
             steps {
                 dir('Backend') {
-                    sh """
+                    sh '''
                         docker run -d \
-                            --name ${env.CONTAINER_NAME} \
-                            -p ${env.PORT}:3000 \
+                            --name pratibimb-backend \
+                            -p 3000:3000 \
                             --env-file .env \
-                            ${env.DOCKER_IMAGE}
-                    """
-                    sh 'rm -f .env || true'
-                    sh "docker ps | grep ${env.CONTAINER_NAME} || true"
+                            pratibimb-backend
+                        rm -f .env
+                        docker ps | grep pratibimb-backend || true
+                    '''
                 }
             }
         }
@@ -97,7 +81,7 @@ pipeline {
                     color: 'good',
                     channel: '#pratibimb-backend-cicd',
                     tokenCredentialId: 'slack-token',
-                    message: "SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
+                    message: "✅ SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
                 )
             }
         }
@@ -107,7 +91,7 @@ pipeline {
                     color: 'danger',
                     channel: '#pratibimb-backend-cicd',
                     tokenCredentialId: 'slack-token',
-                    message: "FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER} - ${currentBuild.currentResult}"
+                    message: "❌ FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
                 )
             }
         }
