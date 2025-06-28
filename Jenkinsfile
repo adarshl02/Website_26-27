@@ -77,12 +77,6 @@ pipeline {
     post {
         
         always {
-            // Verify deployment
-            script {
-                def dockerAgent = Jenkins.instance.getNode('pratibimb-backend-deployer')
-                def channel = dockerAgent.getComputer().getChannel()
-                channel.exec('docker', 'ps', '|', 'grep', 'pratibimb-backend', '||', 'true')
-            }
             // Clean workspace
             cleanWs()
         }
