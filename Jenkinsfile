@@ -15,13 +15,13 @@ pipeline {
                 
                 withCredentials([file(credentialsId: 'pratibimb-backend-env-file', variable: 'ENV_FILE')]) {
                     dir('Backend') {
-                        // Simple file existence check instead of findFiles
+                        // Simple file existence check
                         sh '''
                             if [ ! -d . ]; then
                                 echo "Backend directory not found!"
                                 exit 1
                             fi
-                            cp $ENV_FILE .env
+                            cp "$ENV_FILE" .env
                         '''
                         stash includes: '**/*', name: 'backend-files'
                     }
@@ -48,7 +48,8 @@ pipeline {
                 unstash 'backend-files'
                 
                 dir('Backend') {
-                    sh 'docker build -t ${env.DOCKER_IMAGE} .'
+                    // Fixed docker build command - using double quotes for variable expansion
+                    sh "docker build -t ${env.DOCKER_IMAGE} ."
                 }
             }
         }
@@ -65,7 +66,7 @@ pipeline {
                             ${env.DOCKER_IMAGE}
                     """
                     sh 'rm -f .env || true'
-                    sh 'docker ps | grep ${env.CONTAINER_NAME} || true'
+                    sh "docker ps | grep ${env.CONTAINER_NAME} || true"
                 }
             }
         }
