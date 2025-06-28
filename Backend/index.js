@@ -82,7 +82,7 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  res.status(200).send({ message: "Healthy Route! I am ready to serve" });
+  res.status(200).send({ message: "Healthy Route! Ready to serve" });
 });
 
 app.get("/favicon.ico", (req, res) => res.status(204).end());
