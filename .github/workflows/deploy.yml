@@ -63,3 +63,25 @@ jobs:
           aws cloudfront create-invalidation \
           --distribution-id ${{ secrets.CLOUDFRONT_ID }} \
           --paths "/*"
+
+
+#What deploy.yml Does:
+#Creates a Ubuntu VM → GitHub Actions spins up a fresh ubuntu-latest runner (virtual machine).
+
+#Checks out repo code → Uses actions/checkout@v4 to clone your repository into the VM.
+
+#Creates .env file → Writes environment variables from GitHub Secrets into Frontend/.env.
+
+#Sets up Node.js (v20) → Installs Node.js and caches dependencies for faster future runs.
+
+#Installs dependencies → Runs npm ci (clean install) based on package-lock.json.
+
+#Builds the project → Executes npm run build (creates production-ready files in dist/).
+
+#Configures AWS credentials → Uses aws-actions/configure-aws-credentials to authenticate with AWS.
+
+#Deploys to S3 → Syncs dist/ files to s3://www.clubpratibimb.com (deletes old files).
+
+#Invalidates CloudFront cache → Forces CloudFront to fetch fresh content via cache invalidation (/*).
+
+#Cleans up VM → Automatically (GitHub destroys the VM after the job completes).
