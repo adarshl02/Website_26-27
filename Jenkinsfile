@@ -2,6 +2,7 @@ pipeline {
     agent none
 
     stages {
+        // Stage 1 – Checkout Code: It pulls the latest code from GitHub and stores it temporarily.
         stage('Checkout Code') {
             agent { label 'built-in' }
             steps {
@@ -9,14 +10,15 @@ pipeline {
                 stash name: 'backend-code', includes: '**/*'
             }
         }
-
+        // Stage 2 – Deployment Server Prep: Moves the code to our backend deployment server.
         stage('Unstash Code') {
             agent { label 'pratibimb-backend-deployer' }
             steps {
                 unstash 'backend-code'
             }
         }
-
+        // Stage 3 – Create .env File: Securely injects environment variables from Jenkins credentials, 
+        // so no secrets are hardcoded.
         stage('Create .env File') {
             agent { label 'pratibimb-backend-deployer' }
             environment {
@@ -62,7 +64,8 @@ pipeline {
                 }
             }
         }
-
+        //Stage 4 – Build & Health Check: Builds a Docker image, runs it temporarily, 
+        // and performs a quick health check using curl to ensure it’s working before deploying.
         stage('Build & Health Check') {
             agent { label 'pratibimb-backend-deployer' }
             steps {
@@ -91,7 +94,8 @@ pipeline {
                 }
             }
         }
-
+       // Stage 5 – Replace Running Container: If the health check passes, it stops the old container, 
+       // replaces it with the new one, and cleans up temp files/images.
         stage('Replace Running Container') {
             agent { label 'pratibimb-backend-deployer' }
             steps {
@@ -120,7 +124,7 @@ pipeline {
                 }
             }
         }
-
+        // Status Report: Shows running containers/images and does a final curl check.
         stage('Show Final Status') {
             agent { label 'pratibimb-backend-deployer' }
             steps {
@@ -158,3 +162,10 @@ pipeline {
         }
     }
 }
+
+
+// "I built a Jenkins CI/CD pipeline that fully automates backend deployment. 
+// It pulls code from GitHub, securely injects environment variables, builds a Docker image, runs a health check, 
+// and if all good, replaces the old container with the new one without downtime.
+//  Finally, it cleans up and sends a Slack notification. This ensures secure, fast, and reliable deployments 
+//  with minimal manual work."
