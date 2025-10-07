@@ -6,6 +6,7 @@ async function gracefulShutDown(signal) {
     }
     process.exit(0);
   }
-  
+
+
   export default gracefulShutDown;
   
