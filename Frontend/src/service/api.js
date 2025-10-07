@@ -3,7 +3,6 @@ import axios from 'axios';
 const URL = import.meta.env.VITE_URL; 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
-
 const handleApiError = (error, apiName) => {
   
   const errorMsg = error.response?.data?.errors?.detail ||  error.response?.data?.message || error?.message || 'An unexpected error occurred';
