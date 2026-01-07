@@ -23,7 +23,8 @@ const allowedOrigins = [
   "https://website-26-27-ten.vercel.app",
   "https://www.clubpratibimb.com",
   "capacitor://localhost", // Required for Android
-  "http://localhost"       // Required for iOS
+  "http://localhost",       // Required for iOS
+  "https://clubpratibimb.vercel.app"
 ];
 
 app.use(cors({
