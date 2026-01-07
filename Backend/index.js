@@ -41,6 +41,7 @@ app.get("/", (req, res) => {
 
 const allowedOrigins = [
   "https://www.clubpratibimb.com",
+  "https://clubpratibimb.vercel.app"
 ];
 
 const corsOptions = {
