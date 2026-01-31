@@ -1,6 +1,9 @@
 # Website 26-27 Project
 
-A full-stack web application featuring event management, art community, user profiles, recruitment system, and volunteer management.
+**A comprehensive college club website** designed for managing events, memberships, art community engagement, and volunteer coordination. This full-stack application has successfully handled **400+ student payments** through Razorpay integration and achieved **50+ downloads** on the Google Play Store.
+
+**Google Play Store**: [Download the App](https://play.google.com/store/apps/details?id=com.clubpratibimb.twa)
+
 
 ## 📋 Project Structure
 
