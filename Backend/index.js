@@ -46,7 +46,7 @@ app.use(cors({
 }));
 
 app.get("/", (req, res) => {
-  res.status(200).send({ message: "The Server is Running!" });
+  res.status(200).send({ message: "The Server is Running!!" });
 });
 
 app.get("/favicon.ico", (req, res) => res.status(204).end());
@@ -81,6 +81,5 @@ const PORT = process.env.PORT || 3000;
 if (process.env.VERCEL !== "1") {
   app.listen(3000, () => console.log("Running locally"));
 }
-
 export default app;
 
