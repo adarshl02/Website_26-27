@@ -46,7 +46,7 @@ app.use(cors({
 }));
 
 app.get("/", (req, res) => {
-  res.status(404).send({ message: "Not Found" });
+  res.status(200).send({ message: "The Server is Running!" });
 });
 
 app.get("/favicon.ico", (req, res) => res.status(204).end());
