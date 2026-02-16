@@ -59,15 +59,7 @@ app.use("/api", recruitmentsRouter);
 app.use("/api", artRouter);
 app.use("/api/admin", adminRouter);
 
-process.on("SIGTERM", gracefulShutDown);
-process.on("SIGINT", gracefulShutDown);
-process.on("SIGUSR2", gracefulShutDown);
-
-const PORT = process.env.PORT || 3000;
-app.listen(3000, () => {
-  console.log("Server is running on port 3000!");
-});
-
+// Error handling middleware (must be defined before export/listen)
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal Server Error";
@@ -78,3 +70,18 @@ app.use((err, req, res, next) => {
     message,
   });
 });
+
+process.on("SIGTERM", gracefulShutDown);
+process.on("SIGINT", gracefulShutDown);
+process.on("SIGUSR2", gracefulShutDown);
+
+const PORT = process.env.PORT || 3000;
+
+// local run
+if (process.env.NODE_ENV !== "production") {
+  app.listen(3000, () => {
+    console.log("Server running on port 3000");
+  });
+}
+
+export default app;
