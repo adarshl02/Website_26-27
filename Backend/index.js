@@ -78,10 +78,9 @@ process.on("SIGUSR2", gracefulShutDown);
 const PORT = process.env.PORT || 3000;
 
 // local run
-if (process.env.NODE_ENV !== "production") {
-  app.listen(3000, () => {
-    console.log("Server running on port 3000");
-  });
+if (process.env.VERCEL !== "1") {
+  app.listen(3000, () => console.log("Running locally"));
 }
 
 export default app;
+
