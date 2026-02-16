@@ -16,5 +16,4 @@ const db = knex(knexfile.development);
     process.exit(1);
   }
 })();
-
 export default db;
